@@ -6,6 +6,12 @@ The idea is simple: take a traditional text adventure, such as a Z-machine/Z-cod
 
 Instead of calling AI services while someone is playing, the project is intended to generate images ahead of time during an authoring step. The finished game can then be packaged as static files and shared like any other web project.
 
+## Architecture
+
+![IF With Graphics WASM architecture](docs/assets/ifwg-wasm-architecture.png)
+
+At a high level, the web app should call a stable IFWG JavaScript/WASM API. That bridge owns the exported functions and delegates to lower-level C tools such as ZTools for inspection and a Z-machine runtime for gameplay.
+
 ## Concept
 
 Classic interactive fiction is rich, strange, and deeply atmospheric, but it is usually presented as text only. ifwithgraphics explores what happens when those worlds are illustrated without losing the feel of the original parser-based experience.
