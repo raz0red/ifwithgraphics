@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IFWG Builder Bridge Test</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="toolbar">
+        <div>
+          <h1>IFWG Builder Bridge</h1>
+          <p id="status">Loading WASM module...</p>
+        </div>
+        <button id="clearOutput" type="button">Clear</button>
+      </section>
+
+      <section id="dropZone" class="drop-zone">
+        <input id="storyFile" type="file" accept=".z1,.z2,.z3,.z4,.z5,.z6,.z7,.z8,.dat,.zcode">
+        <div>
+          <strong>Drop a Z-code story file</strong>
+          <span id="fileStatus">or choose one to write into Emscripten FS.</span>
+        </div>
+      </section>
+
+      <section class="controls" aria-label="Interpreter">
+        <button id="runFrotz" type="button" disabled>Run Frotz</button>
+        <input id="frotzInput" class="frotz-input" type="text" placeholder="Type a command…" disabled>
+        <button id="frotzSend" type="button" disabled>Send</button>
+      </section>
+
+      <section class="controls" aria-label="Bridge methods">
+        <button data-method="header" type="button" disabled>Dump Header</button>
+        <button data-method="objects" type="button" disabled>Dump Objects</button>
+        <button data-method="tree" type="button" disabled>Dump Tree</button>
+        <button data-method="dictionary" type="button" disabled>Dump Dictionary</button>
+        <button data-method="disassembly" type="button" disabled>Dump Strings</button>
+        <button data-method="full" type="button" disabled>Dump Full</button>
+      </section>
+
+      <section class="search-row" aria-label="Search story text">
+        <input id="textQuery" type="search" value="open field west" aria-label="Story text search query">
+        <button id="findText" type="button" disabled>Find Text</button>
+      </section>
+
+      <pre id="output" class="output" aria-live="polite"></pre>
+    </main>
+
+    <script src="./public/wasm/ifwg-builder.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+# Emscripten build output
+wasm-tools/builder/build/
+
+# Generated headers (produced by Makefile targets)
+wasm-tools/builder/frotz/src/common/defs.h
+wasm-tools/builder/frotz/src/common/hash.h
+
+# Deployed WASM artifacts
+builder/public/wasm/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
