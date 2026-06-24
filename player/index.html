@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IFWG Player</title>
+    <link rel="stylesheet" href="./player.css">
+  </head>
+  <body>
+
+    <div id="dropOverlay" class="drop-overlay">
+      <label class="drop-target" for="storyFile">
+        <span class="drop-title">DROP STORY FILE</span>
+        <span class="drop-sub">or click to choose</span>
+        <input id="storyFile" type="file"
+               accept=".z1,.z2,.z3,.z4,.z5,.z6,.z7,.z8,.dat,.zcode">
+      </label>
+
+      <div class="drop-settings">
+        <div class="setting-row">
+          <label class="setting-label" for="aiProvider">IMAGE GEN</label>
+          <select id="aiProvider" class="setting-select">
+            <option value="openai">OpenAI DALL-E 3</option>
+            <option value="none">Disabled</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <label class="setting-label" for="aiKey">API KEY</label>
+          <input id="aiKey" class="setting-input" type="password"
+                 placeholder="sk-…" autocomplete="off" spellcheck="false">
+        </div>
+      </div>
+    </div>
+
+    <main id="player" class="player" hidden>
+
+      <div class="status-bar">
+        <span id="statusRoom"></span>
+        <span id="statusScore"></span>
+      </div>
+
+      <div class="scene-wrap">
+        <img id="sceneImg" class="scene-img" alt="" hidden>
+        <div id="scenePlaceholder" class="scene-placeholder">
+          <div class="gen-drive-bezel">
+            <div class="gen-in-use">IN USE &#9658;</div>
+            <div id="diskLed" class="gen-led"></div>
+            <div class="gen-drive-label">disk II</div>
+          </div>
+          <div class="gen-status">
+            <span id="placeholderLabel"></span><span id="dotLabel"></span>
+          </div>
+        </div>
+      </div>
+
+      <div id="sceneText" class="scene-text"></div>
+
+      <div id="cmdRow" class="cmd-row">
+        <span class="continue-hint" id="continueHint" hidden>
+          PRESS SPACE TO CONTINUE
+        </span>
+        <span id="cmdPrompt" class="prompt" hidden>&gt;</span><span id="cmdDisplay" class="cmd-display" hidden></span><span id="cmdCursor" class="cmd-cursor" hidden></span>
+        <input id="cmdInput" class="cmd-input" type="text"
+               autocomplete="off" spellcheck="false" disabled>
+      </div>
+
+    </main>
+
+    <script src="./public/wasm/ifwg-builder.js"></script>
+    <script src="./imagegen/imagedb.js"></script>
+    <script src="./imagegen/openai.js"></script>
+    <script src="./imagegen/index.js"></script>
+    <script src="./player.js"></script>
+  </body>
+</html>

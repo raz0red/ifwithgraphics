@@ -5,11 +5,14 @@ BRIDGE_DIR := bridge
 ZTOOLS_DIR := ztools/source
 FROTZ_COMMON_DIR := frotz/src/common
 FROTZ_DUMB_DIR := frotz/src/dumb
-PUBLIC_WASM_DIR := ../../builder/public/wasm
+BUILDER_WASM_DIR := ../../builder/public/wasm
+PLAYER_WASM_DIR  := ../../player/public/wasm
 
-OUT_JS := $(BUILD_DIR)/ifwg-builder.js
-PUBLIC_JS := $(PUBLIC_WASM_DIR)/ifwg-builder.js
-PUBLIC_WASM := $(PUBLIC_WASM_DIR)/ifwg-builder.wasm
+OUT_JS         := $(BUILD_DIR)/ifwg-builder.js
+PUBLIC_JS      := $(BUILDER_WASM_DIR)/ifwg-builder.js
+PUBLIC_WASM    := $(BUILDER_WASM_DIR)/ifwg-builder.wasm
+PLAYER_JS      := $(PLAYER_WASM_DIR)/ifwg-builder.js
+PLAYER_WASM_F  := $(PLAYER_WASM_DIR)/ifwg-builder.wasm
 TXD_OBJ := $(BUILD_DIR)/txd.o
 FROTZ_MAIN_OBJ := $(BUILD_DIR)/frotz_main.o
 
@@ -71,13 +74,16 @@ EXPORTED_RUNTIME_METHODS := ["FS","UTF8ToString","lengthBytesUTF8","stringToUTF8
 
 .PHONY: all clean
 
-all: $(PUBLIC_JS) $(PUBLIC_WASM)
+all: $(PUBLIC_JS) $(PUBLIC_WASM) $(PLAYER_JS) $(PLAYER_WASM_F)
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
-$(PUBLIC_WASM_DIR):
-	mkdir -p $(PUBLIC_WASM_DIR)
+$(BUILDER_WASM_DIR):
+	mkdir -p $(BUILDER_WASM_DIR)
+
+$(PLAYER_WASM_DIR):
+	mkdir -p $(PLAYER_WASM_DIR)
 
 $(FROTZ_DEFS):
 	@echo "#ifndef COMMON_DEFINES_H" > $@
@@ -144,13 +150,20 @@ $(OUT_JS): $(BRIDGE_SOURCES) $(ZTOOLS_SOURCES) $(FROTZ_SOURCES) $(TXD_OBJ) $(FRO
 		-s 'EXPORTED_FUNCTIONS=$(EXPORTED_FUNCTIONS)' \
 		-o $(OUT_JS)
 
-$(PUBLIC_JS): $(OUT_JS) | $(PUBLIC_WASM_DIR)
-	cp $(BUILD_DIR)/ifwg-builder.js $(PUBLIC_WASM_DIR)/ifwg-builder.js
+$(PUBLIC_JS): $(OUT_JS) | $(BUILDER_WASM_DIR)
+	cp $(BUILD_DIR)/ifwg-builder.js $(BUILDER_WASM_DIR)/ifwg-builder.js
 
-$(PUBLIC_WASM): $(OUT_JS) | $(PUBLIC_WASM_DIR)
-	cp $(BUILD_DIR)/ifwg-builder.wasm $(PUBLIC_WASM_DIR)/ifwg-builder.wasm
+$(PUBLIC_WASM): $(OUT_JS) | $(BUILDER_WASM_DIR)
+	cp $(BUILD_DIR)/ifwg-builder.wasm $(BUILDER_WASM_DIR)/ifwg-builder.wasm
+
+$(PLAYER_JS): $(OUT_JS) | $(PLAYER_WASM_DIR)
+	cp $(BUILD_DIR)/ifwg-builder.js $(PLAYER_WASM_DIR)/ifwg-builder.js
+
+$(PLAYER_WASM_F): $(OUT_JS) | $(PLAYER_WASM_DIR)
+	cp $(BUILD_DIR)/ifwg-builder.wasm $(PLAYER_WASM_DIR)/ifwg-builder.wasm
 
 clean:
 	rm -rf $(BUILD_DIR)
-	rm -rf $(PUBLIC_WASM_DIR)
+	rm -rf $(BUILDER_WASM_DIR)
+	rm -rf $(PLAYER_WASM_DIR)
 	rm -f $(FROTZ_DEFS) $(FROTZ_HASH)

@@ -96,6 +96,96 @@ static enum {
 static char *rv_names[] = {"NONE", "DOUBLESTRIKE", "UNDERLINE", "CAPS"};
 static char rv_blank_str[5] = {' ', 0, 0, 0, 0};
 
+/* ---- IFWG object-name scanner ---- */
+#include <strings.h>
+
+static const char zscii_a0[] = "abcdefghijklmnopqrstuvwxyz";
+static const char zscii_a1[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+static const char zscii_a2[] = " \n0123456789.,!?_#'\"/\\-:()";
+
+/* Decode a Z-machine encoded string at zmp[addr] into buf (max len-1 chars).
+ * Skips abbreviations. Returns number of chars written (excluding NUL). */
+static int ifwg_decode_zstring (zword addr, char *buf, int len)
+{
+    int out = 0;
+    int alphabet = 0; /* 0=A0, 1=A1, 2=A2 */
+    int done = 0;
+
+    while (!done && out < len - 1) {
+        zword w = ((zword) zmp[addr] << 8) | (zword) zmp[addr + 1];
+        int zc[3];
+        int i;
+
+        addr += 2;
+        done = (w >> 15) & 1;
+        zc[0] = (w >> 10) & 0x1f;
+        zc[1] = (w >>  5) & 0x1f;
+        zc[2] =  w        & 0x1f;
+
+        for (i = 0; i < 3 && out < len - 1; i++) {
+            int c = zc[i];
+            if (c == 0) {
+                buf[out++] = ' ';
+                alphabet = 0;
+            } else if (c == 4) {
+                alphabet = 1;
+            } else if (c == 5) {
+                alphabet = 2;
+            } else if (c >= 6 && c <= 31) {
+                const char *alpha = (alphabet == 1) ? zscii_a1 :
+                                    (alphabet == 2) ? zscii_a2 : zscii_a0;
+                buf[out++] = alpha[c - 6];
+                alphabet = 0;
+            } else {
+                /* abbreviation or other — skip, reset */
+                alphabet = 0;
+            }
+        }
+    }
+    buf[out] = '\0';
+    return out;
+}
+
+/* Scan the object table and return the object number whose short name
+ * matches 'name' (case-insensitive). Returns 0 if not found. */
+int ifwg_find_object_by_name (const char *name)
+{
+    zword obj_tab, prop_ptr;
+    int obj, bytes_per_obj, prop_defaults;
+    char decoded[256];
+
+    if (!screen_data || !zmp || !name || !name[0])
+        return 0;
+
+    obj_tab = ((zword) zmp[H_OBJECTS] << 8) | (zword) zmp[H_OBJECTS + 1];
+
+    /* V4+: 63 default properties (2 bytes each) = 126 bytes before objects.
+     * V1-V3: 31 default properties = 62 bytes before objects. */
+    prop_defaults = (z_header.version >= 4) ? 63 * 2 : 31 * 2;
+    bytes_per_obj = (z_header.version >= 4) ? 14 : 9;
+
+    for (obj = 1; obj <= 2000; obj++) {
+        zword obj_addr = obj_tab + prop_defaults + (zword)((obj - 1) * bytes_per_obj);
+
+        /* Properties pointer is the last 2 bytes of the object entry. */
+        prop_ptr = ((zword) zmp[obj_addr + bytes_per_obj - 2] << 8) |
+                   (zword) zmp[obj_addr + bytes_per_obj - 1];
+
+        if (prop_ptr == 0)
+            break;
+
+        /* Short name: first byte at prop_ptr is length in Z-words. Skip if 0. */
+        if (zmp[prop_ptr] == 0)
+            continue;
+
+        ifwg_decode_zstring (prop_ptr + 1, decoded, sizeof (decoded));
+
+        if (strcasecmp (decoded, name) == 0)
+            return obj;
+    }
+    return 0;
+}
+
 /* ---- IFWG description capture ---- */
 #define IFWG_DESC_CAP 16384
 static char ifwg_desc_buf[IFWG_DESC_CAP];
@@ -148,6 +238,66 @@ void ifwg_dumb_get_room_name (char *buf, int size)
     /* trim trailing spaces */
     len = (int) strlen (buf);
     while (len > 0 && buf[len - 1] == ' ') buf[--len] = '\0';
+}
+
+/* Return the right-hand part of the status bar (score/moves/time).
+ * For V1-V3 this is everything from "Score:" onward, trimmed.
+ * For V4+ games that draw their own status, we grab the right half of row 0. */
+void ifwg_dumb_get_status_right (char *buf, int size)
+{
+    int col, len = 0;
+    char raw[256];
+    char *p;
+    cell_t *row0;
+
+    buf[0] = '\0';
+    if (!screen_data || size <= 0) return;
+
+    row0 = screen_data;
+    for (col = 0; col < z_header.screen_cols && len < (int)sizeof(raw) - 1; col++) {
+        char c = (char) row0[col].c;
+        if (c < 32) break;
+        raw[len++] = c;
+    }
+    raw[len] = '\0';
+
+    /* V1-V3: look for "Score:" keyword */
+    p = strstr (raw, "Score:");
+    if (!p) p = strstr (raw, "Time:");
+    if (p) {
+        /* trim leading spaces from the match */
+        while (*p == ' ') p++;
+        /* collapse interior runs of 2+ spaces to a single space */
+        char *src = p;
+        int out = 0;
+        while (*src && out < size - 1) {
+            if (*src == ' ' && *(src + 1) == ' ') {
+                /* skip extra spaces */
+                while (*src == ' ') src++;
+                buf[out++] = ' ';
+            } else {
+                buf[out++] = *src++;
+            }
+        }
+        buf[out] = '\0';
+        /* trim trailing spaces */
+        while (out > 0 && buf[out - 1] == ' ') buf[--out] = '\0';
+        return;
+    }
+
+    /* V4+ fallback: return the rightmost non-space run from row 0 */
+    p = raw + len;
+    while (p > raw && *(p - 1) == ' ') p--;   /* skip trailing spaces */
+    char *end = p;
+    while (p > raw && *(p - 1) != ' ') p--;   /* walk back to last space run */
+    /* walk back through the space run */
+    while (p > raw && *(p - 1) == ' ') p--;
+    while (p > raw && *(p - 1) != ' ') p--;   /* back one more word */
+    int rlen = (int)(end - p);
+    if (rlen > 0 && rlen < size) {
+        memcpy (buf, p, rlen);
+        buf[rlen] = '\0';
+    }
 }
 
 /*

@@ -31,9 +31,11 @@ extern void reset_memory (void);
 extern void os_reset_screen (void);
 
 extern void ifwg_dumb_get_room_name (char *buf, int size);
+extern void ifwg_dumb_get_status_right (char *buf, int size);
 extern const char *ifwg_dumb_get_description (void);
 extern void ifwg_dumb_reset_description (void);
 extern void ifwg_interp_set_line_input (const char *input);
+extern int  ifwg_find_object_by_name (const char *name);
 
 extern zbyte *pcp;
 extern zbyte *ifwg_pre_opcode_pcp;
@@ -44,18 +46,33 @@ static int ifwg_interp_active = 0;
 void ifwg_yield (void)
 {
     char title[256];
+    char status_right[128];
+    zword globals_addr, location;
 
     if (!ifwg_interp_active)
         return;
 
     ifwg_dumb_get_room_name (title, sizeof (title));
+    ifwg_dumb_get_status_right (status_right, sizeof (status_right));
+
+    /* V1-V3: global 0 is spec-mandated as the current location.
+     * V4+: no mandated location global, so scan the object table for an
+     * object whose short name matches the status-bar room name. */
+    if (zmp[0] <= 3) {
+        globals_addr = ((zword) zmp[H_GLOBALS] << 8) | (zword) zmp[H_GLOBALS + 1];
+        location     = ((zword) zmp[globals_addr] << 8) | (zword) zmp[globals_addr + 1];
+    } else {
+        location = (zword) ifwg_find_object_by_name (title);
+    }
 
     EM_ASM({
-        var title = UTF8ToString($0);
-        var desc  = UTF8ToString($1);
+        var id     = $0;
+        var title  = UTF8ToString($1);
+        var desc   = UTF8ToString($2);
+        var status = UTF8ToString($3);
         if (typeof window !== 'undefined' && typeof window.enteredRoom === 'function')
-            window.enteredRoom(title, desc);
-    }, title, ifwg_dumb_get_description ());
+            window.enteredRoom(id, title, desc, status);
+    }, (int) location, title, ifwg_dumb_get_description (), status_right);
 
     ifwg_dumb_reset_description ();
 

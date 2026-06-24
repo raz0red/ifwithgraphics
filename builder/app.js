@@ -192,8 +192,8 @@
     appendOutput("find-text", result);
   });
 
-  window.enteredRoom = function (title, description) {
-    appendOutput("enteredRoom", "Title: " + title + "\n\nDescription:\n" + description.trim());
+  window.enteredRoom = function (id, title, description, statusRight) {
+    appendOutput("enteredRoom", "ID: " + id + "\nTitle: " + title + "\nStatus: " + statusRight + "\n\nDescription:\n" + description.trim());
   };
 
   createIfwgModule({
