@@ -2,6 +2,8 @@
 
 **IF With Graphics** brings artwork to your classic IF adventure games. Load any Z-machine story file, play it as a text adventure, and watch Apple II-style pixel art appear for each room you visit — generated on the fly and cached locally so it never repeats.
 
+> Image generation requires an OpenAI API key. Games with pre-rendered artwork play without one.
+
 ---
 
 ![West of House — Zork I](assets/screenshot.png)
