@@ -165,9 +165,11 @@ export const IFWGPlayer = {
       engine.writeFile(state.storyPath, bytes);
       el.player.hidden = false;
 
-      const savePath = `${state.storyPath}.qzl`;
-      config.onRestore(savePath, saveBytes => {
-        if (saveBytes) engine.writeSave(savePath, saveBytes);
+      // Frotz derives the save name as: basename(storyFile), strip extension, append ".qzl"
+      // e.g. "zork1.z3" → "zork1.qzl" (NOT "/input/zork1.z3.qzl")
+      const saveName = filename.replace(/\.[^.]*$/, "") + ".qzl";
+      config.onRestore(saveName, saveBytes => {
+        if (saveBytes) engine.writeSave(saveName, saveBytes);
         state.started = true;
         engine.start(state.storyPath);
         config.onGameLoaded(gameId, filename);

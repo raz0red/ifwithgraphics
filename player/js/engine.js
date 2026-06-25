@@ -12,10 +12,12 @@ export function createEngine(wasmPath, onRoomEntered, onSave) {
   /* Called by EM_ASM in fastmem.c z_save after the save file is written. */
   window.ifwgOnSave = filename => {
     try {
+      console.info("[IFWG] ifwgOnSave — filename:%o", filename);
       const bytes = moduleInstance.FS.readFile(filename);
+      console.info("[IFWG] ifwgOnSave — read %o bytes from MEMFS", bytes?.length);
       if (onSave) onSave(filename, bytes);
     } catch (e) {
-      console.warn("ifwgOnSave: could not read", filename, e);
+      console.warn("[IFWG] ifwgOnSave — could not read", filename, e);
     }
   };
 
@@ -54,8 +56,9 @@ export function createEngine(wasmPath, onRoomEntered, onSave) {
   }
 
   function writeSave(path, bytes) {
+    console.info("[IFWG] writeSave — path:%o bytes:%o", path, bytes?.length);
     try { moduleInstance.FS.writeFile(path, bytes); } catch (e) {
-      console.warn("writeSave failed:", e);
+      console.warn("[IFWG] writeSave failed:", e);
     }
   }
 
