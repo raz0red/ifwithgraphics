@@ -39,7 +39,7 @@ The player is fully functional. You can drag and drop any Z-machine story file (
 - Room image caching in IndexedDB — images stored as WebP (0.9 quality); old PNG cache entries automatically migrated on first access; never regenerated unless cleared
 - **Save/restore** — C-side `EM_ASM` hook fires after `z_save`; save bytes persisted to IndexedDB and pre-populated into MEMFS on next load; fully transparent to the player (one slot per game)
 - **Stable game ID** — Z-machine header `release.serial` (e.g. `"119.870917"` for Trinity); stable across different packaging formats, no file hashing
-- **Embeddable player widget** — `IFWGPlayer.create(div, config)` returns `{ loadGame(source) }`; launcher chrome (drop zone, settings) lives in the host page, not the player module
+- **Embeddable player widget** — `IFWGPlayer.create(div, config)` returns `{ loadGame(source) }`; launcher UI (drop zone, settings) lives in the host page, not the player module
 - Animated slide transitions between rooms, blind-reveal for new images
 - Line-snapped text pagination (SPACE to scroll, any key for press-any-key prompts)
 - V4 game support — `os_read_key` handled correctly; tested with Trinity and A Mind Forever Voyaging
@@ -132,7 +132,7 @@ player/
 
 ### Player API
 
-`IFWGPlayer.create(container, config)` renders the game viewport into `container` and returns a player object. All launcher chrome (drop zone, file picker, settings panel) lives in the host page.
+`IFWGPlayer.create(container, config)` renders the game viewport into `container` and returns a player object. All launcher UI (drop zone, file picker, settings panel) lives in the host page.
 
 ```javascript
 const config = new StandaloneConfig();
@@ -331,7 +331,7 @@ Useful for testing bridge API changes and inspecting Z-machine internals. Intern
 - **Theme system** — pluggable theme interface covering CSS, image gen prompt, and text rendering style; the current Apple II look becomes the default `classic` theme; additional themes (e.g. `modern`) live in `themes/` subfolders and can produce a completely different look and feel without touching core
 - **`/export`** — produce a distributable game package (story file + images + player + webRcade feed manifest)
 - **Standalone launcher** — prebuilt Go binaries that serve files relative to themselves and open the browser; included in `/export` packages
-- **Embed variant** — minimal host page that boots a specific game directly via `player.loadGame(url)` with no launcher chrome
+- **Embed variant** — minimal host page that boots a specific game directly via `player.loadGame(url)` with no launcher UI
 - **webRcade integration** — direct embedding via the config hooks; save/restore via webRcade's cloud platform
 
 ---
