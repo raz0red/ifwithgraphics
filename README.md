@@ -7,6 +7,7 @@
 ---
 
 ![West of House — Zork I](assets/screenshot.png)
+![The Troll Room — Zork I](assets/screenshot2.png)
 
 ---
 

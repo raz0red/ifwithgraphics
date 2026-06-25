@@ -48,7 +48,13 @@ function getProvider(name) {
   return null;
 }
 
-function cropBlackBars(dataUrl) {
+const _kb = url => {
+  const comma = url.indexOf(",");
+  return Math.round((comma >= 0 ? url.length - comma - 1 : url.length) * 0.75 / 1024);
+};
+
+/* Crop black letterbox bars and compress to WebP. Always stored before caching. */
+function cropAndCompress(url) {
   return new Promise(resolve => {
     const img = new Image();
     img.onload = () => {
@@ -79,23 +85,31 @@ function cropBlackBars(dataUrl) {
       out.width  = w;
       out.height = ch;
       out.getContext("2d").drawImage(canvas, 0, top, w, ch, 0, 0, w, ch);
-      resolve(out.toDataURL("image/png"));
+      resolve(out.toDataURL("image/webp", 0.9));
     };
-    img.onerror = () => resolve(dataUrl);
-    img.src = dataUrl;
+    img.onerror = () => resolve(url);
+    img.src = url;
   });
-}
-
-function cropIfNeeded(url) {
-  if (url?.startsWith("data:")) return cropBlackBars(url);
-  return Promise.resolve(url);
 }
 
 function generate(roomId, title, description, onCacheMiss) {
   const cacheKey = `images/${roomId}`;
 
   return DB.get(cacheKey).then(cached => {
-    if (cached) return cropIfNeeded(cached);
+    if (cached) {
+      /* Already WebP — serve directly. Old PNG or expired CDN URL — migrate to WebP
+         and update the cache entry in the background. */
+      if (cached.startsWith("data:image/webp")) {
+        console.info("[IFWG] image cache hit — roomId:%o webp:%okb", roomId, _kb(cached));
+        return cached;
+      }
+      console.info("[IFWG] image cache hit (old format) — roomId:%o %okb → migrating to webp", roomId, _kb(cached));
+      return cropAndCompress(cached).then(webp => {
+        console.info("[IFWG] image migrated — roomId:%o webp:%okb", roomId, _kb(webp));
+        DB.put(cacheKey, webp);
+        return webp;
+      });
+    }
 
     if (!onCacheMiss) return Promise.resolve(null);
 
@@ -109,8 +123,11 @@ function generate(roomId, title, description, onCacheMiss) {
 
     const prompt = buildPrompt(title, description);
     return provider.generate(settings.getApiKey(), prompt)
-      .then(url => DB.put(cacheKey, url).then(() => url))
-      .then(cropIfNeeded);
+      .then(url => cropAndCompress(url))
+      .then(webp => {
+        console.info("[IFWG] image generated — roomId:%o webp:%okb", roomId, _kb(webp));
+        return DB.put(cacheKey, webp).then(() => webp);
+      });
   });
 }
 
