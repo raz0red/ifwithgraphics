@@ -1,8 +1,6 @@
-export var Game = (function () {
-  var _id = null;
+let _id = null;
 
-  function setId(id) { _id = id; }
-  function getId()   { return _id; }
-
-  return { setId: setId, getId: getId };
-})();
+export const Game = {
+  setId(id) { _id = id; },
+  getId()   { return _id; }
+};

@@ -5,11 +5,11 @@ export function createTextUI(el, state, showCursor) {
      page lands cleanly on a line boundary with no partial lines visible. */
   function calibrateTextHeight() {
     el.sceneText.style.height = "";
-    var cs    = getComputedStyle(el.sceneText);
-    var pt    = parseFloat(cs.paddingTop) || 0;
-    var lineH = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.4;
-    var n     = Math.max(1, Math.floor((el.sceneText.clientHeight - pt) / lineH));
-    el.sceneText.style.height = Math.round(pt + n * lineH) + "px";
+    const cs    = getComputedStyle(el.sceneText);
+    const pt    = parseFloat(cs.paddingTop) || 0;
+    const lineH = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.4;
+    const n     = Math.max(1, Math.floor((el.sceneText.clientHeight - pt) / lineH));
+    el.sceneText.style.height = `${Math.round(pt + n * lineH)}px`;
   }
 
   /* Three display states:
@@ -18,7 +18,7 @@ export function createTextUI(el, state, showCursor) {
      3. contentCompleted           → prompt (sticky after reaching bottom) */
   function updateUI() {
     if (state.sliding || state.scrollAnimating) return;
-    var atBottom = el.sceneText.scrollHeight <= el.sceneText.scrollTop + el.sceneText.clientHeight + 2;
+    const atBottom = el.sceneText.scrollHeight <= el.sceneText.scrollTop + el.sceneText.clientHeight + 2;
 
     if (atBottom) {
       if (state.awaitingKeyPress) {
@@ -62,15 +62,15 @@ export function createTextUI(el, state, showCursor) {
   function scrollDownAnimated() {
     if (state.scrollAnimating || state.sliding) return;
 
-    var cs    = getComputedStyle(el.sceneText);
-    var pt    = parseFloat(cs.paddingTop) || 0;
-    var lineH = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.4;
-    var H     = el.sceneText.clientHeight;
-    var n     = Math.max(1, Math.floor((H - pt) / lineH));
-    var pageH = n * lineH;
+    const cs    = getComputedStyle(el.sceneText);
+    const pt    = parseFloat(cs.paddingTop) || 0;
+    const lineH = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.4;
+    const H     = el.sceneText.clientHeight;
+    const n     = Math.max(1, Math.floor((H - pt) / lineH));
+    const pageH = n * lineH;
 
-    var currentPage = Math.round(el.sceneText.scrollTop / pageH);
-    var targetTop   = Math.min(
+    const currentPage = Math.round(el.sceneText.scrollTop / pageH);
+    const targetTop   = Math.min(
       Math.round((currentPage + 1) * pageH),
       el.sceneText.scrollHeight - H
     );
@@ -81,16 +81,16 @@ export function createTextUI(el, state, showCursor) {
       return;
     }
 
-    state.scrollAnimating     = true;
-    el.continueHint.hidden    = true;
+    state.scrollAnimating  = true;
+    el.continueHint.hidden = true;
 
-    var startTop  = el.sceneText.scrollTop;
-    var startTime = null;
-    var duration  = n * 160;
+    const startTop  = el.sceneText.scrollTop;
+    const duration  = n * 160;
+    let   startTime = null;
 
     function step(ts) {
       if (!startTime) startTime = ts;
-      var t = Math.min((ts - startTime) / duration, 1);
+      const t = Math.min((ts - startTime) / duration, 1);
       el.sceneText.scrollTop = Math.round(startTop + (targetTop - startTop) * t);
       if (t < 1) {
         requestAnimationFrame(step);
@@ -115,52 +115,52 @@ export function createTextUI(el, state, showCursor) {
     el.cmdDisplay.hidden   = true;
     el.cmdInput.disabled   = true;
 
-    var cs       = getComputedStyle(el.sceneText);
-    var H        = el.sceneText.clientHeight;
-    var lineH    = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.4;
-    var duration = Math.max(1, Math.floor(H / lineH)) * 160;
+    const cs       = getComputedStyle(el.sceneText);
+    const H        = el.sceneText.clientHeight;
+    const lineH    = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.4;
+    const duration = Math.max(1, Math.floor(H / lineH)) * 160;
 
-    var rect = el.sceneText.getBoundingClientRect();
-    var blw  = parseFloat(cs.borderLeftWidth) || 0;
-    var btw  = parseFloat(cs.borderTopWidth)  || 0;
+    const rect = el.sceneText.getBoundingClientRect();
+    const blw  = parseFloat(cs.borderLeftWidth) || 0;
+    const btw  = parseFloat(cs.borderTopWidth)  || 0;
 
-    var clip = document.createElement("div");
+    const clip = document.createElement("div");
     clip.style.cssText = [
       "position:fixed",
-      "top:"    + (rect.top  + btw) + "px",
-      "left:"   + (rect.left + blw) + "px",
-      "width:"  + el.sceneText.clientWidth  + "px",
-      "height:" + H + "px",
+      `top:${rect.top + btw}px`,
+      `left:${rect.left + blw}px`,
+      `width:${el.sceneText.clientWidth}px`,
+      `height:${H}px`,
       "overflow:hidden",
       "z-index:50",
       "pointer-events:none"
     ].join(";");
 
-    var textStyle = [
-      "padding:"        + cs.padding,
-      "white-space:"    + cs.whiteSpace,
-      "font-family:"    + cs.fontFamily,
-      "font-size:"      + cs.fontSize,
-      "letter-spacing:" + cs.letterSpacing,
-      "line-height:"    + cs.lineHeight,
-      "text-transform:" + cs.textTransform,
-      "color:"          + cs.color,
+    const textStyle = [
+      `padding:${cs.padding}`,
+      `white-space:${cs.whiteSpace}`,
+      `font-family:${cs.fontFamily}`,
+      `font-size:${cs.fontSize}`,
+      `letter-spacing:${cs.letterSpacing}`,
+      `line-height:${cs.lineHeight}`,
+      `text-transform:${cs.textTransform}`,
+      `color:${cs.color}`,
       "box-sizing:border-box"
     ].join(";");
 
-    var scrollOff = el.sceneText.scrollTop;
-    var curPane   = document.createElement("div");
-    curPane.style.cssText = "background:#000;height:" + H + "px;overflow:hidden;";
-    var curInner  = document.createElement("div");
-    curInner.style.cssText = textStyle + ";height:auto;margin-top:-" + scrollOff + "px;";
+    const scrollOff = el.sceneText.scrollTop;
+    const curPane   = document.createElement("div");
+    curPane.style.cssText = `background:#000;height:${H}px;overflow:hidden;`;
+    const curInner  = document.createElement("div");
+    curInner.style.cssText = `${textStyle};height:auto;margin-top:-${scrollOff}px;`;
     curInner.textContent   = el.sceneTextInner.textContent;
     curPane.appendChild(curInner);
 
-    var nxtPane = document.createElement("div");
-    nxtPane.style.cssText = "background:#000;height:" + H + "px;overflow:hidden;" + textStyle;
+    const nxtPane = document.createElement("div");
+    nxtPane.style.cssText = `background:#000;height:${H}px;overflow:hidden;${textStyle}`;
     nxtPane.textContent   = newText;
 
-    var slide = document.createElement("div");
+    const slide = document.createElement("div");
     slide.appendChild(curPane);
     slide.appendChild(nxtPane);
     clip.appendChild(slide);
@@ -175,11 +175,11 @@ export function createTextUI(el, state, showCursor) {
       updateUI();
     }
 
-    var startTime = null;
+    let startTime = null;
     function step(ts) {
       if (!startTime) startTime = ts;
-      var t = Math.min((ts - startTime) / duration, 1);
-      slide.style.transform = "translateY(-" + Math.round(H * t) + "px)";
+      const t = Math.min((ts - startTime) / duration, 1);
+      slide.style.transform = `translateY(-${Math.round(H * t)}px)`;
       if (t < 1) {
         requestAnimationFrame(step);
       } else {
@@ -193,10 +193,10 @@ export function createTextUI(el, state, showCursor) {
   el.sceneText.addEventListener("scroll", updateUI);
 
   /* Drive wheel/trackpad scroll ourselves — overflow:hidden blocks native scroll. */
-  el.sceneText.addEventListener("wheel", function (e) {
+  el.sceneText.addEventListener("wheel", e => {
     e.preventDefault();
     if (state.scrollAnimating || state.sliding) return;
-    var delta = e.deltaY;
+    let delta = e.deltaY;
     if (e.deltaMode === 1) delta *= 20;
     if (e.deltaMode === 2) delta *= el.sceneText.clientHeight;
     el.sceneText.scrollTop = Math.max(0, Math.min(
@@ -207,9 +207,9 @@ export function createTextUI(el, state, showCursor) {
   }, { passive: false });
 
   return {
-    calibrateTextHeight: calibrateTextHeight,
-    updateUI:            updateUI,
-    scrollDownAnimated:  scrollDownAnimated,
-    slideToContent:      slideToContent
+    calibrateTextHeight,
+    updateUI,
+    scrollDownAnimated,
+    slideToContent
   };
 }

@@ -1,6 +1,6 @@
 export function render(container) {
   if (!document.querySelector("link[data-ifwg-css]")) {
-    var link = document.createElement("link");
+    const link = document.createElement("link");
     link.rel  = "stylesheet";
     link.href = new URL("../player.css", import.meta.url).href;
     link.setAttribute("data-ifwg-css", "1");
@@ -10,43 +10,43 @@ export function render(container) {
   container.innerHTML = "";
 
   /* ── Player ───────────────────────────────────────────────────────── */
-  var player = document.createElement("main");
+  const player = document.createElement("main");
   player.className = "player";
   player.hidden    = true;
 
   /* Status bar */
-  var statusBar = document.createElement("div");
+  const statusBar   = document.createElement("div");
   statusBar.className = "status-bar";
-  var statusRoom  = document.createElement("span");
-  var statusScore = document.createElement("span");
+  const statusRoom  = document.createElement("span");
+  const statusScore = document.createElement("span");
   statusBar.appendChild(statusRoom);
   statusBar.appendChild(statusScore);
 
   /* Scene wrap */
-  var sceneWrap = document.createElement("div");
+  const sceneWrap = document.createElement("div");
   sceneWrap.className = "scene-wrap";
 
-  var sceneImg = document.createElement("img");
+  const sceneImg = document.createElement("img");
   sceneImg.className = "scene-img";
   sceneImg.alt       = "";
   sceneImg.hidden    = true;
 
-  var scenePlaceholder = document.createElement("div");
+  const scenePlaceholder = document.createElement("div");
   scenePlaceholder.id            = "ifwg-scene-placeholder";
   scenePlaceholder.className     = "scene-placeholder";
   scenePlaceholder.style.display = "none";
 
-  var bezel = document.createElement("div");
+  const bezel = document.createElement("div");
   bezel.className = "gen-drive-bezel";
   bezel.innerHTML =
     '<div class="gen-in-use">IN USE &#9658;</div>' +
     '<div class="gen-led" id="ifwg-disk-led"></div>' +
     '<div class="gen-drive-label">disk II</div>';
 
-  var genStatus = document.createElement("div");
-  genStatus.className = "gen-status";
-  var placeholderLabel = document.createElement("span");
-  var dotLabel         = document.createElement("span");
+  const genStatus      = document.createElement("div");
+  genStatus.className  = "gen-status";
+  const placeholderLabel = document.createElement("span");
+  const dotLabel         = document.createElement("span");
   dotLabel.id = "ifwg-dot-label";
   genStatus.appendChild(placeholderLabel);
   genStatus.appendChild(dotLabel);
@@ -57,33 +57,33 @@ export function render(container) {
   sceneWrap.appendChild(scenePlaceholder);
 
   /* Scene text */
-  var sceneText = document.createElement("div");
-  sceneText.className = "scene-text";
-  var sceneTextInner = document.createElement("div");
+  const sceneText      = document.createElement("div");
+  sceneText.className  = "scene-text";
+  const sceneTextInner = document.createElement("div");
   sceneText.appendChild(sceneTextInner);
 
   /* Command row */
-  var cmdRow = document.createElement("div");
+  const cmdRow = document.createElement("div");
   cmdRow.className = "cmd-row";
 
-  var continueHint = document.createElement("span");
+  const continueHint = document.createElement("span");
   continueHint.className   = "continue-hint";
   continueHint.hidden      = true;
   continueHint.textContent = "PRESS SPACE TO CONTINUE";
 
-  var cmdPrompt = document.createElement("span");
+  const cmdPrompt = document.createElement("span");
   cmdPrompt.className   = "prompt";
   cmdPrompt.hidden      = true;
   cmdPrompt.textContent = ">";
 
-  var cmdDisplay = document.createElement("span");
+  const cmdDisplay = document.createElement("span");
   cmdDisplay.className = "cmd-display";
   cmdDisplay.hidden    = true;
 
-  var cmdCursor = document.createElement("span");
+  const cmdCursor = document.createElement("span");
   cmdCursor.className = "cmd-cursor";
 
-  var cmdInput = document.createElement("input");
+  const cmdInput = document.createElement("input");
   cmdInput.className    = "cmd-input";
   cmdInput.type         = "text";
   cmdInput.autocomplete = "off";
@@ -103,24 +103,24 @@ export function render(container) {
 
   container.appendChild(player);
 
-  var diskLed = bezel.querySelector("#ifwg-disk-led");
+  const diskLed = bezel.querySelector("#ifwg-disk-led");
 
   return {
-    player:           player,
-    statusRoom:       statusRoom,
-    statusScore:      statusScore,
-    sceneWrap:        sceneWrap,
-    sceneImg:         sceneImg,
-    scenePlaceholder: scenePlaceholder,
-    placeholderLabel: placeholderLabel,
-    diskLed:          diskLed,
-    dotLabel:         dotLabel,
-    sceneText:        sceneText,
-    sceneTextInner:   sceneTextInner,
-    continueHint:     continueHint,
-    cmdPrompt:        cmdPrompt,
-    cmdDisplay:       cmdDisplay,
-    cmdCursor:        cmdCursor,
-    cmdInput:         cmdInput
+    player,
+    statusRoom,
+    statusScore,
+    sceneWrap,
+    sceneImg,
+    scenePlaceholder,
+    placeholderLabel,
+    diskLed,
+    dotLabel,
+    sceneText,
+    sceneTextInner,
+    continueHint,
+    cmdPrompt,
+    cmdDisplay,
+    cmdCursor,
+    cmdInput
   };
 }

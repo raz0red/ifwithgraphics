@@ -9,17 +9,17 @@ export class IFWGConfig {
 
 export class StandaloneConfig extends IFWGConfig {
   onSave(filename, bytes) {
-    var name = filename.replace(/.*\//, "");
-    DB.put("saves/" + name, bytes).catch(function (e) {
+    const name = filename.replace(/.*\//, "");
+    DB.put(`saves/${name}`, bytes).catch(e => {
       console.warn("onSave: IndexedDB put failed", e);
     });
   }
 
   onRestore(filename, cb) {
-    var name = filename.replace(/.*\//, "");
-    DB.get("saves/" + name).then(function (bytes) {
+    const name = filename.replace(/.*\//, "");
+    DB.get(`saves/${name}`).then(bytes => {
       cb(bytes || null);
-    }).catch(function (e) {
+    }).catch(e => {
       console.warn("onRestore: IndexedDB get failed", e);
       cb(null);
     });

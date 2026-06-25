@@ -46,17 +46,17 @@
       import { IFWGPlayer, StandaloneConfig, ImageGen, ImageGenSettings } from "./dist/ifwg-player.js";
       */
 
-      var config = new StandaloneConfig();
-      var player = IFWGPlayer.create(document.getElementById("app"), config);
+      const config = new StandaloneConfig();
+      const player = IFWGPlayer.create(document.getElementById("app"), config);
 
-      var launcher   = document.getElementById("launcher");
-      var storyFile  = document.getElementById("ifwg-story-file");
-      var aiProvider = document.getElementById("ifwg-ai-provider");
-      var aiKey      = document.getElementById("ifwg-ai-key");
+      const launcher   = document.getElementById("launcher");
+      const storyFile  = document.getElementById("ifwg-story-file");
+      const aiProvider = document.getElementById("ifwg-ai-provider");
+      const aiKey      = document.getElementById("ifwg-ai-key");
 
-      var imgSettings  = ImageGen.getSettings();
-      aiProvider.value = imgSettings.getProvider();
-      aiKey.value      = imgSettings.getApiKey();
+      const imgSettings = ImageGen.getSettings();
+      aiProvider.value  = imgSettings.getProvider();
+      aiKey.value       = imgSettings.getApiKey();
 
       function applyImageSettings() {
         ImageGen.setSettings(new ImageGenSettings(aiProvider.value, aiKey.value.trim()));
@@ -70,22 +70,21 @@
         player.loadGame(file);
       }
 
-      storyFile.addEventListener("change", function () {
-        if (storyFile.files && storyFile.files[0]) loadFile(storyFile.files[0]);
+      storyFile.addEventListener("change", () => {
+        if (storyFile.files?.[0]) loadFile(storyFile.files[0]);
       });
 
-      launcher.addEventListener("dragover", function (e) {
+      launcher.addEventListener("dragover", e => {
         e.preventDefault();
         launcher.classList.add("is-dragging");
       });
-      launcher.addEventListener("dragleave", function () {
+      launcher.addEventListener("dragleave", () => {
         launcher.classList.remove("is-dragging");
       });
-      launcher.addEventListener("drop", function (e) {
+      launcher.addEventListener("drop", e => {
         e.preventDefault();
         launcher.classList.remove("is-dragging");
-        if (e.dataTransfer.files && e.dataTransfer.files[0])
-          loadFile(e.dataTransfer.files[0]);
+        if (e.dataTransfer.files?.[0]) loadFile(e.dataTransfer.files[0]);
       });
     </script>
   </body>

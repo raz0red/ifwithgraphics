@@ -9,24 +9,24 @@ import { Game }          from "./game.js";
 
 /* Read Z-machine release.serial from raw bytes — stable game identity. */
 function readGameId(bytes) {
-  var release = (bytes[2] << 8) | bytes[3];
-  var serial  = String.fromCharCode(
+  const release = (bytes[2] << 8) | bytes[3];
+  const serial  = String.fromCharCode(
     bytes[0x12], bytes[0x13], bytes[0x14],
     bytes[0x15], bytes[0x16], bytes[0x17]
   );
-  return release + "." + serial;
+  return `${release}.${serial}`;
 }
 
 /* Collapse frotz word-wrap newlines but keep intentional paragraph breaks. */
 function processDescription(text) {
-  var WRAP_W = 60;
-  var lines  = text.replace(/\r\n/g, "\n").split("\n");
-  var out    = [];
-  for (var i = 0; i < lines.length; i++) {
-    var line       = lines[i];
-    var prev       = lines[i - 1] || "";
-    var joinWrap   = i > 0 && prev.length >= WRAP_W;
-    var joinOrphan = i > 0 && /^\s*[^\w\s]\s*$/.test(line) && out.length > 0;
+  const WRAP_W = 60;
+  const lines  = text.replace(/\r\n/g, "\n").split("\n");
+  const out    = [];
+  for (let i = 0; i < lines.length; i++) {
+    const line       = lines[i];
+    const prev       = lines[i - 1] || "";
+    const joinWrap   = i > 0 && prev.length >= WRAP_W;
+    const joinOrphan = i > 0 && /^\s*[^\w\s]\s*$/.test(line) && out.length > 0;
     if (joinWrap || joinOrphan) {
       out[out.length - 1] += (joinOrphan ? "" : " ") + line.trim();
     } else {
@@ -36,15 +36,15 @@ function processDescription(text) {
   return out.join("\n").trim();
 }
 
-export var IFWGPlayer = {
-  create: function (container, config) {
+export const IFWGPlayer = {
+  create(container, config) {
     if (!(config instanceof IFWGConfig)) {
       throw new Error("IFWGPlayer.create: config must be an instance of IFWGConfig");
     }
 
-    var el = render(container);
+    const el = render(container);
 
-    var state = {
+    const state = {
       sliding:          false,
       scrollAnimating:  false,
       contentCompleted: false,
@@ -55,9 +55,9 @@ export var IFWGPlayer = {
     };
 
     /* ── UI modules ─────────────────────────────────────────────────── */
-    var inputUI = createInputUI(el, state, sendCommand);
-    var textUI  = createTextUI(el, state, inputUI.showCursor);
-    var imageUI = createImageUI(el, state, textUI.calibrateTextHeight);
+    const inputUI = createInputUI(el, state, sendCommand);
+    const textUI  = createTextUI(el, state, inputUI.showCursor);
+    const imageUI = createImageUI(el, state, textUI.calibrateTextHeight);
 
     /* ── Room callback ───────────────────────────────────────────────── */
     function onRoomEntered(id, title, description, statusRight, isKeyPress) {
@@ -65,36 +65,35 @@ export var IFWGPlayer = {
       el.statusRoom.textContent  = title;
       el.statusScore.textContent = statusRight || "";
 
-      var roomKey   = id > 0 ? String(id) : (title || "0");
-      var wordCount = description.trim().split(/\s+/).length;
+      const roomKey   = id > 0 ? String(id) : (title || "0");
+      const wordCount = description.trim().split(/\s+/).length;
 
       if (roomKey !== state.currentRoomKey) {
         state.currentRoomKey = roomKey;
-        (function (genKey) {
-          /* Pass onCacheMiss only when the description is substantial enough
-             to warrant an API call. Cache hits are always served. */
-          var canGenerate = wordCount >= 25;
-          ImageGen.generate(
-            roomKey, title, description,
-            canGenerate ? function () {
-              if (genKey !== state.currentRoomKey) return;
-              imageUI.showPlaceholder("LOADING IMAGE");
-            } : null
-          )
-          .then(function (url) {
+        const genKey      = roomKey;
+        const canGenerate = wordCount >= 25;
+        /* Pass onCacheMiss only when the description is substantial enough
+           to warrant an API call. Cache hits are always served. */
+        ImageGen.generate(
+          roomKey, title, description,
+          canGenerate ? () => {
             if (genKey !== state.currentRoomKey) return;
-            if (url)              imageUI.showImage(url, genKey);
-            else if (canGenerate) imageUI.showPlaceholder("");
-          })
-          .catch(function (err) {
-            if (genKey !== state.currentRoomKey) return;
-            console.error("ImageGen error:", err && err.message || err);
-            imageUI.showPlaceholder("ERROR");
-          });
-        })(roomKey);
+            imageUI.showPlaceholder("LOADING IMAGE");
+          } : null
+        )
+        .then(url => {
+          if (genKey !== state.currentRoomKey) return;
+          if (url)              imageUI.showImage(url, genKey);
+          else if (canGenerate) imageUI.showPlaceholder("");
+        })
+        .catch(err => {
+          if (genKey !== state.currentRoomKey) return;
+          console.error("ImageGen error:", err?.message ?? err);
+          imageUI.showPlaceholder("ERROR");
+        });
       }
 
-      var processed = processDescription(description);
+      const processed = processDescription(description);
 
       if (el.sceneTextInner.textContent) {
         textUI.slideToContent(processed);
@@ -108,13 +107,13 @@ export var IFWGPlayer = {
     }
 
     /* ── Engine ──────────────────────────────────────────────────────── */
-    var engine = createEngine(config.getWasmPath(), onRoomEntered, function (filename, bytes) {
+    const engine = createEngine(config.getWasmPath(), onRoomEntered, (filename, bytes) => {
       config.onSave(filename, bytes);
     });
 
     /* ── Send command ────────────────────────────────────────────────── */
     function sendCommand() {
-      var cmd = el.cmdInput.value.trim();
+      const cmd = el.cmdInput.value.trim();
       if (!cmd || !state.started) return;
       el.cmdInput.value         = "";
       el.cmdDisplay.textContent = "";
@@ -126,9 +125,9 @@ export var IFWGPlayer = {
     }
 
     /* ── Keydown: SPACE to scroll, any key in any-key mode ───────────── */
-    document.addEventListener("keydown", function (e) {
+    document.addEventListener("keydown", e => {
       if (state.awaitingKeyPress && !el.continueHint.hidden) {
-        var atBottom = el.sceneText.scrollHeight <= el.sceneText.scrollTop + el.sceneText.clientHeight + 2;
+        const atBottom = el.sceneText.scrollHeight <= el.sceneText.scrollTop + el.sceneText.clientHeight + 2;
         if (atBottom) {
           if (e.key === "Control" || e.key === "Alt" || e.key === "Shift" || e.key === "Meta") return;
           e.preventDefault();
@@ -146,22 +145,22 @@ export var IFWGPlayer = {
     /* ── Boot ────────────────────────────────────────────────────────── */
     document.fonts.ready.then(textUI.calibrateTextHeight);
 
-    engine.init().catch(function () {
+    engine.init().catch(() => {
       imageUI.showPlaceholder("WASM LOAD FAILED");
     });
 
     /* ── loadGame ────────────────────────────────────────────────────── */
     function startWithBuffer(buf, filename) {
-      var bytes  = new Uint8Array(buf);
-      var gameId = readGameId(bytes);
+      const bytes  = new Uint8Array(buf);
+      const gameId = readGameId(bytes);
       Game.setId(gameId);
 
-      state.storyPath  = "/input/" + filename;
+      state.storyPath  = `/input/${filename}`;
       engine.writeFile(state.storyPath, bytes);
       el.player.hidden = false;
 
-      var savePath = state.storyPath + ".qzl";
-      config.onRestore(savePath, function (saveBytes) {
+      const savePath = `${state.storyPath}.qzl`;
+      config.onRestore(savePath, saveBytes => {
         if (saveBytes) engine.writeSave(savePath, saveBytes);
         state.started = true;
         engine.start(state.storyPath);
@@ -171,13 +170,10 @@ export var IFWGPlayer = {
 
     function loadGame(source, name) {
       if (source instanceof File) {
-        source.arrayBuffer().then(function (buf) {
-          startWithBuffer(buf, source.name);
-        });
+        source.arrayBuffer().then(buf => startWithBuffer(buf, source.name));
       } else if (typeof source === "string") {
-        var filename = name || source.split("/").pop() || "game.z5";
-        fetch(source).then(function (r) { return r.arrayBuffer(); })
-          .then(function (buf) { startWithBuffer(buf, filename); });
+        const filename = name || source.split("/").pop() || "game.z5";
+        fetch(source).then(r => r.arrayBuffer()).then(buf => startWithBuffer(buf, filename));
       } else if (source instanceof ArrayBuffer) {
         startWithBuffer(source, name || "game.z5");
       } else if (source instanceof Uint8Array) {
@@ -185,6 +181,6 @@ export var IFWGPlayer = {
       }
     }
 
-    return { loadGame: loadGame };
+    return { loadGame };
   }
 };
