@@ -1,11 +1,12 @@
-var ImageGen = (function () {
+import { ImageDB }        from "./imagedb.js";
+import { OpenAIImageGen } from "./openai.js";
+
+export var ImageGen = (function () {
   var SETTINGS_KEY = "ifwg_settings";
   var _gameHash    = null;
 
-  /* ── Game identity ────────────────────────────────────────────────── */
   function setGame(hash) { _gameHash = hash; }
 
-  /* ── Settings ─────────────────────────────────────────────────────── */
   function loadSettings() {
     try { return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {}; }
     catch (_) { return {}; }
@@ -15,7 +16,6 @@ var ImageGen = (function () {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify({ provider: provider, apiKey: apiKey }));
   }
 
-  /* ── Prompt builder ───────────────────────────────────────────────── */
   function buildPrompt(title, description) {
     var desc = description.replace(/\s+/g, " ").trim().substring(0, 400);
     return (
@@ -29,13 +29,11 @@ var ImageGen = (function () {
     );
   }
 
-  /* ── Provider factory ─────────────────────────────────────────────── */
   function getProvider(name) {
     if (name === "openai") return OpenAIImageGen;
     return null;
   }
 
-  /* ── Crop black bars from top/bottom of a data URL ───────────────── */
   function cropBlackBars(dataUrl) {
     return new Promise(function (resolve) {
       var img = new Image();
@@ -59,7 +57,7 @@ var ImageGen = (function () {
 
         var THRESH = 30;
         var top = 0, bottom = h - 1;
-        for (var y = 0; y < h; y++)     { if (rowBrightness(y) > THRESH) { top    = y; break; } }
+        for (var y = 0; y < h; y++)       { if (rowBrightness(y) > THRESH) { top    = y; break; } }
         for (var y = h - 1; y >= 0; y--) { if (rowBrightness(y) > THRESH) { bottom = y; break; } }
 
         var ch  = bottom - top + 1;
@@ -79,7 +77,6 @@ var ImageGen = (function () {
     return Promise.resolve(url);
   }
 
-  /* ── Main generate call ───────────────────────────────────────────── */
   function generate(roomId, title, description, onCacheMiss) {
     var settings = loadSettings();
     if (!settings.apiKey) return Promise.resolve(null);
@@ -89,7 +86,6 @@ var ImageGen = (function () {
     return ImageDB.get(cacheKey).then(function (cached) {
       if (cached) return cropIfNeeded(cached);
 
-      /* Cache miss — notify caller before starting the slow API call */
       if (onCacheMiss) onCacheMiss();
 
       var provider = getProvider(settings.provider || "openai");

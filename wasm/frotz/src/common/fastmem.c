@@ -26,6 +26,10 @@
 #include <string.h>
 #include "frotz.h"
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 #ifndef MSDOS_16BIT
 
 #include <stdlib.h>
@@ -1139,6 +1143,13 @@ void z_save(void)
 		}
 		/* Success */
 		success = 1;
+#ifdef __EMSCRIPTEN__
+		EM_ASM({
+			var filename = UTF8ToString($0);
+			if (typeof window !== 'undefined' && typeof window.ifwgOnSave === 'function')
+				window.ifwgOnSave(filename);
+		}, new_name);
+#endif
 	}
 
 finished:

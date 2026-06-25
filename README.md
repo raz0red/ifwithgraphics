@@ -235,26 +235,18 @@ flowchart TD
 The WASM module is built inside a Docker container with Emscripten. The Python HTTP server serves the player from `/src`.
 
 ```bash
-# Start the container (first time)
+# Start the container with a volume mount (first time)
 docker run -dit --name ifwg-emsdk-3.1.1 \
   -p 5173:5173 \
+  -v "$(pwd):/src" \
   emscripten/emsdk:3.1.1 bash
 
 docker exec ifwg-emsdk-3.1.1 \
   bash -c "cd /src && python3 -m http.server 5173 --bind 0.0.0.0 &"
 
-# Copy source into container
-docker cp . ifwg-emsdk-3.1.1:/src/
-
 # Build WASM
-docker exec -w /src/wasm-tools/builder ifwg-emsdk-3.1.1 make
-
-# After editing JS/CSS files, copy individually:
-docker cp player/player.js  ifwg-emsdk-3.1.1:/src/player/player.js
-docker cp player/player.css ifwg-emsdk-3.1.1:/src/player/player.css
+docker exec -w /src/wasm ifwg-emsdk-3.1.1 make
 ```
-
-> **Note:** Docker Desktop Windows volume sync is unreliable in this setup. Always `docker cp` individual files after editing.
 
 Open `http://localhost:5173/player/` in a browser.
 

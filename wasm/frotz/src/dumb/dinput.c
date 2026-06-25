@@ -24,6 +24,10 @@
 
 #include "dfrotz.h"
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 extern void ifwg_yield (void);
 extern void ifwg_yield_key (void);
 
@@ -547,6 +551,15 @@ zchar os_read_line (int UNUSED (max), zchar *buf, int timeout, int UNUSED(width)
 char *os_read_file_name (const char *default_name, int flag)
 {
 	static char file_name[FILENAME_MAX + 1];
+#ifdef __EMSCRIPTEN__
+	/* In WASM builds save/restore is handled silently via JS hooks.
+	 * Skip the filename prompt and overwrite check; always use the default. */
+	if (flag == FILE_SAVE || flag == FILE_RESTORE) {
+		strncpy(file_name, default_name, FILENAME_MAX);
+		file_name[FILENAME_MAX] = '\0';
+		return file_name;
+	}
+#endif
 	char prompt[INPUT_BUFFER_SIZE];
 
 	char fullpath[INPUT_BUFFER_SIZE];

@@ -1,4 +1,4 @@
-var ImageDB = (function () {
+export var ImageDB = (function () {
   var DB_NAME = "ifwg_images";
   var DB_VER  = 1;
   var STORE   = "images";

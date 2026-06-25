@@ -5,14 +5,14 @@ BRIDGE_DIR := bridge
 ZTOOLS_DIR := ztools/source
 FROTZ_COMMON_DIR := frotz/src/common
 FROTZ_DUMB_DIR := frotz/src/dumb
-BUILDER_WASM_DIR := ../../builder/public/wasm
-PLAYER_WASM_DIR  := ../../player/public/wasm
+BUILDER_WASM_DIR := ../../builder/wasm
+PLAYER_WASM_DIR  := ../../player/wasm
 
-OUT_JS         := $(BUILD_DIR)/ifwg-builder.js
-PUBLIC_JS      := $(BUILDER_WASM_DIR)/ifwg-builder.js
-PUBLIC_WASM    := $(BUILDER_WASM_DIR)/ifwg-builder.wasm
-PLAYER_JS      := $(PLAYER_WASM_DIR)/ifwg-builder.js
-PLAYER_WASM_F  := $(PLAYER_WASM_DIR)/ifwg-builder.wasm
+OUT_JS         := $(BUILD_DIR)/ifwg.js
+PUBLIC_JS      := $(BUILDER_WASM_DIR)/ifwg.js
+PUBLIC_WASM    := $(BUILDER_WASM_DIR)/ifwg.wasm
+PLAYER_JS      := $(PLAYER_WASM_DIR)/ifwg.js
+PLAYER_WASM_F  := $(PLAYER_WASM_DIR)/ifwg.wasm
 TXD_OBJ := $(BUILD_DIR)/txd.o
 FROTZ_MAIN_OBJ := $(BUILD_DIR)/frotz_main.o
 
@@ -151,16 +151,16 @@ $(OUT_JS): $(BRIDGE_SOURCES) $(ZTOOLS_SOURCES) $(FROTZ_SOURCES) $(TXD_OBJ) $(FRO
 		-o $(OUT_JS)
 
 $(PUBLIC_JS): $(OUT_JS) | $(BUILDER_WASM_DIR)
-	cp $(BUILD_DIR)/ifwg-builder.js $(BUILDER_WASM_DIR)/ifwg-builder.js
+	cp $(BUILD_DIR)/ifwg.js $(BUILDER_WASM_DIR)/ifwg.js
 
 $(PUBLIC_WASM): $(OUT_JS) | $(BUILDER_WASM_DIR)
-	cp $(BUILD_DIR)/ifwg-builder.wasm $(BUILDER_WASM_DIR)/ifwg-builder.wasm
+	cp $(BUILD_DIR)/ifwg.wasm $(BUILDER_WASM_DIR)/ifwg.wasm
 
 $(PLAYER_JS): $(OUT_JS) | $(PLAYER_WASM_DIR)
-	cp $(BUILD_DIR)/ifwg-builder.js $(PLAYER_WASM_DIR)/ifwg-builder.js
+	cp $(BUILD_DIR)/ifwg.js $(PLAYER_WASM_DIR)/ifwg.js
 
 $(PLAYER_WASM_F): $(OUT_JS) | $(PLAYER_WASM_DIR)
-	cp $(BUILD_DIR)/ifwg-builder.wasm $(PLAYER_WASM_DIR)/ifwg-builder.wasm
+	cp $(BUILD_DIR)/ifwg.wasm $(PLAYER_WASM_DIR)/ifwg.wasm
 
 clean:
 	rm -rf $(BUILD_DIR)

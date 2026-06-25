@@ -1,10 +1,12 @@
-var OpenAIImageGen = (function () {
+var _playerBase = new URL("../", import.meta.url).href;
+
+export var OpenAIImageGen = (function () {
   var ENDPOINT = "https://api.openai.com/v1/images/edits";
 
   function generate(apiKey, prompt) {
     return Promise.all([
-      fetch("./prompt1.png").then(function (r) { return r.blob(); }),
-      fetch("./prompt2.png").then(function (r) { return r.blob(); })
+      fetch(_playerBase + "prompt1.png").then(function (r) { return r.blob(); }),
+      fetch(_playerBase + "prompt2.png").then(function (r) { return r.blob(); })
     ]).then(function (blobs) {
       var form = new FormData();
       form.append("model",   "gpt-image-2-2026-04-21");
