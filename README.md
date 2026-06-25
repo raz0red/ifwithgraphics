@@ -27,8 +27,8 @@ The player is fully functional. You can drag and drop any Z-machine story file (
 - Z-machine interpreter via [frotz](https://gitlab.com/DavidGriffith/frotz) compiled to WebAssembly (Emscripten)
 - Room detection for V1–V3 games (spec-mandated global 0) and V4+ games (object name lookup)
 - AI image generation via OpenAI — Apple II dithered pixel art, one image per room
-- Room image caching in IndexedDB — images persist across sessions and are never regenerated unless cleared
-- **Save/restore** — C-side `EM_ASM` hook fires after `z_save`; save bytes persisted to IndexedDB and pre-populated into MEMFS on next load; fully transparent to the player
+- Room image caching in IndexedDB — images stored as WebP (0.9 quality); old PNG cache entries automatically migrated on first access; never regenerated unless cleared
+- **Save/restore** — C-side `EM_ASM` hook fires after `z_save`; save bytes persisted to IndexedDB and pre-populated into MEMFS on next load; fully transparent to the player (one slot per game)
 - **Stable game ID** — Z-machine header `release.serial` (e.g. `"119.870917"` for Trinity); stable across different packaging formats, no file hashing
 - **Embeddable player widget** — `IFWGPlayer.create(div, config)` returns `{ loadGame(source) }`; launcher chrome (drop zone, settings) lives in the host page, not the player module
 - Animated slide transitions between rooms, blind-reveal for new images
@@ -178,6 +178,10 @@ Save and restore are transparent — the player types `save` / `restore` as norm
 - `StandaloneConfig.onSave` stores bytes to IndexedDB under `<gameId>/saves/<basename>`
 - On `loadGame`, `config.onRestore` is called before the engine starts; if bytes exist they are written into MEMFS before frotz runs
 
+**Save filename convention:**
+
+Frotz derives the save name as `basename(storyFile)` with the extension stripped, then `.qzl` appended — e.g. `zork1.z3` → `zork1.qzl`. The JS side derives the same name so the IndexedDB key and MEMFS path always match. One save slot per game.
+
 ### Game Identity
 
 The game ID is read directly from the Z-machine header before the story file is written to MEMFS — no file hashing, no round-trip through C.
@@ -223,26 +227,30 @@ flowchart TD
     ROOM["Room entered\n(new roomKey)"]
     WC{"wordCount\n≥ 10?"}
     IDB{"IndexedDB\ncache hit?"}
+    WEBP{"Already\nWebP?"}
     SHOW["Display image\n(blind-reveal animation)"]
+    MIGRATE["Crop + compress\nto WebP · update cache"]
     KEY{"API key\nconfigured?"}
     GEN["Call OpenAI API\n(Apple II pixel art prompt\n+ 2 reference images)"]
-    CROP["Crop black bars"]
+    PROCESS["Crop black bars\n+ compress to WebP"]
     CACHE["Store in IndexedDB"]
     PLACEHOLDER["Show empty placeholder"]
 
     ROOM --> IDB
-    IDB -->|Hit| SHOW
     IDB -->|Miss| WC
+    IDB -->|Hit| WEBP
+    WEBP -->|Yes| SHOW
+    WEBP -->|No - migrate| MIGRATE --> SHOW
     WC -->|No| PLACEHOLDER
     WC -->|Yes| KEY
     KEY -->|No| PLACEHOLDER
     KEY -->|Yes| GEN
-    GEN --> CROP
-    CROP --> CACHE
+    GEN --> PROCESS
+    PROCESS --> CACHE
     CACHE --> SHOW
 ```
 
-> **Note:** The IndexedDB cache is always checked first — cache hits are served even without an API key and even when the room description is short (e.g. after a `restore`). API generation is only attempted on a cache miss with a substantial description.
+> **Note:** The IndexedDB cache is always checked first — cache hits are served even without an API key and even when the room description is short (e.g. after a `restore`). Images are stored as WebP (0.9 quality); any older PNG entries are migrated automatically on first access. API generation is only attempted on a cache miss with a substantial description (≥ 10 words).
 
 ---
 
@@ -307,7 +315,7 @@ Useful for testing bridge API changes and inspecting Z-machine internals. Intern
 
 - **Slash commands** — `/restart`, `/regen`, `/clear`, `/save`, `/restore`, `/export`, `/help` intercepted before commands reach frotz
 - **Pre-generated image library** — commit artwork for major Infocom games directly to this repo under `presets/`; players never need an API key for known games
-- **Image compression** — generated images are currently large (~3 MB data URLs); compress before storing in IndexedDB and before committing presets
+- **AI room explorer** — Claude agent plays IF games headlessly via frotz, collects room descriptions → JSON review → batch image gen → preset server
 
 ### Longer term
 
