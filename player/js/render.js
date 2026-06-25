@@ -1,52 +1,13 @@
-var _cssBase = new URL("./", import.meta.url).href;
-
 export function render(container) {
-  /* Inject player.css once, resolved relative to this module. */
   if (!document.querySelector("link[data-ifwg-css]")) {
     var link = document.createElement("link");
     link.rel  = "stylesheet";
-    link.href = _cssBase + "player.css";
+    link.href = new URL("../player.css", import.meta.url).href;
     link.setAttribute("data-ifwg-css", "1");
     document.head.appendChild(link);
   }
 
   container.innerHTML = "";
-
-  /* ── Drop overlay ─────────────────────────────────────────────────── */
-  var dropOverlay = document.createElement("div");
-  dropOverlay.className = "drop-overlay";
-
-  var dropTarget = document.createElement("label");
-  dropTarget.className  = "drop-target";
-  dropTarget.htmlFor    = "ifwg-story-file";
-  dropTarget.innerHTML  =
-    '<span class="drop-title">DROP STORY FILE</span>' +
-    '<span class="drop-sub">or click to choose</span>';
-
-  var storyFile = document.createElement("input");
-  storyFile.id     = "ifwg-story-file";
-  storyFile.type   = "file";
-  storyFile.accept = ".z1,.z2,.z3,.z4,.z5,.z6,.z7,.z8,.dat,.zcode";
-  dropTarget.appendChild(storyFile);
-
-  var dropSettings = document.createElement("div");
-  dropSettings.className = "drop-settings";
-  dropSettings.innerHTML =
-    '<div class="setting-row">' +
-      '<label class="setting-label" for="ifwg-ai-provider">IMAGE GEN</label>' +
-      '<select id="ifwg-ai-provider" class="setting-select">' +
-        '<option value="openai">OpenAI DALL-E 3</option>' +
-        '<option value="none">Disabled</option>' +
-      '</select>' +
-    '</div>' +
-    '<div class="setting-row">' +
-      '<label class="setting-label" for="ifwg-ai-key">API KEY</label>' +
-      '<input id="ifwg-ai-key" class="setting-input" type="password" ' +
-             'placeholder="sk-…" autocomplete="off" spellcheck="false">' +
-    '</div>';
-
-  dropOverlay.appendChild(dropTarget);
-  dropOverlay.appendChild(dropSettings);
 
   /* ── Player ───────────────────────────────────────────────────────── */
   var player = document.createElement("main");
@@ -71,8 +32,8 @@ export function render(container) {
   sceneImg.hidden    = true;
 
   var scenePlaceholder = document.createElement("div");
-  scenePlaceholder.id           = "ifwg-scene-placeholder";
-  scenePlaceholder.className    = "scene-placeholder";
+  scenePlaceholder.id            = "ifwg-scene-placeholder";
+  scenePlaceholder.className     = "scene-placeholder";
   scenePlaceholder.style.display = "none";
 
   var bezel = document.createElement("div");
@@ -106,13 +67,13 @@ export function render(container) {
   cmdRow.className = "cmd-row";
 
   var continueHint = document.createElement("span");
-  continueHint.className = "continue-hint";
-  continueHint.hidden    = true;
+  continueHint.className   = "continue-hint";
+  continueHint.hidden      = true;
   continueHint.textContent = "PRESS SPACE TO CONTINUE";
 
   var cmdPrompt = document.createElement("span");
-  cmdPrompt.className = "prompt";
-  cmdPrompt.hidden    = true;
+  cmdPrompt.className   = "prompt";
+  cmdPrompt.hidden      = true;
   cmdPrompt.textContent = ">";
 
   var cmdDisplay = document.createElement("span");
@@ -140,15 +101,12 @@ export function render(container) {
   player.appendChild(sceneText);
   player.appendChild(cmdRow);
 
-  container.appendChild(dropOverlay);
   container.appendChild(player);
 
   var diskLed = bezel.querySelector("#ifwg-disk-led");
 
   return {
-    dropOverlay:      dropOverlay,
     player:           player,
-    storyFile:        storyFile,
     statusRoom:       statusRoom,
     statusScore:      statusScore,
     sceneWrap:        sceneWrap,
@@ -163,8 +121,6 @@ export function render(container) {
     cmdPrompt:        cmdPrompt,
     cmdDisplay:       cmdDisplay,
     cmdCursor:        cmdCursor,
-    cmdInput:         cmdInput,
-    aiProvider:       dropSettings.querySelector("#ifwg-ai-provider"),
-    aiKey:            dropSettings.querySelector("#ifwg-ai-key")
+    cmdInput:         cmdInput
   };
 }

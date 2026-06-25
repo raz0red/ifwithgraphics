@@ -1,19 +1,34 @@
-import { ImageDB }        from "./imagedb.js";
+import { DB }             from "../db.js";
 import { OpenAIImageGen } from "./openai.js";
+
+export class ImageGenSettings {
+  constructor(provider, apiKey) {
+    this._provider = provider || "openai";
+    this._apiKey   = apiKey   || "";
+  }
+  getProvider() { return this._provider; }
+  getApiKey()   { return this._apiKey; }
+  setProvider(v) { this._provider = v; }
+  setApiKey(v)   { this._apiKey   = v; }
+}
 
 export var ImageGen = (function () {
   var SETTINGS_KEY = "ifwg_settings";
-  var _gameHash    = null;
 
-  function setGame(hash) { _gameHash = hash; }
-
-  function loadSettings() {
-    try { return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {}; }
-    catch (_) { return {}; }
+  function getSettings() {
+    try {
+      var raw = JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {};
+      return new ImageGenSettings(raw.provider, raw.apiKey);
+    } catch (_) {
+      return new ImageGenSettings();
+    }
   }
 
-  function saveSettings(provider, apiKey) {
-    localStorage.setItem(SETTINGS_KEY, JSON.stringify({ provider: provider, apiKey: apiKey }));
+  function setSettings(settings) {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify({
+      provider: settings.getProvider(),
+      apiKey:   settings.getApiKey()
+    }));
   }
 
   function buildPrompt(title, description) {
@@ -57,8 +72,8 @@ export var ImageGen = (function () {
 
         var THRESH = 30;
         var top = 0, bottom = h - 1;
-        for (var y = 0; y < h; y++)       { if (rowBrightness(y) > THRESH) { top    = y; break; } }
-        for (var y = h - 1; y >= 0; y--) { if (rowBrightness(y) > THRESH) { bottom = y; break; } }
+        for (let y = 0; y < h; y++)       { if (rowBrightness(y) > THRESH) { top    = y; break; } }
+        for (let y = h - 1; y >= 0; y--) { if (rowBrightness(y) > THRESH) { bottom = y; break; } }
 
         var ch  = bottom - top + 1;
         var out = document.createElement("canvas");
@@ -78,29 +93,32 @@ export var ImageGen = (function () {
   }
 
   function generate(roomId, title, description, onCacheMiss) {
-    var settings = loadSettings();
-    if (!settings.apiKey) return Promise.resolve(null);
+    var cacheKey = "images/" + roomId;
 
-    var cacheKey = (_gameHash || "unknown") + "/" + roomId;
-
-    return ImageDB.get(cacheKey).then(function (cached) {
+    return DB.get(cacheKey).then(function (cached) {
       if (cached) return cropIfNeeded(cached);
 
-      if (onCacheMiss) onCacheMiss();
+      /* No cache hit — only call the API if the caller wants generation. */
+      if (!onCacheMiss) return Promise.resolve(null);
 
-      var provider = getProvider(settings.provider || "openai");
+      var settings = getSettings();
+      if (!settings.getApiKey()) return Promise.resolve(null);
+
+      onCacheMiss();
+
+      var provider = getProvider(settings.getProvider());
       if (!provider) return Promise.resolve(null);
 
       var prompt = buildPrompt(title, description);
-      return provider.generate(settings.apiKey, prompt)
+      return provider.generate(settings.getApiKey(), prompt)
         .then(function (url) {
-          return ImageDB.put(cacheKey, url).then(function () { return url; });
+          return DB.put(cacheKey, url).then(function () { return url; });
         })
         .then(cropIfNeeded);
     });
   }
 
-  function clearCache() { return ImageDB.clear(); }
+  function clearCache() { return DB.clear(); }
 
-  return { generate: generate, setGame: setGame, saveSettings: saveSettings, loadSettings: loadSettings, clearCache: clearCache };
+  return { generate: generate, getSettings: getSettings, setSettings: setSettings, clearCache: clearCache };
 })();

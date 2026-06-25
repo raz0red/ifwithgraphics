@@ -1,8 +1,12 @@
-export var ImageDB = (function () {
-  var DB_NAME = "ifwg_images";
+import { Game } from "./game.js";
+
+export var DB = (function () {
+  var DB_NAME = "ifwg";
   var DB_VER  = 1;
-  var STORE   = "images";
+  var STORE   = "data";
   var _db     = null;
+
+  function _prefix(key) { return (Game.getId() || "unknown") + "/" + key; }
 
   function open() {
     if (_db) return Promise.resolve(_db);
@@ -19,7 +23,7 @@ export var ImageDB = (function () {
   function get(key) {
     return open().then(function (db) {
       return new Promise(function (resolve, reject) {
-        var req = db.transaction(STORE, "readonly").objectStore(STORE).get(key);
+        var req = db.transaction(STORE, "readonly").objectStore(STORE).get(_prefix(key));
         req.onsuccess = function () { resolve(req.result || null); };
         req.onerror   = function (e) { reject(e.target.error); };
       });
@@ -29,7 +33,7 @@ export var ImageDB = (function () {
   function put(key, value) {
     return open().then(function (db) {
       return new Promise(function (resolve, reject) {
-        var req = db.transaction(STORE, "readwrite").objectStore(STORE).put(value, key);
+        var req = db.transaction(STORE, "readwrite").objectStore(STORE).put(value, _prefix(key));
         req.onsuccess = function () { resolve(); };
         req.onerror   = function (e) { reject(e.target.error); };
       });

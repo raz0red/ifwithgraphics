@@ -56,7 +56,7 @@ export function createEngine(wasmPath, onRoomEntered, onSave) {
   }
 
   function writeFile(path, bytes) {
-    try { moduleInstance.FS.mkdir("/input"); } catch (_) {}
+    try { moduleInstance.FS.mkdir("/input"); } catch (_) { /* already exists */ }
     moduleInstance.FS.writeFile(path, bytes);
   }
 

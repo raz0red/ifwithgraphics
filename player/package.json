@@ -1,0 +1,14 @@
+{
+  "name": "ifwg-player",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "lint":  "eslint .",
+    "build": "esbuild js/index.js --bundle --format=esm --minify --outfile=dist/ifwg-player.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "eslint":  "^7.32.0"
+  }
+}

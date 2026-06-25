@@ -5,6 +5,17 @@ import { createImageUI } from "./ui/image.js";
 import { createInputUI } from "./ui/input.js";
 import { ImageGen }      from "./imagegen/index.js";
 import { IFWGConfig }    from "./config.js";
+import { Game }          from "./game.js";
+
+/* Read Z-machine release.serial from raw bytes — stable game identity. */
+function readGameId(bytes) {
+  var release = (bytes[2] << 8) | bytes[3];
+  var serial  = String.fromCharCode(
+    bytes[0x12], bytes[0x13], bytes[0x14],
+    bytes[0x15], bytes[0x16], bytes[0x17]
+  );
+  return release + "." + serial;
+}
 
 /* Collapse frotz word-wrap newlines but keep intentional paragraph breaks. */
 function processDescription(text) {
@@ -43,30 +54,14 @@ export var IFWGPlayer = {
       currentRoomKey:   null
     };
 
-    /* Seed ImageGen with whatever the config reports. */
-    ImageGen.saveSettings(config.getProvider(), config.getApiKey());
-
     /* ── UI modules ─────────────────────────────────────────────────── */
     var inputUI = createInputUI(el, state, sendCommand);
     var textUI  = createTextUI(el, state, inputUI.showCursor);
     var imageUI = createImageUI(el, state, textUI.calibrateTextHeight);
 
-    /* ── Settings wiring (drop-overlay) ─────────────────────────────── */
-    el.aiProvider.value = config.getProvider();
-    el.aiKey.value      = config.getApiKey();
-
-    function onSettingsPersist() {
-      var settings = { provider: el.aiProvider.value, apiKey: el.aiKey.value.trim() };
-      ImageGen.saveSettings(settings.provider, settings.apiKey);
-      config.onSettingsChange(settings);
-    }
-    el.aiProvider.addEventListener("change", onSettingsPersist);
-    el.aiKey.addEventListener("change",      onSettingsPersist);
-    el.aiKey.addEventListener("blur",        onSettingsPersist);
-
     /* ── Room callback ───────────────────────────────────────────────── */
     function onRoomEntered(id, title, description, statusRight, isKeyPress) {
-      state.awaitingKeyPress    = !!isKeyPress;
+      state.awaitingKeyPress     = !!isKeyPress;
       el.statusRoom.textContent  = title;
       el.statusScore.textContent = statusRight || "";
 
@@ -76,15 +71,20 @@ export var IFWGPlayer = {
       if (roomKey !== state.currentRoomKey) {
         state.currentRoomKey = roomKey;
         (function (genKey) {
-          if (wordCount < 25) return;
-          ImageGen.generate(roomKey, title, description, function () {
-            if (genKey !== state.currentRoomKey) return;
-            imageUI.showPlaceholder("LOADING IMAGE");
-          })
+          /* Pass onCacheMiss only when the description is substantial enough
+             to warrant an API call. Cache hits are always served. */
+          var canGenerate = wordCount >= 25;
+          ImageGen.generate(
+            roomKey, title, description,
+            canGenerate ? function () {
+              if (genKey !== state.currentRoomKey) return;
+              imageUI.showPlaceholder("LOADING IMAGE");
+            } : null
+          )
           .then(function (url) {
             if (genKey !== state.currentRoomKey) return;
-            if (url) imageUI.showImage(url, genKey);
-            else     imageUI.showPlaceholder("");
+            if (url)              imageUI.showImage(url, genKey);
+            else if (canGenerate) imageUI.showPlaceholder("");
           })
           .catch(function (err) {
             if (genKey !== state.currentRoomKey) return;
@@ -143,50 +143,6 @@ export var IFWGPlayer = {
       }
     });
 
-    /* ── File loading ────────────────────────────────────────────────── */
-    function loadFile(file) {
-      file.arrayBuffer().then(function (buf) {
-        var bytes = new Uint8Array(buf);
-        crypto.subtle.digest("SHA-256", buf).then(function (hashBuf) {
-          var hex = Array.from(new Uint8Array(hashBuf))
-            .map(function (b) { return b.toString(16).padStart(2, "0"); })
-            .join("");
-          ImageGen.setGame(hex);
-
-          state.storyPath = "/input/" + file.name;
-          engine.writeFile(state.storyPath, bytes);
-
-          el.dropOverlay.style.display = "none";
-          el.player.hidden = false;
-
-          var savePath = state.storyPath + ".qzl";
-          config.onRestore(savePath, function (saveBytes) {
-            if (saveBytes) engine.writeSave(savePath, saveBytes);
-            state.started = true;
-            engine.start(state.storyPath);
-            config.onGameLoaded(hex, file.name);
-          });
-        });
-      });
-    }
-
-    el.storyFile.addEventListener("change", function () {
-      if (el.storyFile.files && el.storyFile.files[0]) loadFile(el.storyFile.files[0]);
-    });
-    el.dropOverlay.addEventListener("dragover", function (e) {
-      e.preventDefault();
-      el.dropOverlay.classList.add("is-dragging");
-    });
-    el.dropOverlay.addEventListener("dragleave", function () {
-      el.dropOverlay.classList.remove("is-dragging");
-    });
-    el.dropOverlay.addEventListener("drop", function (e) {
-      e.preventDefault();
-      el.dropOverlay.classList.remove("is-dragging");
-      if (e.dataTransfer.files && e.dataTransfer.files[0])
-        loadFile(e.dataTransfer.files[0]);
-    });
-
     /* ── Boot ────────────────────────────────────────────────────────── */
     document.fonts.ready.then(textUI.calibrateTextHeight);
 
@@ -194,6 +150,41 @@ export var IFWGPlayer = {
       imageUI.showPlaceholder("WASM LOAD FAILED");
     });
 
-    return { loadFile: loadFile };
+    /* ── loadGame ────────────────────────────────────────────────────── */
+    function startWithBuffer(buf, filename) {
+      var bytes  = new Uint8Array(buf);
+      var gameId = readGameId(bytes);
+      Game.setId(gameId);
+
+      state.storyPath  = "/input/" + filename;
+      engine.writeFile(state.storyPath, bytes);
+      el.player.hidden = false;
+
+      var savePath = state.storyPath + ".qzl";
+      config.onRestore(savePath, function (saveBytes) {
+        if (saveBytes) engine.writeSave(savePath, saveBytes);
+        state.started = true;
+        engine.start(state.storyPath);
+        config.onGameLoaded(gameId, filename);
+      });
+    }
+
+    function loadGame(source, name) {
+      if (source instanceof File) {
+        source.arrayBuffer().then(function (buf) {
+          startWithBuffer(buf, source.name);
+        });
+      } else if (typeof source === "string") {
+        var filename = name || source.split("/").pop() || "game.z5";
+        fetch(source).then(function (r) { return r.arrayBuffer(); })
+          .then(function (buf) { startWithBuffer(buf, filename); });
+      } else if (source instanceof ArrayBuffer) {
+        startWithBuffer(source, name || "game.z5");
+      } else if (source instanceof Uint8Array) {
+        startWithBuffer(source.buffer, name || "game.z5");
+      }
+    }
+
+    return { loadGame: loadGame };
   }
 };

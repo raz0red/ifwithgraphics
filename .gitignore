@@ -9,6 +9,10 @@ wasm/frotz/src/common/hash.h
 builder/wasm/
 player/wasm/
 
+# Player npm
+player/node_modules/
+player/dist/
+
 # OS / editor
 .DS_Store
 Thumbs.db

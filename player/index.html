@@ -4,17 +4,89 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>IFWG Player</title>
+    <link rel="stylesheet" href="./player.css" data-ifwg-css="1">
   </head>
   <body>
+    <!-- Launcher chrome — owned by this page, not the player module -->
+    <div id="launcher" class="drop-overlay">
+      <label class="drop-target" for="ifwg-story-file">
+        <span class="drop-title">DROP STORY FILE</span>
+        <span class="drop-sub">or click to choose</span>
+        <input id="ifwg-story-file" type="file"
+               accept=".z1,.z2,.z3,.z4,.z5,.z6,.z7,.z8,.dat,.zcode">
+      </label>
+      <div class="drop-settings">
+        <div class="setting-row">
+          <label class="setting-label" for="ifwg-ai-provider">IMAGE GEN</label>
+          <select id="ifwg-ai-provider" class="setting-select">
+            <option value="openai">OpenAI DALL-E 3</option>
+            <option value="none">Disabled</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <label class="setting-label" for="ifwg-ai-key">API KEY</label>
+          <input id="ifwg-ai-key" class="setting-input" type="password"
+                 placeholder="sk-…" autocomplete="off" spellcheck="false">
+        </div>
+      </div>
+    </div>
+
+    <!-- Game viewport -->
     <div id="app"></div>
 
     <script src="./wasm/ifwg.js"></script>
 
     <script type="module">
-      import { IFWGPlayer }     from "./core.js";
-      import { StandaloneConfig } from "./config.js";
+      /* Dev — individual modules (no build step required) */
+      import { IFWGPlayer }                  from "./js/core.js";
+      import { StandaloneConfig }           from "./js/config.js";
+      import { ImageGen, ImageGenSettings } from "./js/imagegen/index.js";
 
-      IFWGPlayer.create(document.getElementById("app"), new StandaloneConfig());
+      /* Prod — minified bundle (run: npm run build)
+      import { IFWGPlayer, StandaloneConfig, ImageGen, ImageGenSettings } from "./dist/ifwg-player.js";
+      */
+
+      var config = new StandaloneConfig();
+      var player = IFWGPlayer.create(document.getElementById("app"), config);
+
+      var launcher   = document.getElementById("launcher");
+      var storyFile  = document.getElementById("ifwg-story-file");
+      var aiProvider = document.getElementById("ifwg-ai-provider");
+      var aiKey      = document.getElementById("ifwg-ai-key");
+
+      var imgSettings  = ImageGen.getSettings();
+      aiProvider.value = imgSettings.getProvider();
+      aiKey.value      = imgSettings.getApiKey();
+
+      function applyImageSettings() {
+        ImageGen.setSettings(new ImageGenSettings(aiProvider.value, aiKey.value.trim()));
+      }
+      aiProvider.addEventListener("change", applyImageSettings);
+      aiKey.addEventListener("change",      applyImageSettings);
+      aiKey.addEventListener("blur",        applyImageSettings);
+
+      function loadFile(file) {
+        launcher.style.display = "none";
+        player.loadGame(file);
+      }
+
+      storyFile.addEventListener("change", function () {
+        if (storyFile.files && storyFile.files[0]) loadFile(storyFile.files[0]);
+      });
+
+      launcher.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        launcher.classList.add("is-dragging");
+      });
+      launcher.addEventListener("dragleave", function () {
+        launcher.classList.remove("is-dragging");
+      });
+      launcher.addEventListener("drop", function (e) {
+        e.preventDefault();
+        launcher.classList.remove("is-dragging");
+        if (e.dataTransfer.files && e.dataTransfer.files[0])
+          loadFile(e.dataTransfer.files[0]);
+      });
     </script>
   </body>
 </html>
