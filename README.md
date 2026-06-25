@@ -328,6 +328,7 @@ Useful for testing bridge API changes and inspecting Z-machine internals. Intern
 
 ### Longer term
 
+- **Theme system** — pluggable theme interface covering CSS, image gen prompt, and text rendering style; the current Apple II look becomes the default `classic` theme; additional themes (e.g. `modern`) live in `themes/` subfolders and can produce a completely different look and feel without touching core
 - **`/export`** — produce a distributable game package (story file + images + player + webRcade feed manifest)
 - **Standalone launcher** — prebuilt Go binaries that serve files relative to themselves and open the browser; included in `/export` packages
 - **Embed variant** — minimal host page that boots a specific game directly via `player.loadGame(url)` with no launcher chrome
