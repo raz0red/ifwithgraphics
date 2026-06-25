@@ -6,11 +6,17 @@
 
 ---
 
-![West of House — Zork I](assets/screenshot.png)
-*West of House — Zork I*
+<p align="center">
+  <img src="assets/screenshot.png" width="90%">
+  <br>
+  <i>West of House — Zork I</i>
+</p>
 
-![The Troll Room — Zork I](assets/screenshot2.png)
-*The Troll Room — Zork I*
+<p align="center">
+  <img src="assets/screenshot2.png" width="90%">
+  <br>
+  <i>The Troll Room — Zork I</i>
+</p>
 
 ---
 
