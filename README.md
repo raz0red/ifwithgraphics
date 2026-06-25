@@ -125,8 +125,8 @@ player/
 `IFWGPlayer.create(container, config)` renders the game viewport into `container` and returns a player object. All launcher chrome (drop zone, file picker, settings panel) lives in the host page.
 
 ```javascript
-var config = new StandaloneConfig();
-var player = IFWGPlayer.create(document.getElementById("app"), config);
+const config = new StandaloneConfig();
+const player = IFWGPlayer.create(document.getElementById("app"), config);
 
 player.loadGame(file);              // File object (drag/drop or file picker)
 player.loadGame("path/to/game.z5"); // URL — fetched automatically
@@ -155,14 +155,14 @@ Image settings are owned by `ImageGen`, not by the config. The host page reads a
 ```javascript
 import { ImageGen, ImageGenSettings } from "./js/imagegen/index.js";
 
-var s = ImageGen.getSettings();     // returns ImageGenSettings
+const s = ImageGen.getSettings();   // returns ImageGenSettings
 s.getProvider();                    // "openai" | "none"
 s.getApiKey();                      // "sk-…"
 
 ImageGen.setSettings(new ImageGenSettings("openai", "sk-…"));
 ```
 
-`ImageGen.generate()` always checks the IndexedDB cache first. API calls only happen on a cache miss when the description is substantial enough (≥ 25 words). Cached images are served regardless of whether an API key is configured.
+`ImageGen.generate()` always checks the IndexedDB cache first. API calls only happen on a cache miss when the description is substantial enough (≥ 10 words). Cached images are served regardless of whether an API key is configured.
 
 ### Save / Restore
 
@@ -220,15 +220,14 @@ sequenceDiagram
 ```mermaid
 flowchart TD
     ROOM["Room entered\n(new roomKey)"]
-    WC{"wordCount\n≥ 25?"}
-    KEEP["Keep previous image\n(transition / cutscene)"]
+    WC{"wordCount\n≥ 10?"}
     IDB{"IndexedDB\ncache hit?"}
     SHOW["Display image\n(blind-reveal animation)"]
     KEY{"API key\nconfigured?"}
     GEN["Call OpenAI API\n(Apple II pixel art prompt\n+ 2 reference images)"]
     CROP["Crop black bars"]
     CACHE["Store in IndexedDB"]
-    PLACEHOLDER["Keep previous image\n(no key / short description)"]
+    PLACEHOLDER["Show empty placeholder"]
 
     ROOM --> IDB
     IDB -->|Hit| SHOW
@@ -276,7 +275,7 @@ cd player
 npm install
 
 npm run lint    # ESLint
-npm run build   # esbuild → dist/ifwg-player.js (~17 KB minified)
+npm run build   # esbuild → dist/ifwg-player.js (~16 KB minified)
 ```
 
 `index.html` has both import variants side by side — comment/uncomment to switch:
