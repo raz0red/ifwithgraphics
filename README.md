@@ -1,4 +1,4 @@
-# IF With Graphics
+# IF With Graphics (IFWG)
 
 **IF With Graphics** brings artwork to your classic IF adventure games. Load any Z-machine story file, play it as a text adventure, and watch Apple II-style pixel art appear for each room you visit — generated on the fly and cached locally so it never repeats.
 
