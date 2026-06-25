@@ -1,3 +1,9 @@
+/* Emscripten's stdin TTY handler calls window.prompt("Input: ") when frotz
+   reads a single char via fgetc (os_read_key — press-any-key, Y/N prompts).
+   Returning "" makes Emscripten feed '\n' to fgetc, which most games accept
+   as an Enter / "any key" press, without showing a native browser dialog. */
+(function () { var _np = window.prompt; window.prompt = function (m, d) { if (m === "Input: ") return ""; return _np ? _np.call(window, m, d) : ""; }; })();
+
 (function () {
   var moduleInstance = null;
   var storyPath      = null;
@@ -13,6 +19,7 @@
   var scenePlaceholder = document.getElementById("scenePlaceholder");
   var placeholderLabel = document.getElementById("placeholderLabel");
   var sceneText        = document.getElementById("sceneText");
+  var sceneTextInner   = document.getElementById("sceneTextInner");
   var cmdInput         = document.getElementById("cmdInput");
   var cmdDisplay       = document.getElementById("cmdDisplay");
   var cmdCursor        = document.getElementById("cmdCursor");
@@ -36,75 +43,244 @@
     if (s.apiKey)   aiKey.value      = s.apiKey;
   })();
 
-  /* ── Paged text ─────────────────────────────────────────────────────── */
-  var textPages = [];
-  var pageIndex = 0;
+  /* ── Text display ──────────────────────────────────────────────────── */
+  var sliding          = false;
+  var scrollAnimating  = false;
+  var contentCompleted = false;   /* true once the bottom has been reached */
+  var awaitingKeyPress = false;   /* true when os_read_key yielded (any-key mode) */
 
-  function linesPerPage() {
-    var lineH = parseFloat(getComputedStyle(sceneText).lineHeight) ||
-                parseFloat(getComputedStyle(sceneText).fontSize) * 1.4;
-    return Math.max(1, Math.floor(sceneText.clientHeight / lineH));
+  function showCursor(on) {
+    cmdCursor.classList.toggle("shown", on);
   }
 
-  function buildPages(text) {
-    var per  = linesPerPage();
-    var ctx2 = document.createElement("canvas").getContext("2d");
-    var cs2  = getComputedStyle(sceneText);
-    ctx2.font = cs2.fontSize + " " + cs2.fontFamily;
-    var charW = ctx2.measureText("M").width || 10;
-    var cpl   = Math.max(10, Math.floor(sceneText.clientWidth / charW));
-
-    var lines  = text.split("\n");
-    var pages  = [];
-    var cur    = [];
-    var count  = 0;
-
-    function flush() {
-      if (cur.length) { pages.push(cur.join("\n")); cur = []; count = 0; }
-    }
-
-    for (var i = 0; i < lines.length; i++) {
-      var line   = lines[i];
-      var visual = Math.max(1, Math.ceil((line.length || 1) / cpl));
-      if (count + visual > per) flush();
-      cur.push(line);
-      count += visual;
-    }
-    flush();
-    return pages.length ? pages : [""];
+  /* Shrink sceneText height to the largest exact multiple of lineH that fits,
+     so scrollTop multiples of (n×lineH) land perfectly on line boundaries. */
+  function calibrateTextHeight() {
+    sceneText.style.height = "";           /* reset to CSS-computed value first */
+    var cs    = getComputedStyle(sceneText);
+    var pt    = parseFloat(cs.paddingTop) || 0;
+    var lineH = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.4;
+    var n     = Math.max(1, Math.floor((sceneText.clientHeight - pt) / lineH));
+    sceneText.style.height = Math.round(pt + n * lineH) + "px";
   }
 
-  function showPage(idx) {
-    var last = idx >= textPages.length - 1;
-    if (last) {
-      sceneText.textContent    = fullDescription;
-      sceneText.style.overflow = "auto";
-      sceneText.scrollTop      = sceneText.scrollHeight;
+  /* Three display states:
+     1. More content below  → "PRESS SPACE TO CONTINUE" hint
+     2. awaitingKeyPress    → "PRESS ANY KEY TO CONTINUE" hint (any keydown fires step)
+     3. contentCompleted    → prompt (sticky — scrolling back up keeps it) */
+  function updateUI() {
+    if (sliding || scrollAnimating) return;
+    var atBottom = sceneText.scrollHeight <= sceneText.scrollTop + sceneText.clientHeight + 2;
+    if (atBottom) {
+      if (awaitingKeyPress) {
+        continueHint.textContent = "PRESS ANY KEY TO CONTINUE";
+        continueHint.hidden = false;
+        prompt.hidden       = true;
+        cmdDisplay.hidden   = true;
+        showCursor(false);
+        cmdInput.disabled   = true;
+        return;
+      }
+      contentCompleted    = true;
       continueHint.hidden = true;
       prompt.hidden       = false;
       cmdDisplay.hidden   = false;
-      cmdCursor.hidden    = false;
+      showCursor(true);
       cmdInput.disabled   = false;
       cmdInput.focus();
-    } else {
-      sceneText.textContent = textPages[idx];
-      continueHint.hidden   = false;
-      prompt.hidden         = true;
-      cmdDisplay.hidden     = true;
-      cmdCursor.hidden      = true;
-      cmdInput.disabled     = true;
+      return;
     }
+    if (contentCompleted) {
+      continueHint.hidden = true;
+      prompt.hidden       = false;
+      cmdDisplay.hidden   = false;
+      showCursor(true);
+      cmdInput.disabled   = false;
+      cmdInput.focus();
+      return;
+    }
+    continueHint.textContent = "PRESS SPACE TO CONTINUE";
+    continueHint.hidden = false;
+    prompt.hidden       = true;
+    cmdDisplay.hidden   = true;
+    showCursor(false);
+    cmdInput.disabled   = true;
+  }
+
+  /* Scroll forward one page.  Page size = n×lineH (integer multiple of lineH)
+     so that every page boundary is a clean line boundary with no partial line. */
+  function scrollDownAnimated() {
+    if (scrollAnimating || sliding) return;
+
+    var cs    = getComputedStyle(sceneText);
+    var pt    = parseFloat(cs.paddingTop) || 0;
+    var lineH = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.4;
+    var H     = sceneText.clientHeight;
+    var n     = Math.max(1, Math.floor((H - pt) / lineH));
+    var pageH = n * lineH;
+
+    var currentPage = Math.round(sceneText.scrollTop / pageH);
+    var targetTop   = Math.min(
+      Math.round((currentPage + 1) * pageH),
+      sceneText.scrollHeight - H
+    );
+
+    if (targetTop <= sceneText.scrollTop + 1) {
+      scrollAnimating = false;
+      updateUI();
+      return;
+    }
+
+    scrollAnimating     = true;
+    continueHint.hidden = true;
+
+    var startTop  = sceneText.scrollTop;
+    var startTime = null;
+    var duration  = n * 160;
+
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var t = Math.min((ts - startTime) / duration, 1);
+      sceneText.scrollTop = Math.round(startTop + (targetTop - startTop) * t);
+      if (t < 1) {
+        requestAnimationFrame(step);
+      } else {
+        sceneText.scrollTop = targetTop;
+        scrollAnimating = false;
+        updateUI();
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* Re-evaluate hint/prompt when the user manually scrolls. */
+  sceneText.addEventListener("scroll", updateUI);
+
+  /* Manual scroll (mouse wheel / trackpad) — overflow:hidden clips partial
+     lines but blocks native scroll, so we drive it ourselves here. */
+  sceneText.addEventListener("wheel", function (e) {
+    e.preventDefault();
+    if (scrollAnimating || sliding) return;
+    var delta = e.deltaY;
+    if (e.deltaMode === 1) delta *= 20;        /* line mode → pixels */
+    if (e.deltaMode === 2) delta *= sceneText.clientHeight; /* page mode */
+    sceneText.scrollTop = Math.max(0, Math.min(
+      sceneText.scrollTop + delta,
+      sceneText.scrollHeight - sceneText.clientHeight
+    ));
+    updateUI();
+  }, { passive: false });
+
+  /* Slide new content in from below. curPane captures whatever the user
+     currently sees (accounting for scrollTop), nxtPane is the new text. */
+  function slideToContent(newText) {
+    contentCompleted = false;
+    awaitingKeyPress = false;
+    sliding = true;
+    showCursor(false);
+    continueHint.hidden = true;
+    prompt.hidden = true; cmdDisplay.hidden = true;
+    cmdInput.disabled = true;
+
+    var cs       = getComputedStyle(sceneText);
+    var rect     = sceneText.getBoundingClientRect();
+    var H        = sceneText.clientHeight;
+    var lineH    = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.4;
+    var duration = Math.max(1, Math.floor(H / lineH)) * 160;
+
+    var blw  = parseFloat(cs.borderLeftWidth) || 0;
+    var btw  = parseFloat(cs.borderTopWidth)  || 0;
+    var clip = document.createElement("div");
+    clip.style.cssText = [
+      "position:fixed",
+      "top:"    + (rect.top  + btw) + "px",
+      "left:"   + (rect.left + blw) + "px",
+      "width:"  + sceneText.clientWidth  + "px",
+      "height:" + H + "px",
+      "overflow:hidden",
+      "z-index:50",
+      "pointer-events:none"
+    ].join(";");
+
+    var textStyle = [
+      "padding:"        + cs.padding,
+      "white-space:"    + cs.whiteSpace,
+      "font-family:"    + cs.fontFamily,
+      "font-size:"      + cs.fontSize,
+      "letter-spacing:" + cs.letterSpacing,
+      "line-height:"    + cs.lineHeight,
+      "text-transform:" + cs.textTransform,
+      "color:"          + cs.color,
+      "box-sizing:border-box"
+    ].join(";");
+
+    /* curPane shows the currently visible portion (user may have scrolled). */
+    var scrollOff = sceneText.scrollTop;
+    var curPane   = document.createElement("div");
+    curPane.style.cssText = "background:#000;height:" + H + "px;overflow:hidden;";
+    var curInner  = document.createElement("div");
+    curInner.style.cssText = textStyle + ";height:auto;margin-top:-" + scrollOff + "px;";
+    curInner.textContent   = sceneTextInner.textContent;
+    curPane.appendChild(curInner);
+
+    var nxtPane = document.createElement("div");
+    nxtPane.style.cssText = "background:#000;height:" + H + "px;overflow:hidden;" + textStyle;
+    nxtPane.textContent   = newText;
+
+    var slide = document.createElement("div");
+    slide.appendChild(curPane);
+    slide.appendChild(nxtPane);
+    clip.appendChild(slide);
+    document.body.appendChild(clip);
+
+    /* Pre-load new content into sceneText (hidden behind clip). */
+    sceneTextInner.textContent = newText;
+    sceneText.scrollTop = 0;
+
+    function finish() {
+      document.body.removeChild(clip);
+      sliding = false;
+      updateUI();
+    }
+
+    var startTime = null;
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var t = Math.min((ts - startTime) / duration, 1);
+      slide.style.transform = "translateY(-" + Math.round(H * t) + "px)";
+      if (t < 1) {
+        requestAnimationFrame(step);
+      } else {
+        requestAnimationFrame(finish);
+      }
+    }
+    requestAnimationFrame(step);
   }
 
   player.addEventListener("click", function () {
     if (!cmdInput.disabled) cmdInput.focus();
   });
 
+  /* SPACE: scroll forward one page (line-snapped, animated). */
   document.addEventListener("keydown", function (e) {
+    /* Any-key mode: any keydown (except modifier-only) fires the step. */
+    if (awaitingKeyPress && !continueHint.hidden) {
+      var atBottom = sceneText.scrollHeight <= sceneText.scrollTop + sceneText.clientHeight + 2;
+      if (atBottom) {
+        if (e.key === "Control" || e.key === "Alt" || e.key === "Shift" || e.key === "Meta") return;
+        e.preventDefault();
+        awaitingKeyPress = false;
+        if (moduleInstance) {
+          var ptr = writeString("");
+          moduleInstance._ifwg_interp_step(ptr);
+          moduleInstance._free(ptr);
+        }
+        return;
+      }
+    }
     if (e.code === "Space" && !continueHint.hidden) {
       e.preventDefault();
-      pageIndex = Math.min(pageIndex + 1, textPages.length - 1);
-      showPage(pageIndex);
+      scrollDownAnimated();
     }
   });
 
@@ -123,11 +299,9 @@
     }, 1800);
 
     (function cycle() {
-      /* ── Sustained read: LED on for a while ── */
       diskLed.classList.add("active");
       var burstMs = 250 + Math.random() * 500;
 
-      /* ── Mid-burst flutter ~60% of the time ── */
       if (Math.random() < 0.6) {
         var flutterAt = burstMs * (0.35 + Math.random() * 0.4);
         ledTimer = setTimeout(function () {
@@ -136,13 +310,11 @@
             diskLed.classList.add("active");
             ledTimer = setTimeout(function () {
               diskLed.classList.remove("active");
-              /* ── Seek pause before next burst ── */
               ledTimer = setTimeout(cycle, 180 + Math.random() * 550);
             }, burstMs - flutterAt);
           }, 18 + Math.random() * 35);
         }, flutterAt);
       } else {
-        /* Clean burst, no flutter */
         ledTimer = setTimeout(function () {
           diskLed.classList.remove("active");
           ledTimer = setTimeout(cycle, 180 + Math.random() * 550);
@@ -160,8 +332,8 @@
     dotLabel.textContent = "";
   }
   var currentRoomKey = null;
-  var currentImageAR   = null;   /* aspect ratio of first loaded image */
-  var playerWidthLocked = false; /* true after first image sets the width */
+  var currentImageAR   = null;
+  var playerWidthLocked = false;
 
   function applyPlayerWidth(animated) {
     if (!currentImageAR) return;
@@ -173,7 +345,10 @@
     player.style.width = newW + "px";
   }
 
-  window.addEventListener("resize", function () { applyPlayerWidth(false); });
+  window.addEventListener("resize", function () {
+    applyPlayerWidth(false);
+    calibrateTextHeight();
+  });
 
   function showPlaceholder(label) {
     stopDiskAnimation();
@@ -205,7 +380,7 @@
 
   function showImage(url, roomKey) {
     sceneImg.onload = function () {
-      if (roomKey !== currentRoomKey) return; /* moved on while image was decoding */
+      if (roomKey !== currentRoomKey) return;
       stopDiskAnimation();
       scenePlaceholder.style.display = "none";
       sceneImg.hidden = false;
@@ -223,20 +398,23 @@
   }
 
   /* ── Room callback ──────────────────────────────────────────────────── */
-  window.enteredRoom = function (id, title, description, statusRight) {
+  window.enteredRoom = function (id, title, description, statusRight, isKeyPress) {
+    awaitingKeyPress = !!isKeyPress;
     statusRoom.textContent  = title;
     statusScore.textContent = statusRight || "";
 
-    var roomKey = String(id);
+    var roomKey = id > 0 ? String(id) : (title || "0");
+    var wordCount = description.trim().split(/\s+/).length;
     if (roomKey !== currentRoomKey) {
       currentRoomKey = roomKey;
       (function (genKey) {
-        ImageGen.generate(id, title, description, function () {
+        if (wordCount < 25) { return; }
+        ImageGen.generate(roomKey, title, description, function () {
           if (genKey !== currentRoomKey) return;
           showPlaceholder("LOADING IMAGE");
         })
           .then(function (url) {
-            if (genKey !== currentRoomKey) return; /* moved on — discard */
+            if (genKey !== currentRoomKey) return;
             if (url) showImage(url, genKey);
             else     showPlaceholder("");
           })
@@ -248,38 +426,48 @@
       })(roomKey);
     }
 
-    /* Text pages — collapse frotz word-wrap newlines but keep intentional breaks */
+    /* Collapse frotz word-wrap newlines but keep intentional paragraph breaks. */
     fullDescription = (function (text) {
       var WRAP_W = 60;
       var lines  = text.replace(/\r\n/g, "\n").split("\n");
       var out    = [];
       for (var i = 0; i < lines.length; i++) {
-        if (i === 0 || lines[i - 1].length < WRAP_W) {
-          out.push(lines[i]);              /* intentional break — keep */
+        var line = lines[i];
+        var prev = lines[i - 1] || "";
+        var joinWrap   = i > 0 && prev.length >= WRAP_W;
+        var joinOrphan = i > 0 && /^\s*[^\w\s]\s*$/.test(line) && out.length > 0;
+        if (joinWrap || joinOrphan) {
+          out[out.length - 1] += (joinOrphan ? "" : " ") + line.trim();
         } else {
-          out[out.length - 1] += " " + lines[i]; /* word-wrap — join */
+          out.push(line);
         }
       }
       return out.join("\n").trim();
     })(description);
-    sceneText.style.overflow = "hidden";
-    requestAnimationFrame(function () {
-      textPages = buildPages(fullDescription);
-      pageIndex = 0;
-      showPage(0);
-    });
+
+    /* First room: direct display (fonts should be ready by game-start time).
+       Subsequent rooms: slide animation from whatever the user last saw. */
+    if (sceneTextInner.textContent) {
+      slideToContent(fullDescription);
+    } else {
+      contentCompleted = false;
+      calibrateTextHeight();
+      sceneTextInner.textContent = fullDescription;
+      sceneText.scrollTop = 0;
+      updateUI();
+    }
   };
 
   /* ── Send command ───────────────────────────────────────────────────── */
   function sendCommand() {
     var cmd = cmdInput.value.trim();
     if (!cmd || !started) return;
-    cmdInput.value        = "";
+    cmdInput.value         = "";
     cmdDisplay.textContent = "";
-    cmdInput.disabled     = true;
-    prompt.hidden         = true;
-    cmdDisplay.hidden     = true;
-    cmdCursor.hidden      = true;
+    cmdInput.disabled      = true;
+    prompt.hidden          = true;
+    cmdDisplay.hidden      = true;
+    showCursor(false);
     var ptr = writeString(cmd);
     moduleInstance._ifwg_interp_step(ptr);
     moduleInstance._free(ptr);
@@ -349,6 +537,9 @@
     if (e.dataTransfer.files && e.dataTransfer.files[0])
       loadFile(e.dataTransfer.files[0]);
   });
+
+  /* Calibrate once fonts are ready so lineH is accurate. */
+  document.fonts.ready.then(calibrateTextHeight);
 
   /* ── Boot WASM ──────────────────────────────────────────────────────── */
   createIfwgModule({

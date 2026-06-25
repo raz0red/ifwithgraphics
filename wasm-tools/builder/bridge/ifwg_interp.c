@@ -43,7 +43,7 @@ extern zbyte *ifwg_pre_opcode_pcp;
 static jmp_buf ifwg_yield_buf;
 static int ifwg_interp_active = 0;
 
-void ifwg_yield (void)
+static void do_yield (int key_press_mode)
 {
     char title[256];
     char status_right[128];
@@ -65,14 +65,17 @@ void ifwg_yield (void)
         location = (zword) ifwg_find_object_by_name (title);
     }
 
+    /* Pass isKeyPress=true when called from os_read_key so the player UI
+       shows "press any key" and accepts any keydown instead of the prompt. */
     EM_ASM({
-        var id     = $0;
-        var title  = UTF8ToString($1);
-        var desc   = UTF8ToString($2);
-        var status = UTF8ToString($3);
+        var id         = $0;
+        var title      = UTF8ToString($1);
+        var desc       = UTF8ToString($2);
+        var status     = UTF8ToString($3);
+        var isKeyPress = !!$4;
         if (typeof window !== 'undefined' && typeof window.enteredRoom === 'function')
-            window.enteredRoom(id, title, desc, status);
-    }, (int) location, title, ifwg_dumb_get_description (), status_right);
+            window.enteredRoom(id, title, desc, status, isKeyPress);
+    }, (int) location, title, ifwg_dumb_get_description (), status_right, key_press_mode);
 
     ifwg_dumb_reset_description ();
 
@@ -83,6 +86,9 @@ void ifwg_yield (void)
 
     longjmp (ifwg_yield_buf, 1);
 }
+
+void ifwg_yield (void)     { do_yield (0); }
+void ifwg_yield_key (void) { do_yield (1); }
 
 EMSCRIPTEN_KEEPALIVE
 void ifwg_interp_step (const char *input)

@@ -25,6 +25,7 @@
 #include "dfrotz.h"
 
 extern void ifwg_yield (void);
+extern void ifwg_yield_key (void);
 
 extern f_setup_t f_setup;
 
@@ -363,6 +364,13 @@ void ifwg_interp_set_line_input (const char *input)
     memcpy (read_line_buffer, input, len);
     read_line_buffer[len]     = ZC_RETURN;
     read_line_buffer[len + 1] = '\0';
+    /* If os_read_key is waiting (key buffer empty), prime it with the first
+       char of input so it doesn't yield again on the next interpret() call.
+       Use ZC_RETURN (\r) as the default "any key" when input is empty. */
+    if (read_key_buffer[0] == '\0') {
+        read_key_buffer[0] = (input[0] != '\0') ? (char)input[0] : ZC_RETURN;
+        read_key_buffer[1] = '\0';
+    }
 }
 
 #ifdef USE_UTF8
@@ -411,7 +419,7 @@ zchar os_read_key (int timeout, bool show_cursor)
 
 	if (read_key_buffer[0] == '\0') {
 		dumb_show_screen(show_cursor);
-		ifwg_yield ();
+		ifwg_yield_key ();
 		timed_out = dumb_read_line(read_key_buffer, NULL,
 			show_cursor, timeout, INPUT_CHAR, NULL);
 		/* An empty input line is reported as a single CR.
