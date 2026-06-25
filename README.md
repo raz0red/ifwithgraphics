@@ -4,6 +4,10 @@
 
 ---
 
+![West of House — Zork I](assets/screenshot.png)
+
+---
+
 ## What It Is
 
 Classic interactive fiction is rich, strange, and deeply atmospheric. This project explores what happens when those worlds are illustrated without losing the feel of the original parser experience.
