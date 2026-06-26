@@ -4,19 +4,22 @@ version: "3"
 # Only requirement: https://taskfile.dev — everything else runs inside Docker.
 #
 # Common workflows:
-#   task build    Lint, build WASM, and bundle minified player JS
-#   task dist     Build and assemble deployable package in dist/
-#   task lint     Run ESLint on player JS
-#   task serve    Serve locally at http://localhost:5173
-#   task clean    Remove build artifacts
+#   task build         Lint, build WASM, and bundle minified player JS
+#   task build:frotz-ws  Build native dfrotz and frotz-ws Go server
+#   task dist          Build and assemble deployable package in dist/
+#   task lint          Run ESLint on player JS
+#   task serve         Serve locally at http://localhost:5173
+#   task clean         Remove build artifacts
 
 vars:
   EMSDK_IMAGE:  emscripten/emsdk:3.1.1
   NODE_IMAGE:   node:20-alpine
   NGINX_IMAGE:  nginx:alpine
+  GO_IMAGE:     golang:1.23-bookworm
   ALPINE_RUN:   docker run --rm -v "{{.ROOT_DIR}}:/src" alpine
   EMSDK_RUN:    docker run --rm -v "{{.ROOT_DIR}}:/src" -w /src/wasm {{.EMSDK_IMAGE}}
   NODE_RUN:     docker run --rm -v "{{.ROOT_DIR}}/player:/src" -w /src {{.NODE_IMAGE}}
+  GO_RUN:       docker run --rm -v "{{.ROOT_DIR}}:/src" -w /src/frotz-ws {{.GO_IMAGE}}
 
 tasks:
   default:
@@ -44,6 +47,12 @@ tasks:
           cp /src/player/dist/ifwg-player.js /src/dist/ && \
           cp /src/player/prompt/* /src/dist/prompt/ \
         '"
+
+  build:frotz-ws:
+    desc: Build native dfrotz and frotz-ws WebSocket server
+    cmds:
+      - "{{.GO_RUN}} make -C frotz"
+      - "{{.GO_RUN}} sh -c 'go mod download && go build -o bin/frotz-ws ./...'"
 
   build:wasm:
     internal: true

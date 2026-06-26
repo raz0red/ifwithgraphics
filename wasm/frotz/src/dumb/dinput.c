@@ -28,8 +28,15 @@
 #include <emscripten.h>
 #endif
 
+#ifdef IFWG
 extern void ifwg_yield (void);
 extern void ifwg_yield_key (void);
+#endif
+
+#if defined(IFWG_MONITOR)
+extern void ifwg_dumb_get_room_name (char *buf, int size);
+extern const char *ifwg_dumb_get_description (void);
+#endif
 
 extern f_setup_t f_setup;
 
@@ -423,7 +430,9 @@ zchar os_read_key (int timeout, bool show_cursor)
 
 	if (read_key_buffer[0] == '\0') {
 		dumb_show_screen(show_cursor);
+#ifdef IFWG
 		ifwg_yield_key ();
+#endif
 		timed_out = dumb_read_line(read_key_buffer, NULL,
 			show_cursor, timeout, INPUT_CHAR, NULL);
 		/* An empty input line is reported as a single CR.
@@ -471,7 +480,19 @@ zchar os_read_line (int UNUSED (max), zchar *buf, int timeout, int UNUSED(width)
 
 	if (read_line_buffer[0] == '\0') {
 		dumb_show_screen(TRUE);
+#ifdef IFWG
 		ifwg_yield ();
+#endif
+#ifdef IFWG_MONITOR
+		{
+			char _ifwg_title[256];
+			ifwg_dumb_get_room_name(_ifwg_title, sizeof(_ifwg_title));
+			const char *_ifwg_desc = ifwg_dumb_get_description();
+			fprintf(stdout, "<<<IFWG:%s>>>\n%s\n<<<IFWG_READY>>>\n",
+			        _ifwg_title, _ifwg_desc ? _ifwg_desc : "");
+			fflush(stdout);
+		}
+#endif
 		timed_out = dumb_read_line(read_line_buffer, NULL, TRUE,
 			timeout, buf[0] ? INPUT_LINE_CONTINUED : INPUT_LINE,
 			buf);
