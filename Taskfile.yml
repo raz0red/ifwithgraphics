@@ -1,0 +1,38 @@
+version: "3"
+
+# IFWG build/dev tasks.
+# Only requirement: https://taskfile.dev — everything else runs inside Docker.
+#
+# Common workflows:
+#   task build    Build WASM interpreter and copy to player/wasm/
+#   task lint     Run ESLint on player JS
+#   task serve    Serve locally at http://localhost:5173
+#   task clean    Remove build artifacts
+
+vars:
+  EMSDK_IMAGE:  emscripten/emsdk:3.1.1
+  NODE_IMAGE:   node:20-alpine
+  NGINX_IMAGE:  nginx:alpine
+  EMSDK_RUN:    docker run --rm -v "{{.ROOT_DIR}}:/src" -w /src/wasm {{.EMSDK_IMAGE}}
+  NODE_RUN:     docker run --rm -v "{{.ROOT_DIR}}/player:/src" -w /src {{.NODE_IMAGE}}
+
+tasks:
+  default:
+    silent: true
+    cmd: task --list
+
+  build:
+    desc: Build WASM interpreter and copy to player/wasm/
+    cmd: "{{.EMSDK_RUN}} make"
+
+  lint:
+    desc: Run ESLint on player JS
+    cmd: "{{.NODE_RUN}} sh -c 'npm install --silent && npm run lint'"
+
+  serve:
+    desc: Serve at http://localhost:5173 (player at /player/)
+    cmd: docker run --rm -p 5173:80 -v "{{.ROOT_DIR}}:/usr/share/nginx/html:ro" {{.NGINX_IMAGE}}
+
+  clean:
+    desc: Remove build artifacts
+    cmd: "{{.EMSDK_RUN}} make clean"

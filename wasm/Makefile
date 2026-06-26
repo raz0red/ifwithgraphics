@@ -5,8 +5,8 @@ BRIDGE_DIR := bridge
 ZTOOLS_DIR := ztools/source
 FROTZ_COMMON_DIR := frotz/src/common
 FROTZ_DUMB_DIR := frotz/src/dumb
-BUILDER_WASM_DIR := ../../builder/wasm
-PLAYER_WASM_DIR  := ../../player/wasm
+BUILDER_WASM_DIR := ../builder/wasm
+PLAYER_WASM_DIR  := ../player/wasm
 
 OUT_JS         := $(BUILD_DIR)/ifwg.js
 PUBLIC_JS      := $(BUILDER_WASM_DIR)/ifwg.js
