@@ -30,7 +30,7 @@ tasks:
 
   build:wasm:
     internal: true
-    cmd: "{{.EMSDK_RUN}} make"
+    cmd: "{{.EMSDK_RUN}} make install"
 
   build:js:
     internal: true

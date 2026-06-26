@@ -73,9 +73,16 @@ FROTZ_CFLAGS := \
 EXPORTED_FUNCTIONS := ["_ifwg_inspect_dump_header","_ifwg_inspect_dump_objects","_ifwg_inspect_dump_tree","_ifwg_inspect_dump_dictionary","_ifwg_inspect_dump_disassembly","_ifwg_inspect_find_text","_ifwg_inspect_dump_full","_ifwg_free_string","_ifwg_interp_start","_ifwg_interp_step","_malloc","_free"]
 EXPORTED_RUNTIME_METHODS := ["FS","UTF8ToString","lengthBytesUTF8","stringToUTF8"]
 
-.PHONY: all clean
+.PHONY: all install clean
 
-all: $(PUBLIC_JS) $(PUBLIC_WASM) $(PLAYER_JS) $(PLAYER_WASM_F)
+all: $(OUT_JS)
+
+install: all
+	mkdir -p $(PLAYER_WASM_DIR) $(BUILDER_WASM_DIR)
+	cp $(BUILD_DIR)/ifwg.js   $(PLAYER_WASM_DIR)/ifwg.js
+	cp $(BUILD_DIR)/ifwg.wasm $(PLAYER_WASM_DIR)/ifwg.wasm
+	cp $(BUILD_DIR)/ifwg.js   $(BUILDER_WASM_DIR)/ifwg.js
+	cp $(BUILD_DIR)/ifwg.wasm $(BUILDER_WASM_DIR)/ifwg.wasm
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
@@ -151,17 +158,6 @@ $(OUT_JS): $(BRIDGE_SOURCES) $(ZTOOLS_SOURCES) $(FROTZ_SOURCES) $(TXD_OBJ) $(FRO
 		-s 'EXPORTED_FUNCTIONS=$(EXPORTED_FUNCTIONS)' \
 		-o $(OUT_JS)
 
-$(PUBLIC_JS): $(OUT_JS) | $(BUILDER_WASM_DIR)
-	cp $(BUILD_DIR)/ifwg.js $(BUILDER_WASM_DIR)/ifwg.js
-
-$(PUBLIC_WASM): $(OUT_JS) | $(BUILDER_WASM_DIR)
-	cp $(BUILD_DIR)/ifwg.wasm $(BUILDER_WASM_DIR)/ifwg.wasm
-
-$(PLAYER_JS): $(OUT_JS) | $(PLAYER_WASM_DIR)
-	cp $(BUILD_DIR)/ifwg.js $(PLAYER_WASM_DIR)/ifwg.js
-
-$(PLAYER_WASM_F): $(OUT_JS) | $(PLAYER_WASM_DIR)
-	cp $(BUILD_DIR)/ifwg.wasm $(PLAYER_WASM_DIR)/ifwg.wasm
 
 clean:
 	rm -rf $(BUILD_DIR)
