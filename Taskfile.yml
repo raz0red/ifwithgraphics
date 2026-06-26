@@ -39,6 +39,7 @@ tasks:
           rm -rf /src/dist && \
           mkdir -p /src/dist/wasm /src/dist/prompt && \
           cp /src/player/index.html /src/player/player.css /src/dist/ && \
+          cp -r /src/player/js /src/dist/js && \
           cp /src/player/wasm/ifwg.js /src/player/wasm/ifwg.wasm /src/dist/wasm/ && \
           cp /src/player/dist/ifwg-player.js /src/dist/ && \
           cp /src/player/prompt/* /src/dist/prompt/ \
