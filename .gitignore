@@ -13,6 +13,9 @@ player/wasm/
 player/node_modules/
 player/dist/
 
+# Build output
+dist/
+
 # OS / editor
 .DS_Store
 Thumbs.db
