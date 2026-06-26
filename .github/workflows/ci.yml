@@ -22,15 +22,15 @@ jobs:
       - name: Lint
         run: task lint
 
-      - name: Build WASM
-        run: task build
+      - name: Dist
+        run: task dist
 
-      - name: Package player
-        run: zip -r dist/ifwg-player.zip player/ --exclude "player/node_modules/*"
+      - name: Zip
+        run: zip -r ifwg-player.zip dist/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ifwg-player
-          path: dist/ifwg-player.zip
+          path: ifwg-player.zip
           retention-days: 30

@@ -5,6 +5,7 @@ version: "3"
 #
 # Common workflows:
 #   task build    Lint, build WASM, and bundle minified player JS
+#   task dist     Build and assemble deployable package in dist/
 #   task lint     Run ESLint on player JS
 #   task serve    Serve locally at http://localhost:5173
 #   task clean    Remove build artifacts
@@ -13,6 +14,7 @@ vars:
   EMSDK_IMAGE:  emscripten/emsdk:3.1.1
   NODE_IMAGE:   node:20-alpine
   NGINX_IMAGE:  nginx:alpine
+  ALPINE_RUN:   docker run --rm -v "{{.ROOT_DIR}}:/src" alpine
   EMSDK_RUN:    docker run --rm -v "{{.ROOT_DIR}}:/src" -w /src/wasm {{.EMSDK_IMAGE}}
   NODE_RUN:     docker run --rm -v "{{.ROOT_DIR}}/player:/src" -w /src {{.NODE_IMAGE}}
 
@@ -27,6 +29,20 @@ tasks:
       - task: lint
       - task: build:wasm
       - task: build:js
+
+  dist:
+    desc: Build and assemble deployable player package in dist/
+    cmds:
+      - task: build:wasm
+      - task: build:js
+      - "{{.ALPINE_RUN}} sh -c '\
+          rm -rf /src/dist && \
+          mkdir -p /src/dist/wasm /src/dist/prompt && \
+          cp /src/player/index.html /src/player/player.css /src/dist/ && \
+          cp /src/player/wasm/ifwg.js /src/player/wasm/ifwg.wasm /src/dist/wasm/ && \
+          cp /src/player/dist/ifwg-player.js /src/dist/ && \
+          cp /src/player/prompt/* /src/dist/prompt/ \
+        '"
 
   build:wasm:
     internal: true
@@ -48,4 +64,6 @@ tasks:
 
   clean:
     desc: Remove build artifacts
-    cmd: "{{.EMSDK_RUN}} make clean"
+    cmds:
+      - "{{.EMSDK_RUN}} make clean"
+      - "{{.ALPINE_RUN}} rm -rf /src/dist"
