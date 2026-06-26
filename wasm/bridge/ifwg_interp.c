@@ -32,6 +32,7 @@ extern void os_reset_screen (void);
 
 extern void ifwg_dumb_get_room_name (char *buf, int size);
 extern void ifwg_dumb_get_status_right (char *buf, int size);
+extern void ifwg_dumb_get_cursor_prompt (char *buf, int size);
 extern const char *ifwg_dumb_get_description (void);
 extern void ifwg_dumb_reset_description (void);
 extern void ifwg_interp_set_line_input (const char *input);
@@ -47,6 +48,7 @@ static void do_yield (int key_press_mode)
 {
     char title[256];
     char status_right[128];
+    char cursor_prompt[256];
     zword globals_addr, location;
 
     if (!ifwg_interp_active)
@@ -54,6 +56,7 @@ static void do_yield (int key_press_mode)
 
     ifwg_dumb_get_room_name (title, sizeof (title));
     ifwg_dumb_get_status_right (status_right, sizeof (status_right));
+    ifwg_dumb_get_cursor_prompt (cursor_prompt, sizeof (cursor_prompt));
 
     /* V1-V3: global 0 is spec-mandated as the current location.
      * V4+: no mandated location global, so scan the object table for an
@@ -66,16 +69,19 @@ static void do_yield (int key_press_mode)
     }
 
     /* Pass isKeyPress=true when called from os_read_key so the player UI
-       shows "press any key" and accepts any keydown instead of the prompt. */
+       shows "press any key" and accepts any keydown instead of the prompt.
+       cursor_prompt carries any inline game prompt (e.g. "? (y/n) >" or
+       "(Please type YES or NO.)") that dumb_show_screen skips as redundant. */
     EM_ASM({
-        var id         = $0;
-        var title      = UTF8ToString($1);
-        var desc       = UTF8ToString($2);
-        var status     = UTF8ToString($3);
-        var isKeyPress = !!$4;
+        var id            = $0;
+        var title         = UTF8ToString($1);
+        var desc          = UTF8ToString($2);
+        var status        = UTF8ToString($3);
+        var isKeyPress    = !!$4;
+        var cursorPrompt  = UTF8ToString($5);
         if (typeof window !== 'undefined' && typeof window.enteredRoom === 'function')
-            window.enteredRoom(id, title, desc, status, isKeyPress);
-    }, (int) location, title, ifwg_dumb_get_description (), status_right, key_press_mode);
+            window.enteredRoom(id, title, desc, status, isKeyPress, cursorPrompt);
+    }, (int) location, title, ifwg_dumb_get_description (), status_right, key_press_mode, cursor_prompt);
 
     ifwg_dumb_reset_description ();
 

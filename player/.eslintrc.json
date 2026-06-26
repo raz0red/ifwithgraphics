@@ -4,14 +4,14 @@
     "es2020": true
   },
   "parserOptions": {
-    "ecmaVersion": 2020,
+    "ecmaVersion": "latest",
     "sourceType": "module"
   },
   "extends": "eslint:recommended",
   "globals": {
     "createIfwgModule": "readonly"
   },
-  "ignorePatterns": ["dist/", "wasm/"],
+  "ignorePatterns": ["dist/", "wasm/", "js/imagegen/index.js"],
   "rules": {
     "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }]
   }

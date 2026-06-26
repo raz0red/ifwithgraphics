@@ -51,7 +51,11 @@ export const IFWGPlayer = {
       awaitingKeyPress: false,
       started:          false,
       storyPath:        null,
-      currentRoomKey:   null
+      currentRoomKey:   null,
+      pendingRoomKey:   null,
+      pendingTitle:     null,
+      pendingDesc:      null,
+      pendingTimer:     null
     };
 
     /* ── UI modules ─────────────────────────────────────────────────── */
@@ -60,43 +64,62 @@ export const IFWGPlayer = {
     const imageUI = createImageUI(el, state, textUI.calibrateTextHeight);
 
     /* ── Room callback ───────────────────────────────────────────────── */
-    function onRoomEntered(id, title, description, statusRight, isKeyPress) {
+    function onRoomEntered(id, title, description, statusRight, isKeyPress, cursorPrompt) {
       state.awaitingKeyPress     = !!isKeyPress;
       el.statusRoom.textContent  = title;
       el.statusScore.textContent = statusRight || "";
+      el.cmdPrompt.textContent   = cursorPrompt ? cursorPrompt : ">";
 
-      const roomKey   = id > 0 ? String(id) : (title || "0");
+      const roomKey = id > 0 ? String(id) : null;
+
       const wordCount = description.trim().split(/\s+/).length;
 
-      console.info("[IFWG] room entered — id:%o title:%o roomKey:%o wordCount:%o same:%o",
-        id, title, roomKey, wordCount, roomKey === state.currentRoomKey);
+      console.info("[IFWG] room entered — id:%o title:%o roomKey:%o wordCount:%o same:%o isKeyPress:%o cursorPrompt:%o desc:%o",
+        id, title, roomKey, wordCount, roomKey === state.currentRoomKey, isKeyPress, cursorPrompt, description.substring(0, 80));
 
-      if (roomKey !== state.currentRoomKey) {
-        state.currentRoomKey = roomKey;
-        const genKey      = roomKey;
-        const canGenerate = wordCount >= 10;
-        console.info("[IFWG] image lookup — roomKey:%o canGenerate:%o", roomKey, canGenerate);
-        /* Pass onCacheMiss only when the description is substantial enough
-           to warrant an API call. Cache hits are always served. */
-        ImageGen.generate(
-          roomKey, title, description,
-          canGenerate ? () => {
+      if (roomKey) {
+        const isNewRoom = roomKey !== state.currentRoomKey;
+        if (isNewRoom) {
+          state.currentRoomKey = roomKey;
+          if (state.pendingTimer) { clearTimeout(state.pendingTimer); state.pendingTimer = null; }
+        }
+        /* Debounce only during the settling window: on room change, or while the timer
+           is still running (preamble yields same room twice before the real description). */
+        if (isNewRoom || state.pendingTimer !== null) {
+          state.pendingRoomKey = roomKey;
+          state.pendingTitle   = title;
+          state.pendingDesc    = description;
+          if (state.pendingTimer) clearTimeout(state.pendingTimer);
+          state.pendingTimer = setTimeout(() => {
+          state.pendingTimer = null;
+          const genKey = state.pendingRoomKey;
+          if (genKey !== state.currentRoomKey) return;
+          const desc      = state.pendingDesc;
+          const ttl       = state.pendingTitle;
+          const wc        = desc.trim().split(/\s+/).length;
+          const canGenerate = wc >= 10;
+          console.info("[IFWG] image lookup — roomKey:%o canGenerate:%o", genKey, canGenerate);
+          ImageGen.generate(
+            genKey, ttl, desc,
+            canGenerate ? () => {
+              if (genKey !== state.currentRoomKey) return;
+              console.info("[IFWG] cache miss — starting generation for %o", genKey);
+              imageUI.showPlaceholder("LOADING IMAGE");
+            } : null
+          )
+          .then(url => {
             if (genKey !== state.currentRoomKey) return;
-            console.info("[IFWG] cache miss — starting generation for %o", roomKey);
-            imageUI.showPlaceholder("LOADING IMAGE");
-          } : null
-        )
-        .then(url => {
-          if (genKey !== state.currentRoomKey) return;
-          console.info("[IFWG] image result — roomKey:%o url:%o", roomKey, url ? url.substring(0, 60) : null);
-          if (url) imageUI.showImage(url, genKey);
-          else     imageUI.showPlaceholder("");
-        })
-        .catch(err => {
-          if (genKey !== state.currentRoomKey) return;
-          console.error("ImageGen error:", err?.message ?? err);
-          imageUI.showPlaceholder("ERROR");
-        });
+            console.info("[IFWG] image result — roomKey:%o url:%o", genKey, url ? url.substring(0, 60) : null);
+            if (url) imageUI.showImage(url, genKey);
+            else     imageUI.showPlaceholder("");
+          })
+          .catch(err => {
+            if (genKey !== state.currentRoomKey) return;
+            console.error("ImageGen error:", err?.message ?? err);
+            imageUI.showPlaceholder("ERROR");
+          });
+          }, 150);
+        }
       }
 
       const processed = processDescription(description);

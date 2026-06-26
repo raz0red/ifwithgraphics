@@ -96,6 +96,7 @@ static enum {
 static char *rv_names[] = {"NONE", "DOUBLESTRIKE", "UNDERLINE", "CAPS"};
 static char rv_blank_str[5] = {' ', 0, 0, 0, 0};
 
+#if defined(IFWG) || defined(IFWG_MONITOR)
 /* ---- IFWG object-name scanner ---- */
 #include <strings.h>
 
@@ -299,6 +300,26 @@ void ifwg_dumb_get_status_right (char *buf, int size)
         buf[rlen] = '\0';
     }
 }
+
+/* Return the text on the cursor row (the game's inline prompt, e.g. "? (y/n) >" or
+ * "(Please type YES or NO.)").  dumb_show_screen skips this row as "redundant with the
+ * prompt", so it never reaches our description buffer.  We read it directly here so the
+ * JS player can display it in the input-prompt area instead of a bare ">". */
+void ifwg_dumb_get_cursor_prompt (char *buf, int size)
+{
+    int col, len = 0;
+    cell_t *row;
+    if (!screen_data || size <= 0) { if (size > 0) buf[0] = '\0'; return; }
+    row = screen_data + cursor_row * z_header.screen_cols;
+    for (col = 0; col < cursor_col && col < z_header.screen_cols && len < size - 1; col++) {
+        char c = (char) row[col].c;
+        if (c >= 32 && c <= 126)
+            buf[len++] = c;
+    }
+    buf[len] = '\0';
+    while (len > 0 && buf[len - 1] == ' ') buf[--len] = '\0';
+}
+#endif /* IFWG || IFWG_MONITOR */
 
 /*
  * Local functions
@@ -688,14 +709,18 @@ static void show_row(int r)
 
 		for (c = 0; c <= last; c++) {
 			show_cell(dumb_row(r)[c]);
+#if defined(IFWG) || defined(IFWG_MONITOR)
 			if (r > 0) {
 				char ch = (char) dumb_row(r)[c].c;
 				if (ch >= 32 && ch <= 126)
 					ifwg_desc_append (ch);
 			}
+#endif
 		}
+#if defined(IFWG) || defined(IFWG_MONITOR)
 		if (r > 0)
 			ifwg_desc_append ('\n');
+#endif
 	}
 	show_cell(make_cell (0, DEFAULT_DUMB_COLOUR, DEFAULT_DUMB_COLOUR, '\n'));
 } /* show_row */

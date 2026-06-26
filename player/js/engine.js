@@ -6,7 +6,9 @@ window.prompt = (m, d) => m === "Input: " ? "" : _np?.call(window, m, d) ?? "";
 export function createEngine(wasmPath, onRoomEntered, onSave) {
   let moduleInstance = null;
 
-  /* The C bridge calls window.enteredRoom() via EM_ASM on every yield. */
+  /* The C bridge calls window.enteredRoom() via EM_ASM on every yield.
+     6th arg cursorPrompt carries the game's inline prompt text (e.g. "? (y/n) >")
+     that dumb_show_screen skips — the player uses it to update the input prompt label. */
   window.enteredRoom = onRoomEntered;
 
   /* Called by EM_ASM in fastmem.c z_save after the save file is written. */

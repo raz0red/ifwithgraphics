@@ -1,0 +1,24 @@
+{
+  "gemini": {
+    "label": "Google Gemini",
+    "keyPlaceholder": "AI Studio key…",
+    "models": [
+      { "value": "gemini-3.1-flash-image", "label": "Gemini 3.1 Flash" },
+      { "value": "gemini-3-pro-image",     "label": "Gemini 3 Pro" },
+      { "value": "gemini-2.5-flash-image", "label": "Gemini 2.5 Flash" }
+    ]
+  },
+  "openai": {
+    "label": "OpenAI",
+    "keyPlaceholder": "sk-…",
+    "models": [
+      { "value": "gpt-image-2-2026-04-21", "label": "GPT Image 2 (Apr 2026)" },
+      { "value": "gpt-image-2",            "label": "GPT Image 2 (latest)" }
+    ]
+  },
+  "none": {
+    "label": "Disabled",
+    "keyPlaceholder": "",
+    "models": []
+  }
+}
