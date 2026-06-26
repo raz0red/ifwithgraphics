@@ -184,7 +184,7 @@ ImageGen.setSettings(new ImageGenSettings("openai", { openai: "sk-…", gemini: 
 
 | Provider | Best for | Notes |
 |----------|----------|-------|
-| OpenAI (`gpt-image-2`) | Retro Apple II pixel art | Produces the most authentic dithered pixel art aesthetic; reference images (prompt1/2.png) guide style directly. Recommended for the classic theme. |
+| OpenAI (`gpt-image-2-2026-04-21`) | Retro Apple II pixel art | Produces the most authentic dithered pixel art aesthetic; reference images (prompt1/2.png) guide style directly. Recommended for the classic theme. |
 | Gemini | Realistic / cinematic | Faster and cheaper; generates natively at 16:9 so no letterbox crop is needed. Better for photorealistic styles. |
 
 ### Save / Restore
