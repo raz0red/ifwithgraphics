@@ -59,13 +59,6 @@ Gemini is faster and cheaper and works well for a more painterly or cinematic lo
 
 ---
 
-## Running It
-
-The player runs entirely in the browser. Serve the repo root with any static file server and open `/player/` in a browser, then drag in a story file.
-
-To rebuild the WASM interpreter from source, Docker and Emscripten are required. See the `wasm/` directory for the Makefile.
-
----
 
 ## Roadmap
 
