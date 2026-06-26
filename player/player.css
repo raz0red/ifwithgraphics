@@ -6,8 +6,8 @@ html {
 
 :root {
   --border     : 2px;
-  --player-w   : min(100dvw, calc(100dvh * 4 / 3));
-  --player-h   : calc(var(--player-w) * 3 / 4);
+  --player-w   : min(100dvw, calc(100dvh * 1.14));
+  --player-h   : calc(var(--player-w) / 1.14);
   --status-h   : calc(var(--player-h) * 0.075);
   --text-h     : calc(var(--player-h) * 0.26);
   --input-h    : calc(var(--player-h) * 0.07);
@@ -101,6 +101,7 @@ html, body {
   background: #111;
   border: 1px solid #444;
   color: #ccc;
+  color-scheme: dark;
   font-family: 'VT323', monospace;
   font-size: 1.3rem;
   letter-spacing: 0.05em;
@@ -111,7 +112,7 @@ html, body {
 .setting-select:focus,
 .setting-input:focus { border-color: #888; color: #fff; }
 
-/* ── Player — 4:3 landscape container ─────────── */
+/* ── Player — 1.14:1 landscape container ──────── */
 .player {
   width: var(--player-w);
   height: var(--player-h);
@@ -244,13 +245,10 @@ html, body {
   color: #33ff33;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  text-align: center;
+  width: 100%;
 }
 
-#ifwg-dot-label {
-  display: inline-block;
-  width: 3ch;
-  text-align: left;
-}
 
 /* ── Description text ─────────────────────────── */
 .scene-text {

@@ -18,12 +18,13 @@
       <div class="drop-settings">
         <div class="setting-row">
           <label class="setting-label" for="ifwg-ai-provider">IMAGE GEN</label>
-          <select id="ifwg-ai-provider" class="setting-select">
-            <option value="openai">OpenAI DALL-E 3</option>
-            <option value="none">Disabled</option>
-          </select>
+          <select id="ifwg-ai-provider" class="setting-select"></select>
         </div>
-        <div class="setting-row">
+        <div class="setting-row" id="ifwg-model-row">
+          <label class="setting-label" for="ifwg-ai-model">MODEL</label>
+          <select id="ifwg-ai-model" class="setting-select"></select>
+        </div>
+        <div class="setting-row" id="ifwg-key-row">
           <label class="setting-label" for="ifwg-ai-key">API KEY</label>
           <input id="ifwg-ai-key" class="setting-input" type="password"
                  placeholder="sk-…" autocomplete="off" spellcheck="false">
@@ -36,11 +37,11 @@
 
     <script src="./wasm/ifwg.js"></script>
 
-    <script type="module">
+<script type="module">
       /* Dev — individual modules (no build step required) */
-      import { IFWGPlayer }                  from "./js/core.js";
-      import { StandaloneConfig }           from "./js/config.js";
-      import { ImageGen, ImageGenSettings } from "./js/imagegen/index.js";
+      import { IFWGPlayer }                                    from "./js/core.js";
+      import { StandaloneConfig }                             from "./js/config.js";
+      import { ImageGen, ImageGenSettings, PROVIDERS }  from "./js/imagegen/index.js";
 
       /* Prod — minified bundle (run: npm run build)
       import { IFWGPlayer, StandaloneConfig, ImageGen, ImageGenSettings } from "./dist/ifwg-player.js";
@@ -52,18 +53,51 @@
       const launcher   = document.getElementById("launcher");
       const storyFile  = document.getElementById("ifwg-story-file");
       const aiProvider = document.getElementById("ifwg-ai-provider");
+      const aiModel    = document.getElementById("ifwg-ai-model");
       const aiKey      = document.getElementById("ifwg-ai-key");
+      const modelRow   = document.getElementById("ifwg-model-row");
+      const keyRow     = document.getElementById("ifwg-key-row");
+
+      Object.entries(PROVIDERS).forEach(([value, { label }]) => {
+        const opt = document.createElement("option");
+        opt.value       = value;
+        opt.textContent = label;
+        aiProvider.appendChild(opt);
+      });
+
+      function populateModels(provider, selectedModel) {
+        const { models = [], keyPlaceholder = "…" } = PROVIDERS[provider] || {};
+        aiModel.innerHTML = models.map(m =>
+          `<option value="${m.value}"${m.value === selectedModel ? " selected" : ""}>${m.label}</option>`
+        ).join("");
+        modelRow.hidden   = models.length === 0;
+        keyRow.hidden     = models.length === 0;
+        aiKey.placeholder = keyPlaceholder;
+      }
 
       const imgSettings = ImageGen.getSettings();
       aiProvider.value  = imgSettings.getProvider();
+      if (!aiProvider.value) aiProvider.selectedIndex = 0;
       aiKey.value       = imgSettings.getApiKey();
+      populateModels(aiProvider.value, imgSettings.getModel());
 
       function applyImageSettings() {
-        ImageGen.setSettings(new ImageGenSettings(aiProvider.value, aiKey.value.trim()));
+        const s = ImageGen.getSettings();
+        s.setProvider(aiProvider.value);
+        s.setApiKey(aiKey.value.trim());
+        s.setModel(aiModel.value);
+        ImageGen.setSettings(s);
       }
-      aiProvider.addEventListener("change", applyImageSettings);
-      aiKey.addEventListener("change",      applyImageSettings);
-      aiKey.addEventListener("blur",        applyImageSettings);
+      aiProvider.addEventListener("change", () => {
+        const s = ImageGen.getSettings();
+        s.setProvider(aiProvider.value);
+        aiKey.value = s.getApiKey();
+        populateModels(aiProvider.value, "");
+        applyImageSettings();
+      });
+      aiModel.addEventListener("change", applyImageSettings);
+      aiKey.addEventListener("change",   applyImageSettings);
+      aiKey.addEventListener("blur",     applyImageSettings);
 
       function loadFile(file) {
         launcher.style.display = "none";

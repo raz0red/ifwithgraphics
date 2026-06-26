@@ -1,10 +1,8 @@
 export function createImageUI(el, state, onResize) {
   /* el: sceneWrap, sceneImg, scenePlaceholder, placeholderLabel, diskLed, dotLabel, player */
 
-  let currentImageAR    = null;
-  let playerWidthLocked = false;
-  let ledTimer          = null;
-  let dotTimer          = null;
+  let ledTimer = null;
+  let dotTimer = null;
 
   function startDiskAnimation() {
     let dotCount = 0;
@@ -48,17 +46,7 @@ export function createImageUI(el, state, onResize) {
     el.dotLabel.textContent = "";
   }
 
-  function applyPlayerWidth(animated) {
-    if (!currentImageAR) return;
-    const newW = Math.min(el.sceneWrap.offsetHeight * currentImageAR, window.innerWidth);
-    if (animated) {
-      el.player.style.transition = "width 0.5s ease";
-      setTimeout(() => { el.player.style.transition = ""; }, 550);
-    }
-    el.player.style.width = `${newW}px`;
-  }
-
-  function showPlaceholder(label) {
+function showPlaceholder(label) {
     stopDiskAnimation();
     el.sceneImg.removeAttribute("src");
     el.sceneImg.hidden                = true;
@@ -92,11 +80,6 @@ export function createImageUI(el, state, onResize) {
       el.scenePlaceholder.style.display = "none";
       el.sceneImg.hidden = false;
       requestAnimationFrame(() => {
-        if (!playerWidthLocked) {
-          currentImageAR    = el.sceneImg.naturalWidth / el.sceneImg.naturalHeight;
-          playerWidthLocked = true;
-          applyPlayerWidth(true);
-        }
         revealWithBlinds();
       });
     };
@@ -105,7 +88,6 @@ export function createImageUI(el, state, onResize) {
   }
 
   window.addEventListener("resize", () => {
-    applyPlayerWidth(false);
     if (onResize) onResize();
   });
 
@@ -114,6 +96,5 @@ export function createImageUI(el, state, onResize) {
     showPlaceholder,
     startDiskAnimation,
     stopDiskAnimation,
-    applyPlayerWidth
   };
 }

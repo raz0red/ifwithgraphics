@@ -67,7 +67,8 @@ FROTZ_HASH := $(FROTZ_COMMON_DIR)/hash.h
 FROTZ_CFLAGS := \
 	-I $(FROTZ_COMMON_DIR) \
 	-I $(FROTZ_DUMB_DIR) \
-	-D_POSIX_C_SOURCE=200809L
+	-D_POSIX_C_SOURCE=200809L \
+	-DIFWG
 
 EXPORTED_FUNCTIONS := ["_ifwg_inspect_dump_header","_ifwg_inspect_dump_objects","_ifwg_inspect_dump_tree","_ifwg_inspect_dump_dictionary","_ifwg_inspect_dump_disassembly","_ifwg_inspect_find_text","_ifwg_inspect_dump_full","_ifwg_free_string","_ifwg_interp_start","_ifwg_interp_step","_malloc","_free"]
 EXPORTED_RUNTIME_METHODS := ["FS","UTF8ToString","lengthBytesUTF8","stringToUTF8"]

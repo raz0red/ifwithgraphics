@@ -157,7 +157,16 @@ function generate(roomId, title, description, onCacheMiss) {
     if (!provider) return Promise.resolve(null);
 
     const prompt = buildPrompt(title, description);
-    return provider.generate(settings.getApiKey(), prompt, settings.getModel())
+    const attempt = (remaining) =>
+      provider.generate(settings.getApiKey(), prompt, settings.getModel())
+        .catch(err => {
+          if (remaining > 0) {
+            console.warn("[IFWG] image gen failed, retrying (%o left) — %o", remaining, err?.message ?? err);
+            return attempt(remaining - 1);
+          }
+          throw err;
+        });
+    return attempt(2)
       .then(url => cropAndCompress(url))
       .then(webp => {
         console.info("[IFWG] image generated — roomId:%o webp:%okb", roomId, _kb(webp));

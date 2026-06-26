@@ -1143,7 +1143,7 @@ void z_save(void)
 		}
 		/* Success */
 		success = 1;
-#ifdef __EMSCRIPTEN__
+#ifdef IFWG
 		EM_ASM({
 			var filename = UTF8ToString($0);
 			if (typeof window !== 'undefined' && typeof window.ifwgOnSave === 'function')
