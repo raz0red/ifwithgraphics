@@ -4,7 +4,7 @@ version: "3"
 # Only requirement: https://taskfile.dev — everything else runs inside Docker.
 #
 # Common workflows:
-#   task build    Build WASM interpreter and copy to player/wasm/
+#   task build    Lint, build WASM, and bundle minified player JS
 #   task lint     Run ESLint on player JS
 #   task serve    Serve locally at http://localhost:5173
 #   task clean    Remove build artifacts
@@ -22,8 +22,19 @@ tasks:
     cmd: task --list
 
   build:
-    desc: Build WASM interpreter and copy to player/wasm/
+    desc: Lint, build WASM interpreter, and bundle minified player JS
+    cmds:
+      - task: lint
+      - task: build:wasm
+      - task: build:js
+
+  build:wasm:
+    internal: true
     cmd: "{{.EMSDK_RUN}} make"
+
+  build:js:
+    internal: true
+    cmd: "{{.NODE_RUN}} sh -c 'npm install --silent && npm run build'"
 
   lint:
     desc: Run ESLint on player JS
