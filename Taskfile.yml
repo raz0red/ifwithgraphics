@@ -41,8 +41,10 @@ tasks:
     cmd: "{{.NODE_RUN}} sh -c 'npm install --silent && npm run lint'"
 
   serve:
-    desc: Serve at http://localhost:5173 (player at /player/)
-    cmd: docker run --rm -p 5173:80 -v "{{.ROOT_DIR}}:/usr/share/nginx/html:ro" {{.NGINX_IMAGE}}
+    desc: "Serve at http://localhost:{port} (default 5173) — override with: task serve port=8787"
+    vars:
+      port: '{{.port | default "5173"}}'
+    cmd: docker run --rm -p {{.port}}:80 -v "{{.ROOT_DIR}}:/usr/share/nginx/html:ro" {{.NGINX_IMAGE}}
 
   clean:
     desc: Remove build artifacts
