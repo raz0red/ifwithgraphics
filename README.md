@@ -35,22 +35,24 @@ The player is fully functional. You can drag and drop any Z-machine story file (
 **Working now:**
 - Z-machine interpreter via [frotz](https://gitlab.com/DavidGriffith/frotz) compiled to WebAssembly (Emscripten)
 - Room detection for V1–V3 games (spec-mandated global 0) and V4+ games (object name lookup)
-- AI image generation via OpenAI — Apple II dithered pixel art, one image per room
+- AI image generation via OpenAI or Gemini — Apple II dithered pixel art, one image per room; automatic retry (up to 2 retries) on API failure
 - Room image caching in IndexedDB — images stored as WebP (0.9 quality); old PNG cache entries automatically migrated on first access; never regenerated unless cleared
 - **Save/restore** — C-side `EM_ASM` hook fires after `z_save`; save bytes persisted to IndexedDB and pre-populated into MEMFS on next load; fully transparent to the player (one slot per game)
 - **Stable game ID** — Z-machine header `release.serial` (e.g. `"119.870917"` for Trinity); stable across different packaging formats, no file hashing
 - **Embeddable player widget** — `IFWGPlayer.create(div, config)` returns `{ loadGame(source) }`; launcher UI (drop zone, settings) lives in the host page, not the player module
+- **Game prompt capture** — when a game prints an inline prompt before waiting for input (e.g. Wishbringer's `(Please type YES or NO.)`), it is captured from the Z-machine screen buffer and displayed in the command row in place of the normal `>` prompt
+- **Description debounce** — some games yield the same room multiple times in quick succession (preamble text before the actual room description); a 150 ms settling window ensures image generation always uses the final, complete description
 - Animated slide transitions between rooms, blind-reveal for new images
 - Line-snapped text pagination (SPACE to scroll, any key for press-any-key prompts)
 - V4 game support — `os_read_key` handled correctly; tested with Trinity and A Mind Forever Voyaging
 - Status bar with room name and score/moves
-- Retro disk LED animation while images generate
+- Retro disk LED animation while images generate; centered loading/error status text
 - Scales to any viewport size via fluid `clamp()`-based typography
 
 **Supported game versions:**
 | Version | Example Games | Room ID method |
 |---------|--------------|----------------|
-| V1–V3 | Zork I/II/III, Hitchhiker's Guide, Planetfall, Enchanter | Global 0 (spec-mandated, always reliable) |
+| V1–V3 | Zork I/II/III, Hitchhiker's Guide, Planetfall, Wishbringer, Enchanter | Global 0 (spec-mandated, always reliable) |
 | V4 | Trinity, A Mind Forever Voyaging, Bureaucracy | Object name lookup; falls back to room title when ID is 0 |
 | V5 | Beyond Zork, Shogun | Object name lookup |
 
@@ -70,7 +72,7 @@ flowchart TD
         CONFIG["js/config.js\nIFWGConfig · StandaloneConfig"]
         DB["js/db.js\nIndexedDB · game-scoped keys"]
         GAME["js/game.js\ncurrent game ID singleton"]
-        IMAGEGEN["js/imagegen/\nImageGen · ImageGenSettings · OpenAI"]
+        IMAGEGEN["js/imagegen/\nImageGen · ImageGenSettings\nOpenAI · Gemini"]
         WASM_JS["wasm/ifwg.js\nEmscripten module loader"]
     end
 
@@ -118,8 +120,10 @@ player/
 │   ├── db.js           ← generic IndexedDB, game-scoped key prefix
 │   ├── game.js         ← current game ID singleton
 │   ├── imagegen/
-│   │   ├── index.js    ← ImageGen, ImageGenSettings
-│   │   └── openai.js   ← OpenAI DALL-E provider
+│   │   ├── index.js    ← ImageGen, ImageGenSettings, prompt builder
+│   │   ├── openai.js   ← OpenAI provider
+│   │   ├── gemini.js   ← Gemini provider
+│   │   └── providers.json ← provider metadata (models, labels)
 │   └── ui/
 │       ├── image.js    ← scene image, placeholder, LED animation
 │       ├── input.js    ← command input, cursor
@@ -166,13 +170,22 @@ Image settings are owned by `ImageGen`, not by the config. The host page reads a
 import { ImageGen, ImageGenSettings } from "./js/imagegen/index.js";
 
 const s = ImageGen.getSettings();   // returns ImageGenSettings
-s.getProvider();                    // "openai" | "none"
-s.getApiKey();                      // "sk-…"
+s.getProvider();                    // "openai" | "gemini"
+s.getApiKey();                      // key for the currently selected provider
+s.getModel();                       // selected model, or provider default
 
-ImageGen.setSettings(new ImageGenSettings("openai", "sk-…"));
+// API keys are stored per-provider; switching providers does not clear other keys
+ImageGen.setSettings(new ImageGenSettings("openai", { openai: "sk-…", gemini: "AI…" }));
 ```
 
-`ImageGen.generate()` always checks the IndexedDB cache first. API calls only happen on a cache miss when the description is substantial enough (≥ 10 words). Cached images are served regardless of whether an API key is configured.
+`ImageGen.generate()` always checks the IndexedDB cache first. API calls only happen on a cache miss when the description is substantial enough (≥ 10 words). Cached images are served regardless of whether an API key is configured. On failure the call is retried up to 2 times before surfacing an error.
+
+**Provider notes:**
+
+| Provider | Best for | Notes |
+|----------|----------|-------|
+| OpenAI (`gpt-image-1`) | Retro Apple II pixel art | Produces the most authentic dithered pixel art aesthetic; reference images (prompt1/2.png) guide style directly. Recommended for the classic theme. |
+| Gemini | Realistic / cinematic | Faster and cheaper; generates natively at 16:9 so no letterbox crop is needed. Better for photorealistic styles. |
 
 ### Save / Restore
 
@@ -219,9 +232,11 @@ sequenceDiagram
     Frotz->>Room: executes opcodes...
     Room->>Frotz: os_read_line / os_read_key
     Frotz->>Bridge: ifwg_yield() / ifwg_yield_key()
-    Bridge->>JS: window.enteredRoom(id, title, desc, status, isKeyPress)
+    Bridge->>Bridge: ifwg_dumb_get_cursor_prompt()
+    Note over Bridge: reads cursor row from screen buffer\ncaptures game prompt text (e.g. "Please type YES or NO.")
+    Bridge->>JS: window.enteredRoom(id, title, desc, status, isKeyPress, cursorPrompt)
     Note over Bridge: longjmp → returns from setjmp
-    JS-->>JS: render description, generate image, await input
+    JS-->>JS: render description, update prompt label, generate image, await input
     JS->>Bridge: _ifwg_interp_step(command)
     Bridge->>Frotz: populate input buffer
     Bridge->>Frotz: interpret() resumes at read opcode
@@ -233,14 +248,14 @@ sequenceDiagram
 
 ```mermaid
 flowchart TD
-    ROOM["Room entered\n(new roomKey)"]
+    ROOM["Room entered\n(new roomKey, id > 0)"]
     WC{"wordCount\n≥ 10?"}
     IDB{"IndexedDB\ncache hit?"}
     WEBP{"Already\nWebP?"}
     SHOW["Display image\n(blind-reveal animation)"]
     MIGRATE["Crop + compress\nto WebP · update cache"]
     KEY{"API key\nconfigured?"}
-    GEN["Call OpenAI API\n(Apple II pixel art prompt\n+ 2 reference images)"]
+    GEN["Call provider API\n(prompt + reference images)\nRetry up to 2×"]
     PROCESS["Crop black bars\n+ compress to WebP"]
     CACHE["Store in IndexedDB"]
     PLACEHOLDER["Show empty placeholder"]
@@ -254,12 +269,13 @@ flowchart TD
     WC -->|Yes| KEY
     KEY -->|No| PLACEHOLDER
     KEY -->|Yes| GEN
-    GEN --> PROCESS
+    GEN -->|success| PROCESS
+    GEN -->|all retries failed| PLACEHOLDER
     PROCESS --> CACHE
     CACHE --> SHOW
 ```
 
-> **Note:** The IndexedDB cache is always checked first — cache hits are served even without an API key and even when the room description is short (e.g. after a `restore`). Images are stored as WebP (0.9 quality); any older PNG entries are migrated automatically on first access. API generation is only attempted on a cache miss with a substantial description (≥ 10 words).
+> **Note:** The IndexedDB cache is always checked first — cache hits are served even without an API key and even when the room description is short (e.g. after a `restore`). Images are stored as WebP (0.9 quality); any older PNG entries are migrated automatically on first access. API generation is only attempted on a cache miss with a substantial description (≥ 10 words). Rooms with ID 0 (meta-mode screens such as AMFV's Communications Mode) are never sent to image gen.
 
 ---
 
