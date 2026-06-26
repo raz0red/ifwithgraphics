@@ -67,4 +67,4 @@ tasks:
     desc: Remove build artifacts
     cmds:
       - "{{.EMSDK_RUN}} make clean"
-      - "{{.ALPINE_RUN}} rm -rf /src/dist"
+      - "{{.ALPINE_RUN}} rm -rf /src/dist /src/player/dist"
