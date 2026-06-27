@@ -592,6 +592,19 @@ char *os_read_file_name (const char *default_name, int flag)
 		return file_name;
 	}
 #endif
+#if defined(IFWG_MONITOR)
+	/* In monitor mode the caller pipes the filename straight into stdin —
+	 * no prompt, no overwrite check, no extension mangling. */
+	if (flag == FILE_SAVE || flag == FILE_RESTORE) {
+		char buf[INPUT_BUFFER_SIZE];
+		if (!fgets(buf, sizeof(buf), stdin))
+			return NULL;
+		buf[strcspn(buf, "\r\n")] = '\0';
+		strncpy(file_name, buf[0] ? buf : default_name, FILENAME_MAX);
+		file_name[FILENAME_MAX] = '\0';
+		return file_name;
+	}
+#endif
 	char prompt[INPUT_BUFFER_SIZE];
 
 	char fullpath[INPUT_BUFFER_SIZE];

@@ -110,6 +110,13 @@ func (s *Session) Next() (*Room, error) {
 	}, nil
 }
 
+// ReadLine reads one raw line from frotz stdout without requiring an IFWG marker.
+// Used for save/restore dialogue that doesn't produce room markers.
+func (s *Session) ReadLine() (string, error) {
+	line, err := s.reader.ReadString('\n')
+	return strings.TrimRight(line, "\r\n"), err
+}
+
 // Send writes a command to frotz stdin.
 func (s *Session) Send(command string) error {
 	_, err := fmt.Fprintf(s.stdin, "%s\n", command)

@@ -49,17 +49,18 @@ tasks:
         '"
 
   explore:
-    desc: "Walk a game and write rooms JSON — task explore stories=C:\\path story=game.z5 [walkthrough=walkthroughs/zork1.txt] [out=rooms.json]"
+    desc: "Walk a game and write rooms JSON — task explore stories=C:\\path story=game.z5 [walkthrough=walkthroughs/zork1.txt] [out=rooms.json] [loop=1]"
     vars:
-      out: '{{.out | default "rooms.json"}}'
-      wt_flag: '{{if .walkthrough}}-walkthrough /src/{{.walkthrough}}{{end}}'
+      out:      '{{.out | default "rooms.json"}}'
+      wt_flag:  '{{if .walkthrough}}-walkthrough /src/{{.walkthrough}}{{end}}'
+      lp_flag:  '{{if .loop}}-loop{{end}}'
     cmd: >
       docker run --rm
       -v "{{.ROOT_DIR}}:/src"
       -v "{{.stories}}:/stories:ro"
       -w /src/explorer
       {{.GO_IMAGE}}
-      ./bin/explorer --frotz ./frotz/bin/dfrotz --out /src/{{.out}} {{.wt_flag}} /stories/{{.story}}
+      ./bin/explorer --frotz ./frotz/bin/dfrotz --out /src/{{.out}} {{.wt_flag}} {{.lp_flag}} /stories/{{.story}}
 
   build:explorer:
     desc: Build native dfrotz and explorer binary
