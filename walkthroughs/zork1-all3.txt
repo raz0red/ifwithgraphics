@@ -1,0 +1,506 @@
+# ==================================================
+# START - based on working zork1.txt transcript
+# Gets lamp, sword, painting, into cellar
+# ==================================================
+#open mailbox
+#read leaflet
+#drop leaflet
+#go south
+#go east
+#open window
+#enter house
+#go west
+#take lamp
+#move rug
+#open trap door
+#turn on lamp
+#go down
+#go south
+#go east
+#take painting
+#go north
+#go up chimney
+#go up
+#take knife
+#take rope
+#go down
+#go west
+#open case
+#put painting inside case
+#drop knife
+#take sword
+#open trap door
+#go down
+
+# ==================================================
+# TROLL ROOM
+# ==================================================
+#go north
+#kill troll with sword
+#kill troll with sword
+#kill troll with sword
+#kill troll with sword
+#kill troll with sword
+#drop sword
+
+# ==================================================
+# EAST-WEST PASSAGE, NORTH-SOUTH PASSAGE
+# ==================================================
+#go east
+#go north
+#go south
+#go east
+
+# ==================================================
+# ROUND ROOM, NARROW PASSAGE, ENGRAVINGS CAVE
+# ==================================================
+#go west
+#go east
+#go southeast
+#go northwest
+#go southeast
+#go east
+
+# ==================================================
+# DOME ROOM, TORCH ROOM
+# ==================================================
+#tie rope to railing
+#go down
+#take torch
+#turn off lamp
+
+# ==================================================
+# TEMPLE, EGYPTIAN ROOM, ALTAR
+# ==================================================
+#go south
+#take bell
+#go east
+#take coffin
+#go west
+#go south
+#take candles
+#take book
+
+# ==================================================
+# CAVE, ENTRANCE TO HADES, LAND OF THE DEAD
+# ==================================================
+#go down
+#go down
+#ring bell
+#take candles
+#light match
+#light candles with match
+#read book
+#drop book
+#go south
+#take skull
+#go north
+#go up
+
+# ==================================================
+# MIRROR ROOM (SOUTH), WINDING PASSAGE
+# ==================================================
+#go north
+#go west
+#go east
+
+# ==================================================
+# RUB MIRROR -> MIRROR ROOM (NORTH), TWISTING PASSAGE, COLD PASSAGE
+# ==================================================
+#rub mirror
+#go west
+#go east
+#go north
+#go east
+#go west
+
+# ==================================================
+# SLIDE ROOM, MINE ENTRANCE, SQUEAKY ROOM, BAT ROOM
+# ==================================================
+#go west
+#go north
+#go west
+#go north
+
+# ==================================================
+# SHAFT ROOM - put torch in basket, use lamp
+# ==================================================
+#go east
+#put torch in basket
+#put screwdriver in basket
+#turn on lamp
+
+# ==================================================
+# SMELLY ROOM, GAS ROOM
+# ==================================================
+#go north
+#go down
+#take bracelet
+#go up
+#go south
+
+# ==================================================
+# COAL MINE (all 4 nodes)
+# ==================================================
+#go east
+#go northeast
+#go east
+#go west
+#go southwest
+#go southeast
+
+# ==================================================
+# LADDER TOP, LADDER BOTTOM, DEAD END
+# ==================================================
+#go down
+#go down
+#go south
+#take coal
+#go north
+
+# ==================================================
+# TIMBER ROOM, DRAFTY ROOM, MACHINE ROOM
+# ==================================================
+#go west
+#go west
+#take coal
+#take screwdriver
+#take torch
+#go south
+#open lid
+#put coal in machine
+#close lid
+#turn switch with screwdriver
+#drop screwdriver
+#open lid
+#take diamond
+#go north
+#put torch in basket
+#put diamond in basket
+#go east
+#take skull
+#take lamp
+#go east
+#go up
+#go up
+#go north
+#go east
+#go south
+#go north
+#take bracelet
+#go up
+#go south
+#raise basket
+#take diamond
+#take torch
+#turn off lamp
+
+# ==================================================
+# BAT ROOM -> SQUEAKY -> MINE ENTRANCE -> SLIDE (one-way down to Cellar)
+# ==================================================
+#go west
+#take jade
+#go south
+#go east
+#go south
+#go down
+
+# ==================================================
+# BACK UP TO LIVING ROOM, PUT TREASURES IN CASE
+# ==================================================
+#go up
+#put jade in case
+#put diamond in case
+
+# ==================================================
+# CHASM, RESERVOIR SOUTH, DAM, DAM LOBBY, MAINTENANCE ROOM
+# ==================================================
+#turn on lamp
+#go down
+#go north
+#go east
+#go north
+#go northeast
+#go east
+#go north
+#take matches
+#go north
+#take wrench
+#take screwdriver
+#push yellow button
+#go south
+#go south
+#turn bolt with wrench
+#drop wrench
+
+# ==================================================
+# DAM BASE
+# ==================================================
+#go east
+#go west
+
+# ==================================================
+# DEEP CANYON, LOUD ROOM, DAMP CAVE
+# ==================================================
+#go south
+#go down
+#echo
+#go east
+#go west
+
+# ==================================================
+# NORTH-SOUTH PASSAGE -> CHASM -> RESERVOIR SOUTH
+# STREAM VIEW, STREAM, RESERVOIR, RESERVOIR NORTH, ATLANTIS ROOM
+# (dam already drained so these are accessible)
+# ==================================================
+#go west
+#go north
+#go north
+#go northeast
+#go north
+#go north
+#go east
+#go west
+#go south
+#go south
+#go north
+#go north
+#go north
+#take trident
+#go south
+#go south
+#go south
+
+# ==================================================
+# FRIGID RIVER (all 5) + WHITE CLIFFS BEACHES (NORTH & SOUTH)
+# + SANDY BEACH, SANDY CAVE, SHORE, ARAGAIN FALLS, ON THE RAINBOW
+# ==================================================
+#go east
+#go east
+#inflate plastic with pump
+#drop pump
+#go inside boat
+#launch
+#wait
+#go west
+#go east
+#wait
+#go west
+#go east
+#wait
+#take buoy
+#wait
+#go east
+#leave boat
+#take shovel
+#go northeast
+#dig sand
+#dig sand
+#dig sand
+#dig sand
+#take scarab
+#drop shovel
+#go southwest
+#open buoy
+#take emerald
+#take garlic
+#go south
+#go south
+#wave sceptre
+#go east
+#go west
+
+# ==================================================
+# BACK TO HOUSE, PUT TREASURES, GET COFFIN/SCEPTRE ETC.
+# ==================================================
+#go north
+#go north
+#go southwest
+#go up
+#go up
+#go northwest
+#go west
+#enter house
+#go west
+#put coffin in case
+#put emerald in case
+#put scarab in case
+#put trident in case
+#put skull in case
+
+# ==================================================
+# SURFACE ROOMS NOT YET VISITED:
+# North of House, Forest Path, Up a Tree, Forest (x4),
+# Stone Barrow, Inside the Barrow
+# ==================================================
+#go east
+#go north
+#go north
+#go up
+#go down
+#go west
+#go south
+#go east
+#go north
+#go west
+#go west
+#go west
+#go east
+#go east
+#go east
+#go south
+#go east
+#go north
+
+# ==================================================
+# BACK UNDERGROUND FOR MAZE + GRATING ROOM + CLEARING
+# ==================================================
+#enter house
+#go west
+#open trap door
+#turn on lamp
+#go down
+#go north
+
+# ==================================================
+# MAZE - all 15 nodes + dead ends + Grating Room + Cyclops/Treasure/Strange Passage
+# Entry from Troll Room west
+# ==================================================
+#go west
+#go south
+#go east
+#go up
+#go north
+#go south
+#go east
+#go west
+#go south
+#go west
+#go north
+#go west
+#go east
+#go south
+#go east
+#go up
+#go down
+#go east
+#go east
+#go west
+#go down
+#go east
+#go west
+#go south
+#go northwest
+#go north
+#go west
+#go south
+#go down
+#go northeast
+#unlock grate
+#open grate
+#go up
+#go down
+#go southwest
+#go west
+#go up
+#go south
+#go west
+#go north
+#go south
+#go east
+#go down
+#go up
+#go east
+#go south
+#go southeast
+#Ulysses
+#go up
+#go down
+#go east
+#go east
+#go west
+#go west
+
+# ==================================================
+# THIEF - get egg, kill thief, get all treasures
+# ==================================================
+#go west
+#go south
+#go east
+#go up
+#take coins
+#take key
+#go southwest
+#go east
+#go south
+#go southeast
+#give egg to thief
+#go down
+#go east
+#go east
+#put coins in case
+#take knife
+#go west
+#go west
+#go up
+#kill thief with knife
+#kill thief with knife
+#kill thief with knife
+#take all
+#drop stiletto
+#take chalice
+#drop torch
+#take chalice
+#go down
+#go northwest
+#go south
+#go west
+#go up
+#go down
+#go northeast
+#go up
+#go south
+#climb tree
+#wind up canary
+#go down
+#take bauble
+#drop knife
+#take bauble
+#go south
+#go east
+#enter house
+#go west
+#put bauble in case
+#put chalice in case
+#take canary from egg
+#put canary in case
+#put egg in case
+#put bracelet in case
+#put skull in case
+
+# ==================================================
+# LOUD ROOM - platinum bar
+# ==================================================
+#go down
+#go north
+#go east
+#go east
+#go east
+#echo
+#take bar
+#go west
+#go west
+#go west
+#go south
+#go up
+#put bar in case
+
+# ==================================================
+# STONE BARROW + INSIDE THE BARROW (ending)
+# ==================================================
+#go east
+#go east
+#go south
+#go west
+#go southwest
+#go west

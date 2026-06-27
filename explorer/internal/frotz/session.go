@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 )
 
@@ -14,8 +15,9 @@ const markerSuffix = ">>>"
 const readyMarker  = "<<<IFWG_READY>>>"
 
 type Room struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
+	ID          int
+	Title       string
+	Description string
 }
 
 type Session struct {
@@ -24,7 +26,7 @@ type Session struct {
 	reader *bufio.Reader
 }
 
-func NewSession(dfrotz, story string) (*Session, error) {
+func NewSession(dfrotz, story string, rawLog io.Writer) (*Session, error) {
 	cmd := exec.Command(dfrotz, "-w", "200", "-h", "100", story)
 	cmd.Stderr = os.Stderr
 
@@ -40,24 +42,38 @@ func NewSession(dfrotz, story string) (*Session, error) {
 		return nil, fmt.Errorf("start dfrotz: %w", err)
 	}
 
+	var r io.Reader = stdout
+	if rawLog != nil {
+		r = io.TeeReader(stdout, rawLog)
+	}
 	return &Session{
 		cmd:    cmd,
 		stdin:  stdin,
-		reader: bufio.NewReader(stdout),
+		reader: bufio.NewReader(r),
 	}, nil
 }
 
 // Next blocks until frotz emits the next room marker and description.
-// Returns nil, io.EOF when the process exits cleanly.
+// Marker format: <<<IFWG:42:West of House>>> or <<<IFWG:West of House>>> (legacy).
 func (s *Session) Next() (*Room, error) {
+	var id int
 	var title string
 
-	// scan output until we see <<<IFWG:title>>>
 	for {
 		line, err := s.reader.ReadString('\n')
 		line = strings.TrimRight(line, "\r\n")
 		if strings.HasPrefix(line, markerPrefix) && strings.HasSuffix(line, markerSuffix) {
-			title = line[len(markerPrefix) : len(line)-len(markerSuffix)]
+			inner := line[len(markerPrefix) : len(line)-len(markerSuffix)]
+			// Try numeric ID prefix: "42:West of House"
+			if idx := strings.Index(inner, ":"); idx > 0 {
+				if n, err := strconv.Atoi(inner[:idx]); err == nil {
+					id = n
+					title = inner[idx+1:]
+					break
+				}
+			}
+			// Legacy format: no numeric prefix
+			title = inner
 			break
 		}
 		if err == io.EOF {
@@ -68,7 +84,6 @@ func (s *Session) Next() (*Room, error) {
 		}
 	}
 
-	// collect description lines until <<<IFWG_READY>>>
 	var desc strings.Builder
 	for {
 		line, err := s.reader.ReadString('\n')
@@ -89,6 +104,7 @@ func (s *Session) Next() (*Room, error) {
 	}
 
 	return &Room{
+		ID:          id,
 		Title:       title,
 		Description: strings.TrimSpace(desc.String()),
 	}, nil

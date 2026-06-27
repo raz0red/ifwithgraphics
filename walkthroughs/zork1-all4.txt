@@ -1,0 +1,879 @@
+# ==================================================
+# ZORK I - Complete Room Coverage Script
+# Strategy: get torch ASAP, turn lamp off whenever on surface
+# ==================================================
+
+# West of House (start)
+#open mailbox
+#read leaflet
+#drop leaflet
+
+# South of House
+#go south
+
+# Behind House
+#go east
+#open window
+#enter house
+
+# Kitchen
+#go west
+
+# Living Room - get lamp, sword, open trap door
+#take lamp
+#move rug
+#open trap door
+#turn on lamp
+#go down
+
+# Cellar
+#go south
+
+# East of Chasm
+#go east
+
+# Gallery
+#take painting
+#go north
+
+# Studio
+#go up chimney
+
+# Kitchen
+#go up
+
+# Attic
+#take rope
+#go down
+
+# Kitchen
+#go west
+
+# Living Room
+#open case
+#put painting inside case
+#take sword
+#open trap door
+#go down
+
+# Cellar
+#go north
+
+# Troll Room - kill troll
+#kill troll with sword
+#kill troll with sword
+#kill troll with sword
+#kill troll with sword
+#kill troll with sword
+#drop sword
+
+# East-West Passage
+#go east
+#go north
+
+# North-South Passage
+#go south
+
+# East-West Passage
+#go east
+
+# Round Room
+#go southeast
+
+# Engravings Cave
+#go east
+
+# Dome Room
+#tie rope to railing
+#go down
+
+# Torch Room - GET TORCH, ditch lamp
+#take torch
+#turn off lamp
+
+# Temple
+#go south
+#take bell
+
+# Egyptian Room
+#go east
+#take coffin
+#go west
+
+# Altar
+#go south
+#take candles
+#take book
+
+# Cave
+#go down
+
+# Entrance to Hades
+#go down
+#ring bell
+#take candles
+#light match
+#light candles with match
+#read book
+#drop book
+
+# Land of the Dead
+#go south
+#take skull
+#go north
+
+# Entrance to Hades -> Cave
+#go up
+
+# Mirror Room (South)
+#go north
+#go west
+
+# Winding Passage
+#go east
+
+# Mirror Room (South) - rub mirror to teleport
+#rub mirror
+
+# Mirror Room (North)
+#go west
+
+# Twisting Passage
+#go east
+
+# Mirror Room (North)
+#go north
+
+# Cold Passage
+#go west
+
+# Slide Room
+#go east
+
+# Cold Passage
+#go south
+
+# Mirror Room (North) - back for routing
+#go west
+
+# Slide Room
+#go north
+
+# Mine Entrance
+#go west
+
+# Squeaky Room
+#go north
+
+# Bat Room
+#take jade
+#go east
+
+# Shaft Room
+#put torch in basket
+#turn on lamp
+#go north
+
+# Smelly Room
+#go down
+
+# Gas Room
+#take bracelet
+#go up
+
+# Smelly Room
+#go south
+
+# Shaft Room
+#go east
+
+# Coal Mine (1)
+#go northeast
+
+# Coal Mine (2)
+#go east
+
+# Coal Mine (3)
+#go west
+
+# Coal Mine (2)
+#go southwest
+
+# Coal Mine (1)
+#go southeast
+
+# Coal Mine (4)
+#go down
+
+# Ladder Top
+#go down
+
+# Ladder Bottom
+#go west
+
+# Timber Room
+#go west
+
+# Drafty Room
+#go south
+
+# Machine Room
+#go north
+
+# Drafty Room
+#go east
+
+# Timber Room
+#go east
+
+# Ladder Bottom
+#go south
+
+# Dead End
+#take coal
+#go north
+
+# Ladder Bottom
+#go up
+
+# Ladder Top
+#go up
+
+# Coal Mine (4)
+#go north
+
+# Coal Mine (1) - navigate to Gas Room for coal processing
+#go west
+
+# Shaft Room
+#put coal in basket
+#put screwdriver in basket
+#lower basket
+#raise basket
+#take coal
+#take screwdriver
+
+# Now go back down via ladders to Drafty Room / Machine Room
+#go east
+
+# Coal Mine (1)
+#go southeast
+
+# Coal Mine (4)
+#go down
+
+# Ladder Top
+#go down
+
+# Ladder Bottom
+#go west
+
+# Timber Room
+#go west
+
+# Drafty Room
+#take coal
+#take screwdriver
+#take torch
+#go south
+
+# Machine Room
+#open lid
+#put coal in machine
+#close lid
+#turn switch with screwdriver
+#drop screwdriver
+#open lid
+#take diamond
+#go north
+
+# Drafty Room
+#put torch in basket
+#put diamond in basket
+#go east
+
+# Timber Room
+#go east
+
+# Ladder Bottom
+#go up
+
+# Ladder Top
+#go up
+
+# Coal Mine (4)
+#go north
+
+# Coal Mine (1)
+#go west
+
+# Shaft Room
+#raise basket
+#take torch
+#take diamond
+#turn off lamp
+#go west
+
+# Bat Room
+#go south
+
+# Squeaky Room
+#go east
+
+# Mine Entrance
+#go south
+
+# Slide Room - one-way down to Cellar
+#go down
+
+# Cellar
+#go up
+
+# Living Room
+#put jade in case
+#put diamond in case
+#put skull in case
+#put bracelet in case
+
+# ==================================================
+# SURFACE DETOUR - get surface rooms before going back underground
+# turn lamp off, we have torch
+# ==================================================
+
+# Kitchen
+#go east
+
+# Behind House
+#go east
+
+# North of House
+#go north
+
+# Forest Path
+#go up
+
+# Up a Tree
+#take egg
+#go down
+
+# Forest Path
+#go west
+
+# Forest (1)
+#go south
+
+# Forest (3)
+#go east
+
+# Behind House
+#go south
+
+# South of House
+#go west
+
+# West of House
+#go west
+
+# Stone Barrow
+#go west
+
+# Inside the Barrow
+#go east
+
+# Stone Barrow
+#go east
+
+# West of House
+#go north
+
+# North of House
+#go east
+
+# Behind House
+#go east
+
+# Forest (2) - NOTE: east from Behind House goes to Clearing, not Forest 2
+# Per map: Forest 2 is north of Forest Path / east of Forest Path area
+#go north
+
+# Forest Path (or Forest 2 - need to verify)
+#go east
+
+# Forest (4) - east of Forest (2)
+#go west
+
+# back
+#go south
+
+# Clearing (near house / east of Behind House)
+#go east
+
+# Canyon View
+#go down
+
+# Rocky Ledge
+#go down
+
+# Canyon Bottom
+#go north
+
+# End of Rainbow
+#go southwest
+
+# Canyon Bottom
+#go up
+
+# Rocky Ledge
+#go up
+
+# Canyon View
+#go northwest
+
+# Clearing
+
+# ==================================================
+# BACK UNDERGROUND - dam, reservoir, river
+# ==================================================
+#go west
+
+# Behind House
+#enter house
+
+# Kitchen
+#go west
+
+# Living Room
+#open trap door
+#turn on lamp
+#go down
+
+# Cellar
+#go north
+
+# Troll Room
+#go east
+
+# East-West Passage
+#go north
+
+# North-South Passage
+#go north
+
+# Chasm
+#go northeast
+
+# Reservoir South
+#go east
+
+# Dam
+#go north
+
+# Dam Lobby
+#take matches
+#go north
+
+# Maintenance Room
+#take wrench
+#take screwdriver
+#push yellow button
+#go south
+
+# Dam Lobby
+#go south
+
+# Dam
+#turn bolt with wrench
+#drop wrench
+#go east
+
+# Dam Base
+#go west
+
+# Dam
+#go south
+
+# Deep Canyon
+#go down
+
+# Loud Room
+#echo
+#go east
+
+# Damp Cave
+#go west
+
+# Loud Room
+#go west
+
+# Round Room (already visited but needed for routing)
+#go north
+
+# North-South Passage
+#go north
+
+# Chasm
+#go northeast
+
+# Reservoir South
+#go north
+
+# Stream View
+#go north
+
+# Stream
+#go east
+
+# Reservoir
+#go west
+
+# Stream
+#go north
+
+# Reservoir North
+#go north
+
+# Atlantis Room
+#take trident
+#go south
+
+# Reservoir North
+#go south
+
+# Stream
+#go south
+
+# Stream View
+#go south
+
+# Reservoir South
+
+# ==================================================
+# FRIGID RIVER - all 5 sections + beaches + coast
+# ==================================================
+#go east
+
+# Dam
+#go east
+
+# Dam Base
+#inflate plastic with pump
+#drop pump
+#go inside boat
+#launch
+
+# Frigid River (1)
+#wait
+
+# Frigid River (2)
+#go west
+
+# White Cliffs Beach (North)
+#go east
+
+# Frigid River (2)
+#wait
+
+# Frigid River (3)
+#go west
+
+# White Cliffs Beach (South)
+#go east
+
+# Frigid River (3)
+#wait
+
+# Frigid River (4)
+#take buoy
+#wait
+
+# Frigid River (5)
+#go east
+
+# Sandy Beach
+#leave boat
+#take shovel
+#go northeast
+
+# Sandy Cave
+#dig sand
+#dig sand
+#dig sand
+#dig sand
+#take scarab
+#drop shovel
+#go southwest
+
+# Sandy Beach
+#open buoy
+#take emerald
+#go south
+
+# Shore
+#go south
+
+# Aragain Falls
+#wave sceptre
+#go east
+
+# On the Rainbow
+#go west
+
+# Aragain Falls
+#go north
+
+# Shore
+#go north
+
+# Sandy Beach - make way back to house
+#go southwest
+#go up
+#go up
+#go northwest
+#go west
+
+# Behind House
+#enter house
+
+# Kitchen
+#go west
+
+# Living Room
+#put emerald in case
+#put scarab in case
+#put trident in case
+#put coffin in case
+
+# ==================================================
+# MAZE - entry from Troll Room west
+# ==================================================
+#open trap door
+#turn on lamp
+#go down
+
+# Cellar
+#go north
+
+# Troll Room
+#go west
+
+# Maze (1)
+#go south
+
+# Maze (2)
+#go east
+
+# Maze (3)
+#go up
+
+# Maze (5)
+#go north
+
+# Dead End (1)
+#go south
+
+# Maze (5)
+#go east
+
+# Dead End (2)
+#go west
+
+# Maze (5)
+#go south
+
+# Maze (4)
+#go west
+
+# Maze (2)
+#go north
+
+# Maze (1)
+#go west
+
+# Dead End (3)
+#go east
+
+# Maze (1)
+#go south
+
+# Maze (2)
+#go east
+
+# Maze (3)
+#go up
+
+# Maze (5)
+#go down
+
+# Maze (6)
+#go east
+
+# Maze (7)
+#go east
+
+# Dead End (4)
+#go west
+
+# Maze (7)
+#go down
+
+# Maze (8) area
+#go east
+
+# Maze (8)
+#go west
+#go south
+
+# Maze (15)
+#go northwest
+
+# Maze (14)
+#go north
+
+# Maze (7)
+#go west
+
+# Maze (6)
+#go south
+
+# Maze (9)
+#go down
+
+# Maze (13)
+#go northeast
+
+# Grating Room
+#unlock grate
+#open grate
+#go up
+
+# Clearing (near grating)
+#go down
+
+# Grating Room
+#go southwest
+
+# Maze (13)
+#go west
+
+# Maze (10)
+#go up
+
+# Maze (9)
+#go south
+
+# Maze (11)
+#go west
+
+# Maze (12)
+#go north
+
+# Dead End (5)
+#go south
+
+# Maze (12)
+#go east
+
+# Maze (11)
+#go southeast
+
+# Cyclops Room
+#Ulysses
+
+# Treasure Room
+#go up
+
+# Cyclops Room
+#go down
+
+# Strange Passage
+#go east
+
+# Living Room
+#go west
+
+# Strange Passage
+#go west
+
+# Cyclops Room
+
+# ==================================================
+# THIEF - give egg, kill, get treasures
+# ==================================================
+#go northwest
+#go south
+#go east
+#go up
+#take coins
+#take key
+#go southwest
+#go east
+#go south
+#go southeast
+#give egg to thief
+#go down
+#go east
+#go east
+#put coins in case
+#take knife
+#go west
+#go west
+#go up
+#kill thief with knife
+#kill thief with knife
+#kill thief with knife
+#take all
+#drop stiletto
+#take chalice
+#drop torch
+#take chalice
+#go down
+#go northwest
+#go south
+#go west
+#go up
+#go down
+#go northeast
+#go up
+#go south
+#climb tree
+#wind up canary
+#go down
+#take bauble
+#drop knife
+#take bauble
+#go south
+#go east
+#enter house
+#go west
+#put bauble in case
+#put chalice in case
+#take canary from egg
+#put canary in case
+#put egg in case
+
+# ==================================================
+# PLATINUM BAR - Loud Room
+# ==================================================
+#go down
+#go north
+#go east
+#go east
+#go east
+#echo
+#take bar
+#go west
+#go west
+#go west
+#go south
+#go up
+#put bar in case
+
+# ==================================================
+# STONE BARROW ENDING
+# ==================================================
+#go east
+#go east
+#go south
+#go west
+#go southwest
+#go west

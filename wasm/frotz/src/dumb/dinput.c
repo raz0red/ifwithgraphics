@@ -36,6 +36,7 @@ extern void ifwg_yield_key (void);
 #if defined(IFWG_MONITOR)
 extern void ifwg_dumb_get_room_name (char *buf, int size);
 extern const char *ifwg_dumb_get_description (void);
+extern void ifwg_dumb_reset_description (void);
 #endif
 
 extern f_setup_t f_setup;
@@ -421,6 +422,13 @@ error:
 
 zchar os_read_key (int timeout, bool show_cursor)
 {
+#ifdef IFWG_MONITOR
+	/* Auto-answer any single-key prompt (resurrection, "press any key", etc.)
+	   with 'y'. Reset description so death-message text doesn't bleed into the
+	   next room description. */
+	ifwg_dumb_reset_description();
+	return 'y';
+#endif
 	zchar c;
 	int timed_out;
 	int idx = 1;
@@ -488,9 +496,12 @@ zchar os_read_line (int UNUSED (max), zchar *buf, int timeout, int UNUSED(width)
 			char _ifwg_title[256];
 			ifwg_dumb_get_room_name(_ifwg_title, sizeof(_ifwg_title));
 			const char *_ifwg_desc = ifwg_dumb_get_description();
-			fprintf(stdout, "<<<IFWG:%s>>>\n%s\n<<<IFWG_READY>>>\n",
-			        _ifwg_title, _ifwg_desc ? _ifwg_desc : "");
+			zword _ifwg_globals = (zword)((zmp[H_GLOBALS] << 8) | zmp[H_GLOBALS + 1]);
+			zword _ifwg_room_id = (zword)((zmp[_ifwg_globals] << 8) | zmp[_ifwg_globals + 1]);
+			fprintf(stdout, "<<<IFWG:%d:%s>>>\n%s\n<<<IFWG_READY>>>\n",
+			        (int)_ifwg_room_id, _ifwg_title, _ifwg_desc ? _ifwg_desc : "");
 			fflush(stdout);
+			ifwg_dumb_reset_description();
 		}
 #endif
 		timed_out = dumb_read_line(read_line_buffer, NULL, TRUE,

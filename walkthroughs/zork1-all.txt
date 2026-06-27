@@ -1,0 +1,430 @@
+# verbose
+# look
+
+# ---- West of House / Surface area ----
+# go north
+# go north
+# go up
+# go down
+# go south
+# go west
+# go south
+# go east
+# go south
+# go west
+# go north
+# go east
+# go east
+# go west
+# go west
+# go south
+
+# ---- Stone Barrow (west of West of House) ----
+# go west
+# go west
+# go east
+# go east
+
+# ---- House interior ----
+# go east
+# open window
+# enter window
+# go up
+# take rope
+# take knife
+# go down
+# go west
+# take lamp
+# take sword
+# move rug
+# open trap door
+# turn on lamp
+# go up
+# go east
+# go west
+
+# ---- Attic ----
+# go up
+# go down
+
+# ---- Forest / Clearing / Tree ----
+# go east
+# go north
+# go north
+# go up
+# go down
+# go east
+# go west
+# go east
+# go west
+# go south
+# go south
+
+# ---- Cellar and early underground ----
+# go west
+# open trap door
+# go down
+# go south
+# go east
+# go north
+# go up
+
+# ---- Back to Living Room via trap door ----
+# go west
+# open trap door
+# go down
+
+# ---- Troll Room - kill troll ----
+# go north
+# kill troll with sword
+# kill troll with sword
+# kill troll with sword
+# kill troll with sword
+# kill troll with sword
+
+# ---- East-West underground passages ----
+# go east
+# go east
+# go north
+# go south
+# go east
+# go northwest
+# go east
+# go west
+
+# ---- Chasm and Reservoir South ----
+# go north
+# go north
+# go northeast
+
+# ---- Dam area ----
+# go east
+# go north
+# go north
+# take wrench
+# take screwdriver
+# push yellow button
+# go south
+# go south
+# turn bolt with wrench
+# go east
+# go west
+
+# ---- Deep Canyon and Loud Room ----
+# go south
+# go down
+# echo
+# go east
+# go west
+# go west
+
+# ---- Round Room passages ----
+# go north
+# go south
+# go southeast
+# go northwest
+# go west
+# go east
+
+# ---- Engravings Cave and Dome Room ----
+# go southeast
+# tie rope to railing
+# go east
+# go down
+
+# ---- Temple, Egyptian Room, Altar ----
+# go south
+# take bell
+# go east
+# take coffin
+# go west
+# go south
+# take candles
+# take book
+
+# ---- Cave and Hades ----
+# go down
+# go down
+# ring bell
+# take candles
+# light match
+# light candles with match
+# read book
+# go south
+# take skull
+# go north
+
+# ---- Back up through cave ----
+# go up
+
+# ---- Mirror Room South and Winding Passage ----
+# go north
+# go west
+# go east
+
+# ---- Mirror Room North, Cold Passage, Twisting Passage ----
+# go north
+# go west
+# go east
+# go west
+# go west
+
+# ---- Slide Room ----
+# go north
+
+# ---- Mine Entrance, Squeaky Room, Bat Room ----
+# go west
+# go north
+# go east
+
+# ---- Shaft Room ----
+# put torch in basket
+# go north
+
+# ---- Smelly Room, Gas Room ----
+# go down
+# go up
+
+# ---- Shaft Room -> Coal Mine ----
+# go south
+# go east
+
+# ---- Coal Mine (1) ----
+# go northeast
+
+# ---- Coal Mine (2) ----
+# go east
+
+# ---- Coal Mine (3) ----
+# go west
+# go southwest
+
+# ---- Coal Mine (4) ----
+# go southeast
+# go down
+
+# ---- Ladder Top ----
+# go down
+
+# ---- Ladder Bottom ----
+# go west
+
+# ---- Timber Room ----
+# go west
+
+# ---- Drafty Room ----
+# go south
+
+# ---- Machine Room ----
+# go north
+# go east
+# go east
+# go up
+# go up
+
+# ---- Back to Coal Mine (1) -> Shaft Room ----
+# go west
+
+# ---- Shaft Room ----
+# go west
+
+# ---- Bat Room ----
+# go south
+
+# ---- Squeaky Room ----
+# go west
+
+# ---- Mine Entrance ----
+# go south
+
+# ---- Slide Room -> down to Cellar (one way) ----
+# go down
+
+# ---- Cellar ----
+# go north
+
+# ---- Troll Room ----
+# go east
+# go north
+# go north
+# go northeast
+
+# ---- Reservoir South ----
+# go north
+
+# ---- Stream View ----
+# go north
+
+# ---- Stream ----
+# go east
+
+# ---- Reservoir (drained) ----
+# go south
+# go south
+
+# ---- Reservoir South ----
+# go east
+# go east
+
+# ---- Dam Base - inflate boat ----
+# inflate plastic with pump
+# go inside boat
+# launch
+
+# ---- Frigid River (1) ----
+# wait
+
+# ---- Frigid River (2) ----
+# go west
+# go east
+
+# ---- Frigid River (2) - White Cliffs Beach North ----
+# wait
+
+# ---- Frigid River (3) ----
+# go west
+# go east
+
+# ---- Frigid River (3) - White Cliffs Beach South ----
+# wait
+
+# ---- Frigid River (4) ----
+# take buoy
+# wait
+
+# ---- Frigid River (5) ----
+# go east
+
+# ---- Sandy Beach ----
+# go northeast
+
+# ---- Sandy Cave ----
+# go southwest
+
+# ---- Sandy Beach ----
+# go south
+
+# ---- Shore ----
+# go south
+
+# ---- Aragain Falls ----
+# wave sceptre
+# go east
+
+# ---- On the Rainbow ----
+# go west
+
+# ---- Aragain Falls ----
+# go north
+# go north
+
+# ---- Sandy Beach ----
+# go west
+# go west
+# go southwest
+# go up
+# go up
+# go northwest
+# go west
+# go west
+# go west
+
+# ---- West of House ----
+# go east
+# enter window
+
+# ---- Kitchen ----
+# go west
+
+# ---- Living Room ----
+# open trap door
+# turn on lamp
+# go down
+# go north
+# go west
+
+# ---- MAZE - systematic traversal per back cover map ----
+# go south
+# go east
+# go up
+# go north
+# go south
+# go east
+# go west
+# go south
+# go west
+# go north
+# go west
+# go east
+# go south
+# go east
+# go up
+# go down
+# go south
+# go down
+# go northeast
+# unlock grate
+# open grate
+# go up
+# go down
+# go southwest
+# go west
+# go up
+# go east
+# go east
+# go west
+# go down
+# go east
+# go west
+# go south
+# go northwest
+# go south
+# go south
+# Ulysses
+# go up
+# go down
+# go east
+# go east
+# go west
+# go west
+# go northwest
+# go north
+# go north
+# go west
+# go south
+# go down
+# go south
+# go west
+# go north
+# go south
+# go down
+# go up
+# go east
+# go south
+# go up
+
+# ---- Reservoir North and Atlantis Room ----
+# go north
+# go north
+# go northeast
+# go east
+# go east
+# go north
+# go north
+# go north
+# take trident
+# go south
+# go south
+# go south
+
+# ---- Damp Cave (east of Loud Room) ----
+# go east
+# go south
+# go down
+# go east
+
+# ---- Damp Cave ----
+# go west
+# go west
+# go up
+# go west

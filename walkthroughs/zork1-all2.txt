@@ -1,0 +1,681 @@
+#verbose
+
+# ==================================================
+# SECTION 1: ABOVE GROUND SETUP
+# Get garlic FIRST (critical for bat room later)
+# ==================================================
+# West of House (start)
+#go south
+# South of House
+#go east
+# Behind House
+#open window
+#enter window
+# Kitchen
+#open bag
+#take garlic
+#go west
+# Living Room
+#take lamp
+#take sword
+#move rug
+#open trap door
+#turn on lamp
+#go east
+# Kitchen
+#go up
+# Attic
+#take rope
+#go down
+# Kitchen
+
+# ==================================================
+# SECTION 2: GALLERY AND STUDIO (underground shortcut)
+# ==================================================
+#go west
+# Living Room
+#go down
+# Cellar
+#go south
+# East of Chasm
+#go east
+# Gallery
+#take painting
+#go north
+# Studio
+#go up chimney
+# Kitchen (one-way chimney from Studio)
+#go up
+# Attic
+#go down
+# Kitchen
+#go west
+# Living Room
+#open case
+#put painting in case
+
+# ==================================================
+# SECTION 3: KILL TROLL
+# ==================================================
+#open trap door
+#go down
+# Cellar
+#go north
+# Troll Room
+#kill troll with sword
+#kill troll with sword
+#kill troll with sword
+#kill troll with sword
+#kill troll with sword
+#drop sword
+
+# ==================================================
+# SECTION 4: PASSAGES + DAM AREA
+# Get matches (needed for Hades) and screwdriver (needed for Machine Room)
+# Push yellow button to enable river flow
+# ==================================================
+#go east
+# East-West Passage
+#go north
+# North-South Passage
+#go south
+# East-West Passage
+#go north
+# North-South Passage (second visit to confirm room)
+#go north
+# Chasm
+#go northeast
+# Reservoir South
+#go east
+# Dam
+#go north
+# Dam Lobby
+#take matches
+#go north
+# Maintenance Room
+#take wrench
+#take screwdriver
+#push yellow button
+#go south
+# Dam Lobby
+#go south
+# Dam
+#turn bolt with wrench
+#drop wrench
+#go east
+# Dam Base
+#go west
+# Dam
+
+# ==================================================
+# SECTION 5: RESERVOIR / STREAM AREA
+# Get pump (needed for boat inflation) and trident
+# Yellow button must be pushed first (done above)
+# ==================================================
+#go west
+# Reservoir South
+#go north
+# Stream View
+#go north
+# Stream
+#go east
+# Reservoir
+#go west
+# Stream
+#go south
+# Stream View
+#go south
+# Reservoir South
+#go north
+# Stream View
+#go north
+# Stream
+#go north
+# Reservoir North
+#take pump
+#go north
+# Atlantis Room
+#take trident
+#go south
+# Reservoir North
+#go south
+# Stream
+#go south
+# Stream View
+#go south
+# Reservoir South
+
+# ==================================================
+# SECTION 6: DEEP CANYON, LOUD ROOM, DAMP CAVE, ROUND ROOM
+# ==================================================
+#go east
+# Dam
+#go south
+# Deep Canyon
+#go down
+# Loud Room
+#go east
+# Damp Cave
+#go west
+# Loud Room
+#go west
+# Round Room
+#go west
+# Narrow Passage
+#go east
+# Round Room
+#go north
+# North-South Passage (from Round Room north)
+#go south
+# Round Room
+
+# ==================================================
+# SECTION 7: DOME ROOM AND TORCH ROOM
+# Rope must still be in inventory
+# ==================================================
+#go southeast
+# Engravings Cave
+#go northwest
+# Round Room
+#go southeast
+# Engravings Cave
+#go east
+# Dome Room
+#tie rope to railing
+#go down
+# Torch Room
+#take torch
+#turn off lamp
+
+# ==================================================
+# SECTION 8: TEMPLE, EGYPTIAN ROOM, ALTAR
+# ==================================================
+#go south
+# Temple
+#take bell
+#go east
+# Egyptian Room
+#take coffin
+#go west
+# Temple
+#go south
+# Altar
+#take candles
+#take book
+
+# ==================================================
+# SECTION 9: CAVE, ENTRANCE TO HADES, LAND OF THE DEAD
+# Matches obtained in Section 4 — ritual now possible
+# ==================================================
+#go down
+# Cave
+#go down
+# Entrance to Hades
+#ring bell
+#take candles
+#light match
+#light candles with match
+#read book
+#drop book
+#go south
+# Land of the Dead
+#take skull
+#go north
+# Entrance to Hades
+#go up
+# Cave
+
+# ==================================================
+# SECTION 10: MIRROR ROOMS, WINDING/TWISTING PASSAGES
+# ==================================================
+#go north
+# Mirror Room (South)
+#go west
+# Winding Passage
+#go east
+# Mirror Room (South)
+#rub mirror
+# Mirror Room (North)
+#go west
+# Twisting Passage
+#go east
+# Mirror Room (North)
+#go north
+# Cold Passage
+#go west
+# Slide Room
+#go east
+# Cold Passage
+#go south
+# Mirror Room (North)
+
+# ==================================================
+# SECTION 11: MINE AREA
+# Garlic still in inventory — prevents bat displacement
+# ==================================================
+#go west
+# Slide Room (direct from Mirror Room North)
+#go north
+# Mine Entrance
+#go west
+# Squeaky Room
+#go north
+# Bat Room (garlic in inventory — safe)
+#go east
+# Shaft Room
+#put torch in basket
+#turn on lamp
+#go north
+# Smelly Room
+#go down
+# Gas Room
+#take bracelet
+#go up
+# Smelly Room
+#go south
+# Shaft Room
+
+# ==================================================
+# SECTION 12: COAL MINES (all 4 nodes)
+# ==================================================
+#go east
+# Coal Mine (1)
+#go northeast
+# Coal Mine (2)
+#go east
+# Coal Mine (3)
+#go west
+# Coal Mine (2)
+#go southwest
+# Coal Mine (1)
+#go southeast
+# Coal Mine (4)
+
+# ==================================================
+# SECTION 13: LADDER AREA, DEAD END, MACHINE ROOM
+# Screwdriver is in inventory from Section 4
+# ==================================================
+#go down
+# Ladder Top
+#go down
+# Ladder Bottom
+#go south
+# Dead End
+#take coal
+#go north
+# Ladder Bottom
+#go west
+# Timber Room
+#go west
+# Drafty Room
+#go south
+# Machine Room
+#open lid
+#put coal in machine
+#close lid
+#turn switch with screwdriver
+#open lid
+#take diamond
+#go north
+# Drafty Room
+#go east
+# Timber Room
+#go east
+# Ladder Bottom
+#go up
+# Ladder Top
+#go up
+# Coal Mine (4)
+#go north
+# Coal Mine (1)
+#go west
+# Shaft Room
+#raise basket
+#take torch
+#turn off lamp
+
+# ==================================================
+# SECTION 14: EXIT MINE, STORE TREASURES
+# ==================================================
+#go west
+# Bat Room
+#take jade
+#go south
+# Squeaky Room
+#go east
+# Mine Entrance
+#go south
+# Slide Room
+#go down
+# Cellar (one-way slide)
+#go up
+# Living Room
+#put jade in case
+#put diamond in case
+#put skull in case
+#put bracelet in case
+#put trident in case
+# Keep coffin in inventory — need it for sceptre at Aragain Falls (Section 16)
+
+# ==================================================
+# SECTION 15: SURFACE ROOMS
+# North of House, Forest Path, Up a Tree, Forest 1-4,
+# South of House, West of House, Stone Barrow, Inside Barrow,
+# Clearing, Canyon View, Rocky Ledge, Canyon Bottom, End of Rainbow
+# ==================================================
+#go east
+# Kitchen
+#go east
+# Behind House
+#go north
+# North of House
+#go north
+# Forest Path
+#go up
+# Up a Tree
+#go down
+# Forest Path
+#go west
+# Forest (1)
+#go south
+# Forest (3)
+#go east
+# Behind House
+#go south
+# South of House
+#go west
+# West of House
+#go west
+# Stone Barrow
+#go west
+# Inside the Barrow
+#go east
+# Stone Barrow
+#go east
+# West of House
+#go north
+# North of House
+#go east
+# Behind House
+#go east
+# Clearing (east of Behind House)
+#go east
+# Canyon View
+#go down
+# Rocky Ledge
+#go down
+# Canyon Bottom
+#go north
+# End of Rainbow
+#go southwest
+# Canyon Bottom  ← CORRECT return (not go up)
+#go up
+# Rocky Ledge
+#go up
+# Canyon View
+#go northwest
+# Clearing
+
+# Try to visit Forest 2 and Forest 4 via Forest Path
+#go west
+# Behind House
+#go north
+# North of House
+#go north
+# Forest Path
+#go east
+# Forest (2)
+#go east
+# Forest (4)
+#go west
+# Forest (2)
+#go west
+# Forest Path
+#go south
+# North of House
+
+# ==================================================
+# SECTION 16: FRIGID RIVER, BEACHES, SHORE, RAINBOW
+# Pump in inventory (from Section 5), coffin in inventory (from Section 8)
+# Open coffin here, take sceptre for rainbow room
+# ==================================================
+#go east
+# Behind House (North of House → east = Behind House)
+#enter window
+# Kitchen
+#go west
+# Living Room
+#open coffin
+#take sceptre
+#open trap door
+#turn on lamp
+#go down
+# Cellar
+#go north
+# Troll Room
+#go east
+# East-West Passage
+#go north
+# North-South Passage
+#go north
+# Chasm
+#go northeast
+# Reservoir South
+#go east
+# Dam
+#go east
+# Dam Base
+#inflate plastic with pump
+#drop pump
+#go inside boat
+#launch
+# Frigid River (1)
+#wait
+# Frigid River (2)
+#go west
+# White Cliffs Beach (North)
+#go east
+# Frigid River (2)
+#wait
+# Frigid River (3)
+#go west
+# White Cliffs Beach (South)
+#go east
+# Frigid River (3)
+#wait
+# Frigid River (4)
+#take buoy
+#wait
+# Frigid River (5)
+#go east
+# Sandy Beach
+#leave boat
+#take shovel
+#go northeast
+# Sandy Cave
+#dig sand
+#dig sand
+#dig sand
+#dig sand
+#take scarab
+#drop shovel
+#go southwest
+# Sandy Beach
+#open buoy
+#take emerald
+#go south
+# Shore
+#go south
+# Aragain Falls
+#wave sceptre
+#go east
+# On the Rainbow
+#go west
+# Aragain Falls
+#go north
+# Shore
+#go north
+# Sandy Beach
+#go southwest
+# (heading back toward house)
+#go up
+#go up
+#go northwest
+#go west
+#go west
+#go west
+# West of House
+#go east
+# North of House
+#go east
+# Behind House
+#enter window
+# Kitchen
+#go west
+# Living Room
+#put emerald in case
+#put scarab in case
+#put sceptre in case
+#put coffin in case
+
+# ==================================================
+# SECTION 17: MAZE — all 15 nodes + dead ends
+# Entry: Troll Room -> go west = Maze (1)
+# Pick up items at dead ends (skeleton key may be there)
+# ==================================================
+#open trap door
+#turn on lamp
+#go down
+# Cellar
+#go north
+# Troll Room
+#go west
+# Maze (1)
+#go south
+# Maze (2)
+#go east
+# Maze (3)
+#go up
+# Maze (5)
+#take all
+#go north
+# Dead End (1)
+#take all
+#go south
+# Maze (5)
+#go east
+# Dead End (2)
+#take all
+#go west
+# Maze (5)
+#go south
+# Maze (4)
+#go west
+# Maze (2)
+#go north
+# Maze (1)
+#go west
+# Dead End (3)
+#take all
+#go east
+# Maze (1)
+#go south
+# Maze (2)
+#go east
+# Maze (3)
+#go up
+# Maze (5)
+#go down
+# Maze (6)
+#go east
+# Maze (7)
+#go east
+# Dead End (4)
+#take all
+#go west
+# Maze (7)
+#go down
+# (Maze connection)
+#go east
+# Maze (8)
+#go west
+# (back)
+#go south
+# Maze (15)
+#go northwest
+# Maze (14)
+#go north
+# Maze (7)
+#go west
+# Maze (6)
+#go south
+# Maze (9)
+#go down
+# Maze (13)
+#go northeast
+# Grating Room
+#unlock grate
+#open grate
+#go up
+# Clearing (near grating)
+#go down
+# Grating Room
+#go southwest
+# Maze (13)
+#go west
+# Maze (10)
+#go up
+# Maze (9)
+#go south
+# Maze (11)
+#go west
+# Maze (12)
+#go north
+# Dead End (5)
+#take all
+#go south
+# Maze (12)
+#go east
+# Maze (11)
+
+# ==================================================
+# SECTION 18: CYCLOPS ROOM, TREASURE ROOM, STRANGE PASSAGE
+# ==================================================
+#go south
+# Maze (15)
+#go southeast
+# Cyclops Room
+#Ulysses
+#go up
+# Treasure Room
+#go down
+# Cyclops Room
+#go east
+# Strange Passage
+#go east
+# Living Room
+#go west
+# Strange Passage
+#go west
+# Cyclops Room
+
+# ==================================================
+# SECTION 19: STORE FINAL TREASURES
+# ==================================================
+#go east
+# Strange Passage
+#go east
+# Living Room
+#put all in case
+#go east
+# Kitchen
+#go east
+# Behind House
+#go south
+# South of House
+#go west
+# West of House
+#go west
+# Stone Barrow (revisit on the way out)
+#go west
+# Inside the Barrow (revisit)
