@@ -40,14 +40,22 @@ jobs:
       contents: write
 
     steps:
+      - uses: actions/checkout@v4
+
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: ifwg-player
-          path: dist/
+          path: deploy/
+
+      - name: Include pre-generated images
+        run: |
+          if [ -d images ]; then
+            cp -r images deploy/images
+          fi
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ./deploy

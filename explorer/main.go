@@ -63,6 +63,19 @@ func readGameID(story string) (string, error) {
 	return fmt.Sprintf("%d.%s", release, serial), nil
 }
 
+// trimToTitle strips any text that precedes the room title line in a description.
+// Frotz sometimes prepends event text (death messages, sound effects, game banners)
+// before the actual room output. The title always appears as its own line at the
+// start of the real room text, so we find it and discard everything before it.
+func trimToTitle(title, description string) string {
+	for i, line := range strings.Split(description, "\n") {
+		if strings.TrimSpace(line) == title {
+			return strings.TrimSpace(strings.Join(strings.Split(description, "\n")[i:], "\n"))
+		}
+	}
+	return description
+}
+
 func (e *Explorer) addRoom(r *frotz.Room) bool {
 	if r.ID == 0 {
 		for _, entry := range e.ordered {
@@ -78,7 +91,7 @@ func (e *Explorer) addRoom(r *frotz.Room) bool {
 		GameID:      e.gameID,
 		RoomID:      r.ID,
 		Title:       r.Title,
-		Description: r.Description,
+		Description: trimToTitle(r.Title, r.Description),
 	})
 	e.writeJSON()
 	return true

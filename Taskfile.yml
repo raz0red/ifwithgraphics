@@ -68,6 +68,21 @@ tasks:
       - "{{.GO_RUN}} make -B -C frotz"
       - "{{.GO_RUN}} sh -c 'go mod tidy && mkdir -p bin && go build -o bin/explorer .'"
 
+  imagegen:
+    desc: "Batch-generate room images — task imagegen rooms=zork1-bfs.json [out=./images] [concurrency=3] [limit=0] [model=gpt-image-2-2026-04-21]"
+    vars:
+      out:         '{{.out | default "./images"}}'
+      concurrency: '{{.concurrency | default "3"}}'
+      limit:       '{{.limit | default "0"}}'
+      model:       '{{.model | default "gpt-image-2-2026-04-21"}}'
+    cmd: >
+      docker run --rm
+      -v "{{.ROOT_DIR}}:/src"
+      -w /src/imagegen
+      -e OPENAI_API_KEY
+      {{.GO_IMAGE}}
+      sh -c 'apt-get update -qq && apt-get install -y -q libwebp-dev && go run . -refs /src/player/prompt -out /src/{{.out}} -concurrency {{.concurrency}} -limit {{.limit}} -model {{.model}} /src/{{.rooms}}'
+
   build:wasm:
     internal: true
     cmd: "{{.EMSDK_RUN}} make install"
