@@ -17,6 +17,9 @@ player/dist/
 dist/
 frotz-ws/bin/
 frotz-ws/frotz/bin/
+explorer/bin/
+explorer/frotz/bin/
+imagegen/imagegen
 
 # OS / editor
 .DS_Store
