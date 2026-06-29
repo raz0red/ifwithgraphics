@@ -1,8 +1,8 @@
 CC      ?= gcc
 CFLAGS  := -O2 -D_POSIX_C_SOURCE=200809L -DIFWG_MONITOR
 
-FROTZ_COMMON := ../../wasm/frotz/src/common
-FROTZ_DUMB   := ../../wasm/frotz/src/dumb
+FROTZ_COMMON := ../../../wasm/frotz/src/common
+FROTZ_DUMB   := ../../../wasm/frotz/src/dumb
 
 BUILD := build
 BIN   := bin
