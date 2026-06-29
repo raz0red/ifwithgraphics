@@ -1,4 +1,5 @@
 import { DB }             from "../db.js";
+import { Game }           from "../game.js";
 import { OpenAIImageGen } from "./openai.js";
 import { GeminiImageGen } from "./gemini.js";
 import PROVIDERS          from "./providers.json" with { type: "json" };
@@ -6,21 +7,24 @@ import PROVIDERS          from "./providers.json" with { type: "json" };
 export { PROVIDERS };
 
 export class ImageGenSettings {
-  constructor(provider, apiKeys, model) {
-    this._provider = provider || Object.keys(PROVIDERS)[0];
-    this._apiKeys  = (apiKeys && typeof apiKeys === "object") ? apiKeys : {};
-    this._model    = model    || "";
+  constructor(provider, apiKeys, model, pregenEnabled) {
+    this._provider      = provider || Object.keys(PROVIDERS)[0];
+    this._apiKeys       = (apiKeys && typeof apiKeys === "object") ? apiKeys : {};
+    this._model         = model    || "";
+    this._pregenEnabled = pregenEnabled !== undefined ? !!pregenEnabled : true;
   }
-  getProvider()  { return this._provider; }
-  getApiKey()    { return this._apiKeys[this._provider] || ""; }
-  getApiKeys()   { return this._apiKeys; }
+  getProvider()      { return this._provider; }
+  getApiKey()        { return this._apiKeys[this._provider] || ""; }
+  getApiKeys()       { return this._apiKeys; }
+  getPregenEnabled() { return this._pregenEnabled; }
   getModel() {
     if (this._model) return this._model;
     return PROVIDERS[this._provider]?.models[0]?.value || "";
   }
-  setProvider(v) { this._provider = v; }
-  setApiKey(v)   { this._apiKeys[this._provider] = v; }
-  setModel(v)    { this._model    = v; }
+  setProvider(v)      { this._provider      = v; }
+  setApiKey(v)        { this._apiKeys[this._provider] = v; }
+  setModel(v)         { this._model         = v; }
+  setPregenEnabled(v) { this._pregenEnabled = !!v; }
 }
 
 const SETTINGS_KEY = "ifwg_settings";
@@ -28,9 +32,8 @@ const SETTINGS_KEY = "ifwg_settings";
 function getSettings() {
   try {
     const raw = JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {};
-    // Migrate old single-key format
     const apiKeys = raw.apiKeys || (raw.apiKey ? { [raw.provider || Object.keys(PROVIDERS)[0]]: raw.apiKey } : {});
-    return new ImageGenSettings(raw.provider, apiKeys, raw.model);
+    return new ImageGenSettings(raw.provider, apiKeys, raw.model, raw.pregenEnabled);
   } catch (_) {
     return new ImageGenSettings();
   }
@@ -38,9 +41,10 @@ function getSettings() {
 
 function setSettings(settings) {
   localStorage.setItem(SETTINGS_KEY, JSON.stringify({
-    provider: settings.getProvider(),
-    apiKeys:  settings.getApiKeys(),
-    model:    settings.getModel(),
+    provider:      settings.getProvider(),
+    apiKeys:       settings.getApiKeys(),
+    model:         settings.getModel(),
+    pregenEnabled: settings.getPregenEnabled(),
   }));
 }
 
@@ -127,13 +131,27 @@ function cropAndCompress(url) {
   });
 }
 
+/* Fetch a pre-generated image from the static bundle and return it as a data URL. */
+function fetchPregenerated(gameId, roomId) {
+  const url = `./images/${gameId}/${roomId}.webp`;
+  return fetch(url)
+    .then(r => {
+      if (!r.ok) return null;
+      return r.blob().then(blob => new Promise(resolve => {
+        const reader = new FileReader();
+        reader.onload  = () => resolve(reader.result);
+        reader.onerror = () => resolve(null);
+        reader.readAsDataURL(blob);
+      }));
+    })
+    .catch(() => null);
+}
+
 function generate(roomId, title, description, onCacheMiss) {
   const cacheKey = `images/${roomId}`;
 
   return DB.get(cacheKey).then(cached => {
     if (cached) {
-      /* Already WebP — serve directly. Old PNG or expired CDN URL — migrate to WebP
-         and update the cache entry in the background. */
       if (cached.startsWith("data:image/webp")) {
         console.info("[IFWG] image cache hit — roomId:%o webp:%okb", roomId, _kb(cached));
         return cached;
@@ -146,33 +164,52 @@ function generate(roomId, title, description, onCacheMiss) {
       });
     }
 
-    if (!onCacheMiss) return Promise.resolve(null);
+    const settings  = getSettings();
+    const gameId    = Game.getId();
 
-    const settings = getSettings();
-    if (!settings.getApiKey()) return Promise.resolve(null);
-
-    onCacheMiss();
-
-    const provider = getProvider(settings.getProvider());
-    if (!provider) return Promise.resolve(null);
-
-    const prompt = buildPrompt(title, description);
-    const attempt = (remaining) =>
-      provider.generate(settings.getApiKey(), prompt, settings.getModel())
-        .catch(err => {
-          if (remaining > 0) {
-            console.warn("[IFWG] image gen failed, retrying (%o left) — %o", remaining, err?.message ?? err);
-            return attempt(remaining - 1);
-          }
-          throw err;
-        });
-    return attempt(2)
-      .then(url => cropAndCompress(url))
-      .then(webp => {
-        console.info("[IFWG] image generated — roomId:%o webp:%okb", roomId, _kb(webp));
-        return DB.put(cacheKey, webp).then(() => webp);
+    /* Try pre-generated static image first. */
+    if (settings.getPregenEnabled() && gameId) {
+      if (onCacheMiss) onCacheMiss();
+      return fetchPregenerated(gameId, roomId).then(dataUrl => {
+        if (dataUrl) {
+          console.info("[IFWG] pre-generated image — roomId:%o", roomId);
+          DB.put(cacheKey, dataUrl);
+          return dataUrl;
+        }
+        /* Not in the static bundle — fall through to live generation. */
+        return generateLive(settings, title, description, cacheKey, onCacheMiss);
       });
+    }
+
+    return generateLive(settings, title, description, cacheKey, onCacheMiss);
   });
+}
+
+function generateLive(settings, title, description, cacheKey, onCacheMiss) {
+  if (!onCacheMiss) return Promise.resolve(null);
+  if (!settings.getApiKey()) return Promise.resolve(null);
+
+  onCacheMiss();
+
+  const provider = getProvider(settings.getProvider());
+  if (!provider) return Promise.resolve(null);
+
+  const prompt  = buildPrompt(title, description);
+  const attempt = (remaining) =>
+    provider.generate(settings.getApiKey(), prompt, settings.getModel())
+      .catch(err => {
+        if (remaining > 0) {
+          console.warn("[IFWG] image gen failed, retrying (%o left) — %o", remaining, err?.message ?? err);
+          return attempt(remaining - 1);
+        }
+        throw err;
+      });
+  return attempt(2)
+    .then(url => cropAndCompress(url))
+    .then(webp => {
+      console.info("[IFWG] image generated — cacheKey:%o webp:%okb", cacheKey, _kb(webp));
+      return DB.put(cacheKey, webp).then(() => webp);
+    });
 }
 
 export const ImageGen = { generate, getSettings, setSettings };

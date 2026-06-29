@@ -29,6 +29,13 @@
           <input id="ifwg-ai-key" class="setting-input" type="password"
                  placeholder="sk-…" autocomplete="off" spellcheck="false">
         </div>
+        <div class="setting-row">
+          <label class="setting-label" for="ifwg-pregen">PRE-GEN</label>
+          <label class="setting-toggle-wrap">
+            <input id="ifwg-pregen" type="checkbox" class="setting-toggle">
+            <span class="setting-toggle-track"><span class="setting-toggle-thumb"></span></span>
+          </label>
+        </div>
       </div>
     </div>
 
@@ -55,6 +62,7 @@
       const aiProvider = document.getElementById("ifwg-ai-provider");
       const aiModel    = document.getElementById("ifwg-ai-model");
       const aiKey      = document.getElementById("ifwg-ai-key");
+      const pregen     = document.getElementById("ifwg-pregen");
       const modelRow   = document.getElementById("ifwg-model-row");
       const keyRow     = document.getElementById("ifwg-key-row");
 
@@ -75,10 +83,11 @@
         aiKey.placeholder = keyPlaceholder;
       }
 
-      const imgSettings = ImageGen.getSettings();
-      aiProvider.value  = imgSettings.getProvider();
+      const imgSettings  = ImageGen.getSettings();
+      aiProvider.value   = imgSettings.getProvider();
       if (!aiProvider.value) aiProvider.selectedIndex = 0;
-      aiKey.value       = imgSettings.getApiKey();
+      aiKey.value        = imgSettings.getApiKey();
+      pregen.checked     = imgSettings.getPregenEnabled();
       populateModels(aiProvider.value, imgSettings.getModel());
 
       function applyImageSettings() {
@@ -86,6 +95,7 @@
         s.setProvider(aiProvider.value);
         s.setApiKey(aiKey.value.trim());
         s.setModel(aiModel.value);
+        s.setPregenEnabled(pregen.checked);
         ImageGen.setSettings(s);
       }
       aiProvider.addEventListener("change", () => {
@@ -95,9 +105,10 @@
         populateModels(aiProvider.value, "");
         applyImageSettings();
       });
-      aiModel.addEventListener("change", applyImageSettings);
-      aiKey.addEventListener("change",   applyImageSettings);
-      aiKey.addEventListener("blur",     applyImageSettings);
+      aiModel.addEventListener("change",  applyImageSettings);
+      aiKey.addEventListener("change",    applyImageSettings);
+      aiKey.addEventListener("blur",      applyImageSettings);
+      pregen.addEventListener("change",   applyImageSettings);
 
       function loadFile(file) {
         launcher.style.display = "none";
