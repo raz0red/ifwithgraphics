@@ -54,6 +54,12 @@ jobs:
             cp -r images deploy/images
           fi
 
+      - name: Include games
+        run: |
+          if [ -d games ]; then
+            cp -r games deploy/games
+          fi
+
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:

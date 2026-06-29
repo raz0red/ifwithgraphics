@@ -28,6 +28,7 @@ export class ImageGenSettings {
 }
 
 const SETTINGS_KEY = "ifwg_settings";
+let _imagesBase = "./images/";
 
 function getSettings() {
   try {
@@ -133,7 +134,7 @@ function cropAndCompress(url) {
 
 /* Fetch a pre-generated image from the static bundle and return it as a data URL. */
 function fetchPregenerated(gameId, roomId) {
-  const url = `./images/${gameId}/${roomId}.webp`;
+  const url = `${_imagesBase}${gameId}/${roomId}.webp`;
   return fetch(url)
     .then(r => {
       if (!r.ok) return null;
@@ -214,4 +215,4 @@ function generateLive(settings, title, description, cacheKey, onCacheMiss) {
     });
 }
 
-export const ImageGen = { generate, getSettings, setSettings };
+export const ImageGen = { generate, getSettings, setSettings, setImagesBase(url) { _imagesBase = url; } };
