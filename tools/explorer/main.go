@@ -15,7 +15,7 @@ import (
 	"github.com/raz0red/ifwithgraphics/explorer/internal/frotz"
 )
 
-var allDirs = []string{"n", "s", "e", "w", "ne", "nw", "se", "sw", "u", "d", "in", "out"}
+var allDirs = []string{"n", "s", "e", "w", "ne", "nw", "se", "sw", "u", "d", "in", "out", "enter", "climb", "cross", "board"}
 
 type RoomEntry struct {
 	GameID      string `json:"gameId"`
