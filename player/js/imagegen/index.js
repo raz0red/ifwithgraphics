@@ -174,7 +174,6 @@ function generate(roomId, title, description, onCacheMiss) {
       return fetchPregenerated(gameId, roomId).then(dataUrl => {
         if (dataUrl) {
           console.info("[IFWG] pre-generated image — roomId:%o", roomId);
-          DB.put(cacheKey, dataUrl);
           return dataUrl;
         }
         /* Not in the static bundle — fall through to live generation. */
