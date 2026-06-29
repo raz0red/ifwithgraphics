@@ -25,12 +25,29 @@ jobs:
       - name: Dist
         run: task dist
 
-      - name: Zip
-        run: zip -r ifwg-player.zip dist/
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ifwg-player
-          path: ifwg-player.zip
+          path: dist/
           retention-days: 30
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ifwg-player
+          path: dist/
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
