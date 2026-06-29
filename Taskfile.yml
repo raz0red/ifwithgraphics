@@ -16,10 +16,10 @@ vars:
   NODE_IMAGE:   node:20-alpine
   NGINX_IMAGE:  nginx:alpine
   GO_IMAGE:     golang:1.24-bookworm
-  ALPINE_RUN:   docker run --rm -v "{{.ROOT_DIR}}:/src" alpine
-  EMSDK_RUN:    docker run --rm -v "{{.ROOT_DIR}}:/src" -w /src/wasm {{.EMSDK_IMAGE}}
-  NODE_RUN:     docker run --rm -v "{{.ROOT_DIR}}/player:/src" -w /src {{.NODE_IMAGE}}
-  GO_RUN:       docker run --rm -v "{{.ROOT_DIR}}:/src" -w /src/tools/explorer {{.GO_IMAGE}}
+  ALPINE_RUN:   docker run --rm -v "{{.ROOT_DIR}}:/repo" alpine
+  EMSDK_RUN:    docker run --rm -v "{{.ROOT_DIR}}:/repo" -w /repo/wasm {{.EMSDK_IMAGE}}
+  NODE_RUN:     docker run --rm -v "{{.ROOT_DIR}}/src:/src" -w /src {{.NODE_IMAGE}}
+  GO_RUN:       docker run --rm -v "{{.ROOT_DIR}}:/repo" -w /repo/tools/explorer {{.GO_IMAGE}}
 
 tasks:
   default:
@@ -39,28 +39,28 @@ tasks:
       - task: build:wasm
       - task: build:js
       - "{{.ALPINE_RUN}} sh -c '\
-          rm -rf /src/dist && \
-          mkdir -p /src/dist/wasm /src/dist/prompt && \
-          cp /src/player/index.html /src/player/player.css /src/dist/ && \
-          cp -r /src/player/js /src/dist/js && \
-          cp /src/player/wasm/ifwg.js /src/player/wasm/ifwg.wasm /src/dist/wasm/ && \
-          cp /src/player/dist/ifwg-player.js /src/dist/ && \
-          cp /src/player/prompt/* /src/dist/prompt/ \
+          rm -rf /repo/dist && \
+          mkdir -p /repo/dist/wasm /repo/dist/prompt && \
+          cp /repo/web/index.html /repo/src/player.css /repo/dist/ && \
+          cp -r /repo/src/js /repo/dist/js && \
+          cp /repo/src/wasm/ifwg.js /repo/src/wasm/ifwg.wasm /repo/dist/wasm/ && \
+          cp /repo/src/dist/ifwg-player.js /repo/dist/ && \
+          cp /repo/src/prompt/* /repo/dist/prompt/ \
         '"
 
   explore:
-    desc: "Walk a game and write rooms JSON — task explore stories=C:\\path story=game.z5 [walkthrough=tools/explorer/zork1/walkthroughs/zork1.txt] [out=tools/explorer/zork1/bfs.json] [loop=1]"
+    desc: "Walk a game and write rooms JSON — task explore stories=C:\\path story=game.z5 [walkthrough=tools/explorer/games/zork1/walkthroughs/zork1.txt] [out=tools/explorer/games/zork1/bfs.json] [loop=1]"
     vars:
-      out:      '{{.out | default "tools/explorer/zork1/bfs.json"}}'
-      wt_flag:  '{{if .walkthrough}}-walkthrough /src/{{.walkthrough}}{{end}}'
+      out:      '{{.out | default "tools/explorer/games/zork1/bfs.json"}}'
+      wt_flag:  '{{if .walkthrough}}-walkthrough /repo/{{.walkthrough}}{{end}}'
       lp_flag:  '{{if .loop}}-loop{{end}}'
     cmd: >
       docker run --rm
-      -v "{{.ROOT_DIR}}:/src"
+      -v "{{.ROOT_DIR}}:/repo"
       -v "{{.stories}}:/stories:ro"
-      -w /src/tools/explorer
+      -w /repo/tools/explorer
       {{.GO_IMAGE}}
-      ./bin/explorer --frotz ./frotz/bin/dfrotz --out /src/{{.out}} {{.wt_flag}} {{.lp_flag}} /stories/{{.story}}
+      ./bin/explorer --frotz ./frotz/bin/dfrotz --out /repo/{{.out}} {{.wt_flag}} {{.lp_flag}} /stories/{{.story}}
 
   build:explorer:
     desc: Build native dfrotz and explorer binary
@@ -69,20 +69,20 @@ tasks:
       - "{{.GO_RUN}} sh -c 'go mod tidy && mkdir -p bin && go build -o bin/explorer .'"
 
   imagegen:
-    desc: "Batch-generate room images — task imagegen [rooms=tools/explorer/zork1/bfs.json] [out=./images] [concurrency=3] [limit=0] [model=gpt-image-2-2026-04-21]"
+    desc: "Batch-generate room images — task imagegen [rooms=tools/explorer/games/zork1/bfs.json] [out=web/images] [concurrency=3] [limit=0] [model=gpt-image-2-2026-04-21]"
     vars:
-      rooms:       '{{.rooms | default "tools/explorer/zork1/bfs.json"}}'
-      out:         '{{.out | default "./images"}}'
+      rooms:       '{{.rooms | default "tools/explorer/games/zork1/bfs.json"}}'
+      out:         '{{.out | default "web/images"}}'
       concurrency: '{{.concurrency | default "3"}}'
       limit:       '{{.limit | default "0"}}'
       model:       '{{.model | default "gpt-image-2-2026-04-21"}}'
     cmd: >
       docker run --rm
-      -v "{{.ROOT_DIR}}:/src"
-      -w /src/tools/imagegen
+      -v "{{.ROOT_DIR}}:/repo"
+      -w /repo/tools/imagegen
       -e OPENAI_API_KEY
       {{.GO_IMAGE}}
-      sh -c 'apt-get update -qq && apt-get install -y -q libwebp-dev && go run . -refs /src/player/prompt -out /src/{{.out}} -concurrency {{.concurrency}} -limit {{.limit}} -model {{.model}} /src/{{.rooms}}'
+      sh -c 'apt-get update -qq && apt-get install -y -q libwebp-dev && go run . -refs /repo/src/prompt -out /repo/{{.out}} -concurrency {{.concurrency}} -limit {{.limit}} -model {{.model}} /repo/{{.rooms}}'
 
   build:wasm:
     internal: true
@@ -106,4 +106,4 @@ tasks:
     desc: Remove build artifacts
     cmds:
       - "{{.EMSDK_RUN}} make clean"
-      - "{{.ALPINE_RUN}} rm -rf /src/dist /src/player/dist"
+      - "{{.ALPINE_RUN}} rm -rf /repo/dist /repo/src/dist"
