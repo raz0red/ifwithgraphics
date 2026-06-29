@@ -1,0 +1,590 @@
+[
+  {
+    "gameId": "119.880429",
+    "roomId": 64,
+    "title": "West of House",
+    "description": "West of House\nYou are standing in an open field west of a white house, with a boarded front door.\nThere is a small mailbox here."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 209,
+    "title": "South of House",
+    "description": "South of House\nYou are facing the south side of a white house. There is no door here, and all the windows are boarded."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 85,
+    "title": "Behind House",
+    "description": "Behind House\nYou are behind the white house. A path leads into the forest to the east. In one corner of the house there is a small window which is slightly ajar."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 27,
+    "title": "Kitchen",
+    "description": "Kitchen\nYou are in the kitchen of the white house. A table seems to have been used recently for the preparation of food. A passage leads to the west and a dark staircase can be seen leading upward. A dark\nchimney leads down and to the east is a small window which is open.\nA bottle is sitting on the table.\nThe glass bottle contains:\n  A quantity of water\nOn the table is an elongated brown sack, smelling of hot peppers."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 75,
+    "title": "Living Room",
+    "description": "Living Room\nYou are in the living room. There is a doorway to the east, a wooden door with strange gothic lettering to the west, which appears to be nailed shut, a trophy case, and a large oriental rug in the\ncenter of the room.\nAbove the trophy case hangs an elvish sword of great antiquity.\nA battery-powered brass lantern is on the trophy case."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 33,
+    "title": "Cellar",
+    "description": "Cellar\nYou are in a dark and damp cellar with a narrow passageway leading north, and a crawlway to the south. On the west is the bottom of a steep metal ramp which is unclimbable."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 247,
+    "title": "East of Chasm",
+    "description": "East of Chasm\nYou are on the east edge of a chasm, the bottom of which cannot be seen. A narrow passage goes north, and the path you are on continues to the east."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 122,
+    "title": "Gallery",
+    "description": "Gallery\nThis is an art gallery. Most of the paintings have been stolen by vandals with exceptional taste. The vandals left through either the north or west exits.\nFortunately, there is still one chance for you to be a vandal, for on the far wall is a painting of unparalleled beauty."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 220,
+    "title": "Studio",
+    "description": "Studio\nThis appears to have been an artist's studio. The walls and floors are splattered with paints of 69 different colors. Strangely enough, nothing of value is hanging here. At the south end of the room\nis an open door (also covered with paint). A dark and narrow chimney leads up from a fireplace; although you might be able to get up it, it seems unlikely you could get back down.\nLoosely attached to a wall is a small piece of paper."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 187,
+    "title": "Attic",
+    "description": "Attic\nThis is the attic. The only exit is a stairway leading down.\nA large coil of rope is lying in the corner.\nOn a table is a nasty-looking knife."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 127,
+    "title": "The Troll Room",
+    "description": "The Troll Room\nThis is a small room with passages to the east and south and a forbidding hole leading west. Bloodstains and deep scratches (perhaps made by an axe) mar the walls.\nA nasty-looking troll, brandishing a bloody axe, blocks all passages out of the room.\nYour sword has begun to glow very brightly."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 130,
+    "title": "East-West Passage",
+    "description": "East-West Passage\nThis is a narrow east-west passageway. There is a narrow stairway leading down at the north end of the room."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 15,
+    "title": "Round Room",
+    "description": "Round Room\nThis is a circular stone room with passages in all directions. Several of them have unfortunately been blocked by cave-ins."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 69,
+    "title": "Engravings Cave",
+    "description": "Engravings Cave\nYou have entered a low cave with passages leading northwest and east.\nThere are old engravings on the walls here."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 11,
+    "title": "Dome Room",
+    "description": "Dome Room\nYou are at the periphery of a large dome, which forms the ceiling of another room below. Protecting you from a precipitous drop is a wooden railing which circles the dome."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 18,
+    "title": "Torch Room",
+    "description": "Torch Room\nThis is a large room with a prominent doorway leading to a down staircase. Above you is a large dome. Up around the edge of the dome (20 feet up) is a wooden railing. In the center of the room sits a\nwhite marble pedestal.\nA piece of rope descends from the railing above, ending some five feet above your head.\nSitting on the pedestal is a flaming torch, made of ivory."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 2,
+    "title": "Temple",
+    "description": "Temple\nThis is the north end of a large temple. On the east wall is an ancient inscription, probably a prayer in a long-forgotten language. Below the prayer is a staircase leading down. The west wall is\nsolid granite. The exit to the north end of the room is through huge marble pillars.\nThere is a brass bell here."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 241,
+    "title": "Egyptian Room",
+    "description": "Egyptian Room\nThis is a room which looks like an Egyptian tomb. There is an ascending staircase to the west.\nThe solid-gold coffin used for the burial of Ramses II is here."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 129,
+    "title": "Altar",
+    "description": "Altar\nThis is the south end of a large temple. In front of you is what appears to be an altar. In one corner is a small hole in the floor which leads into darkness. You probably could not get back up it.\nOn the two ends of the altar are burning candles.\nOn the altar is a large black book, open to page 569."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 87,
+    "title": "Forest",
+    "description": "Forest\nThis is a forest, with trees in all directions. To the east, there appears to be sunlight."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 221,
+    "title": "Forest",
+    "description": "Forest\nThis is a dimly lit forest, with large trees all around."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 128,
+    "title": "Clearing",
+    "description": "Clearing\nYou are in a small clearing in a well marked forest path that extends to the east and west."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 22,
+    "title": "Canyon View",
+    "description": "Canyon View\nYou are at the top of the Great Canyon on its west wall. From here there is a marvelous view of the canyon and parts of the Frigid River upstream. Across the canyon, the walls of the White Cliffs join\nthe mighty ramparts of the Flathead Mountains to the east. Following the Canyon upstream to the north, Aragain Falls may be seen, complete with rainbow. The mighty Frigid River flows out from a great\ndark cavern. To the west and south can be seen an immense forest, stretching for miles around. A path leads northwest. It is possible to climb down into the canyon from here."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 21,
+    "title": "Rocky Ledge",
+    "description": "Rocky Ledge\nYou are on a ledge about halfway up the wall of the river canyon. You can see from here that the main flow from Aragain Falls twists along a passage which it is impossible for you to enter. Below you\nis the canyon bottom. Above you is more cliff, which appears climbable."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 74,
+    "title": "Canyon Bottom",
+    "description": "Canyon Bottom\nYou are beneath the walls of the river canyon which may be climbable here. The lesser part of the runoff of Aragain Falls flows by below. To the north is a narrow path."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 125,
+    "title": "End of Rainbow",
+    "description": "End of Rainbow\nYou are on a small, rocky beach on the continuation of the Frigid River past the Falls. The beach is narrow due to the presence of the White Cliffs. The river canyon opens here and sunlight shines in\nfrom above. A rainbow crosses over the falls to the east and a narrow path continues to the southwest."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 106,
+    "title": "Chasm",
+    "description": "Chasm\nA chasm runs southwest to northeast and the path follows it. You are on the south side of the chasm, where a crack opens into a passage."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 123,
+    "title": "Reservoir South",
+    "description": "Reservoir South\nYou are in a long room on the south shore of a large lake, far too deep and wide for crossing.\nThere is a path along the stream to the east or west, a steep pathway climbing southwest along the edge of a chasm, and a path leading into a canyon to the southeast."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 178,
+    "title": "Dam",
+    "description": "Dam\nYou are standing on the top of the Flood Control Dam #3, which was quite a tourist attraction in times far distant. There are paths to the north, south, and west, and a scramble down.\nThe sluice gates on the dam are closed. Behind the dam, there can be seen a wide reservoir. Water is pouring over the top of the now abandoned dam.\nThere is a control panel here, on which a large metal bolt is mounted. Directly above the bolt is a small green plastic bubble."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 120,
+    "title": "Dam Lobby",
+    "description": "Dam Lobby\nThis room appears to have been the waiting room for groups touring the dam. There are open doorways here to the north and east marked \"Private\", and there is a path leading south over the top of the\ndam.\nSome guidebooks entitled \"Flood Control Dam #3\" are on the reception desk.\nThere is a matchbook whose cover says \"Visit Beautiful FCD#3\" here."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 224,
+    "title": "Maintenance Room",
+    "description": "Maintenance Room\nThis is what appears to have been the maintenance room for Flood Control Dam #3. Apparently, this room has been ransacked recently, for most of the valuable equipment is gone. On the wall in front of\nyou is a group of buttons colored blue, yellow, brown, and red. There are doorways to the west and south.\nThere is a wrench here.\nThere is an object which looks like a tube of toothpaste here.\nThere is a screwdriver here.\nThere is a group of tool chests here."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 162,
+    "title": "Deep Canyon",
+    "description": "Deep Canyon\nYou are on the south edge of a deep canyon. Passages lead off to the east, northwest and southwest. A stairway leads down. You can hear a loud roaring sound, like that of rushing water, from below."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 176,
+    "title": "Cave",
+    "description": "Cave\nThis is a tiny cave with entrances west and north, and a dark, forbidding staircase leading down.\nA gust of wind blows out your candles!\nIt is now completely dark."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 38,
+    "title": "Entrance to Hades",
+    "description": "Entrance to Hades\nYou are outside a large gateway, on which is inscribed\n\n  Abandon every hope all ye who enter here!\n\nThe gate is open; through it you can see a desolation, with a pile of mangled bodies in one corner. Thousands of voices, lamenting some hideous fate, can be heard.\nThe way through the gate is barred by evil spirits, who jeer at your attempts to pass."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 52,
+    "title": "Mirror Room",
+    "description": "Mirror Room\nYou are in a large square room with tall ceilings. On the south wall is an enormous mirror which fills the entire wall. There are exits on the other three sides of the room."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 110,
+    "title": "Mirror Room",
+    "description": "You have moved into a dark place.\nThere is a rumble from deep within the earth and the room shakes."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 228,
+    "title": "Narrow Passage",
+    "description": "Narrow Passage\nThis is a long and narrow corridor where a long north-south passageway briefly narrows even further."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 205,
+    "title": "Loud Room",
+    "description": "Loud Room\nThis is a large room with a ceiling which cannot be detected from the ground. There is a narrow passage from east to west and a stone stairway leading upward. The room is deafeningly loud with an\nundetermined rushing sound. The sound seems to reverberate from all of the walls, making it difficult even to think.\nOn the ground is a large platinum bar."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 25,
+    "title": "Damp Cave",
+    "description": "Damp Cave\nThis cave has exits to the west and east, and narrows to a crack toward the south. The earth is particularly damp here."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 184,
+    "title": "White Cliffs Beach",
+    "description": "White Cliffs Beach\nYou are on a narrow strip of beach which runs along the base of the White Cliffs. There is a narrow path heading south along the Cliffs and a tight passage leading west into the cliffs themselves."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 166,
+    "title": "White Cliffs Beach",
+    "description": "White Cliffs Beach\nYou are on a rocky, narrow strip of beach beside the Cliffs. A narrow path leads north along the shore."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 175,
+    "title": "North-South Passage",
+    "description": "North-South Passage\nThis is a high north-south passage, which forks to the northeast."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 145,
+    "title": "Winding Passage",
+    "description": "Winding Passage\nThis is a winding passage. It seems that there are only exits on the east and north."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 111,
+    "title": "Dam Base",
+    "description": "Dam Base\nYou are at the base of Flood Control Dam #3, which looms above you and to the north. The river Frigid is flowing by here. Along the river are the White Cliffs which seem to form giant walls stretching\nfrom north to south along the shores of the river as it winds its way downstream.\nThere is a folded pile of plastic here which has a small valve attached."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 67,
+    "title": "Stream View",
+    "description": "Stream View\nYou are standing on a path beside a gently flowing stream. The path follows the stream, which flows from west to east."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 104,
+    "title": "Maze",
+    "description": "Maze\nThis is part of a maze of twisty little passages, all alike."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 19,
+    "title": "Maze",
+    "description": "Maze\nThis is part of a maze of twisty little passages, all alike."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 193,
+    "title": "Maze",
+    "description": "Maze\nThis is part of a maze of twisty little passages, all alike."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 147,
+    "title": "Dead End",
+    "description": "Dead End\nYou have come to a dead end in the maze."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 54,
+    "title": "Maze",
+    "description": "Maze\nThis is part of a maze of twisty little passages, all alike."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 218,
+    "title": "Maze",
+    "description": "Maze\nThis is part of a maze of twisty little passages, all alike. A skeleton, probably the remains of a luckless adventurer, lies here.\nBeside the skeleton is a rusty knife.\nThe deceased adventurer's useless lantern is here.\nThere is a skeleton key here.\nAn old leather bag, bulging with coins, is here."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 141,
+    "title": "Dead End",
+    "description": "Dead End\nYou have come to a dead end in the maze.\nSomeone carrying a large bag is casually leaning against one of the walls here. He does not speak, but it is clear from his aspect that the bag will be taken only over his dead body."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 134,
+    "title": "Maze",
+    "description": "Maze\nThis is part of a maze of twisty little passages, all alike.\nSomeone carrying a large bag is casually leaning against one of the walls here. He does not speak, but it is clear from his aspect that the bag will be taken only over his dead body.\nThe thief slowly approaches, strikes like a snake, and leaves you wounded."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 158,
+    "title": "Maze",
+    "description": "Maze\nThis is part of a maze of twisty little passages, all alike."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 170,
+    "title": "Maze",
+    "description": "Maze\nThis is part of a maze of twisty little passages, all alike."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 50,
+    "title": "Maze",
+    "description": "Maze\nThis is part of a maze of twisty little passages, all alike."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 81,
+    "title": "Maze",
+    "description": "Maze\nThis is part of a maze of twisty little passages, all alike."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 161,
+    "title": "Maze",
+    "description": "Maze\nThis is part of a maze of twisty little passages, all alike."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 34,
+    "title": "Maze",
+    "description": "Maze\nThis is part of a maze of twisty little passages, all alike."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 42,
+    "title": "Maze",
+    "description": "Maze\nThis is part of a maze of twisty little passages, all alike."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 153,
+    "title": "Dead End",
+    "description": "Dead End\nYou have come to a dead end in the maze."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 152,
+    "title": "Maze",
+    "description": "Maze\nThis is part of a maze of twisty little passages, all alike."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 216,
+    "title": "Grating Room",
+    "description": "Grating Room\nYou are in a small room near the maze. There are twisty passages in the immediate vicinity.\nAbove you is a grating locked with a skull-and-crossbones lock."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 51,
+    "title": "Maze",
+    "description": "Maze\nThis is part of a maze of twisty little passages, all alike."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 78,
+    "title": "Cyclops Room",
+    "description": "Cyclops Room\nThis room has an exit on the northwest, and a staircase leading up.\nA cyclops, who looks prepared to eat horses (much less mere adventurers), blocks the staircase. From his state of health, and the bloodstains on the walls, you gather that he is not very friendly,\nthough he likes people."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 143,
+    "title": "Dead End",
+    "description": "Dead End\nYou have come to a dead end in the maze."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 137,
+    "title": "North of House",
+    "description": "North of House\nYou are facing the north side of a white house. There is no door here, and all the windows are boarded up. To the north a narrow path winds through the trees."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 238,
+    "title": "Forest Path",
+    "description": "Forest Path\nThis is a path winding through a dimly lit forest. The path heads north-south here. One particularly large tree with some low branches stands at the edge of the path."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 160,
+    "title": "Clearing",
+    "description": "Clearing\nYou are in a clearing, with a forest surrounding you on all sides. A path leads south.\nOn the ground is a pile of leaves."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 32,
+    "title": "Forest",
+    "description": "Forest\nThis is a dimly lit forest, with large trees all around."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 167,
+    "title": "Forest",
+    "description": "Forest\nThe forest thins out, revealing impassable mountains."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 5,
+    "title": "Up a Tree",
+    "description": "Up a Tree\nYou are about 10 feet above the ground nestled among some large branches. The nearest branch above you is above your reach.\nBeside you on the branch is a small bird's nest.\nIn the bird's nest is a large egg encrusted with precious jewels, apparently scavenged by a childless songbird. The egg is covered with fine gold inlay, and ornamented in lapis lazuli and mother-of-\npearl. Unlike most eggs, this one is hinged and closed with a delicate looking clasp. The egg appears extremely fragile."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 202,
+    "title": "On the Rainbow",
+    "description": "On the Rainbow\nYou are on top of a rainbow (I bet you never thought you would walk on a rainbow), with a magnificent view of the Falls. The rainbow travels east-west here."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 47,
+    "title": "Aragain Falls",
+    "description": "Aragain Falls\nYou are at the top of Aragain Falls, an enormous waterfall with a drop of about 450 feet. The only path here is on the north end.\nA solid rainbow spans the falls."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 40,
+    "title": "Shore",
+    "description": "Shore\nYou are on the east shore of the river. The water here seems somewhat treacherous. A path travels from north to south here, the south end quickly turning around a sharp corner."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 30,
+    "title": "Sandy Beach",
+    "description": "You have moved into a dark place.\nIt is pitch black. You are likely to be eaten by a grue."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 95,
+    "title": "Reservoir",
+    "description": "Reservoir\nYou are on what used to be a large lake, but which is now a large mud pile. There are \"shores\" to the north and south.\nLying half buried in the mud is an old trunk, bulging with jewels."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 191,
+    "title": "Reservoir North",
+    "description": "Reservoir North\nYou are in a large cavernous room, the south of which was formerly a lake. However, with the water level lowered, there is merely a wide stream running through there.\nThere is a slimy stairway leaving the room to the north.\nThere is a hand-held air pump here."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 4,
+    "title": "Atlantis Room",
+    "description": "Atlantis Room\nThis is an ancient room, long under water. There is an exit to the south and a staircase leading up.\nOn the shore lies Poseidon's own crystal trident."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 62,
+    "title": "Cave",
+    "description": "Cave\nThis is a tiny cave with entrances west and north, and a staircase leading down."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 139,
+    "title": "Cold Passage",
+    "description": "Cold Passage\nThis is a cold and damp corridor where a long east-west passageway turns into a southward path."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 31,
+    "title": "Slide Room",
+    "description": "Slide Room\nThis is a small chamber, which appears to have been part of a coal mine. On the south wall of the chamber the letters \"Granite Wall\" are etched in the rock. To the east is a long passage, and there is\na steep metal slide twisting downward. To the north is a small opening."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 188,
+    "title": "Mine Entrance",
+    "description": "Mine Entrance\nYou are standing at the entrance of what might have been a coal mine. The shaft enters the west wall, and there is another exit on the south end of the room."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 171,
+    "title": "Squeaky Room",
+    "description": "Squeaky Room\nYou are in a small room. Strange squeaky sounds may be heard coming from the passage at the north end. You may also escape to the east."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 235,
+    "title": "Bat Room",
+    "description": "Bat Room\nYou are in a small room which has doors only to the east and south.\nThere is an exquisite jade figurine here.\nA large vampire bat, hanging from the ceiling, swoops down at you!"
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 245,
+    "title": "Shaft Room",
+    "description": "Shaft Room\nThis is a large room, in the middle of which is a small shaft descending through the floor into darkness below. To the west and the north are exits from this room. Constructed over the top of the\nshaft is a metal framework to which a heavy iron chain is attached.\nAt the end of the chain is a basket."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 93,
+    "title": "Smelly Room",
+    "description": "Smelly Room\nThis is a small nondescript room. However, from the direction of a small descending staircase a foul odor can be detected. To the south is a narrow tunnel."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 46,
+    "title": "Gas Room",
+    "description": "Gas Room\nThis is a small room which smells strongly of coal gas. There is a short climb up some stairs and a narrow tunnel leading east.\nThere is a sapphire-encrusted bracelet here."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 173,
+    "title": "Coal Mine",
+    "description": "Coal Mine\nThis is a nondescript part of a coal mine."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 90,
+    "title": "Coal Mine",
+    "description": "Coal Mine\nThis is a nondescript part of a coal mine."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 112,
+    "title": "Coal Mine",
+    "description": "Coal Mine\nThis is a nondescript part of a coal mine."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 3,
+    "title": "Coal Mine",
+    "description": "Coal Mine\nThis is a nondescript part of a coal mine."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 16,
+    "title": "Ladder Top",
+    "description": "Ladder Top\nThis is a very small room. In the corner is a rickety wooden ladder, leading downward. It might be safe to descend. There is also a staircase leading upward."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 72,
+    "title": "Ladder Bottom",
+    "description": "Ladder Bottom\nThis is a rather wide room. On one side is the bottom of a narrow wooden ladder. To the west and the south are passages leaving the room."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 156,
+    "title": "Dead End",
+    "description": "Dead End\nYou have come to a dead end in the mine.\nThere is a small pile of coal here."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 8,
+    "title": "Timber Room",
+    "description": "Timber Room\nThis is a long and narrow passage, which is cluttered with broken timbers. A wide passage comes from the east and turns at the west end of the room into a very narrow passageway. From the west comes a\nstrong draft.\nThere is a broken timber here."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 102,
+    "title": "Twisting Passage",
+    "description": "Twisting Passage\nThis is a winding passage. It seems that there are only exits on the east and north."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 155,
+    "title": "Sandy Cave",
+    "description": "You have moved into a dark place.\nIt is pitch black. You are likely to be eaten by a grue."
+  }
+]

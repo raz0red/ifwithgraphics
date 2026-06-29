@@ -17,9 +17,12 @@ player/dist/
 dist/
 frotz-ws/bin/
 frotz-ws/frotz/bin/
-explorer/bin/
-explorer/frotz/bin/
-imagegen/imagegen
+tools/explorer/bin/
+tools/explorer/frotz/bin/
+tools/imagegen/imagegen
+
+# Explorer intermediate artifacts
+*-bfs-saves/
 
 # OS / editor
 .DS_Store
