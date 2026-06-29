@@ -7,12 +7,12 @@ wasm/frotz/src/common/hash.h
 
 # Deployed WASM artifacts
 builder/wasm/
-src/wasm/
+web/src/wasm/
 player/wasm/
 
 # Source npm
-src/node_modules/
-src/dist/
+web/src/node_modules/
+web/src/dist/
 player/node_modules/
 
 # Build output

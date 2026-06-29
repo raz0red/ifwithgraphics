@@ -18,7 +18,7 @@ vars:
   GO_IMAGE:     golang:1.24-bookworm
   ALPINE_RUN:   docker run --rm -v "{{.ROOT_DIR}}:/repo" alpine
   EMSDK_RUN:    docker run --rm -v "{{.ROOT_DIR}}:/repo" -w /repo/wasm {{.EMSDK_IMAGE}}
-  NODE_RUN:     docker run --rm -v "{{.ROOT_DIR}}/src:/src" -w /src {{.NODE_IMAGE}}
+  NODE_RUN:     docker run --rm -v "{{.ROOT_DIR}}/web/src:/src" -w /src {{.NODE_IMAGE}}
   GO_RUN:       docker run --rm -v "{{.ROOT_DIR}}:/repo" -w /repo/tools/explorer {{.GO_IMAGE}}
 
 tasks:
@@ -41,11 +41,11 @@ tasks:
       - "{{.ALPINE_RUN}} sh -c '\
           rm -rf /repo/dist && \
           mkdir -p /repo/dist/wasm /repo/dist/prompt && \
-          cp /repo/web/index.html /repo/src/player.css /repo/dist/ && \
-          cp -r /repo/src/js /repo/dist/js && \
-          cp /repo/src/wasm/ifwg.js /repo/src/wasm/ifwg.wasm /repo/dist/wasm/ && \
-          cp /repo/src/dist/ifwg-player.js /repo/dist/ && \
-          cp /repo/src/prompt/* /repo/dist/prompt/ \
+          cp /repo/web/index.html /repo/web/src/player.css /repo/dist/ && \
+          cp -r /repo/web/src/js /repo/dist/js && \
+          cp /repo/web/src/wasm/ifwg.js /repo/web/src/wasm/ifwg.wasm /repo/dist/wasm/ && \
+          cp /repo/web/src/dist/ifwg-player.js /repo/dist/ && \
+          cp /repo/web/src/prompt/* /repo/dist/prompt/ \
         '"
 
   explore:
@@ -82,7 +82,7 @@ tasks:
       -w /repo/tools/imagegen
       -e OPENAI_API_KEY
       {{.GO_IMAGE}}
-      sh -c 'apt-get update -qq && apt-get install -y -q libwebp-dev && go run . -refs /repo/src/prompt -out /repo/{{.out}} -concurrency {{.concurrency}} -limit {{.limit}} -model {{.model}} /repo/{{.rooms}}'
+      sh -c 'apt-get update -qq && apt-get install -y -q libwebp-dev && go run . -refs /repo/web/src/prompt -out /repo/{{.out}} -concurrency {{.concurrency}} -limit {{.limit}} -model {{.model}} /repo/{{.rooms}}'
 
   build:wasm:
     internal: true
@@ -106,4 +106,4 @@ tasks:
     desc: Remove build artifacts
     cmds:
       - "{{.EMSDK_RUN}} make clean"
-      - "{{.ALPINE_RUN}} rm -rf /repo/dist /repo/src/dist"
+      - "{{.ALPINE_RUN}} rm -rf /repo/dist /repo/web/src/dist"

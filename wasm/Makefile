@@ -6,7 +6,7 @@ ZTOOLS_DIR := ztools/source
 FROTZ_COMMON_DIR := frotz/src/common
 FROTZ_DUMB_DIR := frotz/src/dumb
 BUILDER_WASM_DIR := ../builder/wasm
-PLAYER_WASM_DIR  := ../src/wasm
+PLAYER_WASM_DIR  := ../web/src/wasm
 
 OUT_JS         := $(BUILD_DIR)/ifwg.js
 PUBLIC_JS      := $(BUILDER_WASM_DIR)/ifwg.js
