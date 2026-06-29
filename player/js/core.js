@@ -174,7 +174,7 @@ export const IFWGPlayer = {
     /* ── Boot ────────────────────────────────────────────────────────── */
     document.fonts.ready.then(textUI.calibrateTextHeight);
 
-    engine.init().catch(() => {
+    const engineReady = engine.init().catch(() => {
       imageUI.showPlaceholder("WASM LOAD FAILED");
     });
 
@@ -184,18 +184,21 @@ export const IFWGPlayer = {
       const gameId = readGameId(bytes);
       Game.setId(gameId);
 
-      state.storyPath  = `/input/${filename}`;
-      engine.writeFile(state.storyPath, bytes);
-      el.player.hidden = false;
+      state.storyPath = `/input/${filename}`;
 
-      // Frotz derives the save name as: basename(storyFile), strip extension, append ".qzl"
-      // e.g. "zork1.z3" → "zork1.qzl" (NOT "/input/zork1.z3.qzl")
-      const saveName = filename.replace(/\.[^.]*$/, "") + ".qzl";
-      config.onRestore(saveName, saveBytes => {
-        if (saveBytes) engine.writeSave(saveName, saveBytes);
-        state.started = true;
-        engine.start(state.storyPath);
-        config.onGameLoaded(gameId, filename);
+      engineReady.then(() => {
+        engine.writeFile(state.storyPath, bytes);
+        el.player.hidden = false;
+
+        // Frotz derives the save name as: basename(storyFile), strip extension, append ".qzl"
+        // e.g. "zork1.z3" → "zork1.qzl" (NOT "/input/zork1.z3.qzl")
+        const saveName = filename.replace(/\.[^.]*$/, "") + ".qzl";
+        config.onRestore(saveName, saveBytes => {
+          if (saveBytes) engine.writeSave(saveName, saveBytes);
+          state.started = true;
+          engine.start(state.storyPath);
+          config.onGameLoaded(gameId, filename);
+        });
       });
     }
 
