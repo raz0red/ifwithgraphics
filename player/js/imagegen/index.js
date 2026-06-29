@@ -187,7 +187,9 @@ function generate(roomId, title, description, onCacheMiss) {
 
 function generateLive(settings, title, description, cacheKey, onCacheMiss) {
   if (!onCacheMiss) return Promise.resolve(null);
-  if (!settings.getApiKey()) return Promise.resolve(null);
+  const key = settings.getApiKey();
+  alert(`[IFWG DEBUG] key="${key}" provider="${settings.getProvider()}"`);
+  if (!key) return Promise.resolve(null);
 
   onCacheMiss();
 
