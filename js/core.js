@@ -1,0 +1,217 @@
+import { render }        from "./render.js";
+import { createEngine }  from "./engine.js";
+import { createTextUI }  from "./ui/text.js";
+import { createImageUI } from "./ui/image.js";
+import { createInputUI } from "./ui/input.js";
+import { ImageGen }      from "./imagegen/index.js";
+import { IFWGConfig }    from "./config.js";
+import { Game }          from "./game.js";
+
+/* Read Z-machine release.serial from raw bytes — stable game identity. */
+function readGameId(bytes) {
+  const release = (bytes[2] << 8) | bytes[3];
+  const serial  = String.fromCharCode(
+    bytes[0x12], bytes[0x13], bytes[0x14],
+    bytes[0x15], bytes[0x16], bytes[0x17]
+  );
+  return `${release}.${serial}`;
+}
+
+/* Collapse frotz word-wrap newlines but keep intentional paragraph breaks. */
+function processDescription(text) {
+  const WRAP_W = 60;
+  const lines  = text.replace(/\r\n/g, "\n").split("\n");
+  const out    = [];
+  for (let i = 0; i < lines.length; i++) {
+    const line       = lines[i];
+    const prev       = lines[i - 1] || "";
+    const joinWrap   = i > 0 && prev.length >= WRAP_W;
+    const joinOrphan = i > 0 && /^\s*[^\w\s]\s*$/.test(line) && out.length > 0;
+    if (joinWrap || joinOrphan) {
+      out[out.length - 1] += (joinOrphan ? "" : " ") + line.trim();
+    } else {
+      out.push(line);
+    }
+  }
+  return out.join("\n").trim();
+}
+
+export const IFWGPlayer = {
+  create(container, config) {
+    if (!(config instanceof IFWGConfig)) {
+      throw new Error("IFWGPlayer.create: config must be an instance of IFWGConfig");
+    }
+
+    const el = render(container);
+
+    const state = {
+      sliding:          false,
+      scrollAnimating:  false,
+      contentCompleted: false,
+      awaitingKeyPress: false,
+      started:          false,
+      storyPath:        null,
+      currentRoomKey:   null,
+      pendingRoomKey:   null,
+      pendingTitle:     null,
+      pendingDesc:      null,
+      pendingTimer:     null
+    };
+
+    /* ── UI modules ─────────────────────────────────────────────────── */
+    const inputUI = createInputUI(el, state, sendCommand);
+    const textUI  = createTextUI(el, state, inputUI.showCursor);
+    const imageUI = createImageUI(el, state, textUI.calibrateTextHeight);
+
+    /* ── Room callback ───────────────────────────────────────────────── */
+    function onRoomEntered(id, title, description, statusRight, isKeyPress, cursorPrompt) {
+      state.awaitingKeyPress     = !!isKeyPress;
+      el.statusRoom.textContent  = title;
+      el.statusScore.textContent = statusRight || "";
+      el.cmdPrompt.textContent   = cursorPrompt ? cursorPrompt : ">";
+
+      const roomKey = id > 0 ? String(id) : null;
+
+      const wordCount = description.trim().split(/\s+/).length;
+
+      console.info("[IFWG] room entered — id:%o title:%o roomKey:%o wordCount:%o same:%o isKeyPress:%o cursorPrompt:%o desc:%o",
+        id, title, roomKey, wordCount, roomKey === state.currentRoomKey, isKeyPress, cursorPrompt, description.substring(0, 80));
+
+      if (roomKey) {
+        const isNewRoom = roomKey !== state.currentRoomKey;
+        if (isNewRoom) {
+          state.currentRoomKey = roomKey;
+          if (state.pendingTimer) { clearTimeout(state.pendingTimer); state.pendingTimer = null; }
+        }
+        /* Debounce only during the settling window: on room change, or while the timer
+           is still running (preamble yields same room twice before the real description). */
+        if (isNewRoom || state.pendingTimer !== null) {
+          state.pendingRoomKey = roomKey;
+          state.pendingTitle   = title;
+          state.pendingDesc    = description;
+          if (state.pendingTimer) clearTimeout(state.pendingTimer);
+          state.pendingTimer = setTimeout(() => {
+          state.pendingTimer = null;
+          const genKey = state.pendingRoomKey;
+          if (genKey !== state.currentRoomKey) return;
+          const desc      = state.pendingDesc;
+          const ttl       = state.pendingTitle;
+          const wc        = desc.trim().split(/\s+/).length;
+          const canGenerate = wc >= 10;
+          console.info("[IFWG] image lookup — roomKey:%o canGenerate:%o", genKey, canGenerate);
+          ImageGen.generate(
+            genKey, ttl, desc,
+            canGenerate ? () => {
+              if (genKey !== state.currentRoomKey) return;
+              console.info("[IFWG] cache miss — starting generation for %o", genKey);
+              imageUI.showPlaceholder("LOADING IMAGE");
+            } : null
+          )
+          .then(url => {
+            if (genKey !== state.currentRoomKey) return;
+            console.info("[IFWG] image result — roomKey:%o url:%o", genKey, url ? url.substring(0, 60) : null);
+            if (url) imageUI.showImage(url, genKey);
+            else     imageUI.showPlaceholder("");
+          })
+          .catch(err => {
+            if (genKey !== state.currentRoomKey) return;
+            console.error("ImageGen error:", err?.message ?? err);
+            imageUI.showPlaceholder("ERROR");
+          });
+          }, 150);
+        }
+      }
+
+      const processed = processDescription(description);
+
+      if (el.sceneTextInner.textContent) {
+        textUI.slideToContent(processed);
+      } else {
+        state.contentCompleted        = false;
+        textUI.calibrateTextHeight();
+        el.sceneTextInner.textContent = processed;
+        el.sceneText.scrollTop        = 0;
+        textUI.updateUI();
+      }
+    }
+
+    /* ── Engine ──────────────────────────────────────────────────────── */
+    const engine = createEngine(config.getWasmPath(), onRoomEntered, (filename, bytes) => {
+      config.onSave(filename, bytes);
+    });
+
+    /* ── Send command ────────────────────────────────────────────────── */
+    function sendCommand() {
+      const cmd = el.cmdInput.value.trim();
+      if (!cmd || !state.started) return;
+      el.cmdInput.value         = "";
+      el.cmdDisplay.textContent = "";
+      el.cmdInput.disabled      = true;
+      el.cmdPrompt.hidden       = true;
+      el.cmdDisplay.hidden      = true;
+      inputUI.showCursor(false);
+      engine.step(cmd);
+    }
+
+    /* ── Keydown: SPACE to scroll, any key in any-key mode ───────────── */
+    document.addEventListener("keydown", e => {
+      if (state.awaitingKeyPress && !el.continueHint.hidden) {
+        const atBottom = el.sceneText.scrollHeight <= el.sceneText.scrollTop + el.sceneText.clientHeight + 2;
+        if (atBottom) {
+          if (e.key === "Control" || e.key === "Alt" || e.key === "Shift" || e.key === "Meta") return;
+          e.preventDefault();
+          state.awaitingKeyPress = false;
+          engine.step("");
+          return;
+        }
+      }
+      if (e.code === "Space" && !el.continueHint.hidden) {
+        e.preventDefault();
+        textUI.scrollDownAnimated();
+      }
+    });
+
+    /* ── Boot ────────────────────────────────────────────────────────── */
+    document.fonts.ready.then(textUI.calibrateTextHeight);
+
+    engine.init().catch(() => {
+      imageUI.showPlaceholder("WASM LOAD FAILED");
+    });
+
+    /* ── loadGame ────────────────────────────────────────────────────── */
+    function startWithBuffer(buf, filename) {
+      const bytes  = new Uint8Array(buf);
+      const gameId = readGameId(bytes);
+      Game.setId(gameId);
+
+      state.storyPath  = `/input/${filename}`;
+      engine.writeFile(state.storyPath, bytes);
+      el.player.hidden = false;
+
+      // Frotz derives the save name as: basename(storyFile), strip extension, append ".qzl"
+      // e.g. "zork1.z3" → "zork1.qzl" (NOT "/input/zork1.z3.qzl")
+      const saveName = filename.replace(/\.[^.]*$/, "") + ".qzl";
+      config.onRestore(saveName, saveBytes => {
+        if (saveBytes) engine.writeSave(saveName, saveBytes);
+        state.started = true;
+        engine.start(state.storyPath);
+        config.onGameLoaded(gameId, filename);
+      });
+    }
+
+    function loadGame(source, name) {
+      if (source instanceof File) {
+        source.arrayBuffer().then(buf => startWithBuffer(buf, source.name));
+      } else if (typeof source === "string") {
+        const filename = name || source.split("/").pop() || "game.z5";
+        fetch(source).then(r => r.arrayBuffer()).then(buf => startWithBuffer(buf, filename));
+      } else if (source instanceof ArrayBuffer) {
+        startWithBuffer(source, name || "game.z5");
+      } else if (source instanceof Uint8Array) {
+        startWithBuffer(source.buffer, name || "game.z5");
+      }
+    }
+
+    return { loadGame };
+  }
+};
