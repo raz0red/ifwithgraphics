@@ -141,7 +141,7 @@
 # push west wall
 # go northwest
 # push south wall
-# again
+# push south wall
 # go west
 # go northwest
 # go northwest
@@ -151,11 +151,11 @@
 # go southeast
 # go northeast
 # push west wall
-# again
+# push west wall
 # go southwest
 # push north wall
-# again
-# again
+# push north wall
+# push north wall
 # go northwest
 # go up
 # go north

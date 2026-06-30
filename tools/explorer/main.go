@@ -310,7 +310,7 @@ func (e *Explorer) waitUntilCanAct(room *frotz.Room) (*frotz.Room, error) {
 		if err := e.sess.Send("wait"); err != nil {
 			return room, err
 		}
-		next, err := e.sess.Next()
+		next, err := e.nextRoom()
 		if err != nil {
 			return room, err
 		}
@@ -348,7 +348,7 @@ func (e *Explorer) restoreGame(path string) (*frotz.Room, error) {
 			if err := e.sess.Send(path); err != nil {
 				return nil, err
 			}
-			return e.sess.Next()
+			return e.nextRoom()
 		}
 		if rejectedRoom != nil {
 			lastRoom = rejectedRoom
@@ -392,7 +392,7 @@ func (e *Explorer) dfs(room *frotz.Room, savePath string, depth int) error {
 		if err := e.sess.Send(dir); err != nil {
 			return fmt.Errorf("DFS send %q from %s [id=%d]: %w", dir, room.Title, room.ID, err)
 		}
-		next, err := e.sess.Next()
+		next, err := e.nextRoom()
 		if err != nil {
 			return fmt.Errorf("DFS read after %q from %s [id=%d]: %w", dir, room.Title, room.ID, err)
 		}
@@ -479,7 +479,7 @@ func (e *Explorer) tryStatefulSequences(room *frotz.Room, savePath string, depth
 			if err := e.sess.Send(command); err != nil {
 				return fmt.Errorf("DFS sequence %s send %q from %s [id=%d]: %w", seq.Name, command, current.Title, current.ID, err)
 			}
-			next, err := e.sess.Next()
+			next, err := e.nextRoom()
 			if err != nil {
 				return fmt.Errorf("DFS sequence %s read after %q from %s [id=%d]: %w", seq.Name, command, current.Title, current.ID, err)
 			}
@@ -530,7 +530,7 @@ func (e *Explorer) runWalkthrough(path string) (*frotz.Room, string, error) {
 	}
 	defer f.Close()
 
-	current, err := e.sess.Next()
+	current, err := e.nextRoom()
 	if err != nil {
 		return nil, "", err
 	}
@@ -657,7 +657,7 @@ func (e *Explorer) recoverDroppedObjects(room *frotz.Room) (*frotz.Room, error) 
 		if err := e.sess.Send("take " + object); err != nil {
 			return room, err
 		}
-		next, err := e.sess.Next()
+		next, err := e.nextRoom()
 		if err != nil {
 			return room, err
 		}
@@ -1062,6 +1062,9 @@ func (e *Explorer) walkthroughStep(command, targetRoom, savePath string) (*frotz
 		if err != nil {
 			return nil, err
 		}
+		if next == nil {
+			return nil, fmt.Errorf("nil room after %q", command)
+		}
 		for retries := 0; savePath != "" && isFearSpell(next) && retries < 4; retries++ {
 			log.Printf("walkthrough retry after Wizard Fear during %q", command)
 			if _, err := e.restoreGame(savePath); err != nil {
@@ -1180,7 +1183,21 @@ func (e *Explorer) sendAndRead(command string) (*frotz.Room, error) {
 	if err := e.sess.Send(command); err != nil {
 		return nil, err
 	}
-	return e.sess.Next()
+	return e.nextRoom()
+}
+
+// nextRoom wraps sess.Next() and converts a (nil, nil) result — which occurs
+// when dfrotz emits a file request mid-output — into an explicit error so
+// callers never receive a nil *Room without an accompanying error.
+func (e *Explorer) nextRoom() (*frotz.Room, error) {
+	room, err := e.sess.Next()
+	if err != nil {
+		return nil, err
+	}
+	if room == nil {
+		return nil, fmt.Errorf("nil room from frotz (file request or unexpected output)")
+	}
+	return room, nil
 }
 
 func isWalkthroughSection(line string) bool {
@@ -1395,7 +1412,7 @@ func explore(exp *Explorer, walkthroughPath string) error {
 			return fmt.Errorf("restore after walkthrough: %w", err)
 		}
 	} else {
-		current, err = exp.sess.Next()
+		current, err = exp.nextRoom()
 		if err != nil {
 			return fmt.Errorf("first room: %w", err)
 		}
