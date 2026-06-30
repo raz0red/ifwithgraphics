@@ -1,0 +1,355 @@
+# ---- Spinning Carousel and Alice's Well ----
+# get sword
+# get lantern
+# go south
+# go south
+# go south
+# go southwest
+# turn on lantern
+# go south
+# go southeast
+# enter gazebo
+# get all
+# leave gazebo
+# go north
+# go northeast
+# fill teapot with water
+# go south
+# go southwest
+# go southwest
+# drop newspaper
+# drop matchbook
+# drop sword
+# go southeast
+
+# ---- Riddle Room ----
+# answer well
+# go east
+# go east
+
+# ---- Circular Room ----
+# enter bucket
+# pour water into bucket
+# stand
+# go east
+
+# ---- Tea Room ----
+# take all
+# drop orange cake
+# eat green cake
+# go east
+
+# ---- Pool Room ----
+# take flask
+# look at red cake through flask
+# look at blue cake through flask
+# throw red cake into pool
+# take candies
+# go west
+# eat blue cake
+# go northwest
+
+# ---- Low Room ----
+# robot, go east
+# go east
+
+# ---- Machine Room ----
+# robot, push triangular button
+# robot, go south
+# go south
+# take sphere
+# robot, lift cage
+# take sphere
+# go north
+# go west
+
+# ---- Low Room ----
+# go southeast
+
+# ---- Tea Room ----
+# go west
+# enter bucket
+# get water
+# drop teapot
+# go west
+# get necklace
+# go west
+# go northwest
+
+# ---- Carousel Room ----
+# get sword
+# open box
+# get violin
+# go north
+
+# ---- Marble Hall ----
+# get brick
+# go north
+# go north
+# go up
+
+# ---- Tiny Room ----
+# slide mat under door
+# move lid
+# put opener in keyhole
+# remove opener
+# pull mat
+# take key
+# unlock door with key
+# open door
+# go north
+
+# ---- Dreary Room ----
+# drop key
+# drop opener
+# get blue sphere
+# go south
+# go down
+# go west
+# go north
+
+# ---- Dragon Room ----
+# attack dragon with sword
+# go south
+# attack dragon with sword
+# go south
+# attack dragon with sword
+# go west
+
+# ---- Ice Room ----
+# drop sword
+# go east
+# go southeast
+
+# ---- Carousel Room ----
+# go southwest
+
+# ---- Cobwebby Room ----
+# get string
+# go northeast
+# get newspaper
+# get matches
+# go northwest
+# go west
+# go west
+# go south
+
+# ---- Volcano Bottom ----
+# enter basket
+# open receptacle
+# put newspaper in receptacle
+# light match
+# light newspaper with match
+# wait
+# wait
+# wait
+
+# ---- Narrow Ledge ----
+# land
+# tie wire to hook
+# get zorkmid
+# go south
+
+# ---- Library ----
+# open purple book
+# take stamp
+# go north
+# enter basket
+# untie wire
+# wait
+# wait
+# wait
+
+# ---- Wide Ledge ----
+# land
+# tie wire to hook
+# go south
+
+# ---- Dusty Room ----
+# put string in brick
+# put brick in hole
+# light match
+# light string with match
+# go north
+# go south
+# get crown
+# go north
+# enter basket
+# untie wire
+# close receptacle
+# wait
+# wait
+# wait
+# wait
+# wait
+# wait
+# go north
+# get ruby
+# go east
+# go east
+# go southeast
+
+# ---- Carousel Room ----
+# drop all
+# keep lantern
+
+# ---- The Bank ----
+# go northwest
+# go north
+# go north
+# go west
+# go west
+# go northeast
+# go east
+# go south
+# get portrait
+# go north
+# walk through north wall
+
+# ---- Small Room ----
+# walk through south wall
+# walk through north wall
+
+# ---- Vault ----
+# get bills
+# walk through north wall
+
+# ---- Safety Depository ----
+# drop bills
+# drop portrait
+# go east
+# go east
+# take all
+# walk through north wall
+# go south
+
+# ---- Bank Entrance ----
+# go east
+# go east
+# go north
+
+# ---- Dragon's Lair ----
+# kiss princess
+# wait
+# go south
+# go east
+# go east
+# go down
+# go south
+# wait
+# go east
+# go east
+# go north
+# enter gazebo
+# wait
+# wait
+# wait
+# drop rose
+# leave gazebo
+# go south
+# go west
+# go southwest
+# drop portrait
+# drop bills
+# go northwest
+# go north
+# go north
+# go north
+# open chest
+# open chest
+# take all
+# go south
+# go south
+# go south
+# go southeast
+# go south
+# go south
+
+# ---- Oddly-Angled Room ----
+# go down
+# go east
+# take club
+# go southeast
+# go northeast
+# go northwest
+# go southwest
+# go up
+# go north
+# go north
+
+# ---- Carousel Room ----
+# get necklace
+# get violin
+# get crown
+# get stamp
+# get ruby
+# get zorkmid
+# get portrait
+# get bills
+# get blue sphere
+# get red sphere
+# get candies
+# go southwest
+# go southwest
+
+# ---- Guarded Room ----
+# give candies to lizard
+# unlock door with gold key
+# open door
+# go south
+# go west
+# go west
+
+# ---- Aquarium Room ----
+# throw club at aquarium
+# get clear sphere
+# go east
+# put red sphere on ruby stand
+# put blue sphere on sapphire stand
+# put clear sphere on diamond stand
+# get black sphere
+# go south
+
+# ---- Pentagram Room ----
+# put black sphere in pentagram
+# give golden key to demon
+# give dragon statuette to demon
+# give zorkmid bills to demon
+# give portrait to demon
+# give zorkmid to demon
+# give flathead stamp to demon
+# give crown to demon
+# give ruby to demon
+# give pearl necklace to demon
+# give violin to demon
+# demon, give me the wand
+# get wand
+# go north
+# go east
+# go north
+# go north
+# go northeast
+# go south
+
+# ---- Menhir Room ----
+# wave wand at menhir
+# say float
+# go southwest
+
+# ---- Kennel ----
+# take collar
+# go northeast
+# go south
+# go down
+# go down
+
+# ---- Cerberus Room ----
+# put collar on cerberus
+# go east
+# open door
+# go south
+
+# ---- Crypt ----
+# turn off lantern
+# open secret door
+# go south

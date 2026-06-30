@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Zork II — IF With Graphics</title>
+    <link rel="stylesheet" href="../../player.css" data-ifwg-css="1">
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script src="../../wasm/ifwg.js"></script>
+
+    <script type="module">
+      import { IFWGPlayer } from "../../js/core.js";
+      import { IFWGConfig } from "../../js/config.js";
+      import { DB }         from "../../js/db.js";
+      import { ImageGen }   from "../../js/imagegen/index.js";
+
+      class Zork2Config extends IFWGConfig {
+        getWasmPath() { return "../../wasm/"; }
+        onSave(filename, bytes) {
+          DB.put(`saves/${filename.replace(/.*\//, "")}`, bytes);
+        }
+        onRestore(filename, cb) {
+          DB.get(`saves/${filename.replace(/.*\//, "")}`)
+            .then(b => cb(b || null)).catch(() => cb(null));
+        }
+      }
+
+      const s = ImageGen.getSettings();
+      s.setPregenEnabled(true);
+      ImageGen.setSettings(s);
+      ImageGen.setImagesBase("../../images/");
+
+      const player = IFWGPlayer.create(document.getElementById("app"), new Zork2Config());
+      player.loadGame("./zork2.z3", "zork2.z3");
+    </script>
+  </body>
+</html>

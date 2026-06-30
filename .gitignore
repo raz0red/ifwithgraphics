@@ -24,7 +24,10 @@ tools/explorer/frotz/bin/
 tools/imagegen/imagegen
 
 # Explorer intermediate artifacts
-*-bfs-saves/
+bfs-saves/
+
+# Claude memory / session files
+.claude/
 
 # OS / editor
 .DS_Store

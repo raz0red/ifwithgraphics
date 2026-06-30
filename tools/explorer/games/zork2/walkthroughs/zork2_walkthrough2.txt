@@ -1,0 +1,291 @@
+# ---- Step 1: Get the blue sphere ----
+# get lamp
+# get sword
+# go south
+# go south
+# go south
+# go southwest
+# go south
+# go southeast
+# enter gazebo
+# get all
+# leave gazebo
+# go south
+# go south
+# go west
+# turn on lamp
+# drop sword
+# drop newspaper
+# drop matchbook
+# go north
+# go north
+# get water
+# go north
+# go up
+# slide place mat under door
+# open keyhole lid
+# put letter opener in keyhole
+# get letter opener
+# get mat
+# get key
+# unlock door with key
+# open door
+# go north
+# get blue sphere
+# drop letter opener
+# drop key
+
+# ---- Step 2: Get the red sphere ----
+# go south
+# go down
+# go south
+# go south
+# go south
+# go southeast
+# say "well"
+# go east
+# get pearl necklace
+# go east
+# enter bucket
+# pour water
+# go east
+# get red cake
+# get blue cake
+# get green cake
+# eat green cake
+# go east
+# throw red cake at pool
+# get candies
+# turn off lamp
+# go west
+# eat blue cake
+# go northwest
+# robot, go east
+# go east
+# robot, press triangular
+# robot, go south
+# go south
+# take sphere
+# robot, get cage
+# take red sphere
+
+# ---- Step 3: Get into the wizard's home ----
+# go north
+# go west
+# go southeast
+# go west
+# turn on lamp
+# enter bucket
+# get water
+# go west
+# go west
+# go northwest
+# open steel box
+# get violin
+# go southwest
+# get string
+# go southwest
+# give candies to lizard
+# drop violin
+# drop red sphere
+# drop necklace
+# go north
+# go northeast
+# go northwest
+# go north
+# go north
+# hit dragon
+# go south
+# hit dragon
+# go south
+# hit dragon
+# go west
+# go east
+# go north
+# go north
+# go north
+# open chest
+# open chest
+# get statuette
+# go south
+# go east
+# go east
+# go south
+# go south
+# go south
+# turn off lamp
+# go east
+# go north
+# go north
+# wait
+# wait
+# wait
+# drop rose
+# go south
+# go south
+# turn on lamp
+# drop string
+# get sword
+# go southwest
+# go southwest
+# unlock door with gold key
+# get necklace
+# get red sphere
+# get violin
+# open door
+# go south
+
+# ---- Step 4: Summon a demon ----
+# go west
+# put red sphere on ruby stand
+# put blue sphere on sapphire stand
+# go south
+# drop violin
+# drop necklace
+# drop gold key
+# drop statuette
+# go north
+# go west
+# hit aquarium with sword
+# get white sphere
+# go east
+# put white sphere on diamond stand
+# get black sphere
+# go south
+# put black sphere in pentagram
+# get all
+# give all but lamp to demon
+# wait
+# wait
+# wait
+
+# ---- Step 5: Get treasures from the volcano ----
+# go north
+# go east
+# go north
+# go north
+# go northeast
+# get string
+# get matchbook
+# get newspaper
+# go north
+# get brick
+# go south
+# go northwest
+# go west
+# go west
+# get ruby
+# go south
+# enter basket
+# open receptacle
+# put newspaper in receptacle
+# light match
+# burn newspaper with match
+# wait
+# land
+# tie wire to hook
+# go south
+# get purple book
+# open purple book
+# get stamp
+# drop purple book
+# go north
+# enter basket
+# untie wire
+# wait
+# wait
+# wait
+# land
+# tie wire to hook
+# go south
+# put string in brick
+# put brick in hole
+# light match
+# burn string with match
+# go north
+# go south
+# get crown
+# go north
+# enter basket
+# untie wire
+# close receptacle
+# wait
+# wait
+# wait
+# wait
+# wait
+# wait
+# go south
+# drop matchbook
+
+# ---- Step 6: Rob the bank ----
+# go north
+# go east
+# go east
+# go north
+# go north
+# go west
+# go west
+# go northeast
+# go east
+# go south
+# get painting
+# go north
+# drop painting
+# walk through north wall
+# walk through south wall
+# walk through north wall
+# get bills
+# walk through north wall
+# drop bills
+# go east
+# go east
+# get painting
+# get bills
+# walk through north wall
+# go south
+# go east
+
+# ---- Step 7: Kill the wizard ----
+# go east
+# go south
+# go south
+# go southeast
+# go southwest
+# go southwest
+# go south
+# go west
+# go south
+# give all but lamp to demon
+# demon, kill wizard
+
+# ---- Step 8: Move on to Zork III ----
+# get wand
+# go north
+# go east
+# go north
+# go north
+# go northeast
+# go south
+# point wand at menhir
+# chant "float"
+# go southwest
+# get collar
+# go northeast
+# go south
+# go down
+# go east
+# get club
+# go southeast
+# go northeast
+# go northwest
+# go southwest
+# go west
+# go down
+# put collar on dog
+# go east
+# open door
+# go south
+# turn off lamp
+# open secret door
+# go south

@@ -1,0 +1,353 @@
+# take all
+# go south
+# go south
+# go south
+# go southwest
+# go south
+# turn on lamp
+# go southeast
+# enter gazebo
+# take teapot
+# exit
+# go north
+# go northeast
+# fill teapot
+# go south
+# go southeast
+# go south
+# go south
+# go west
+
+# ---- Carousel Room -> Riddle Room ----
+# go southeast
+
+# ---- Riddle Room ----
+# say a well
+# go east
+# take pearls
+# go east
+
+# ---- Circular Room ----
+# get into bucket
+# pour water
+# get out
+# go east
+
+# ---- Tea Room ----
+# take red cake
+# take blue cake
+# take green cake
+# eat green cake
+# go east
+
+# ---- Pool Room ----
+# throw red cake into pool
+# take candy
+# go west
+# eat blue cake
+# go northwest
+
+# ---- Low Room / Robot ----
+# tell robot go east
+# go east
+# tell robot push triangle
+# tell robot go south
+# go south
+# take sphere
+# tell robot lift cage
+# take sphere
+# go north
+# go west
+
+# ---- Low Room -> Tea Room ----
+# go southeast
+
+# ---- Tea Room ----
+# go west
+# get into bucket
+# fill teapot
+# get out
+# drop teapot
+# go west
+# go west
+# go northwest
+# open box
+# take violin
+# go east
+# go north
+# go north
+# enter gazebo
+# drop all
+# take mat
+# take opener
+# exit
+# go south
+# go south
+# go west
+# go north
+# take brick
+# go north
+# go north
+# go up
+
+# ---- Tiny Room ----
+# put mat under door
+# open lid
+# put opener in hole
+# take mat
+# take key
+# take opener
+# unlock door with key
+# open door
+# go north
+
+# ---- Dreary Room ----
+# take sphere
+# go south
+# go down
+# go south
+# go south
+# go south
+# go east
+# go north
+# go north
+# enter gazebo
+# drop all
+# take newspaper
+# take matches
+# exit
+# go south
+# go south
+# go west
+# go southwest
+# take string
+# go north
+# go down
+# go east
+# go north
+# go north
+
+# ---- Dragon Room ----
+# attack dragon
+# go south
+# attack dragon
+# go south
+# attack dragon
+# go west
+# go west
+
+# ---- Lava Room ----
+# take ruby
+# go south
+
+# ---- Volcano Bottom ----
+# get into basket
+# open receptacle
+# put paper in receptacle
+# light match
+# light paper with match
+# wait
+# wait
+# go west
+# tie wire to hook
+# get out
+# take coin
+# go south
+
+# ---- Library ----
+# open purple book
+# take stamp
+# go north
+# get into basket
+# untie wire
+# wait
+# wait
+# wait
+# wait
+# go west
+# tie wire to hook
+# get out
+# go south
+
+# ---- Dusty Room ----
+# put string on brick
+# put brick in hole
+# light match
+# light string with match
+# go north
+# go south
+# take crown
+# go north
+# get into basket
+# untie wire
+# close receptacle
+# wait
+# wait
+# wait
+# wait
+# wait
+# wait
+# get out
+# go north
+# go east
+# go east
+# go southeast
+# go east
+# go north
+# go north
+# enter gazebo
+# drop all
+# exit
+# go south
+# go west
+# go southwest
+# go north
+# go north
+# go north
+# go west
+# go north
+# go north
+# take chest
+# kiss princess
+# go south
+# go south
+# go south
+# go southeast
+# go east
+# go north
+# go north
+# enter gazebo
+# wait
+# wait
+# wait
+# wait
+# open chest
+# open chest
+# take dragon
+# drop chest
+# drop rose
+# take candy
+# take red sphere
+# take blue sphere
+# take pearls
+# exit
+# go south
+# go south
+# go west
+# go south
+# go south
+# go down
+# go south
+
+# ---- Oddly Angled Room ----
+# take club
+# go southeast
+# go northeast
+# go northwest
+# go southwest
+# go south
+# go up
+# go north
+# go north
+# go southwest
+# go southwest
+
+# ---- Guarded Room ----
+# feed lizard candy
+# unlock door with gold key
+# open door
+# go south
+# go west
+# drop all
+
+# ---- Bank ----
+# go east
+# go north
+# go north
+# go northeast
+# go north
+# go north
+# go north
+# go west
+# go north
+# go west
+# go west
+# go northeast
+# go east
+# go south
+# take portrait
+# go north
+# enter light
+# enter south wall
+# enter light
+# take bills
+# go west
+# go west
+# go west
+# take lamp
+# go south
+# go south
+# go south
+# go southwest
+# go south
+# go southeast
+# enter gazebo
+# take violin
+# take ruby
+# take coin
+# take stamp
+# take crown
+# exit
+# go south
+# go south
+# go west
+# go southwest
+# go southwest
+# go south
+# go west
+# drop all
+# take club
+# go west
+# throw club at glass
+# take white sphere
+# go east
+# put white sphere on diamond stand
+# put red sphere on ruby stand
+# put blue sphere on sapphire stand
+# take black sphere
+# go south
+# put sphere in circle
+# go north
+# take ruby
+# take coin
+# take stamp
+# take violin
+# go south
+# give all but lamp to demon
+# go north
+# take all
+# go south
+# give all but lamp to demon
+# tell demon give me wand
+# take wand
+# go north
+# go east
+# go north
+# go north
+# go northeast
+# go south
+# point wand at menhir
+# say float
+# go southwest
+# take collar
+# go northeast
+# go south
+# go down
+# go down
+# put collar on dog
+# go east
+# open door
+# go south
+# turn off lamp
+# open secret door
+# go south
