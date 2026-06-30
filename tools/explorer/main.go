@@ -905,11 +905,11 @@ func looksLikeWalkthroughCommand(command string) bool {
 		verb = verb[:i]
 	}
 	switch verb {
-	case "answer", "apply", "attack", "burn", "chant", "climb", "close", "cross",
-		"dig", "drink", "drop", "eat", "echo", "enter", "examine", "feed", "fill", "get", "give",
+	case "again", "answer", "apply", "attack", "burn", "chant", "climb", "close", "cross",
+		"dig", "dive", "drink", "drop", "eat", "echo", "enter", "examine", "feed", "fill", "get", "give",
 		"grab", "inflate", "inventory", "kill", "kiss", "knock", "launch", "leave", "light", "look",
 		"lower", "move", "open", "point", "pour", "pray", "push", "put", "raise",
-		"read", "remove", "ring", "rub", "say", "spray", "stand", "take", "tell", "throw",
+		"read", "remove", "ring", "rub", "say", "shake", "sit", "spray", "stand", "take", "tell", "throw",
 		"tie", "touch", "turn", "unlock", "untie", "ulysses", "wait", "wake", "wave", "wind":
 		return true
 	}

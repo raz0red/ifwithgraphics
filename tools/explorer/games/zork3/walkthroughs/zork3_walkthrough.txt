@@ -1,34 +1,38 @@
-# get lantern
-# turn on lantern
+# get lamp
+# turn on lamp
 # go south
 # go south
 # go south
 # go south
+# turn off lamp
+# drop lamp
 # enter lake
+# dive
+# take object
 # go west
 # go south
 # get torch
-# look at table
 # wait
 # wait
 # touch table
+# get can
+# wait
 # wait
 # touch table
 # drop torch
 # wait
 # go north
 # enter lake
-# go down
+# dive
 # get can
 # go up
-# go south
-# spray grue repellent on self
+# go west
+# apply repellent to me
 # go south
 # go south
 # go east
-# drop can
 # get key
-# open cover
+# raise manhole cover
 # go down
 # go north
 # go north
@@ -36,19 +40,10 @@
 # get torch
 # go west
 # go west
-# go southwest
-# wait
-# attack figure with sword
-# attack figure with sword
-# attack figure with sword
-# attack figure with sword
-# attack figure with sword
-# get hood
-# get cloak
-# go west
 # go west
 # get bread
 # go down
+# get chest
 # wait
 # tie chest to rope
 # wait
@@ -58,124 +53,110 @@
 # go south
 # wait
 # say hello sailor
+# look
 # get vial
-# go north
-# go northeast
-# go southeast
+# go east
+# wait
+# attack figure
+# attack figure
+# attack figure
+# attack figure
+# attack figure
+# take hood
+# take cloak
+# go east
+# go east
+# go east
+# go south
+# examine seal
+# go south
 # wait
 # go east
-# go south
-# go east
-# go east
-# go south
-# go south
-# go east
 # go north
+# read plaque
+# examine gold machine
 # push gold machine south
 # open stone door
-# push machine east
+# push gold machine east
+# read plaque
 # turn dial to 776
-# enter machine
+# sit on seat
 # push button
-# get ring
+# look
+# take ring
 # wait
 # open door
 # go west
 # open wooden door
 # go north
-# put ring under seat
-# turn dial to 948
-# enter gold machine
-# push button
-# get out
 # look under seat
+# put ring under seat
+# sit in gold machine
+# turn dial to 948
+# push button
+# look under seat
+# stand
 # open door
 # go south
 # open stone door
 # go east
 # get all
+# read plaque
 # go west
 # go south
+# read note
 # go down
+# look
+# push east wall
+# go south
+# go south
+# go southeast
+# push south wall
+# go north
+# go northeast
+# push south wall
+# take book
 # push south wall
 # go east
-# go south
-# go east
-# go east
+# go northeast
+# push west wall
+# go southwest
+# go northwest
+# go northeast
 # push south wall
-# get book
+# go southwest
+# push east wall
+# go northeast
 # push south wall
-# push west wall
-# push west wall
-# go east
-# go south
-# push east wall
-# go north
-# go north
+# go northwest
 # go north
 # go north
 # go north
 # push east wall
-# go west
+# go southwest
 # go south
-# go south
-# go south
-# go south
-# go east
-# go east
-# go north
-# go north
+# go southeast
+# go northeast
 # go north
 # push west wall
-# go east
-# go south
-# go south
-# go south
-# go west
-# go west
-# go west
-# go west
-# go north
-# go north
-# go north
-# go west
-# go north
-# push east wall
-# push east wall
-# push east wall
-# go west
-# go west
-# go south
-# go south
-# go east
-# go east
-# go south
-# push east wall
-# go west
-# go west
-# go west
-# go north
-# go north
-# go north
-# go east
-# go east
+# go northwest
 # push south wall
+# again
+# go west
+# go northwest
+# go northwest
 # push south wall
-# go west
-# go south
-# go south
-# go east
-# go east
-# go north
+# go southeast
+# go southeast
+# go southeast
+# go northeast
 # push west wall
-# push west wall
-# go south
-# go west
+# again
+# go southwest
 # push north wall
-# push north wall
-# push north wall
-# go west
-# go north
+# again
+# again
+# go northwest
 # go up
 # go north
 # go west
@@ -186,32 +167,35 @@
 # go north
 # go east
 # go northeast
-# wake man
-# give bread
-# open door
+# shake man
+# give bread to man
+# open secret door
 # go north
 # go north
-# put sword in beam
+# drop can
 # go south
 # push button
 # go north
 # go north
 # go north
+# read description
 # raise short pole
-# push white panel
-# look
-# push pine panel
-# go north
-# open vial
-# drink liquid
-# go north
-# go north
+# push yellow wall
+# push yellow wall
+# lower short pole
+# push mahogany wall
+# push mahogany wall
+# push mahogany wall
+# raise short pole
+# push white wall
+# push pine wall
 # go north
 # knock on door
 # go north
 # go east
 # go north
 # go north
+# look at sundial
 # turn dial to 4
 # push button
 # go south
