@@ -258,24 +258,36 @@ func isIncapacitated(room *frotz.Room) bool {
 }
 
 func isFrozen(room *frotz.Room) bool {
+	if room == nil {
+		return false
+	}
 	text := strings.ToLower(room.Description)
 	return strings.Contains(text, "frozen solid") ||
 		strings.Contains(text, "can't move a muscle")
 }
 
 func isFloating(room *frotz.Room) bool {
+	if room == nil {
+		return false
+	}
 	text := strings.ToLower(room.Description)
 	return strings.Contains(text, "word \"float") ||
 		strings.Contains(text, "flapping your arms")
 }
 
 func isFearSpell(room *frotz.Room) bool {
+	if room == nil {
+		return false
+	}
 	text := strings.ToLower(room.Description)
 	return strings.Contains(text, "word \"fear") &&
 		strings.Contains(text, "scramble away")
 }
 
 func isDeathPrompt(room *frotz.Room) bool {
+	if room == nil {
+		return false
+	}
 	text := strings.ToLower(room.Description)
 	return strings.Contains(text, "would you like to restart the game") ||
 		strings.Contains(text, "type restart, restore, or quit") ||
@@ -283,6 +295,9 @@ func isDeathPrompt(room *frotz.Room) bool {
 }
 
 func isRiddlePrompt(room *frotz.Room) bool {
+	if room == nil {
+		return false
+	}
 	text := strings.ToLower(room.Description)
 	return room.Title == "Riddle Room" &&
 		strings.HasPrefix(text, "what is tall as a house") &&
