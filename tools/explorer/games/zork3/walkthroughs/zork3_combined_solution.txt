@@ -1,0 +1,206 @@
+# ---- The Lake ----
+# get lamp
+# turn on lamp
+# go south
+# go south
+# go south
+# go south
+# drop lamp
+# enter lake
+# go west
+# go south
+
+# ---- Scenic Vista ----
+# get torch
+# wait
+# touch table
+
+# ---- Room 8 (Zork II) ----
+# get can
+# go east
+
+# ---- back at Scenic Vista, wait for III ----
+# wait
+# touch table
+
+# ---- Damp Passage ----
+# drop torch
+# wait
+
+# ---- back to Western Shore ----
+# go north
+# enter lake
+
+# ---- dive for can and amulet ----
+# go down
+# take all
+# go up
+# go south
+
+# ---- Southern Shore ----
+# spray repellent on self
+# go south
+# go south
+# go east
+
+# ---- Key Room ----
+# get key
+# move manhole cover
+# go down
+
+# ---- Aqueduct -> Water Slide ----
+# go north
+
+# ---- Water Slide ----
+# go north
+
+# ---- Damp Passage - retrieve torch ----
+# get torch
+# go west
+
+# ---- Junction ----
+# go south
+
+# ---- Creepy Crawl ----
+# go southwest
+
+# ---- Shadow Land - wander until figure appears ----
+# attack figure
+# attack figure
+# attack figure
+# attack figure
+# attack figure
+# get hood
+# get cloak
+# go east
+# go north
+
+# ---- Junction ----
+# go west
+# go west
+
+# ---- Barren Area ----
+# get bread
+# go down
+
+# ---- Cliff Ledge ----
+# wait
+# tie rope to chest
+# wait
+# get staff
+# go down
+# go down
+
+# ---- Cliff Base ----
+# go south
+
+# ---- Flathead Ocean ----
+# wait
+# say hello sailor
+# get vial
+# go east
+
+# ---- back toward Royal Puzzle ----
+# go west
+# go west
+# go west
+# go north
+# go north
+# go north
+# go east
+# go east
+# push south wall
+# push south wall
+# go west
+# go south
+# go south
+# go east
+# go east
+# go north
+# push west wall
+# push west wall
+# go south
+# go west
+# push north wall
+# push north wall
+# push north wall
+# go west
+# go north
+# go up
+
+# ---- Museum Entrance ----
+# go north
+# open east door
+
+# ---- Jewel Room - retrieve belongings ----
+# get all
+# go west
+
+# ---- Great Door -> Junction ----
+# go west
+
+# ---- Junction ----
+# go east
+
+# ---- Damp Passage ----
+# go northeast
+
+# ---- Engravings Room - wake old man ----
+# wake man
+# give bread to man
+
+# ---- secret door ----
+# open door
+
+# ---- Button Room ----
+# go north
+
+# ---- Beam Room ----
+# put sword in beam
+# go south
+# push button
+# go north
+# go north
+
+# ---- Mirror Room - inside ----
+# go north
+# read description
+# raise short pole
+# push yellow wall
+# push yellow wall
+# lower short pole
+# push mahogany wall
+# push mahogany wall
+# push mahogany wall
+# raise short pole
+# push white wall
+# push pine wall
+# go north
+
+# ---- Guardians of Zork - invisibility ----
+# open vial
+# drink liquid
+# go north
+
+# ---- Dungeon Master's door ----
+# knock on door
+
+# ---- The Dungeon Master ----
+# go north
+# go west
+# go north
+
+# ---- Parapet ----
+# turn dial to 4
+# push button
+# go south
+# open cell door
+# go south
+
+# ---- Prison Cell ----
+# dungeon master, go to parapet
+# dungeon master, turn dial to 1
+# dungeon master, push button
+# unlock bronze door with key
+# open door
+# go south
