@@ -26,11 +26,22 @@ type RoomEntry struct {
 }
 
 type walkthroughCommand struct {
-	Step        int
-	Command     string
-	SectionName string
-	SectionRoom string
-	TargetRoom  string
+	Step         int
+	Command      string
+	SectionName  string
+	SectionRoom  string
+	TargetRoom   string
+	LabelSection bool
+}
+
+type actionSequence struct {
+	Name     string
+	Commands []string
+}
+
+type routeNode struct {
+	Room *frotz.Room
+	Path []string
 }
 
 type Explorer struct {
@@ -183,6 +194,16 @@ func contextualActions(room *frotz.Room) []string {
 		add("climb stairs")
 	}
 	return actions
+}
+
+func statefulSequences(room *frotz.Room) []actionSequence {
+	if room.Title == "Cyclops Room" {
+		return []actionSequence{
+			{Name: "cyclops-ulysses-up", Commands: []string{"ulysses", "u"}},
+			{Name: "cyclops-ulysses-east", Commands: []string{"ulysses", "e"}},
+		}
+	}
+	return nil
 }
 
 // saveGame sends the save command, waits until dfrotz explicitly asks for a
@@ -421,6 +442,67 @@ func (e *Explorer) dfs(room *frotz.Room, savePath string, depth int) error {
 		}
 		room = restored
 	}
+	if err := e.tryStatefulSequences(room, savePath, depth); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (e *Explorer) tryStatefulSequences(room *frotz.Room, savePath string, depth int) error {
+	for _, seq := range statefulSequences(room) {
+		key := "seq:" + seq.Name
+		if e.tried[room.ID] == nil {
+			e.tried[room.ID] = make(map[string]bool)
+		}
+		if e.tried[room.ID][key] {
+			continue
+		}
+		e.tried[room.ID][key] = true
+
+		current := room
+		for _, command := range seq.Commands {
+			if err := e.sess.Send(command); err != nil {
+				return fmt.Errorf("DFS sequence %s send %q from %s [id=%d]: %w", seq.Name, command, current.Title, current.ID, err)
+			}
+			next, err := e.sess.Next()
+			if err != nil {
+				return fmt.Errorf("DFS sequence %s read after %q from %s [id=%d]: %w", seq.Name, command, current.Title, current.ID, err)
+			}
+			if !sameRoom(next, current) {
+				isNew := e.addRoom(next)
+				if isNew {
+					log.Printf("[%d rooms] NEW: %s [id=%d] (depth %d, sequence %s via %q from %s)",
+						len(e.ordered), next.Title, next.ID, depth+1, seq.Name, command, current.Title)
+				}
+			}
+			current = next
+		}
+
+		if current.ID != 0 && !sameRoom(current, room) {
+			nextSave, hasSave := e.saves[current.ID]
+			if !hasSave {
+				savedRoom, savedPath, serr := e.saveGame(current)
+				if serr != nil {
+					log.Printf("DFS sequence save error at %s: %v — skipping subtree", current.Title, serr)
+				} else {
+					current = savedRoom
+					nextSave = savedPath
+					hasSave = true
+				}
+			}
+			if hasSave && !e.triedAll(current.ID) {
+				if err := e.dfs(current, nextSave, depth+1); err != nil {
+					return err
+				}
+			}
+		}
+
+		restored, rerr := e.restoreGame(savePath)
+		if rerr != nil {
+			return fmt.Errorf("DFS restore after sequence %s from %s [id=%d]: %w", seq.Name, room.Title, room.ID, rerr)
+		}
+		room = restored
+	}
 	return nil
 }
 
@@ -468,11 +550,45 @@ func (e *Explorer) runWalkthrough(path string) (*frotz.Room, string, error) {
 				wt.Step, wt.SectionName, wt.SectionRoom, current.Title, current.ID, wt.Command)
 			reportedSectionMismatch = true
 		}
+		if wt.LabelSection && wt.SectionRoom != "" && !roomTitleMatchesSection(current.Title, wt.SectionRoom) && !isMovementCommand(wt.Command) && currentSave != "" {
+			if corrected, cerr := e.walkthroughStep("look", wt.SectionRoom, currentSave); cerr == nil {
+				if e.traceWalkthrough {
+					log.Printf("walkthrough corrected to section %q before step %d: %s [id=%d] -> %s [id=%d]",
+						wt.SectionRoom, wt.Step, current.Title, current.ID, corrected.Title, corrected.ID)
+				}
+				current = corrected
+				before = current
+				if isNew := e.addRoom(current); isNew {
+					log.Printf("[%d rooms] walkthrough: %s [id=%d]", len(e.ordered), current.Title, current.ID)
+				}
+				if restored, sp, serr := e.saveGame(current); serr == nil {
+					current = restored
+					currentSave = sp
+				} else {
+					log.Printf("walkthrough save skipped after section correction at step %d (%s [id=%d]): %v", wt.Step, current.Title, current.ID, serr)
+				}
+			}
+		}
 
-		next, err := e.walkthroughStep(wt.Command, wt.TargetRoom, currentSave)
+		targetRoom := wt.TargetRoom
+		if wt.LabelSection && wt.SectionRoom != "" && !roomTitleMatchesSection(current.Title, wt.SectionRoom) && isMovementCommand(wt.Command) {
+			targetRoom = wt.SectionRoom
+		}
+		next, err := e.walkthroughStep(wt.Command, targetRoom, currentSave)
 		if err != nil {
-			log.Printf("walkthrough ended at step %d: %v", wt.Step, err)
-			return current, currentSave, nil
+			if targetRoom != "" && currentSave != "" {
+				log.Printf("walkthrough target miss at step %d: %v; falling back to %q", wt.Step, err, wt.Command)
+				if restored, rerr := e.restoreGame(currentSave); rerr == nil {
+					current = restored
+					next, err = e.walkthroughStep(wt.Command, "", currentSave)
+				} else {
+					err = fmt.Errorf("%w; restore before fallback failed: %v", err, rerr)
+				}
+			}
+			if err != nil {
+				log.Printf("walkthrough ended at step %d: %v", wt.Step, err)
+				return current, currentSave, nil
+			}
 		}
 		next, err = e.recoverDroppedObjects(next)
 		if err != nil {
@@ -559,12 +675,16 @@ func parseWalkthrough(r io.Reader) ([]walkthroughCommand, error) {
 	var sectionName string
 	var sectionRoom string
 	var explicitTarget string
+	var labelSection bool
 	for scanner.Scan() {
-		line := strings.TrimSpace(scanner.Text())
+		rawLine := strings.TrimSpace(scanner.Text())
+		line := rawLine
+		commentWithSpace := false
 		if line == "#" {
 			continue
 		}
 		if strings.HasPrefix(line, "# ") {
+			commentWithSpace = true
 			line = strings.TrimSpace(line[2:])
 		} else if strings.HasPrefix(line, "#") {
 			line = strings.TrimSpace(line[1:])
@@ -576,6 +696,21 @@ func parseWalkthrough(r io.Reader) ([]walkthroughCommand, error) {
 			sectionName = walkthroughSectionName(line)
 			sectionRoom = walkthroughSectionRoom(line)
 			explicitTarget = walkthroughSectionTarget(line)
+			labelSection = false
+			continue
+		}
+		if commentWithSpace && startsWithUppercaseASCII(line) {
+			if label := walkthroughRoomLabel(line); label != "" {
+				sectionName = label
+				sectionRoom = label
+				explicitTarget = ""
+				labelSection = true
+			} else if isWalkthroughChapterComment(line) {
+				sectionName = ""
+				sectionRoom = ""
+				explicitTarget = ""
+				labelSection = false
+			}
 			continue
 		}
 		command := normalizeWalkthroughCommand(line)
@@ -583,11 +718,12 @@ func parseWalkthrough(r io.Reader) ([]walkthroughCommand, error) {
 			continue
 		}
 		commands = append(commands, walkthroughCommand{
-			Step:        len(commands) + 1,
-			Command:     command,
-			SectionName: sectionName,
-			SectionRoom: sectionRoom,
-			TargetRoom:  explicitTarget,
+			Step:         len(commands) + 1,
+			Command:      command,
+			SectionName:  sectionName,
+			SectionRoom:  sectionRoom,
+			TargetRoom:   explicitTarget,
+			LabelSection: labelSection,
 		})
 	}
 	if err := scanner.Err(); err != nil {
@@ -595,6 +731,8 @@ func parseWalkthrough(r io.Reader) ([]walkthroughCommand, error) {
 	}
 	commands = repairDingyCloset(commands)
 	commands = repairTopOfWell(commands)
+	commands = repairZork1DeepCanyonRoute(commands)
+	commands = repairZork2Walkthrough(commands)
 	for i := range commands {
 		if commands[i].TargetRoom != "" || !isMovementCommand(commands[i].Command) {
 			continue
@@ -610,6 +748,134 @@ func parseWalkthrough(r io.Reader) ([]walkthroughCommand, error) {
 	return commands, nil
 }
 
+func repairZork2Walkthrough(commands []walkthroughCommand) []walkthroughCommand {
+	var repaired []walkthroughCommand
+	for i := 0; i < len(commands); i++ {
+		wt := commands[i]
+		if wt.Command == "stand" && followsClosedBalloonReturn(commands, i) {
+			repaired = append(repaired, wt)
+			exit := wt
+			exit.Command = "out"
+			repaired = append(repaired, exit)
+			continue
+		}
+		if wt.SectionRoom == "Guarded Room" &&
+			wt.Command == "get necklace" &&
+			i+2 < len(commands) &&
+			commands[i+1].Command == "get violin" &&
+			isTakeSphereCommand(commands[i+2].Command) {
+			repaired = append(repaired, wt, commands[i+1], commands[i+2])
+			for _, command := range []string{"get crown", "get stamp", "get zorkmid", "get ruby"} {
+				extra := wt
+				extra.Command = command
+				repaired = append(repaired, extra)
+			}
+			i += 2
+			continue
+		}
+		if wt.SectionRoom == "Safety Depository" &&
+			wt.Command == "go west" &&
+			i >= 3 &&
+			commands[i-1].Command == "go east" &&
+			commands[i-2].Command == "drop portrait" &&
+			commands[i-3].Command == "drop bills" {
+			wt.Command = "go east"
+		}
+		repaired = append(repaired, wt)
+	}
+	for i := range repaired {
+		repaired[i].Step = i + 1
+	}
+	return repaired
+}
+
+func followsClosedBalloonReturn(commands []walkthroughCommand, i int) bool {
+	if i == 0 || commands[i].Command != "stand" {
+		return false
+	}
+	for j := i - 1; j >= 0 && i-j <= 10; j-- {
+		if commands[j].Command == "close receptacle" {
+			return true
+		}
+		if commands[j].Command != "wait" && commands[j].Command != "drop card" && commands[j].Command != "drop matches" {
+			return false
+		}
+	}
+	return false
+}
+
+func repairZork1DeepCanyonRoute(commands []walkthroughCommand) []walkthroughCommand {
+	var repaired []walkthroughCommand
+	for i := 0; i < len(commands); i++ {
+		if i+6 < len(commands) &&
+			commands[i].Command == "go south" &&
+			commands[i+1].Command == "go down" &&
+			commands[i+2].Command == "go southeast" &&
+			commands[i+3].Command == "go east" &&
+			commands[i+4].Command == "go down" &&
+			commands[i+5].Command == "go down" &&
+			commands[i+6].Command == "take torch" {
+			repaired = append(repaired, commands[i], commands[i+1])
+			west := commands[i+2]
+			west.Command = "go west"
+			repaired = append(repaired, west, commands[i+2], commands[i+3], commands[i+4])
+			i += 5
+			continue
+		}
+		repaired = append(repaired, commands[i])
+	}
+	for i := range repaired {
+		repaired[i].Step = i + 1
+	}
+	return repaired
+}
+
+func startsWithUppercaseASCII(s string) bool {
+	s = strings.TrimSpace(s)
+	return s != "" && s[0] >= 'A' && s[0] <= 'Z'
+}
+
+func isWalkthroughChapterComment(line string) bool {
+	line = strings.TrimSpace(line)
+	return line != "" && line == strings.ToUpper(line)
+}
+
+func walkthroughRoomLabel(line string) string {
+	label := strings.TrimSpace(line)
+	if label == "" || strings.Contains(label, ":") || strings.Contains(label, "/") || strings.Contains(label, "->") {
+		return ""
+	}
+	if i := strings.Index(label, " - "); i >= 0 {
+		label = strings.TrimSpace(label[:i])
+	}
+	if i := strings.Index(label, "("); i >= 0 {
+		label = strings.TrimSpace(label[:i])
+	}
+	label = strings.Trim(label, ",.")
+	if label == strings.ToUpper(label) {
+		return ""
+	}
+	switch label {
+	case "Inside Barrow":
+		label = "Inside the Barrow"
+	case "Troll Room":
+		label = "The Troll Room"
+	}
+	if label == "" || len(strings.Fields(label)) > 4 {
+		return ""
+	}
+	for _, word := range strings.Fields(label) {
+		switch strings.ToLower(word) {
+		case "a", "an", "and", "of", "the", "to":
+			continue
+		}
+		if word[0] < 'A' || word[0] > 'Z' {
+			return ""
+		}
+	}
+	return label
+}
+
 func looksLikeWalkthroughCommand(command string) bool {
 	command = strings.TrimSpace(strings.ToLower(command))
 	if command == "" {
@@ -621,7 +887,8 @@ func looksLikeWalkthroughCommand(command string) bool {
 	if strings.HasPrefix(command, "go ") ||
 		strings.HasPrefix(command, "walk through ") ||
 		strings.HasPrefix(command, "robot, ") ||
-		strings.HasPrefix(command, "demon, ") {
+		strings.HasPrefix(command, "demon, ") ||
+		strings.HasPrefix(command, "dungeon master, ") {
 		return true
 	}
 	if strings.Contains(command, ",") {
@@ -630,17 +897,20 @@ func looksLikeWalkthroughCommand(command string) bool {
 	if command == "land" || command == "stand" {
 		return true
 	}
+	if command == "in" || command == "out" {
+		return true
+	}
 	verb := command
 	if i := strings.IndexAny(verb, " \t"); i >= 0 {
 		verb = verb[:i]
 	}
 	switch verb {
 	case "answer", "apply", "attack", "burn", "chant", "climb", "close", "cross",
-		"dig", "drop", "eat", "echo", "enter", "examine", "fill", "get", "give",
-		"inflate", "inventory", "kill", "kiss", "launch", "leave", "light", "look",
+		"dig", "drink", "drop", "eat", "echo", "enter", "examine", "feed", "fill", "get", "give",
+		"grab", "inflate", "inventory", "kill", "kiss", "knock", "launch", "leave", "light", "look",
 		"lower", "move", "open", "point", "pour", "pray", "push", "put", "raise",
-		"read", "remove", "ring", "rub", "say", "stand", "take", "tell", "throw",
-		"tie", "turn", "unlock", "untie", "ulysses", "wait", "wave", "wind":
+		"read", "remove", "ring", "rub", "say", "spray", "stand", "take", "tell", "throw",
+		"tie", "touch", "turn", "unlock", "untie", "ulysses", "wait", "wake", "wave", "wind":
 		return true
 	}
 	return false
@@ -734,6 +1004,9 @@ func isLastCommandInSection(commands []walkthroughCommand, i int) bool {
 func isMovementCommand(command string) bool {
 	command = strings.TrimSpace(strings.ToLower(command))
 	command = strings.TrimPrefix(command, "go ")
+	if command == "in" || command == "out" {
+		return true
+	}
 	for _, dir := range allDirs {
 		if command == dir || command == longDirection(dir) {
 			return true
@@ -787,39 +1060,105 @@ func (e *Explorer) walkthroughStep(command, targetRoom, savePath string) (*frotz
 		return next, nil
 	}
 
+	next, err := e.walkthroughStep(command, "", savePath)
+	if err != nil {
+		return nil, err
+	}
+	if next.Title == targetRoom {
+		return next, nil
+	}
+	if _, err := e.restoreGame(savePath); err != nil {
+		return nil, fmt.Errorf("restore before seeking %s after %q reached %s [id=%d]: %w", targetRoom, command, next.Title, next.ID, err)
+	}
+	next, path, err := e.seekWalkthroughTarget(command, targetRoom, savePath)
+	if err != nil {
+		return nil, err
+	}
+	if len(path) != 1 || path[0] != command {
+		log.Printf("walkthrough target %s reached with %q instead of %q", targetRoom, strings.Join(path, ", "), command)
+	}
+	return next, nil
+}
+
+func (e *Explorer) seekWalkthroughTarget(command, targetRoom, savePath string) (*frotz.Room, []string, error) {
+	candidates := routeCandidates(command)
+	queue := []routeNode{{Path: nil}}
 	seen := make(map[string]bool)
-	candidates := append([]string{command}, allDirs...)
-	first := true
-	for waits := 0; waits <= 12; waits++ {
+	const maxDepth = 5
+	const maxNodes = 240
+	expanded := 0
+
+	for len(queue) > 0 && expanded < maxNodes {
+		node := queue[0]
+		queue = queue[1:]
+		if len(node.Path) >= maxDepth {
+			continue
+		}
 		for _, candidate := range candidates {
-			key := fmt.Sprintf("%d:%s", waits, candidate)
+			path := append(append([]string{}, node.Path...), candidate)
+			if _, err := e.restoreGame(savePath); err != nil {
+				return nil, nil, fmt.Errorf("restore while seeking %s: %w", targetRoom, err)
+			}
+			var room *frotz.Room
+			var err error
+			for _, step := range path {
+				room, err = e.sendAndRead(step)
+				if err != nil {
+					return nil, nil, err
+				}
+				if isDeathPrompt(room) || isIncapacitated(room) {
+					break
+				}
+			}
+			if room == nil || isDeathPrompt(room) || isIncapacitated(room) {
+				continue
+			}
+			if room.Title == targetRoom {
+				return room, path, nil
+			}
+			key := walkthroughRouteKey(room)
 			if seen[key] {
 				continue
 			}
 			seen[key] = true
-			if first {
-				first = false
-			} else if _, err := e.restoreGame(savePath); err != nil {
-				return nil, fmt.Errorf("restore while seeking %s: %w", targetRoom, err)
-			}
-			for i := 0; i < waits; i++ {
-				if _, err := e.sendAndRead("wait"); err != nil {
-					return nil, err
-				}
-			}
-			next, err := e.sendAndRead(candidate)
-			if err != nil {
-				return nil, err
-			}
-			if next.Title == targetRoom {
-				if candidate != command || waits > 0 {
-					log.Printf("walkthrough target %s reached with %d wait(s) then %q instead of %q", targetRoom, waits, candidate, command)
-				}
-				return next, nil
+			queue = append(queue, routeNode{Room: room, Path: path})
+			expanded++
+			if expanded >= maxNodes {
+				break
 			}
 		}
 	}
-	return nil, fmt.Errorf("could not reach walkthrough target %s with %q or compass exits", targetRoom, command)
+	return nil, nil, fmt.Errorf("could not reach walkthrough target %s with %q or route search", targetRoom, command)
+}
+
+func routeCandidates(command string) []string {
+	var candidates []string
+	add := func(candidate string) {
+		candidate = strings.TrimSpace(candidate)
+		if candidate == "" {
+			return
+		}
+		for _, existing := range candidates {
+			if existing == candidate {
+				return
+			}
+		}
+		candidates = append(candidates, candidate)
+	}
+	if isMovementCommand(command) {
+		add(command)
+	}
+	for _, dir := range allDirs {
+		add(dir)
+	}
+	return candidates
+}
+
+func walkthroughRouteKey(room *frotz.Room) string {
+	if room.ID != 0 {
+		return strconv.Itoa(room.ID)
+	}
+	return room.Title
 }
 
 func (e *Explorer) sendAndRead(command string) (*frotz.Room, error) {
@@ -842,6 +1181,9 @@ func walkthroughSectionRoom(line string) string {
 	if strings.HasPrefix(name, "Gazebo ") {
 		return ""
 	}
+	if strings.Contains(name, "/") {
+		return ""
+	}
 	if strings.Contains(name, "->") {
 		parts := strings.Split(name, "->")
 		name = strings.TrimSpace(parts[0])
@@ -849,14 +1191,15 @@ func walkthroughSectionRoom(line string) string {
 	if i := strings.Index(name, "("); i >= 0 {
 		name = strings.TrimSpace(name[:i])
 	}
+	lowerName := strings.ToLower(name)
 	switch {
 	case name == "":
 		return ""
-	case strings.Contains(name, "Area"):
+	case strings.Contains(lowerName, "area"):
 		return ""
-	case strings.Contains(name, "section"):
+	case strings.Contains(lowerName, "section"):
 		return ""
-	case strings.Contains(name, "Rooms"):
+	case strings.Contains(lowerName, "rooms"):
 		return ""
 	case strings.HasPrefix(name, "Gazebo "):
 		return "Gazebo"
@@ -907,6 +1250,30 @@ func normalizeWalkthroughCommand(line string) string {
 		return "open lid"
 	case "point wand at menhir":
 		return "wave wand at menhir"
+	case "give candies to lizard":
+		return "feed lizard candy"
+	case "unlock door with golden key":
+		return "unlock door with gold key"
+	case "give fancy violin to demon":
+		return "give violin to demon"
+	case "give moby ruby to demon":
+		return "give ruby to demon"
+	case "give zorkmid coin to demon":
+		return "give zorkmid to demon"
+	case "give flathead stamp to demon":
+		return "give stamp to demon"
+	case "give zorkmid bills to demon":
+		return "give bills to demon"
+	case "give dragon statuette to demon":
+		return "give statuette to demon"
+	case "give pearl necklace to demon":
+		return "give necklace to demon"
+	case "give gaudy crown to demon":
+		return "give crown to demon"
+	case "give golden key to demon":
+		return "give key to demon"
+	case "go up chimney":
+		return "climb chimney"
 	case "tell robot go east":
 		return "robot, go east"
 	case "tell robot go south":

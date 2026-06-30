@@ -1,0 +1,248 @@
+# get lantern
+# turn on lantern
+# go south
+# go south
+# go south
+# go south
+# enter lake
+# go west
+# go south
+
+# get torch
+# look at table
+# wait
+# wait
+# touch table
+
+# wait
+# touch table
+# drop torch
+# wait
+# go north
+
+# enter lake
+# go down
+# get can
+# go up
+# go south
+# spray grue repellent on self
+# go south
+# go south
+# go east
+# drop can
+# get key
+# open cover
+# go down
+
+# go north
+# go north
+# go north
+
+# get torch
+# go west
+# go west
+# go southwest
+
+# wait
+# attack figure with sword
+# attack figure with sword
+# attack figure with sword
+# attack figure with sword
+# attack figure with sword
+# get hood
+# get cloak
+
+# go west
+# go west
+# get bread
+# go down
+
+# wait
+# tie chest to rope
+# wait
+# grab rope
+# go down
+# go down
+# go south
+
+# wait
+# say hello sailor
+# get vial
+# go north
+# go northeast
+# go southeast
+
+# wait
+# go east
+# go south
+
+# go east
+# go east
+# go south
+# go south
+
+# go east
+# go north
+# push gold machine south
+# open stone door
+# push machine east
+
+# turn dial to 776
+# enter machine
+# push button
+
+# get ring
+# wait
+# open door
+# go west
+# open wooden door
+# go north
+
+# put ring under seat
+# turn dial to 948
+# enter gold machine
+# push button
+# get out
+# look under seat
+# open door
+# go south
+# open stone door
+# go east
+# get all
+
+# go west
+# go south
+# go down
+# push south wall
+# go east
+# go south
+# go east
+# go east
+# push south wall
+# get book
+# push south wall
+# push west wall
+# push west wall
+# go east
+# go south
+# push east wall
+# go north
+# go north
+# go north
+# go north
+# go north
+# push east wall
+# go west
+# go south
+# go south
+# go south
+# go south
+# go east
+# go east
+# go north
+# go north
+# go north
+# push west wall
+# go east
+# go south
+# go south
+# go south
+# go west
+# go west
+# go west
+# go west
+# go north
+# go north
+# go north
+# go west
+# go north
+# push east wall
+# push east wall
+# push east wall
+# go west
+# go west
+# go south
+# go south
+# go east
+# go east
+# go south
+# push east wall
+# go west
+# go west
+# go west
+# go north
+# go north
+# go north
+# go east
+# go east
+# push south wall
+# push south wall
+# go west
+# go south
+# go south
+# go east
+# go east
+# go north
+# push west wall
+# push west wall
+# go south
+# go west
+# push north wall
+# push north wall
+# push north wall
+# go west
+# go north
+# go up
+
+# go north
+# go west
+# go north
+# go north
+# go west
+# go west
+# go north
+
+# go east
+# go northeast
+# wake man
+# give bread
+
+# open door
+# go north
+# go north
+# put sword in beam
+# go south
+# push button
+# go north
+# go north
+
+# go north
+# raise short pole
+# push white panel
+# look
+# push pine panel
+# go north
+
+# open vial
+# drink liquid
+# go north
+# go north
+# go north
+
+# knock on door
+# go north
+# go east
+# go north
+# go north
+
+# turn dial to 4
+# push button
+# go south
+# open door
+# go south
+# dungeon master, go to parapet
+# dungeon master, turn dial to 1
+# dungeon master, push button
+# unlock bronze door with key
+# open bronze door
+# go south
