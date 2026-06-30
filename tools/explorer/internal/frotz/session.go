@@ -12,7 +12,8 @@ import (
 
 const markerPrefix = "<<<IFWG:"
 const markerSuffix = ">>>"
-const readyMarker  = "<<<IFWG_READY>>>"
+const filePrefix = "<<<IFWG_FILE:"
+const readyMarker = "<<<IFWG_READY>>>"
 
 type Room struct {
 	ID          int
@@ -56,12 +57,22 @@ func NewSession(dfrotz, story string, rawLog io.Writer) (*Session, error) {
 // Next blocks until frotz emits the next room marker and description.
 // Marker format: <<<IFWG:42:West of House>>> or <<<IFWG:West of House>>> (legacy).
 func (s *Session) Next() (*Room, error) {
+	room, _, err := s.NextOrFileRequest()
+	return room, err
+}
+
+// NextOrFileRequest blocks until frotz emits either the next room marker or a
+// monitor-mode save/restore filename request.
+func (s *Session) NextOrFileRequest() (*Room, bool, error) {
 	var id int
 	var title string
 
 	for {
 		line, err := s.reader.ReadString('\n')
 		line = strings.TrimRight(line, "\r\n")
+		if strings.Contains(line, filePrefix) && strings.HasSuffix(line, markerSuffix) {
+			return nil, true, nil
+		}
 		if strings.HasPrefix(line, markerPrefix) && strings.HasSuffix(line, markerSuffix) {
 			inner := line[len(markerPrefix) : len(line)-len(markerSuffix)]
 			// Try numeric ID prefix: "42:West of House"
@@ -77,10 +88,10 @@ func (s *Session) Next() (*Room, error) {
 			break
 		}
 		if err == io.EOF {
-			return nil, io.EOF
+			return nil, false, io.EOF
 		}
 		if err != nil {
-			return nil, err
+			return nil, false, err
 		}
 	}
 
@@ -99,7 +110,7 @@ func (s *Session) Next() (*Room, error) {
 			break
 		}
 		if err != nil {
-			return nil, err
+			return nil, false, err
 		}
 	}
 
@@ -107,7 +118,7 @@ func (s *Session) Next() (*Room, error) {
 		ID:          id,
 		Title:       title,
 		Description: strings.TrimSpace(desc.String()),
-	}, nil
+	}, false, nil
 }
 
 // ReadLine reads one raw line from frotz stdout without requiring an IFWG marker.

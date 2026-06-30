@@ -117,7 +117,9 @@ func callAPI(apiKey, model, prompt string, refs [][]byte) (image.Image, error) {
 			B64JSON string `json:"b64_json"`
 			URL     string `json:"url"`
 		} `json:"data"`
-		Error *struct{ Message string `json:"message"` } `json:"error"`
+		Error *struct {
+			Message string `json:"message"`
+		} `json:"error"`
 	}
 	if err := json.Unmarshal(body, &result); err != nil {
 		return nil, err
@@ -191,15 +193,13 @@ func cropBlackBars(img image.Image) image.Image {
 	return img
 }
 
-func wordCount(s string) int { return len(strings.Fields(s)) }
-
 func main() {
-	apiKey  := flag.String("key",         os.Getenv("OPENAI_API_KEY"), "OpenAI API key (or set OPENAI_API_KEY)")
-	refsDir := flag.String("refs",        "./player/prompt",            "directory containing prompt1.png and prompt2.png")
-	outDir  := flag.String("out",         "./images",                   "output directory")
-	model   := flag.String("model",       "gpt-image-2-2026-04-21",    "OpenAI image model")
-	workers := flag.Int("concurrency",    3,                            "parallel API requests")
-	limit   := flag.Int("limit",          0,                            "stop after N images (0 = no limit)")
+	apiKey := flag.String("key", os.Getenv("OPENAI_API_KEY"), "OpenAI API key (or set OPENAI_API_KEY)")
+	refsDir := flag.String("refs", "./player/prompt", "directory containing prompt1.png and prompt2.png")
+	outDir := flag.String("out", "./images", "output directory")
+	model := flag.String("model", "gpt-image-2-2026-04-21", "OpenAI image model")
+	workers := flag.Int("concurrency", 3, "parallel API requests")
+	limit := flag.Int("limit", 0, "stop after N images (0 = no limit)")
 	flag.Parse()
 
 	jsonPath := flag.Arg(0)
@@ -271,9 +271,9 @@ func main() {
 				if *limit > 0 && int(done.Load()) >= *limit {
 					return
 				}
-				room    := j.room
+				room := j.room
 				outPath := filepath.Join(imageDir, fmt.Sprintf("%d.webp", room.RoomID))
-				prompt  := buildPrompt(room.Title, room.Description)
+				prompt := buildPrompt(room.Title, room.Description)
 
 				log.Printf("generating [%d] %s", room.RoomID, room.Title)
 
