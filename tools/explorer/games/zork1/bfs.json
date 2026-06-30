@@ -586,5 +586,65 @@
     "roomId": 155,
     "title": "Sandy Cave",
     "description": "You have moved into a dark place.\nIt is pitch black. You are likely to be eaten by a grue."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 82,
+    "title": "Treasure Room",
+    "description": "Treasure Room\nThis is a large room, whose east wall is solid granite. A number of discarded bags, which crumble at your touch, are scattered about on the floor. There is an exit down a staircase.\nThere is a suspicious-looking individual, holding a large bag, leaning against one wall. He is armed with a deadly stiletto.\nThere is a silver chalice, intricately engraved, here.\nThe stiletto touches your forehead, and the blood obscures your vision."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 117,
+    "title": "Strange Passage",
+    "description": "Strange Passage\nThis is a long passage. To the west is one entrance. On the east there is an old wooden door, with a large opening in it (about cyclops sized)."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 13,
+    "title": "Land of the Dead",
+    "description": "Land of the Dead\nYou have entered the Land of the Living Dead. Thousands of lost souls can be heard weeping and moaning. In the corner are stacked the remains of dozens of previous adventurers less fortunate than\nyourself. A passage exits to the north.\nLying in one corner of the room is a beautifully carved crystal skull. It appears to be grinning at you rather nastily."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 249,
+    "title": "Drafty Room",
+    "description": "Drafty Room\nThis is a small drafty room in which is the bottom of a long shaft. To the south is a passageway and to the east a very narrow passage. In the shaft can be seen a heavy iron chain.\nAt the end of the chain is a basket.\nThe basket contains:\n  A small pile of coal\n  A screwdriver\n  A torch (providing light)"
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 89,
+    "title": "Machine Room",
+    "description": "Machine Room\nThis is a large, cold room whose sole exit is to the north. In one corner there is a machine which is reminiscent of a clothes dryer. On its face is a switch which is labelled \"START\". The switch does\nnot appear to be manipulable by any human hand (unless the fingers are about 1/16 by 1/4 inch). On the front of the machine is a large lid, which is closed."
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 37,
+    "title": "Frigid River",
+    "description": "(magic boat)\nFrigid River, in the magic boat\nYou are on the Frigid River in the vicinity of the Dam. The river flows quietly here. There is a landing on the west shore.\nThe magic boat contains:\n  A tan label"
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 174,
+    "title": "Frigid River",
+    "description": "Time passes...\nThe flow of the river carries you downstream.\n\nFrigid River, in the magic boat\nThe river turns a corner here making it impossible to see the Dam. The White Cliffs loom on the east bank and large rocks prevent landing on the west.\nThe magic boat contains:\n  A tan label"
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 45,
+    "title": "Frigid River",
+    "description": "Time passes...\nThe flow of the river carries you downstream.\n\nFrigid River, in the magic boat\nThe river descends here into a valley. There is a narrow beach on the west shore below the cliffs. In the distance a faint rumbling can be heard.\nThe magic boat contains:\n  A tan label"
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 182,
+    "title": "Frigid River",
+    "description": "You realize that getting out here would be fatal.\nThe flow of the river carries you downstream.\n\nFrigid River, in the magic boat\nThe river is running faster here and the sound ahead appears to be that of rushing water. On the east shore is a sandy beach. A small area of beach can also be seen below the cliffs on the west shore.\nThere is a red buoy here (probably a warning).\nThe magic boat contains:\n  A tan label"
+  },
+  {
+    "gameId": "119.880429",
+    "roomId": 53,
+    "title": "Frigid River",
+    "description": "Dropped.\nThe flow of the river carries you downstream.\n\nFrigid River, in the magic boat\nThe sound of rushing water is nearly unbearable here. On the east shore is a large landing area.\nThe magic boat contains:\n  A clove of garlic\n  A tan label"
   }
 ]
