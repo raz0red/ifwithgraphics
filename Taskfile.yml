@@ -106,6 +106,7 @@ tasks:
       docker run --rm
       -v "{{.ROOT_DIR}}:/repo"
       -w /repo
+      -e GOFLAGS=-buildvcs=false
       {{.GO_IMAGE}}
       sh -c 'cd /repo/tools/explorer && gofmt -l . | grep . && exit 1 || true &&
              cd /repo/tools/imagegen && gofmt -l . | grep . && exit 1 || true'
@@ -116,6 +117,7 @@ tasks:
       docker run --rm
       -v "{{.ROOT_DIR}}:/repo"
       -w /repo
+      -e GOFLAGS=-buildvcs=false
       {{.GO_IMAGE}}
       sh -c 'go install honnef.co/go/tools/cmd/staticcheck@v0.6.0 &&
              echo "=== tools/explorer ===" &&
