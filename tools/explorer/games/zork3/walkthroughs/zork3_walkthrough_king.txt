@@ -1,0 +1,265 @@
+# ---- The Lake ----
+# get lantern
+# turn on lantern
+# go south
+# go south
+# go south
+# go south
+# drop lantern
+# enter lake
+# go west
+# go south
+
+# ---- Scenic Vista ----
+# get torch
+# wait
+# wait
+# touch table
+
+# ---- Room 8 (Zork II) ----
+# take repellent
+# wait
+
+# ---- back at Scenic Vista, wait for III ----
+# wait
+# touch table
+
+# ---- Damp Passage ----
+# drop torch
+# wait
+
+# ---- Western Shore ----
+# go north
+
+# ---- dive for amulet ----
+# enter lake
+# go down
+# take all
+# go up
+# go south
+
+# ---- Southern Shore ----
+# spray repellent on self
+# go south
+# go south
+# go east
+
+# ---- Key Room ----
+# get key
+# move manhole cover
+# go down
+
+# ---- Water Slide ----
+# go north
+# go north
+# go down
+
+# ---- Damp Passage - retrieve torch ----
+# get torch
+# go west
+
+# ---- Junction ----
+# go south
+# go southwest
+
+# ---- The Land of Shadow and the Cliff ----
+# wander
+# attack figure
+# attack figure
+# attack figure
+# attack figure
+# attack figure
+# get hood
+# get cloak
+
+# ---- back to Junction ----
+# go west
+# go west
+# get waybread
+# go down
+
+# ---- Cliff Ledge ----
+# wait
+# tie rope to chest
+# wait
+# grab rope
+# get staff
+# go down
+# go down
+
+# ---- Cliff Base ----
+# go south
+
+# ---- Flathead Ocean ----
+# wait
+# say hello sailor
+# get vial
+# go east
+# go east
+# go east
+# go east
+
+# ---- wait for earthquake at Creepy Crawl ----
+# wait
+# go east
+# go east
+# go south
+# go south
+# go east
+
+# ---- The Royal Museum and Puzzle ----
+# open east door
+# go north
+
+# ---- Technology Museum ----
+# look at gold machine
+# turn dial to 776
+# push machine south
+# push machine east
+
+# ---- Jewel Room ----
+# enter machine
+# push button
+
+# ---- 776 GUE ----
+# wait
+# take ring
+# open door
+# go west
+# open north door
+# go north
+
+# ---- Technology Museum ----
+# put ring under seat
+# turn dial to 948
+# get in
+# push button
+# look under seat
+# get out
+# go south
+# go south
+
+# ---- Royal Puzzle Entrance ----
+
+# ---- Royal Puzzle ----
+# go down
+# push east wall
+# go south
+# go south
+# go southeast
+# push south wall
+# go north
+# go northeast
+# push south wall
+# get book
+# push south wall
+# go east
+# go northeast
+# push west wall
+# go southwest
+# go northwest
+# go northeast
+# push south wall
+# go southwest
+# push east wall
+# go northeast
+# push south wall
+# go northwest
+# go north
+# go north
+# go north
+# push east wall
+# go southwest
+# go south
+# go southeast
+# go northeast
+# go north
+# push west wall
+# go northwest
+# push south wall
+# go west
+# go northwest
+# go northwest
+# push south wall
+# go southeast
+# go southeast
+# go southeast
+# go northeast
+# push west wall
+# push west wall
+# go southwest
+# push north wall
+# push north wall
+# push north wall
+# go northwest
+# go up
+
+# ---- Buttons and Beams ----
+# go north
+# open east door
+# go east
+# get everything
+# go west
+# go west
+# go north
+# go north
+# go west
+# go west
+# go north
+# go east
+# go northeast
+
+# ---- Engravings Room ----
+# wake man
+# give waybread to man
+# open door
+# go north
+
+# ---- Button Room ----
+# go north
+
+# ---- Beam Room ----
+# put sword in beam
+# go south
+# push button
+# go north
+# go north
+# go north
+
+# ---- Mirror Box ----
+# raise short pole
+# push white panel
+# push white panel
+# push pine panel
+# go north
+
+# ---- invisibility past guardians ----
+# open vial
+# drink liquid
+# go north
+# go north
+# go north
+
+# ---- Dungeon Master's door ----
+# knock on door
+
+# ---- The Dungeon Master ----
+# go north
+# go west
+# go north
+# go north
+
+# ---- Parapet ----
+# turn dial to 4
+# push button
+# go south
+# open cell door
+# go south
+
+# ---- Prison Cell ----
+# dungeon master, go to parapet
+# dungeon master, turn dial to 1
+# dungeon master, push button
+# unlock bronze door with key
+# open door
+# go south

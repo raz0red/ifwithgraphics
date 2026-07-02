@@ -1,0 +1,282 @@
+# ---- The Lake and Aqueduct ----
+# get lamp
+# turn on lamp
+# go south
+# go south
+# go south
+# go south
+# turn off lamp
+# drop lamp
+# enter lake
+# dive
+# take object
+# go west
+# go south
+
+# ---- Scenic Vista ----
+# get torch
+# wait
+# wait
+# touch table
+
+# ---- Room 8 (Zork II) ----
+# get can
+# wait
+
+# ---- back at Scenic Vista, wait for III ----
+# wait
+# touch table
+
+# ---- Damp Passage ----
+# drop torch
+# wait
+
+# ---- back at Scenic Vista ----
+# go north
+# enter lake
+# dive
+# get can
+# go up
+# go west
+# apply repellent to me
+# go south
+# go south
+# go east
+
+# ---- Key Room ----
+# get key
+# raise manhole cover
+# go down
+
+# ---- Aqueduct ----
+# go north
+# go north
+# go north
+
+# ---- Damp Passage - retrieve torch ----
+# get torch
+
+# ---- The Cliff and Land of Shadow ----
+# go west
+# go west
+# go west
+
+# ---- Cliff ----
+# get bread
+# go down
+
+# ---- Cliff Ledge ----
+# get chest
+# wait
+# tie chest to rope
+# wait
+# grab rope
+
+# ---- back up, then down to Cliff Base ----
+# go down
+# go down
+# go south
+
+# ---- Flathead Ocean ----
+# wait
+# say hello sailor
+# look
+# get vial
+# go east
+
+# ---- Land of Shadow ----
+# wait
+# attack figure
+# attack figure
+# attack figure
+# attack figure
+# attack figure
+# take hood
+# take cloak
+# go east
+
+# ---- The Royal Museum ----
+# go east
+# go east
+# go south
+
+# ---- Royal Hall ----
+# examine seal
+# go south
+
+# ---- Great Door - wait for earthquake ----
+# wait
+# go east
+
+# ---- Museum Entrance ----
+# go north
+
+# ---- Technology Museum ----
+# read plaque
+# examine gold machine
+# push gold machine south
+# open stone door
+# push gold machine east
+
+# ---- Jewel Room (777) ----
+# read plaque
+# turn dial to 776
+# sit on seat
+# push button
+
+# ---- Jewel Room (776) ----
+# look
+# take ring
+# wait
+# open door
+# go west
+# open wooden door
+# go north
+
+# ---- Technology Museum ----
+# look under seat
+# put ring under seat
+# sit in gold machine
+# turn dial to 948
+# push button
+# look under seat
+# stand
+# open door
+# go south
+
+# ---- Museum Entrance ----
+# open stone door
+# go east
+
+# ---- Jewel Room - retrieve belongings ----
+# get all
+# read plaque
+
+# ---- The Royal Puzzle ----
+# go west
+# go south
+
+# ---- Royal Puzzle Entrance ----
+# read note
+# go down
+
+# ---- Royal Puzzle ----
+# look
+# push east wall
+# go south
+# go south
+# go southeast
+# push south wall
+# go north
+# go northeast
+# push south wall
+# take book
+# push south wall
+# go east
+# go northeast
+# push west wall
+# go southwest
+# go northwest
+# go northeast
+# push south wall
+# go southwest
+# push east wall
+# go northeast
+# push south wall
+# go northwest
+# go north
+# go north
+# go north
+# push east wall
+# go southwest
+# go south
+# go southeast
+# go northeast
+# go north
+# push west wall
+# go northwest
+# push south wall
+# again
+# go west
+# go northwest
+# go northwest
+# push south wall
+# go southeast
+# go southeast
+# go southeast
+# go northeast
+# push west wall
+# again
+# go southwest
+# push north wall
+# again
+# again
+# go northwest
+# go up
+
+# ---- The Mirror Box ----
+# go north
+# go west
+# go north
+# go north
+# go west
+# go west
+# go north
+# go east
+# go northeast
+
+# ---- Engravings Room ----
+# shake man
+# give bread to man
+# open secret door
+# go north
+# go north
+
+# ---- Beam Room ----
+# drop can
+
+# ---- Button Room ----
+# go south
+# push button
+# go north
+# go north
+
+# ---- Hallway ----
+# go north
+
+# ---- Inside Mirror Box ----
+# read description
+# raise short pole
+# push yellow wall
+# push yellow wall
+# lower short pole
+# push mahogany wall
+# push mahogany wall
+# push mahogany wall
+# raise short pole
+# push white wall
+# push pine wall
+# go north
+
+# ---- The Dungeon Master ----
+# knock on door
+# go north
+# go east
+# go north
+# go north
+
+# ---- Parapet ----
+# look at sundial
+# turn dial to 4
+# push button
+# go south
+# open door
+# go south
+
+# ---- Prison Cell ----
+# dungeon master, go to parapet
+# dungeon master, turn dial to 1
+# dungeon master, push button
+# unlock bronze door with key
+# open bronze door
+# go south
