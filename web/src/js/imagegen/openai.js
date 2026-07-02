@@ -31,4 +31,11 @@ function generate(apiKey, prompt, model) {
   return generateWithRefs(apiKey, model || "gpt-image-2-2026-04-21", prompt);
 }
 
-export const OpenAIImageGen = { generate };
+async function validate(apiKey) {
+  const r = await fetch("https://api.openai.com/v1/models", {
+    headers: { "Authorization": `Bearer ${apiKey}` }
+  });
+  if (!r.ok) { const e = await r.json(); throw new Error(e.error?.message ?? r.status); }
+}
+
+export const OpenAIImageGen = { generate, validate };

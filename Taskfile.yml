@@ -152,7 +152,7 @@ tasks:
     desc: "Serve at http://localhost:{port} (default 5173) — override with: task serve port=8787"
     vars:
       port: '{{.port | default "5173"}}'
-    cmd: docker run --rm -p {{.port}}:80 -v "{{.ROOT_DIR}}:/usr/share/nginx/html:ro" {{.NGINX_IMAGE}}
+    cmd: docker run --rm -p {{.port}}:80 -v "{{.ROOT_DIR}}/web:/usr/share/nginx/html:ro" -v "{{.ROOT_DIR}}/tools/nginx.conf:/etc/nginx/conf.d/default.conf:ro" {{.NGINX_IMAGE}}
 
   clean:
     desc: Remove build artifacts

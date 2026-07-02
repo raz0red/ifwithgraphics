@@ -51,8 +51,12 @@ export function render(container) {
   genStatus.appendChild(placeholderLabel);
   genStatus.appendChild(dotLabel);
 
+  const roomTitleLabel = document.createElement("div");
+  roomTitleLabel.className = "scene-room-title";
+
   scenePlaceholder.appendChild(bezel);
   scenePlaceholder.appendChild(genStatus);
+  scenePlaceholder.appendChild(roomTitleLabel);
   sceneWrap.appendChild(sceneImg);
   sceneWrap.appendChild(scenePlaceholder);
 
@@ -113,6 +117,7 @@ export function render(container) {
     sceneImg,
     scenePlaceholder,
     placeholderLabel,
+    roomTitleLabel,
     diskLed,
     dotLabel,
     sceneText,

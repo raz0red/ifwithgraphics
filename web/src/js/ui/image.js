@@ -46,12 +46,17 @@ export function createImageUI(el, state, onResize) {
     el.dotLabel.textContent = "";
   }
 
-function showPlaceholder(label) {
+  function showPlaceholder(label, roomTitle) {
     stopDiskAnimation();
     el.sceneImg.removeAttribute("src");
     el.sceneImg.hidden                = true;
     el.scenePlaceholder.style.display = "flex";
-    el.placeholderLabel.textContent   = label || "";
+
+    const showTitle = !label && roomTitle;
+    el.scenePlaceholder.classList.toggle("no-image", !!showTitle);
+    el.placeholderLabel.textContent = label || "";
+    el.roomTitleLabel.textContent   = showTitle ? roomTitle : "";
+
     if (label === "LOADING IMAGE") startDiskAnimation();
   }
 
@@ -83,7 +88,10 @@ function showPlaceholder(label) {
         revealWithBlinds();
       });
     };
-    el.sceneImg.onerror = () => showPlaceholder("");
+    el.sceneImg.onerror = () => {
+      const title = el.statusRoom.textContent.replace(/\s+(Time|Score|Moves|Turns):.*/gi, "").replace(/\s+/g, " ").trim();
+      showPlaceholder("", title);
+    };
     el.sceneImg.src = url;
   }
 
