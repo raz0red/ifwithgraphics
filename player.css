@@ -266,6 +266,22 @@ html, body {
   width: 100%;
 }
 
+.scene-room-title {
+  display: none;
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(11px, 1.4rem, 26px);
+  color: #444;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.9;
+  padding: 0 3rem;
+}
+
+.scene-placeholder.no-image .gen-drive-bezel,
+.scene-placeholder.no-image .gen-status { display: none; }
+.scene-placeholder.no-image .scene-room-title { display: block; }
+
 
 /* ── Description text ─────────────────────────── */
 .scene-text {

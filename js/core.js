@@ -3,7 +3,7 @@ import { createEngine }  from "./engine.js";
 import { createTextUI }  from "./ui/text.js";
 import { createImageUI } from "./ui/image.js";
 import { createInputUI } from "./ui/input.js";
-import { ImageGen }      from "./imagegen/index.js";
+import { ImageGen } from "./imagegen/index.js";
 import { IFWGConfig }    from "./config.js";
 import { Game }          from "./game.js";
 
@@ -15,6 +15,11 @@ function readGameId(bytes) {
     bytes[0x15], bytes[0x16], bytes[0x17]
   );
   return `${release}.${serial}`;
+}
+
+/* Strip dynamic status-bar suffixes (e.g. "Time: 8:00 AM") to get the bare room name. */
+function roomName(title) {
+  return title.replace(/\s+(Time|Score|Moves|Turns):.*/gi, "").replace(/\s+/g, " ").trim();
 }
 
 /* Collapse frotz word-wrap newlines but keep intentional paragraph breaks. */
@@ -111,7 +116,7 @@ export const IFWGPlayer = {
             if (genKey !== state.currentRoomKey) return;
             console.info("[IFWG] image result — roomKey:%o url:%o", genKey, url ? url.substring(0, 60) : null);
             if (url) imageUI.showImage(url, genKey);
-            else     imageUI.showPlaceholder("");
+            else     imageUI.showPlaceholder("", roomName(ttl));
           })
           .catch(err => {
             if (genKey !== state.currentRoomKey) return;
@@ -186,9 +191,20 @@ export const IFWGPlayer = {
 
       state.storyPath = `/input/${filename}`;
 
-      engineReady.then(() => {
+      engineReady.then(async () => {
         engine.writeFile(state.storyPath, bytes);
-        el.player.hidden = false;
+
+        const settings = ImageGen.getSettings();
+        if (settings.getApiKey()) {
+          const result = await ImageGen.validate();
+          if (!result.ok) {
+            config.onValidationFailed("API key validation failed. Please update your settings and retry.");
+            return;
+          }
+          el.player.hidden = false;
+        } else {
+          el.player.hidden = false;
+        }
 
         // Frotz derives the save name as: basename(storyFile), strip extension, append ".qzl"
         // e.g. "zork1.z3" → "zork1.qzl" (NOT "/input/zork1.z3.qzl")

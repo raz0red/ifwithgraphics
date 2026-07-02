@@ -55,4 +55,9 @@ async function generate(apiKey, prompt, model) {
   throw new Error("No image data in response");
 }
 
-export const GeminiImageGen = { generate };
+async function validate(apiKey) {
+  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(apiKey)}`);
+  if (!r.ok) { const e = await r.json(); throw new Error(e.error?.message ?? r.status); }
+}
+
+export const GeminiImageGen = { generate, validate };

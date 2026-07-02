@@ -8,7 +8,7 @@ export { PROVIDERS };
 
 export class ImageGenSettings {
   constructor(provider, apiKeys, model, pregenEnabled) {
-    this._provider      = provider || Object.keys(PROVIDERS)[0];
+    this._provider      = provider || "none";
     this._apiKeys       = (apiKeys && typeof apiKeys === "object") ? apiKeys : {};
     this._model         = model    || "";
     this._pregenEnabled = pregenEnabled !== undefined ? !!pregenEnabled : true;
@@ -213,4 +213,18 @@ function generateLive(settings, title, description, cacheKey, onCacheMiss) {
     });
 }
 
-export const ImageGen = { generate, getSettings, setSettings, setImagesBase(url) { _imagesBase = url; } };
+async function validate() {
+  const settings = getSettings();
+  const key = settings.getApiKey();
+  if (!key) return { ok: true };
+  const provider = getProvider(settings.getProvider());
+  if (!provider?.validate) return { ok: true };
+  try {
+    await provider.validate(key);
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, error: err?.message ?? "API ERROR" };
+  }
+}
+
+export const ImageGen = { generate, validate, getSettings, setSettings, setImagesBase(url) { _imagesBase = url; } };

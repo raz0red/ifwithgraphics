@@ -1,10 +1,11 @@
 import { DB } from "./db.js";
 
 export class IFWGConfig {
-  getWasmPath()                  { return "./wasm/"; }
-  onSave(_filename, _bytes)      {}
-  onRestore(_filename, cb)       { cb(null); }
-  onGameLoaded(_gameId, _title)  {}
+  getWasmPath()                    { return "./wasm/"; }
+  onSave(_filename, _bytes)        {}
+  onRestore(_filename, cb)         { cb(null); }
+  onGameLoaded(_gameId, _title)    {}
+  onValidationFailed(_error)       {}
 }
 
 export class StandaloneConfig extends IFWGConfig {

@@ -9,12 +9,17 @@
   <body>
     <!-- Launcher UI — owned by this page, not the player module -->
     <div id="launcher" class="drop-overlay">
-      <label class="drop-target" for="ifwg-story-file">
+      <label id="drop-target" class="drop-target" for="ifwg-story-file">
         <span class="drop-title">DROP STORY FILE</span>
         <span class="drop-sub">or click to choose</span>
         <input id="ifwg-story-file" type="file"
                accept=".z1,.z2,.z3,.z4,.z5,.z6,.z7,.z8,.dat,.zcode">
       </label>
+      <div id="drop-error" style="display:none;flex-direction:column;align-items:center;gap:0.8rem;">
+        <div style="font-family:'Press Start 2P',monospace;font-size:0.6rem;letter-spacing:0.1em;color:#f44;">API KEY ERROR</div>
+        <div id="drop-error-msg" style="font-family:'VT323',monospace;font-size:1.4rem;color:#888;text-align:center;max-width:28rem;"></div>
+        <button id="drop-retry" style="font-family:'Press Start 2P',monospace;font-size:0.5rem;letter-spacing:0.1em;padding:0.8rem 2rem;background:#111;border:1px solid #666;color:#ccc;cursor:pointer;margin-top:0.4rem;">RETRY</button>
+      </div>
       <div class="drop-settings">
         <div class="setting-row">
           <label class="setting-label" for="ifwg-ai-provider">IMAGE GEN</label>
@@ -54,11 +59,33 @@
       import { IFWGPlayer, StandaloneConfig, ImageGen, ImageGenSettings } from "./dist/ifwg-player.js";
       */
 
-      const config = new StandaloneConfig();
+      const launcher    = document.getElementById("launcher");
+      const dropTarget  = document.getElementById("drop-target");
+      const dropError   = document.getElementById("drop-error");
+      const dropErrMsg  = document.getElementById("drop-error-msg");
+      const dropRetry   = document.getElementById("drop-retry");
+      const storyFile   = document.getElementById("ifwg-story-file");
+      let lastFile = null;
+
+      class Config extends StandaloneConfig {
+        onValidationFailed(error) {
+          dropTarget.style.display  = "none";
+          dropError.style.display   = "flex";
+          dropErrMsg.textContent    = error || "API key validation failed.";
+          launcher.style.display    = "";
+        }
+      }
+
+      const config = new Config();
       const player = IFWGPlayer.create(document.getElementById("app"), config);
 
-      const launcher   = document.getElementById("launcher");
-      const storyFile  = document.getElementById("ifwg-story-file");
+      dropRetry.addEventListener("click", () => {
+        if (!lastFile) return;
+        dropError.style.display  = "none";
+        dropTarget.style.display = "";
+        loadFile(lastFile);
+      });
+
       const aiProvider = document.getElementById("ifwg-ai-provider");
       const aiModel    = document.getElementById("ifwg-ai-model");
       const aiKey      = document.getElementById("ifwg-ai-key");
@@ -111,6 +138,7 @@
       pregen.addEventListener("change",   applyImageSettings);
 
       function loadFile(file) {
+        lastFile = file;
         launcher.style.display = "none";
         player.loadGame(file);
       }
