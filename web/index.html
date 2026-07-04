@@ -8,41 +8,7 @@
   </head>
   <body>
     <!-- Launcher UI — owned by this page, not the player module -->
-    <div id="launcher" class="drop-overlay">
-      <label id="drop-target" class="drop-target" for="ifwg-story-file">
-        <span class="drop-title">DROP STORY FILE</span>
-        <span class="drop-sub">or click to choose</span>
-        <input id="ifwg-story-file" type="file"
-               accept=".z1,.z2,.z3,.z4,.z5,.z6,.z7,.z8,.dat,.zcode">
-      </label>
-      <div id="drop-error" style="display:none;flex-direction:column;align-items:center;gap:0.8rem;">
-        <div style="font-family:'Press Start 2P',monospace;font-size:0.6rem;letter-spacing:0.1em;color:#f44;">API KEY ERROR</div>
-        <div id="drop-error-msg" style="font-family:'VT323',monospace;font-size:1.4rem;color:#888;text-align:center;max-width:28rem;"></div>
-        <button id="drop-retry" style="font-family:'Press Start 2P',monospace;font-size:0.5rem;letter-spacing:0.1em;padding:0.8rem 2rem;background:#111;border:1px solid #666;color:#ccc;cursor:pointer;margin-top:0.4rem;">RETRY</button>
-      </div>
-      <div class="drop-settings">
-        <div class="setting-row">
-          <label class="setting-label" for="ifwg-ai-provider">IMAGE GEN</label>
-          <select id="ifwg-ai-provider" class="setting-select"></select>
-        </div>
-        <div class="setting-row" id="ifwg-model-row">
-          <label class="setting-label" for="ifwg-ai-model">MODEL</label>
-          <select id="ifwg-ai-model" class="setting-select"></select>
-        </div>
-        <div class="setting-row" id="ifwg-key-row">
-          <label class="setting-label" for="ifwg-ai-key">API KEY</label>
-          <input id="ifwg-ai-key" class="setting-input" type="password"
-                 placeholder="sk-…" autocomplete="off" spellcheck="false">
-        </div>
-        <div class="setting-row">
-          <label class="setting-label" for="ifwg-pregen">PRE-GEN</label>
-          <label class="setting-toggle-wrap">
-            <input id="ifwg-pregen" type="checkbox" class="setting-toggle">
-            <span class="setting-toggle-track"><span class="setting-toggle-thumb"></span></span>
-          </label>
-        </div>
-      </div>
-    </div>
+    <div id="launcher" class="drop-overlay"></div>
 
     <!-- Game viewport -->
     <div id="app"></div>
@@ -51,95 +17,57 @@
 
 <script type="module">
       /* Dev — individual modules (no build step required) */
-      import { IFWGPlayer }                                    from "./js/core.js";
-      import { StandaloneConfig }                             from "./js/config.js";
-      import { ImageGen, ImageGenSettings, PROVIDERS }  from "./js/imagegen/index.js";
+      import { IFWGPlayer }        from "./js/core.js";
+      import { StandaloneConfig }  from "./js/config.js";
+      import { renderLaunchPanel } from "./js/launchPanel.js";
 
       /* Prod — minified bundle (run: npm run build)
-      import { IFWGPlayer, StandaloneConfig, ImageGen, ImageGenSettings } from "./dist/ifwg-player.js";
+      import { IFWGPlayer, StandaloneConfig, renderLaunchPanel } from "./dist/ifwg-player.js";
       */
 
-      const launcher    = document.getElementById("launcher");
-      const dropTarget  = document.getElementById("drop-target");
-      const dropError   = document.getElementById("drop-error");
-      const dropErrMsg  = document.getElementById("drop-error-msg");
-      const dropRetry   = document.getElementById("drop-retry");
-      const storyFile   = document.getElementById("ifwg-story-file");
+      const launcher = document.getElementById("launcher");
+
+      const dropTarget = document.createElement("label");
+      dropTarget.className = "drop-target";
+      dropTarget.htmlFor   = "ifwg-story-file";
+
+      const dropTitle = document.createElement("span");
+      dropTitle.className   = "drop-title";
+      dropTitle.textContent = "DROP STORY FILE";
+
+      const dropSub = document.createElement("span");
+      dropSub.className   = "drop-sub";
+      dropSub.textContent = "or click to choose";
+
+      const storyFile = document.createElement("input");
+      storyFile.id          = "ifwg-story-file";
+      storyFile.type        = "file";
+      storyFile.accept      = ".z1,.z2,.z3,.z4,.z5,.z6,.z7,.z8,.dat,.zcode";
+
+      dropTarget.appendChild(dropTitle);
+      dropTarget.appendChild(dropSub);
+      dropTarget.appendChild(storyFile);
+
       let lastFile = null;
 
       class Config extends StandaloneConfig {
         onValidationFailed(error) {
-          dropTarget.style.display  = "none";
-          dropError.style.display   = "flex";
-          dropErrMsg.textContent    = error || "API key validation failed.";
-          launcher.style.display    = "";
+          launcher.hidden = false;
+          panel.showError(error);
         }
       }
 
       const config = new Config();
       const player = IFWGPlayer.create(document.getElementById("app"), config);
 
-      dropRetry.addEventListener("click", () => {
-        if (!lastFile) return;
-        dropError.style.display  = "none";
-        dropTarget.style.display = "";
-        loadFile(lastFile);
+      const panel = renderLaunchPanel(launcher, {
+        idle: dropTarget,
+        onRetry: () => loadFile(lastFile)
       });
-
-      const aiProvider = document.getElementById("ifwg-ai-provider");
-      const aiModel    = document.getElementById("ifwg-ai-model");
-      const aiKey      = document.getElementById("ifwg-ai-key");
-      const pregen     = document.getElementById("ifwg-pregen");
-      const modelRow   = document.getElementById("ifwg-model-row");
-      const keyRow     = document.getElementById("ifwg-key-row");
-
-      Object.entries(PROVIDERS).forEach(([value, { label }]) => {
-        const opt = document.createElement("option");
-        opt.value       = value;
-        opt.textContent = label;
-        aiProvider.appendChild(opt);
-      });
-
-      function populateModels(provider, selectedModel) {
-        const { models = [], keyPlaceholder = "…" } = PROVIDERS[provider] || {};
-        aiModel.innerHTML = models.map(m =>
-          `<option value="${m.value}"${m.value === selectedModel ? " selected" : ""}>${m.label}</option>`
-        ).join("");
-        modelRow.hidden   = models.length === 0;
-        keyRow.hidden     = models.length === 0;
-        aiKey.placeholder = keyPlaceholder;
-      }
-
-      const imgSettings  = ImageGen.getSettings();
-      aiProvider.value   = imgSettings.getProvider();
-      if (!aiProvider.value) aiProvider.selectedIndex = 0;
-      aiKey.value        = imgSettings.getApiKey();
-      pregen.checked     = imgSettings.getPregenEnabled();
-      populateModels(aiProvider.value, imgSettings.getModel());
-
-      function applyImageSettings() {
-        const s = ImageGen.getSettings();
-        s.setProvider(aiProvider.value);
-        s.setApiKey(aiKey.value.trim());
-        s.setModel(aiModel.value);
-        s.setPregenEnabled(pregen.checked);
-        ImageGen.setSettings(s);
-      }
-      aiProvider.addEventListener("change", () => {
-        const s = ImageGen.getSettings();
-        s.setProvider(aiProvider.value);
-        aiKey.value = s.getApiKey();
-        populateModels(aiProvider.value, "");
-        applyImageSettings();
-      });
-      aiModel.addEventListener("change",  applyImageSettings);
-      aiKey.addEventListener("change",    applyImageSettings);
-      aiKey.addEventListener("blur",      applyImageSettings);
-      pregen.addEventListener("change",   applyImageSettings);
 
       function loadFile(file) {
         lastFile = file;
-        launcher.style.display = "none";
+        launcher.hidden = true;
         player.loadGame(file);
       }
 

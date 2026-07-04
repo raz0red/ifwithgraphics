@@ -4,8 +4,9 @@ import { createTextUI }  from "./ui/text.js";
 import { createImageUI } from "./ui/image.js";
 import { createInputUI } from "./ui/input.js";
 import { ImageGen } from "./imagegen/index.js";
-import { IFWGConfig }    from "./config.js";
+import { IFWGConfig, StandaloneConfig } from "./config.js";
 import { Game }          from "./game.js";
+import { renderLaunchPanel } from "./launchPanel.js";
 
 /* Read Z-machine release.serial from raw bytes — stable game identity. */
 function readGameId(bytes) {
@@ -232,5 +233,86 @@ export const IFWGPlayer = {
     }
 
     return { loadGame };
+  },
+
+  /* Manifest-driven boot for a self-contained game page: fetch
+     ./ifwg-manifest.json (relative to the hosting page), then either
+     auto-start the game or show a title + RUN screen with the shared
+     image-gen settings panel. A missing/invalid manifest is a
+     misconfiguration, not a fallback — pages using boot() always ship one. */
+  boot(container) {
+    fetch("./ifwg-manifest.json")
+      .then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
+      .then(manifest => {
+        const game = manifest?.game;
+        if (!game?.path) throw new Error("manifest missing game.path");
+        bootGame(container, game);
+      })
+      .catch(err => {
+        console.error("[IFWG] boot: failed to load ifwg-manifest.json —", err?.message ?? err);
+        const msg = document.createElement("div");
+        msg.style.cssText = "color:#f44;font-family:monospace;padding:2rem;text-align:center;";
+        msg.textContent = "IFWG: no game manifest found for this page.";
+        container.appendChild(msg);
+      });
   }
 };
+
+function bootGame(container, game) {
+  if (game.title) document.title = game.title;
+
+  if (game.autoStart) {
+    ImageGen.setSessionOverride({ provider: "none", pregenEnabled: true });
+  }
+
+  let panel = null;
+
+  class BootConfig extends StandaloneConfig {
+    onValidationFailed(error) {
+      if (!panel) panel = mountPanel();
+      panel.overlay.hidden = false;
+      panel.showError(error);
+    }
+  }
+
+  const player = IFWGPlayer.create(container, new BootConfig());
+
+  function mountPanel() {
+    const overlay = document.createElement("div");
+    overlay.className = "drop-overlay";
+    container.appendChild(overlay);
+
+    const idle = document.createElement("div");
+    idle.className = "launch-title-block";
+
+    const title = document.createElement("div");
+    title.className = "launch-game-title";
+    title.textContent = game.title || "";
+
+    const runBtn = document.createElement("button");
+    runBtn.type       = "button";
+    runBtn.className  = "launch-run-btn";
+    runBtn.textContent = "RUN";
+    runBtn.addEventListener("click", run);
+
+    idle.appendChild(title);
+    idle.appendChild(runBtn);
+
+    const { showError } = renderLaunchPanel(overlay, { idle, onRetry: run });
+    return { overlay, showError };
+  }
+
+  function run() {
+    if (panel) panel.overlay.hidden = true;
+    player.loadGame(game.path, game.path.split("/").pop());
+  }
+
+  if (game.autoStart) {
+    run();
+  } else {
+    panel = mountPanel();
+  }
+}

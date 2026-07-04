@@ -1,0 +1,7 @@
+{
+  "game": {
+    "title": "Zork I: The Great Underground Empire",
+    "path": "zork1.z3",
+    "autoStart": true
+  }
+}
