@@ -129,6 +129,84 @@ html, body {
   left: 1.8rem; background: #4c4;
 }
 
+/* ── Shared launch panel (root launcher + boot() run screen) ─── */
+.launch-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.launch-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.launch-title-block {
+  border: 2px solid #444;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 3rem 5rem;
+  text-align: center;
+}
+
+.launch-game-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  line-height: 2.2;
+}
+
+.launch-run-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  padding: 0.9rem 2.4rem;
+  background: #111;
+  border: 2px solid #666;
+  color: #ccc;
+  cursor: pointer;
+  transition: border-color 0.1s, color 0.1s;
+}
+.launch-run-btn:hover { border-color: #fff; color: #fff; }
+
+.launch-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.launch-error-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: #f44;
+}
+
+.launch-error-msg {
+  font-family: 'VT323', monospace;
+  font-size: 1.4rem;
+  color: #888;
+  text-align: center;
+  max-width: 28rem;
+}
+
+.launch-retry {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  padding: 0.8rem 2rem;
+  background: #111;
+  border: 1px solid #666;
+  color: #ccc;
+  cursor: pointer;
+  margin-top: 0.4rem;
+}
+
 /* ── Player — 1.14:1 landscape container ──────── */
 .player {
   width: var(--player-w);

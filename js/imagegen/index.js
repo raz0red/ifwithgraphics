@@ -28,15 +28,37 @@ export class ImageGenSettings {
 }
 
 const SETTINGS_KEY = "ifwg_settings";
-let _imagesBase = "./images/";
+
+const PUBLIC_IMAGES_BASE = "https://raz0red.github.io/ifwithgraphics/images/"; // update when a real domain ships
+const LOCAL_HOSTS = ["localhost", "127.0.0.1"];
+
+function defaultImagesBase() {
+  const host = typeof location !== "undefined" ? location.hostname : "";
+  return LOCAL_HOSTS.includes(host)
+    ? new URL("../../images/", import.meta.url).href   // local dev — see new images before pushing
+    : PUBLIC_IMAGES_BASE;                               // production or exported elsewhere — point back at us
+}
+
+let _imagesBase = defaultImagesBase();
+
+/* In-memory-only override for provider/pregen — never written to
+   localStorage. Used by autoStart pages to force live gen off without
+   touching the user's real cross-page settings. */
+let _sessionOverride = null;
+
+function setSessionOverride(overrides) {
+  _sessionOverride = overrides;
+}
 
 function getSettings() {
   try {
     const raw = JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {};
-    const apiKeys = raw.apiKeys || (raw.apiKey ? { [raw.provider || Object.keys(PROVIDERS)[0]]: raw.apiKey } : {});
-    return new ImageGenSettings(raw.provider, apiKeys, raw.model, raw.pregenEnabled);
+    const apiKeys       = raw.apiKeys || (raw.apiKey ? { [raw.provider || Object.keys(PROVIDERS)[0]]: raw.apiKey } : {});
+    const provider      = _sessionOverride?.provider      !== undefined ? _sessionOverride.provider      : raw.provider;
+    const pregenEnabled = _sessionOverride?.pregenEnabled  !== undefined ? _sessionOverride.pregenEnabled  : raw.pregenEnabled;
+    return new ImageGenSettings(provider, apiKeys, raw.model, pregenEnabled);
   } catch (_) {
-    return new ImageGenSettings();
+    return new ImageGenSettings(_sessionOverride?.provider, undefined, undefined, _sessionOverride?.pregenEnabled);
   }
 }
 
@@ -227,4 +249,7 @@ async function validate() {
   }
 }
 
-export const ImageGen = { generate, validate, getSettings, setSettings, setImagesBase(url) { _imagesBase = url; } };
+export const ImageGen = {
+  generate, validate, getSettings, setSettings, setSessionOverride,
+  setImagesBase(url) { _imagesBase = url; }
+};

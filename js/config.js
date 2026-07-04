@@ -1,7 +1,11 @@
 import { DB } from "./db.js";
 
+/* Resolved relative to this module's own location, not the hosting page —
+   works the same regardless of how deep the page is nested. */
+const WASM_BASE = new URL("../wasm/", import.meta.url).href;
+
 export class IFWGConfig {
-  getWasmPath()                    { return "./wasm/"; }
+  getWasmPath()                    { return WASM_BASE; }
   onSave(_filename, _bytes)        {}
   onRestore(_filename, cb)         { cb(null); }
   onGameLoaded(_gameId, _title)    {}
