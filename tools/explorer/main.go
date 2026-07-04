@@ -46,7 +46,11 @@ type routeNode struct {
 
 type Explorer struct {
 	sess             *frotz.Session
+	dfrotzPath       string
+	storyPath        string
+	rawLog           io.Writer
 	gameID           string
+	game             Game
 	rooms            map[int]bool
 	ordered          []*RoomEntry
 	tried            map[int]map[string]bool // roomID -> action -> already tried
@@ -56,15 +60,19 @@ type Explorer struct {
 	traceWalkthrough bool
 }
 
-func newExplorer(outPath, saveDir, gameID string, sess *frotz.Session) *Explorer {
+func newExplorer(outPath, saveDir, gameID string, sess *frotz.Session, dfrotzPath, storyPath string, rawLog io.Writer) *Explorer {
 	return &Explorer{
-		sess:    sess,
-		gameID:  gameID,
-		rooms:   make(map[int]bool),
-		tried:   make(map[int]map[string]bool),
-		saves:   make(map[int]string),
-		saveDir: saveDir,
-		outPath: outPath,
+		sess:       sess,
+		dfrotzPath: dfrotzPath,
+		storyPath:  storyPath,
+		rawLog:     rawLog,
+		gameID:     gameID,
+		game:       gameFor(gameID),
+		rooms:      make(map[int]bool),
+		tried:      make(map[int]map[string]bool),
+		saves:      make(map[int]string),
+		saveDir:    saveDir,
+		outPath:    outPath,
 	}
 }
 
@@ -133,9 +141,10 @@ func (e *Explorer) triedAll(roomID int) bool {
 	return true
 }
 
-func explorationActions(room *frotz.Room) []string {
+func (e *Explorer) explorationActions(room *frotz.Room) []string {
 	actions := append([]string{}, allDirs...)
 	actions = append(actions, contextualActions(room)...)
+	actions = append(actions, e.game.ContextualActions(room)...)
 	return actions
 }
 
@@ -193,37 +202,19 @@ func contextualActions(room *frotz.Room) []string {
 	if strings.Contains(text, "stairs") || strings.Contains(text, "stairway") || strings.Contains(text, "staircase") {
 		add("climb stairs")
 	}
+	if strings.Contains(text, "button") {
+		add("push button")
+		add("press button")
+	}
+	if strings.Contains(text, "door") {
+		add("open door")
+	}
+	if strings.Contains(text, "slot") && strings.Contains(text, "button") {
+		add("push brown button")
+		add("push beige button")
+		add("push tan button")
+	}
 	return actions
-}
-
-func statefulSequences(room *frotz.Room) []actionSequence {
-	if room.Title == "Cyclops Room" {
-		return []actionSequence{
-			{Name: "cyclops-ulysses-up", Commands: []string{"ulysses", "u"}},
-			{Name: "cyclops-ulysses-east", Commands: []string{"ulysses", "e"}},
-		}
-	}
-	if room.Title == "Great Door" {
-		return []actionSequence{
-			{Name: "zork3-wait-for-earthquake", Commands: append(repeatCommand("wait", 90), "e")},
-		}
-	}
-	if room.Title == "Flathead Ocean" {
-		return []actionSequence{
-			{Name: "zork3-flathead-to-endgame", Commands: zork3FlatheadToEndgameCommands()},
-		}
-	}
-	if room.Title == "Room in a Puzzle" {
-		return []actionSequence{
-			{Name: "zork3-solve-royal-puzzle", Commands: zork3RoyalPuzzleCommands()},
-		}
-	}
-	if room.Title == "Royal Puzzle Entrance" && !strings.Contains(room.Description, "Lying on the ground is a small note") {
-		return []actionSequence{
-			{Name: "zork3-enter-endgame", Commands: zork3EndgameCommands()},
-		}
-	}
-	return nil
 }
 
 func repeatCommand(command string, count int) []string {
@@ -232,91 +223,6 @@ func repeatCommand(command string, count int) []string {
 		commands[i] = command
 	}
 	return commands
-}
-
-func zork3RoyalPuzzleCommands() []string {
-	return []string{
-		"push east wall", "s", "s", "se", "push south wall", "n", "ne",
-		"push south wall", "take book", "push south wall", "e", "ne",
-		"push west wall", "sw", "nw", "ne", "push south wall", "sw",
-		"push east wall", "ne", "push south wall", "nw", "n", "n", "n",
-		"push east wall", "sw", "s", "se", "ne", "n", "push west wall",
-		"nw", "push south wall", "push south wall", "w", "nw", "nw",
-		"push south wall", "se", "se", "se", "ne", "push west wall",
-		"push west wall", "sw", "push north wall", "push north wall",
-		"push north wall", "nw", "u",
-	}
-}
-
-func zork3EndgameCommands() []string {
-	return []string{
-		"n", "open east door", "e", "get all", "w", "w",
-		"n", "n", "w", "w", "n", "e", "ne",
-		"look", "wait", "look", "sw", "ne", "look", "wait", "look", "sw", "ne", "look",
-		"wake man", "give waybread to man", "open door",
-		"n", "n", "put sword in beam", "s", "push button", "n", "n", "n",
-		"read description", "raise short pole", "push yellow wall", "push yellow wall",
-		"lower short pole", "push mahogany wall", "push mahogany wall", "push mahogany wall",
-		"raise short pole", "push white wall", "push white wall", "push pine wall",
-		"n", "open vial", "drink liquid", "n", "n", "n",
-		"knock on door", "n", "w", "n", "n", "turn dial to 4", "push button",
-		"s", "open cell door", "s", "dungeon master, go to parapet",
-		"dungeon master, turn dial to 1", "dungeon master, push button",
-		"unlock bronze door with key", "open bronze door", "s",
-	}
-}
-
-func zork3FlatheadToEndgameCommands() []string {
-	commands := []string{
-		"hello", "hello sailor", "get vial",
-		"e", "wait",
-		"attack figure", "attack figure", "attack figure", "attack figure", "attack figure",
-		"take hood", "take cloak",
-		"e", "e", "e", "e", "e", "s",
-		"examine seal", "s",
-	}
-	commands = append(commands, repeatCommand("wait", 90)...)
-	commands = append(commands, "e", "n")
-	commands = append(commands, zork3MuseumMachineCommandStrings()...)
-	commands = append(commands, "read note", "d")
-	commands = append(commands, zork3RoyalPuzzleCommands()...)
-	commands = append(commands, zork3EndgameCommands()...)
-	return commands
-}
-
-func zork3MuseumMachineCommandStrings() []string {
-	return []string{
-		"turn dial to 776",
-		"push gold machine south",
-		"open stone door",
-		"push gold machine east",
-		"put vial under seat",
-		"enter machine",
-		"push button",
-		"wait",
-		"take ring",
-		"look under seat",
-		"get vial",
-		"wait",
-		"wait",
-		"wait",
-		"wait",
-		"open door",
-		"go west",
-		"open north door",
-		"go north",
-		"put ring under seat",
-		"put vial under seat",
-		"turn dial to 948",
-		"get in",
-		"push button",
-		"look under seat",
-		"get vial",
-		"get out",
-		"open wooden door",
-		"go south",
-		"go south",
-	}
 }
 
 // saveGame sends the save command, waits until dfrotz explicitly asks for a
@@ -360,13 +266,6 @@ func (e *Explorer) saveGame(room *frotz.Room) (*frotz.Room, string, error) {
 	}
 	e.saves[room.ID] = path
 	return restored, path, nil
-}
-
-func shouldPreserveExistingSave(room *frotz.Room) bool {
-	if room == nil || room.Title != "Flathead Ocean" {
-		return false
-	}
-	return !strings.Contains(strings.ToLower(room.Description), "sailor")
 }
 
 func canSave(room *frotz.Room) bool {
@@ -501,7 +400,7 @@ func (e *Explorer) dfs(room *frotz.Room, savePath string, depth int) error {
 		return nil
 	}
 
-	for _, dir := range explorationActions(room) {
+	for _, dir := range e.explorationActions(room) {
 		if e.tried[room.ID] == nil {
 			e.tried[room.ID] = make(map[string]bool)
 		}
@@ -518,7 +417,7 @@ func (e *Explorer) dfs(room *frotz.Room, savePath string, depth int) error {
 			return fmt.Errorf("DFS read after %q from %s [id=%d]: %w", dir, room.Title, room.ID, err)
 		}
 		if isDeathPrompt(next) {
-			restored, rerr := e.restoreGame(savePath)
+			restored, rerr := e.restoreGameFresh(savePath)
 			if rerr != nil {
 				return fmt.Errorf("DFS restore after death from %q at %s [id=%d]: %w", dir, room.Title, room.ID, rerr)
 			}
@@ -593,7 +492,7 @@ func (e *Explorer) dfs(room *frotz.Room, savePath string, depth int) error {
 }
 
 func (e *Explorer) tryStatefulSequences(room *frotz.Room, savePath string, depth int) error {
-	for _, seq := range statefulSequences(room) {
+	for _, seq := range e.game.StatefulSequences(room) {
 		key := "seq:" + seq.Name
 		if e.tried[room.ID] == nil {
 			e.tried[room.ID] = make(map[string]bool)
@@ -617,7 +516,7 @@ func (e *Explorer) tryStatefulSequences(room *frotz.Room, savePath string, depth
 				log.Printf("DFS sequence %s: %q | %s [id=%d] -> %s [id=%d]",
 					seq.Name, command, current.Title, current.ID, next.Title, next.ID)
 			}
-			if isDeathPrompt(next) {
+			if isDeathPrompt(next) || isIncapacitated(next) {
 				current = next
 				break
 			}
@@ -631,7 +530,7 @@ func (e *Explorer) tryStatefulSequences(room *frotz.Room, savePath string, depth
 			current = next
 		}
 
-		if current.ID != 0 {
+		if current.ID != 0 && !isIncapacitated(current) && !isDeathPrompt(current) {
 			nextSave := ""
 			hasSave := false
 			sameStart := sameRoom(current, room)
@@ -660,7 +559,13 @@ func (e *Explorer) tryStatefulSequences(room *frotz.Room, savePath string, depth
 			}
 		}
 
-		restored, rerr := e.restoreGame(savePath)
+		var restored *frotz.Room
+		var rerr error
+		if isDeathPrompt(current) || isIncapacitated(current) {
+			restored, rerr = e.restoreGameFresh(savePath)
+		} else {
+			restored, rerr = e.restoreGame(savePath)
+		}
 		if rerr != nil {
 			return fmt.Errorf("DFS restore after sequence %s from %s [id=%d]: %w", seq.Name, room.Title, room.ID, rerr)
 		}
@@ -686,12 +591,14 @@ func (e *Explorer) runWalkthrough(path string) (*frotz.Room, string, error) {
 	log.Printf("start: %s [id=%d]", current.Title, current.ID)
 
 	var currentSave string
-	if restored, sp, serr := e.saveGame(current); serr == nil {
-		current = restored
-		currentSave = sp
+	if e.game.SaveAtWalkthroughStart() {
+		if restored, sp, serr := e.saveGame(current); serr == nil {
+			current = restored
+			currentSave = sp
+		}
 	}
 
-	commands, err := parseWalkthrough(f)
+	commands, err := e.parseWalkthrough(f)
 	if err != nil {
 		return nil, "", err
 	}
@@ -734,10 +641,12 @@ func (e *Explorer) runWalkthrough(path string) (*frotz.Room, string, error) {
 		}
 
 		targetRoom := wt.TargetRoom
+		e.game.Observe(current)
+		command := e.game.AdjustCommand(wt.Command, current)
 		if wt.LabelSection && wt.SectionRoom != "" && !roomTitleMatchesSection(current.Title, wt.SectionRoom) && isMovementCommand(wt.Command) {
 			targetRoom = wt.SectionRoom
 		}
-		if current.Title == "Flathead Ocean" && wt.Command == "wait" && currentSave != "" {
+		if e.game.ShouldTriggerStatefulSequence(current, wt.Command) && currentSave != "" {
 			if err := e.tryStatefulSequences(current, currentSave, 0); err != nil {
 				log.Printf("walkthrough pre-wait sequence failed at step %d (%s [id=%d]): %v", wt.Step, current.Title, current.ID, err)
 			}
@@ -748,13 +657,13 @@ func (e *Explorer) runWalkthrough(path string) (*frotz.Room, string, error) {
 				log.Printf("walkthrough restore after pre-wait sequence failed at step %d: %v", wt.Step, rerr)
 			}
 		}
-		next, err := e.walkthroughStep(wt.Command, targetRoom, currentSave)
+		next, err := e.walkthroughStep(command, targetRoom, currentSave)
 		if err != nil {
 			if targetRoom != "" && currentSave != "" {
-				log.Printf("walkthrough target miss at step %d: %v; falling back to %q", wt.Step, err, wt.Command)
+				log.Printf("walkthrough target miss at step %d: %v; falling back to %q", wt.Step, err, command)
 				if restored, rerr := e.restoreGame(currentSave); rerr == nil {
 					current = restored
-					next, err = e.walkthroughStep(wt.Command, "", currentSave)
+					next, err = e.walkthroughStep(command, "", currentSave)
 				} else {
 					err = fmt.Errorf("%w; restore before fallback failed: %v", err, rerr)
 				}
@@ -762,6 +671,13 @@ func (e *Explorer) runWalkthrough(path string) (*frotz.Room, string, error) {
 			if err != nil {
 				log.Printf("walkthrough ended at step %d: %v", wt.Step, err)
 				return current, currentSave, nil
+			}
+		}
+		if e.game.ShouldRetryStep(before, next, command) {
+			if retry, rerr := e.walkthroughStep(command, targetRoom, currentSave); rerr == nil {
+				next = retry
+			} else {
+				log.Printf("walkthrough retry-step failed at step %d: %v", wt.Step, rerr)
 			}
 		}
 		next, err = e.recoverDroppedObjects(next)
@@ -777,10 +693,12 @@ func (e *Explorer) runWalkthrough(path string) (*frotz.Room, string, error) {
 		}
 		if e.traceWalkthrough {
 			log.Printf("walkthrough step %d: %q | %s [id=%d] -> %s [id=%d]",
-				wt.Step, wt.Command, before.Title, before.ID, next.Title, next.ID)
+				wt.Step, command, before.Title, before.ID, next.Title, next.ID)
 		}
+		e.game.Observe(next)
 
-		if !sameRoom(next, current) {
+		moved := !sameRoom(next, current)
+		if moved {
 			isNew := e.addRoom(next)
 			if isNew {
 				log.Printf("[%d rooms] walkthrough: %s [id=%d]", len(e.ordered), next.Title, next.ID)
@@ -790,8 +708,8 @@ func (e *Explorer) runWalkthrough(path string) (*frotz.Room, string, error) {
 
 		// Always overwrite the save for the current room so later walkthrough
 		// steps (e.g. post-troll Troll Room) replace earlier pre-event saves.
-		if current.ID != 0 {
-			if shouldPreserveExistingSave(current) && e.saves[current.ID] != "" {
+		if current.ID != 0 && e.game.ShouldSaveAfterStep(moved) {
+			if e.game.ShouldPreserveSave(current) && e.saves[current.ID] != "" {
 				continue
 			}
 			if restored, sp, serr := e.saveGame(current); serr == nil {
@@ -811,6 +729,63 @@ func (e *Explorer) runWalkthrough(path string) (*frotz.Room, string, error) {
 	}
 	log.Printf("walkthrough done (%d commands, %d rooms, %d saves)", len(commands), len(e.ordered), len(e.saves))
 	return current, currentSave, nil
+}
+
+func (e *Explorer) runWalkthroughToRoom(path, title string) (*frotz.Room, string, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, "", fmt.Errorf("open walkthrough: %w", err)
+	}
+	defer f.Close()
+
+	current, err := e.nextRoom()
+	if err != nil {
+		return nil, "", err
+	}
+	log.Printf("probe start: %s [id=%d]", current.Title, current.ID)
+
+	commands, err := e.parseWalkthrough(f)
+	if err != nil {
+		return nil, "", err
+	}
+
+	for _, wt := range commands {
+		if current.Title == title {
+			restored, savePath, err := e.saveGame(current)
+			if err != nil {
+				return current, "", fmt.Errorf("save probe room %s [id=%d]: %w", current.Title, current.ID, err)
+			}
+			return restored, savePath, nil
+		}
+		before := current
+		e.game.Observe(current)
+		command := e.game.AdjustCommand(wt.Command, current)
+		next, err := e.walkthroughStep(command, "", "")
+		if err != nil {
+			return current, "", fmt.Errorf("probe walkthrough step %d %q from %s [id=%d]: %w", wt.Step, command, before.Title, before.ID, err)
+		}
+		if e.game.ShouldRetryStep(before, next, command) {
+			retry, rerr := e.walkthroughStep(command, "", "")
+			if rerr != nil {
+				return current, "", fmt.Errorf("probe retry-step at step %d: %w", wt.Step, rerr)
+			}
+			next = retry
+		}
+		next, err = e.recoverDroppedObjects(next)
+		if err != nil {
+			log.Printf("probe dropped-object recovery failed at step %d: %v", wt.Step, err)
+		}
+		if isIncapacitated(next) {
+			waited, werr := e.waitUntilCanAct(next)
+			if werr != nil {
+				return current, "", fmt.Errorf("probe wait after incapacitated state at step %d: %w", wt.Step, werr)
+			}
+			next = waited
+		}
+		e.game.Observe(next)
+		current = next
+	}
+	return current, "", fmt.Errorf("walkthrough ended before reaching %s; stopped at %s [id=%d]", title, current.Title, current.ID)
 }
 
 func (e *Explorer) recoverDroppedObjects(room *frotz.Room) (*frotz.Room, error) {
@@ -846,7 +821,7 @@ func droppedObjects(description string) []string {
 	return objects
 }
 
-func parseWalkthrough(r io.Reader) ([]walkthroughCommand, error) {
+func (e *Explorer) parseWalkthrough(r io.Reader) ([]walkthroughCommand, error) {
 	scanner := bufio.NewScanner(r)
 	var commands []walkthroughCommand
 	var sectionName string
@@ -909,11 +884,7 @@ func parseWalkthrough(r io.Reader) ([]walkthroughCommand, error) {
 	if err := scanner.Err(); err != nil {
 		return nil, err
 	}
-	commands = repairDingyCloset(commands)
-	commands = repairTopOfWell(commands)
-	commands = repairZork1DeepCanyonRoute(commands)
-	commands = repairZork2Walkthrough(commands)
-	commands = repairZork3Walkthrough(commands)
+	commands = e.game.RepairWalkthrough(commands)
 	for i := range commands {
 		if commands[i].TargetRoom != "" || !isMovementCommand(commands[i].Command) {
 			continue
@@ -927,256 +898,6 @@ func parseWalkthrough(r io.Reader) ([]walkthroughCommand, error) {
 		}
 	}
 	return commands, nil
-}
-
-func repairZork3Walkthrough(commands []walkthroughCommand) []walkthroughCommand {
-	var repaired []walkthroughCommand
-	for i := 0; i < len(commands); i++ {
-		if i+30 < len(commands) &&
-			commands[i].Command == "read plaque" &&
-			commands[i+1].Command == "examine gold machine" &&
-			commands[i+2].Command == "push gold machine south" &&
-			commands[i+3].Command == "open stone door" &&
-			commands[i+4].Command == "push gold machine east" &&
-			commands[i+5].Command == "read plaque" &&
-			commands[i+6].Command == "turn dial to 776" &&
-			commands[i+7].Command == "sit on seat" &&
-			commands[i+8].Command == "push button" &&
-			commands[i+9].Command == "look" &&
-			commands[i+10].Command == "take ring" &&
-			commands[i+11].Command == "wait" &&
-			commands[i+12].Command == "open door" &&
-			commands[i+13].Command == "go west" &&
-			commands[i+14].Command == "open wooden door" &&
-			commands[i+15].Command == "go north" &&
-			commands[i+16].Command == "look under seat" &&
-			commands[i+17].Command == "put ring under seat" &&
-			commands[i+18].Command == "sit in gold machine" &&
-			commands[i+19].Command == "turn dial to 948" &&
-			commands[i+20].Command == "push button" &&
-			commands[i+21].Command == "look under seat" &&
-			commands[i+22].Command == "stand" &&
-			commands[i+23].Command == "open door" &&
-			commands[i+24].Command == "go south" &&
-			commands[i+25].Command == "open stone door" &&
-			commands[i+26].Command == "go east" &&
-			commands[i+27].Command == "get all" &&
-			commands[i+28].Command == "read plaque" &&
-			commands[i+29].Command == "go west" &&
-			commands[i+30].Command == "go south" {
-			repaired = append(repaired, zork3MuseumMachineCommands(commands[i])...)
-			i += 30
-			continue
-		}
-		if i+7 < len(commands) &&
-			commands[i].Command == "take cloak" &&
-			commands[i+1].Command == "go east" &&
-			commands[i+2].Command == "go east" &&
-			commands[i+3].Command == "go east" &&
-			commands[i+4].Command == "go south" &&
-			commands[i+5].Command == "examine seal" &&
-			commands[i+6].Command == "go south" &&
-			commands[i+7].Command == "wait" {
-			toCrawl := commands[i+1]
-			toCrawl.TargetRoom = "Creepy Crawl"
-			repaired = append(repaired, commands[i], toCrawl, commands[i+2], commands[i+3], commands[i+4], commands[i+5], commands[i+6])
-			for j := 0; j < 90; j++ {
-				wait := commands[i+7]
-				wait.Command = "wait"
-				repaired = append(repaired, wait)
-			}
-			i += 7
-			continue
-		}
-		if i+3 < len(commands) &&
-			commands[i].Command == "examine seal" &&
-			commands[i+1].Command == "go south" &&
-			commands[i+2].Command == "wait" &&
-			commands[i+3].Command == "go east" {
-			repaired = append(repaired, commands[i], commands[i+1])
-			for j := 0; j < 90; j++ {
-				wait := commands[i+2]
-				wait.Command = "wait"
-				repaired = append(repaired, wait)
-			}
-			repaired = append(repaired, commands[i+3])
-			i += 3
-			continue
-		}
-		if i+3 < len(commands) &&
-			isZork3RepellentCommand(commands[i].Command) &&
-			commands[i+1].Command == "go south" &&
-			commands[i+2].Command == "go south" &&
-			commands[i+3].Command == "go east" {
-			repaired = append(repaired, commands[i], commands[i+1])
-			respray := commands[i]
-			respray.Command = "spray repellent on self"
-			repaired = append(repaired, respray, commands[i+2], commands[i+3])
-			i += 3
-			continue
-		}
-		if i+4 < len(commands) &&
-			commands[i].Command == "enter lake" &&
-			(commands[i+1].Command == "dive" || commands[i+1].Command == "go down") &&
-			commands[i+2].Command == "look" &&
-			commands[i+3].Command == "go west" &&
-			commands[i+4].Command == "go south" {
-			repaired = append(repaired, commands[i], commands[i+3], commands[i+4])
-			i += 4
-			continue
-		}
-		if i+3 < len(commands) &&
-			commands[i].Command == "get torch" &&
-			commands[i+1].Command == "wait" &&
-			commands[i+2].Command == "wait" &&
-			commands[i+3].Command == "touch table" {
-			repaired = append(repaired, commands[i])
-			for j := 0; j < 5; j++ {
-				wait := commands[i+1]
-				wait.Command = "wait"
-				repaired = append(repaired, wait)
-			}
-			touch := commands[i+3]
-			touch.TargetRoom = "Room 8"
-			repaired = append(repaired, touch)
-			i += 3
-			continue
-		}
-		if i+3 < len(commands) &&
-			isZork3TakeRepellentCommand(commands[i].Command) &&
-			commands[i+1].Command == "wait" &&
-			commands[i+2].Command == "wait" &&
-			commands[i+3].Command == "touch table" {
-			repaired = append(repaired, commands[i], commands[i+1], commands[i+2])
-			touch := commands[i+3]
-			touch.TargetRoom = "Damp Passage"
-			repaired = append(repaired, touch)
-			i += 3
-			continue
-		}
-		repaired = append(repaired, commands[i])
-	}
-	for i := 2; i < len(repaired); i++ {
-		if repaired[i-2].Command == "get can" &&
-			repaired[i-1].Command == "go up" &&
-			repaired[i].Command == "go west" &&
-			i+1 < len(repaired) &&
-			isZork3RepellentCommand(repaired[i+1].Command) {
-			repaired[i].Command = "go south"
-		}
-	}
-	for i := range repaired {
-		repaired[i].Step = i + 1
-	}
-	return repaired
-}
-
-func zork3MuseumMachineCommands(base walkthroughCommand) []walkthroughCommand {
-	raw := zork3MuseumMachineCommandStrings()
-	commands := make([]walkthroughCommand, len(raw))
-	for i, command := range raw {
-		commands[i] = base
-		commands[i].Command = command
-	}
-	return commands
-}
-
-func isZork3RepellentCommand(command string) bool {
-	switch strings.ToLower(strings.TrimSpace(command)) {
-	case "apply repellent to me", "spray repellent on self":
-		return true
-	}
-	return false
-}
-
-func isZork3TakeRepellentCommand(command string) bool {
-	switch strings.ToLower(strings.TrimSpace(command)) {
-	case "get can", "take can", "get repellent", "take repellent":
-		return true
-	}
-	return false
-}
-
-func repairZork2Walkthrough(commands []walkthroughCommand) []walkthroughCommand {
-	var repaired []walkthroughCommand
-	for i := 0; i < len(commands); i++ {
-		wt := commands[i]
-		if wt.Command == "stand" && followsClosedBalloonReturn(commands, i) {
-			repaired = append(repaired, wt)
-			exit := wt
-			exit.Command = "out"
-			repaired = append(repaired, exit)
-			continue
-		}
-		if wt.SectionRoom == "Guarded Room" &&
-			wt.Command == "get necklace" &&
-			i+2 < len(commands) &&
-			commands[i+1].Command == "get violin" &&
-			isTakeSphereCommand(commands[i+2].Command) {
-			repaired = append(repaired, wt, commands[i+1], commands[i+2])
-			for _, command := range []string{"get crown", "get stamp", "get zorkmid", "get ruby"} {
-				extra := wt
-				extra.Command = command
-				repaired = append(repaired, extra)
-			}
-			i += 2
-			continue
-		}
-		if wt.SectionRoom == "Safety Depository" &&
-			wt.Command == "go west" &&
-			i >= 3 &&
-			commands[i-1].Command == "go east" &&
-			commands[i-2].Command == "drop portrait" &&
-			commands[i-3].Command == "drop bills" {
-			wt.Command = "go east"
-		}
-		repaired = append(repaired, wt)
-	}
-	for i := range repaired {
-		repaired[i].Step = i + 1
-	}
-	return repaired
-}
-
-func followsClosedBalloonReturn(commands []walkthroughCommand, i int) bool {
-	if i == 0 || commands[i].Command != "stand" {
-		return false
-	}
-	for j := i - 1; j >= 0 && i-j <= 10; j-- {
-		if commands[j].Command == "close receptacle" {
-			return true
-		}
-		if commands[j].Command != "wait" && commands[j].Command != "drop card" && commands[j].Command != "drop matches" {
-			return false
-		}
-	}
-	return false
-}
-
-func repairZork1DeepCanyonRoute(commands []walkthroughCommand) []walkthroughCommand {
-	var repaired []walkthroughCommand
-	for i := 0; i < len(commands); i++ {
-		if i+6 < len(commands) &&
-			commands[i].Command == "go south" &&
-			commands[i+1].Command == "go down" &&
-			commands[i+2].Command == "go southeast" &&
-			commands[i+3].Command == "go east" &&
-			commands[i+4].Command == "go down" &&
-			commands[i+5].Command == "go down" &&
-			commands[i+6].Command == "take torch" {
-			repaired = append(repaired, commands[i], commands[i+1])
-			west := commands[i+2]
-			west.Command = "go west"
-			repaired = append(repaired, west, commands[i+2], commands[i+3], commands[i+4])
-			i += 5
-			continue
-		}
-		repaired = append(repaired, commands[i])
-	}
-	for i := range repaired {
-		repaired[i].Step = i + 1
-	}
-	return repaired
 }
 
 func startsWithUppercaseASCII(s string) bool {
@@ -1256,82 +977,10 @@ func looksLikeWalkthroughCommand(command string) bool {
 	switch verb {
 	case "again", "answer", "apply", "attack", "burn", "chant", "climb", "close", "cross",
 		"dig", "dive", "drink", "drop", "eat", "echo", "enter", "examine", "feed", "fill", "get", "give",
-		"grab", "inflate", "inventory", "kill", "kiss", "knock", "launch", "leave", "light", "look",
+		"grab", "hold", "inflate", "inventory", "kill", "kiss", "knock", "launch", "leave", "light", "look",
 		"lower", "move", "open", "point", "pour", "pray", "push", "put", "raise",
-		"read", "remove", "ring", "rub", "say", "shake", "sit", "spray", "stand", "take", "tell", "throw",
-		"tie", "touch", "turn", "unlock", "untie", "ulysses", "wait", "wake", "wave", "wind":
-		return true
-	}
-	return false
-}
-
-func repairTopOfWell(commands []walkthroughCommand) []walkthroughCommand {
-	var repaired []walkthroughCommand
-	for i := 0; i < len(commands); i++ {
-		wt := commands[i]
-		if wt.SectionRoom == "Top of Well" &&
-			wt.Command == "enter bucket" &&
-			i+1 < len(commands) &&
-			isFillTeapotFromBucketCommand(commands[i+1].Command) {
-			take := wt
-			take.Command = "take teapot"
-			enter := wt
-			fill := commands[i+1]
-			fill.Command = "fill teapot"
-			repaired = append(repaired, take, enter, fill)
-			i++
-			continue
-		}
-		if isFillTeapotFromBucketCommand(wt.Command) {
-			wt.Command = "fill teapot"
-		}
-		repaired = append(repaired, wt)
-	}
-	for i := range repaired {
-		repaired[i].Step = i + 1
-	}
-	return repaired
-}
-
-func isFillTeapotFromBucketCommand(command string) bool {
-	switch strings.ToLower(strings.TrimSpace(command)) {
-	case "fill teapot from bucket", "fill teapot with water from bucket":
-		return true
-	}
-	return false
-}
-
-func repairDingyCloset(commands []walkthroughCommand) []walkthroughCommand {
-	var repaired []walkthroughCommand
-	for i := 0; i < len(commands); i++ {
-		wt := commands[i]
-		if wt.SectionRoom == "Dingy Closet" &&
-			wt.Command == "robot, lift cage" &&
-			i+1 < len(commands) &&
-			isTakeSphereCommand(commands[i+1].Command) {
-			trigger := wt
-			trigger.Command = "take red sphere"
-			lift := wt
-			take := commands[i+1]
-			take.Command = "take red sphere"
-			repaired = append(repaired, trigger, lift, take)
-			i++
-			continue
-		}
-		if isTakeSphereCommand(wt.Command) {
-			wt.Command = "take red sphere"
-		}
-		repaired = append(repaired, wt)
-	}
-	for i := range repaired {
-		repaired[i].Step = i + 1
-	}
-	return repaired
-}
-
-func isTakeSphereCommand(command string) bool {
-	switch strings.ToLower(strings.TrimSpace(command)) {
-	case "get sphere", "take sphere", "get red sphere", "take red sphere":
+		"read", "remove", "ring", "rub", "say", "search", "shake", "sit", "slide", "spray", "stand", "take", "tell", "throw",
+		"tie", "touch", "turn", "unlock", "untie", "ulysses", "wait", "wake", "wave", "wind", "z":
 		return true
 	}
 	return false
@@ -1523,6 +1172,40 @@ func walkthroughRouteKey(room *frotz.Room) string {
 	return room.Title
 }
 
+func (e *Explorer) restartSession() error {
+	if e.dfrotzPath == "" || e.storyPath == "" {
+		return fmt.Errorf("restart missing dfrotz/story path")
+	}
+	if e.sess != nil {
+		e.sess.Close()
+	}
+	sess, err := frotz.NewSession(e.dfrotzPath, e.storyPath, e.rawLog)
+	if err != nil {
+		return err
+	}
+	e.sess = sess
+	if _, err := e.nextRoom(); err != nil {
+		return fmt.Errorf("read initial room after restart: %w", err)
+	}
+	return nil
+}
+
+func (e *Explorer) restoreGameFresh(path string) (*frotz.Room, error) {
+	room, err := e.restoreGame(path)
+	if err == nil {
+		return room, nil
+	}
+	firstErr := err
+	if rerr := e.restartSession(); rerr != nil {
+		return nil, fmt.Errorf("%w; restart failed: %v", firstErr, rerr)
+	}
+	room, err = e.restoreGame(path)
+	if err != nil {
+		return nil, fmt.Errorf("%w; after restart: %v", firstErr, err)
+	}
+	return room, nil
+}
+
 func (e *Explorer) sendAndRead(command string) (*frotz.Room, error) {
 	if err := e.sess.Send(command); err != nil {
 		return nil, err
@@ -1616,6 +1299,14 @@ func walkthroughSectionTarget(line string) string {
 
 func normalizeWalkthroughCommand(line string) string {
 	switch strings.ToLower(line) {
+	case "go northeast":
+		return "ne"
+	case "go northwest":
+		return "nw"
+	case "go southeast":
+		return "se"
+	case "go southwest":
+		return "sw"
 	case "burn newspaper":
 		return "burn newspaper with match"
 	case "burn string":
@@ -1756,16 +1447,24 @@ func explore(exp *Explorer, walkthroughPath string) error {
 
 	if walkthroughPath != "" {
 		log.Printf("phase 1: walkthrough %s", walkthroughPath)
-		_, currentSave, err = exp.runWalkthrough(walkthroughPath)
+		walkthroughCurrent, sp, err := exp.runWalkthrough(walkthroughPath)
 		if err != nil {
 			return fmt.Errorf("walkthrough: %w", err)
 		}
-		if currentSave == "" {
-			return fmt.Errorf("walkthrough produced no usable save")
-		}
-		current, err = exp.restoreGame(currentSave)
-		if err != nil {
-			return fmt.Errorf("restore after walkthrough: %w", err)
+		currentSave = sp
+		if currentSave != "" {
+			current, err = exp.restoreGameFresh(currentSave)
+			if err != nil {
+				return fmt.Errorf("restore after walkthrough: %w", err)
+			}
+		} else {
+			if walkthroughCurrent == nil || walkthroughCurrent.ID == 0 {
+				return fmt.Errorf("walkthrough produced no usable room")
+			}
+			current, currentSave, err = exp.saveGame(walkthroughCurrent)
+			if err != nil {
+				return fmt.Errorf("save after walkthrough: %w", err)
+			}
 		}
 	} else {
 		current, err = exp.nextRoom()
@@ -1825,6 +1524,7 @@ func main() {
 	outPath := flag.String("out", "rooms.json", "output JSON path")
 	loopMode := flag.Bool("loop", false, "run repeatedly; only write output when room count improves")
 	traceWalkthrough := flag.Bool("trace-walkthrough", false, "log walkthrough section/command room transitions")
+	probeShuttle := flag.Bool("probe-shuttle", false, "probe Planetfall Alfie shuttle timings and exit")
 	flag.Parse()
 
 	story := flag.Arg(0)
@@ -1863,7 +1563,7 @@ func main() {
 		}
 		defer rawFile.Close()
 
-		master := newExplorer(*outPath, saveDir, gameID, nil)
+		master := newExplorer(*outPath, saveDir, gameID, nil, *dfrotzPath, story, rawFile)
 		master.traceWalkthrough = *traceWalkthrough
 		master.loadJSON()
 		master.loadSaveDir()
@@ -1911,9 +1611,20 @@ func main() {
 	}
 	defer sess.Close()
 
-	exp := newExplorer(*outPath, saveDir, gameID, sess)
+	exp := newExplorer(*outPath, saveDir, gameID, sess, *dfrotzPath, story, rawFile)
 	exp.traceWalkthrough = *traceWalkthrough
 	exp.loadJSON()
+
+	if *probeShuttle {
+		prober, ok := exp.game.(shuttleProber)
+		if !ok {
+			log.Fatalf("-probe-shuttle is not supported for this game")
+		}
+		if err := prober.ProbeShuttle(exp, *walkthrough); err != nil {
+			log.Fatalf("%v", err)
+		}
+		return
+	}
 
 	if err := explore(exp, *walkthrough); err != nil {
 		log.Fatalf("%v", err)

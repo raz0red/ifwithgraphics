@@ -1,0 +1,80 @@
+[
+  {
+    "gameId": "29.840118",
+    "roomId": 12,
+    "title": "Strip Near Relay",
+    "description": "Strip Near Relay\nNorth of here, the filament ends at a huge featureless wall, presumably the side of some micro-component. To the east is a vacuu-sealed micro-relay, sealed in transparent red plastic. You could probably see into the micro-relay."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 13,
+    "title": "Middle of Strip",
+    "description": "Middle of Strip\nYou are standing on a section of the strip with a bottomless void stretching out on both sides. The strip continues to the north and south."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 14,
+    "title": "Strip Near Station",
+    "description": "Strip Near Station\nYou are standing on a silicon filament, which looks to you like a wide metal highway. South of here, the filament makes a right angle and heads straight down, like a cliff overlooking a black void. The filament can be followed north, however. Station 384 lies westward."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 16,
+    "title": "Station 384",
+    "description": "Station 384\nYou are standing on a square plate of heavy metal. Above your head, parallel to the plate beneath you, is an identical metal plate. To the east is a wide, metallic strip."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 17,
+    "title": "Auxiliary Booth",
+    "description": "Auxiliary Booth\nThis is another small booth. Unlike the Miniaturization Booth, this room has no slot or keyboard, so presumably it is intended only as a receiving station. The exit is on the northern side."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 24,
+    "title": "Lab Office",
+    "description": "Lab Office\nThis is the office for storing files on Bio Lab experiments. A large and messy desk is surrounded by locked files. A small booth lies to the south. A closed door to the west is labelled \"Biioo Lab.\" You realize with shock and horror that the only way out is through the mutant-infested Bio Lab.\n\nOn the wall are three buttons: a white button labelled \"Lab Liits On\", a black button labelled \"Lab Liits Of\", and a red button labelled \"Eemurjensee Sistum.\""
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 27,
+    "title": "Radiation Lab",
+    "description": "Radiation Lab\nThis room is filled with unfathomable equipment and large canisters bearing radioactive warnings. Many of the canisters are split open. You can see the Bio Lab through a large crack in the south wall. Sinister-looking forms move about within the Bio Lab. Although the lights here are off, the room is suffused with a pale blue glow."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 29,
+    "title": "Bio Lab",
+    "description": "Bio Lab\nThis is a huge laboratory filled with many biological experiments. The lighting is dim, and a faint blue glow comes from a gaping crack in the northern wall. Some of the experiments seem to be out of control..."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 48,
+    "title": "Cryo-Anteroom",
+    "description": "Cryo-Anteroom\nThe elevator closes as you leave it, and you find yourself in a small, chilly room. To the north, through a wide arch, is an enormous chamber lined from floor to ceiling with thousands of cryo-units. You can see similar chambers beyond, and your mind staggers at the thought of the millions of individuals asleep for countless centuries.\n\nIn the anteroom where you stand is a solitary cryo-unit, its cover frosted. Next to the cryo-unit is a complicated control panel."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 49,
+    "title": "Cryo-Elevator",
+    "description": "Cryo-Elevator\nThis is a large, plain elevator with one solitary button and a door to the north which is closed."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 97,
+    "title": "Helicopter",
+    "description": "Helicopter\nThis is a large vehicle with a lot of cargo space. A complex control panel is closed and locked. Everything is covered with a thick layer of rust. Through the windows of the vehicle you can see a wide Helipad, and beyond that, endless ocean far below. Several doors lead out to the Helipad."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 184,
+    "title": "Booth 1",
+    "description": "Booth 1\nThis is a tiny room with a large \"1\" painted on the wall. A panel contains a slot about ten centimeters wide, a beige button labelled \"2\" and a tan button labelled \"3.\""
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 186,
+    "title": "Conference Room",
+    "description": "Conference Room\nThis is a fairly square room, almost filled by a round conference table. To the south is a door which is closed. To the north is a small room about the size of a phone booth."
+  }
+]

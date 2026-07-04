@@ -1,0 +1,554 @@
+[
+  {
+    "gameId": "29.840118",
+    "roomId": 235,
+    "title": "Deck Nine",
+    "description": "Deck Nine\nThis is a featureless corridor similar to every other corridor on the ship. It curves away to starboard, and a gangway leads up. To port is the entrance to one of the ship's primary escape pods. The\npod bulkhead is closed."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 216,
+    "title": "Escape Pod",
+    "description": "Escape Pod\nThis is one of the Feinstein's primary escape pods, for use in extreme emergencies. A mass of safety webbing, large enough to hold several dozen people, fills half the pod. The controls are entirely\nautomated. The bulkhead leading out is open.\nThe ship shakes again. You hear, from close by, the sounds of emergency bulkheads closing."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 195,
+    "title": "Underwater",
+    "description": "Underwater\nYou are momentarily disoriented as you enter the turbulent waters. Currents buffet you against the sharp rocks of an underwater cliff. A dim light filters down from above."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 194,
+    "title": "Crag",
+    "description": "Crag\nYou have reached a cleft in the cliff wall where the island rises from the water. The edge of the cleft displays recently exposed rock where it collapsed under the weight of the escape pod. About two\nmeters below, turbulent waters swirl against sharp rocks. A small structure clings to the face of the cliff about eight meters above you. Even an out-of-shape Ensign Seventh Class could probably climb\nup to it."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 193,
+    "title": "Balcony",
+    "description": "Balcony\nThis is an octagonal room, half carved into and half built out from the cliff wall. Through the shattered windows which ring the outer wall you can see ocean to the horizon. A weathered metal plaque\nwith barely readable lettering rests below the windows. The language seems to be a corrupt form of Galalingua. A steep stairway, roughly cut into the face of the cliff, leads upward. A rocky crag can\nbe seen about eight meters below."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 192,
+    "title": "Winding Stair",
+    "description": "Winding Stair\nThe middle of a long, steep stairway carved into the face of a cliff."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 191,
+    "title": "Courtyard",
+    "description": "Courtyard\nYou are in the courtyard of an ancient stone edifice, vaguely reminiscent of the castles you saw during your leave on Ramos Two. It has decayed to the point where it can probably be termed a ruin.\nOpenings lead north and west, and a stairway downward is visible to the south."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 189,
+    "title": "Plain Hall",
+    "description": "Plain Hall\nThis is a featureless hall leading north and south. Although the hallway is old and dusty, the construction is of a much more modern style than the castle to the south. A similar hall branches off to\nthe northeast."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 188,
+    "title": "Rec Area",
+    "description": "Rec Area\nThis is a recreational facility of some sort. Games and tapes are scattered about the room. Hallways head off to the east and south, and to the north is a door which is closed and locked. A dial on\nthe door is currently set to 0."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 190,
+    "title": "West Wing",
+    "description": "West Wing\nThis was once the west wing of the castle, but the walls are now mostly rubble, allowing a view of the cliff and ocean below. Rubble blocks all exits save one, eastward to the courtyard."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 183,
+    "title": "Rec Corridor",
+    "description": "Rec Corridor\nThis is a wide, east-west hallway. Portals lead north and south, and another corridor branches southwest."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 180,
+    "title": "Dorm B",
+    "description": "Dorm B\nThis is a very long room lined with multi-tiered bunks. Flimsy partitions between the tiers may have provided a modicum of privacy. These spartan living quarters could have once housed many hundreds,\nbut it seems quite deserted now. There are openings at the north and south ends of the room."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 179,
+    "title": "SanFac B",
+    "description": "SanFac B\nThis must be the sanitary facility for the adjacent dormitory. The fixtures are dry and dusty, the room dead and deserted. You marvel at how little the millenia and cultural gulfs have changed toilet\nbowl design. The only exit is south."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 182,
+    "title": "Dorm A",
+    "description": "Dorm A\nThis is a very long room lined with multi-tiered bunks. Flimsy partitions between the tiers may have provided a modicum of privacy. These spartan living quarters could have once housed many hundreds,\nbut it seems quite deserted now. There are openings at the north and south ends of the room."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 174,
+    "title": "Mess Corridor",
+    "description": "Mess Corridor\nThis is a wide, east-west hallway with a large portal to the south. A small door to the north is closed and hooked with a simple steel padlock which is also closed."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 167,
+    "title": "Mess Hall",
+    "description": "Mess Hall\nThis is a large hall lined with tables and benches. An opening to the north leads back to the corridor. A door to the south is closed. Next to the door is a small slot.\nAlthough the room is quite barren, an octagonally-shaped canteen is sitting on one of the benches."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 168,
+    "title": "Dorm Corridor",
+    "description": "Dorm Corridor\nThis is a wide, east-west hallway with openings to the north and south. To the east, the corridor stretches off into the distance. That section of the hallway is lined with a motorized walkway (no\nlonger running) that was probably intended to transport people or cargo down that tremendously long hall."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 176,
+    "title": "Dorm D",
+    "description": "Dorm D\nThis is a very long room lined with multi-tiered bunks. Flimsy partitions between the tiers may have provided a modicum of privacy. These spartan living quarters could have once housed many hundreds,\nbut it seems quite deserted now. There are openings at the north and south ends of the room."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 175,
+    "title": "SanFac D",
+    "description": "SanFac D\nThis must be the sanitary facility for the adjacent dormitory. The fixtures are dry and dusty, the room dead and deserted. You marvel at how little the millenia and cultural gulfs have changed toilet\nbowl design. The only exit is south."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 178,
+    "title": "Dorm C",
+    "description": "Dorm C\nThis is a very long room lined with multi-tiered bunks. Flimsy partitions between the tiers may have provided a modicum of privacy. These spartan living quarters could have once housed many hundreds,\nbut it seems quite deserted now. There are openings at the north and south ends of the room."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 161,
+    "title": "Corridor Junction",
+    "description": "Corridor Junction\nA north-south corridor intersects the main corridor here. To the west, the main corridor extends as far as you can see; a non-working walkway from that direction ends here. To the east, the corridor\nwidens into a well-lit area."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 160,
+    "title": "Admin Corridor South",
+    "description": "Admin Corridor South\nThis section of hallway seems to have suffered some minor structural damage. The walls are cracked, and a jagged crevice crosses the floor. An opening leads east and the corridor heads north and\nsouth."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 157,
+    "title": "Admin Corridor",
+    "description": "Admin Corridor\nThe hallway, in fact the entire building, has been rent apart here, presumably by seismic upheaval. You can see the sky through the severed roof above, and the ground is thick with rubble. To the\nnorth is a gaping rift, at least eight meters across and thirty meters deep. A wide doorway, labelled \"Sistumz Moniturz,\" leads west."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 142,
+    "title": "Mech Corridor North",
+    "description": "Mech Corridor North\nEntrances to rooms lie to the east and west from this north-south hall."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 108,
+    "title": "Elevator Lobby",
+    "description": "Elevator Lobby\nThis is a wide, brightly lit lobby. A blue metal door to the north is closed and a larger red metal door to the south is also closed. Beside the blue door is a blue button, and beside the red door is\na red button. A corridor leads west. To the east is a small room about the size of a telephone booth."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 101,
+    "title": "Booth 2",
+    "description": "Booth 2\nThis is a tiny room with a large \"2\" painted on the wall. A panel contains a slot about ten centimeters wide, a brown button labelled \"1\" and a tan button labelled \"3\"."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 141,
+    "title": "Mech Corridor",
+    "description": "Mech Corridor\nEntrances to rooms lie to the east and west from this north-south hall."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 139,
+    "title": "Storage East",
+    "description": "Storage East\nA small room for storage. The exit is to the west.\nOne dusty shelf, otherwise bare, holds a small oil can.\nOn the floor beneath the shelves sits a small cardboard box.\nThe cardboard box contains:\n  A cracked seventeen-centimeter fromitz board\n  A good ninety-ohm bedistor\n  A K-series megafuse\n  A B-series megafuse"
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 132,
+    "title": "Physical Plant",
+    "description": "Physical Plant\nThis is a huge, dim room with exits in the northeast and southeast corners. The room is criss-crossed with catwalks and is filled with heavy equipment presumably intended to heat and ventilate this\ncomplex. Hardly any of the equipment is still operating."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 140,
+    "title": "Mech Corridor South",
+    "description": "Mech Corridor South\nThe corridor ends here with doorways to the southwest, south, and southeast.\nA growl from your stomach warns that you're getting pretty hungry and thirsty."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 131,
+    "title": "Reactor Control",
+    "description": "Reactor Control\nThis room contains many dials and gauges for controlling a massive planetary power reactor which, according to a diagram on the wall, must be buried far below this very complex. The exit is to the\nwest. To the east is a metal door, and next to it, a button. A dark stairway winds downward."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 129,
+    "title": "Reactor Access Stairs",
+    "description": "It is pitch black. You might be eaten by a grue."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 122,
+    "title": "Machine Shop",
+    "description": "Machine Shop\nThis room is probably some sort of machine shop filled with a variety of unusual machines. Doorways lead north, east, and west.\n\nStanding against the rear wall is a large dispensing machine with a spout. The dispenser is lined with brightly-colored buttons. The first four buttons, labelled \"KUULINTS 1 - 4\", are colored red,\nblue, green, and yellow. The next three buttons, labelled \"KATALISTS 1 - 3\", are colored gray, brown, and black. The last two buttons are both white. One of these is square and says \"BAAS\". The other\nwhite button is round and says \"ASID\"."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 111,
+    "title": "Robot Shop",
+    "description": "Robot Shop\nThis room, with exits west and northwest, is filled with robot-like devices of every conceivable description, all in various states of disassembly.\nOnly one robot, about four feet high, looks even remotely close to being in working order."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 126,
+    "title": "Tool Room",
+    "description": "Tool Room\nThis is apparently a storage room for tools. Exits lead northeast and east.\nSitting on the floor below the lowest shelf is a large glass flask.\nA small device, labelled \"Akmee Portabul Laazur\", is resting on one of the lower shelves.\nThe laser contains:\n  An old battery\nOn an upper shelf is a metal bar, curved into a U-shape.\nThere is a pair of wide-nosed pliers here."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 154,
+    "title": "SanFac E",
+    "description": "SanFac E\nHere is another sanitary facility. Like the others, it is dusty and non-functional."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 153,
+    "title": "Systems Monitors",
+    "description": "Systems Monitors\nThis is a large room filled with tables full of strange equipment. The far wall is filled with a number of monitors. Of these, the ones labelled LIIBREREE, REEAKTURZ, and LIIF SUPORT are green, but\nthe ones labelled PLANATEREE DEFENS, PLANATEREE KORS KUNTROOL, KUMUUNIKAASHUNZ, and PRAJEKT KUNTROOL indicate a malfunctioning condition."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 177,
+    "title": "SanFac C",
+    "description": "SanFac C\nThis must be the sanitary facility for the adjacent dormitory. The fixtures are dry and dusty, the room dead and deserted. You marvel at how little the millenia and cultural gulfs have changed toilet\nbowl design. The only exit is north."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 181,
+    "title": "SanFac A",
+    "description": "SanFac A\nThis must be the sanitary facility for the adjacent dormitory. The fixtures are dry and dusty, the room dead and deserted. You marvel at how little the millenia and cultural gulfs have changed toilet\nbowl design. The only exit is north."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 223,
+    "title": "Reactor Lobby",
+    "description": "Reactor Lobby\nThe corridor widens here as it nears the main drive area. To starboard is the Ion Reactor that powers the vessel, and aft of here is the Auxiliary Control Room. The corridor continues to port.\nYou are deafened by more explosions and by the sound of emergency bulkheads slamming closed. Blather enters, looking confused, and begins ranting madly at you.\n\"I said to return to your post, Ensign Seventh Class!\" bellows Blather, turning a deepening shade of crimson."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 222,
+    "title": "Gangway",
+    "description": "Gangway\nThis is a steep metal gangway connecting Deck Eight, above, and Deck Nine, below.\nAnother explosion. A narrow bulkhead at the base of the gangway slams shut!"
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 221,
+    "title": "Deck Eight",
+    "description": "Deck Eight\nThis is a featureless corridor leading port and starboard. A gangway leads down, and to fore is the Hyperspatial Jump Machinery Room.\nYou are deafened by more explosions and by the sound of emergency bulkheads slamming closed. Blather enters, looking confused, and begins ranting madly at you.\n\"I said to return to your post, Ensign Seventh Class!\" bellows Blather, turning a deepening shade of crimson."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 105,
+    "title": "Upper Elevator",
+    "description": "Upper Elevator\nYou have entered a tiny room with a sliding door to the south which is open. A control panel contains an Up button, a Down button, and a narrow slot."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 104,
+    "title": "Lower Elevator",
+    "description": "Lower Elevator\nThis is a medium-sized room with a door to the north which is open. A control panel contains an Up button, a Down button, and a narrow slot."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 171,
+    "title": "Storage West",
+    "description": "Storage West\nThis is a small room obviously intended as a storage area.\nOn a small shelf is a large, unopened tin can. It has a plain white label which reads \"Spam and Egz.\"\nA heavy-duty extendable ladder is leaning against the rear wall."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 155,
+    "title": "Admin Corridor North",
+    "description": "Admin Corridor North\nThe corridor ends here. Portals lead west, north, and east. Signs above these portals read, respectively, \"Administraativ Awfisiz,\" \"Tranzportaashun Suplii,\" and \"Plan Ruum.\" To the south is a wide\nrift, spanned by a metal ladder, separating this area from the rest of the building."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 150,
+    "title": "Small Office",
+    "description": "Small Office\nYou have entered a small office of some sort. A small desk faces the main doorway which lies to the east. Another exit leads west."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 143,
+    "title": "Large Office",
+    "description": "Large Office\nThis is a large, plush office. The far wall is one large picture window, scratched but unbroken, offering a view of this installation and the ocean beyond. In front of the window is a wide wooden\ndesk. The only exit is east."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 151,
+    "title": "Transportation Supply",
+    "description": "It is pitch black. You might be eaten by a grue.\nThere is light to the south.\nIf you don't eat or drink something in a few millichrons, you'll probably pass out."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 152,
+    "title": "Plan Room",
+    "description": "Plan Room\nThis is a small room whose far wall is covered with many small cubbyholes, all empty. The left wall is covered with an enormous map, labelled \"Kalamontee Kompleks\", showing two installations connected\nby a long hallway. Near the upper part of this map is a red arrow saying \"Yuu ar heer\". The right wall is covered with a similar map, labelled \"Lawanda Kompleks\", showing two installations, one\napparently buried deep underground.\nIf you don't eat or drink something in a few millichrons, you'll probably pass out."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 165,
+    "title": "Kitchen",
+    "description": "Kitchen\nThis is the food production and dispensary area for the dining hall to the north. Of particular interest is a machine near the door. You should probably examine it more closely."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 100,
+    "title": "Tower Core",
+    "description": "Tower Core\nThis is a small, circular room. A sliding door leads north, and a spiral staircase heads upwards. Other exits lie to the northeast and southwest.\nFloyd follows you."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 96,
+    "title": "Comm Room",
+    "description": "Comm Room\nThis is a small room with no windows. The sole exit is southwest. Two wide consoles fill either end of the room; thick cables lead up into the ceiling.\n\nThe console on the left side of the room is labelled \"Reeseev Staashun\". A bright red light, labelled \"Tranzmishun Reeseevd\", is blinking rapidly. Next to the light is a glowing button marked \"Mesij\nPlaabak\".\n\nThe console on the right side of the room is labelled \"Send Staashun\". A screen on the console displays a message. Next to the screen is a flashing sign which says \"Malfunkshun in Sendeeng Kuulint\nSistum\". Next to this console is an enunciator. On the console next to the enunciator panel is a funnel-shaped hole labelled \"Kuulint Sistum Manyuuwul Oovuriid\".\nA red colored light is flashing on the enunciator panel."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 89,
+    "title": "Observation Deck",
+    "description": "Observation Deck\nThis is a balcony girdling the tower. The view is breathtaking; the tower must be half a kilometer tall. From here it is clear that you are on an island. The dormitory section of the complex is\nvisible on the other side of the island, and the rest of the complex sprawls out directly below. In the distance, about 20 kilometers to the east, you can spot another island similar to this one. The\nonly exit is a doorway leading northeast.\nFloyd follows you.\nYou can't stay awake a moment longer. You drop to the ground and fall into a deep but fitful sleep.\n\n...Strangely, you wake to find yourself back home on Gallium. Even more strangely, you are only eight years old again. You are playing with your pet sponge-cat, Swanzo, on the edge of the pond in your\nbackyard. Mom is hanging orange towels on the clothesline. Suddenly the school bully jumps out from behind a bush, grabs you, and pushes your head under the water. You try to scream, but cannot. You\nfeel your life draining away...\n\n***** SEPTEM 7, 11344 *****\n\nYou wake and slowly stand up, feeling stiff from your night on the floor. You are also incredibly famished. Better get some breakfast!\nFloyd gives you a nudge with his foot and giggles. \"You sure look silly sleeping on the floor,\" he says."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 99,
+    "title": "Helipad",
+    "description": "Helipad\nYou are at the center of a wide, flat area atop the tower. A fence prevents you from approaching the perimeter, so your view is limited to cloud-filled sky. A large vehicle, severely weathered and\ntopped with rotor blades, lies nearby. A spiral staircase leads down into the tower.\nFloyd follows you."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 232,
+    "title": "Brig",
+    "description": "Brig\nYou are in the Feinstein's brig. Graffiti cover the walls. The cell door to the south is locked."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 88,
+    "title": "Waiting Area",
+    "description": "Waiting Area\nThis is a concrete platform sparsely furnished with benches. The platform continues to the east, and to the south is a metal door.\nFloyd follows you."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 87,
+    "title": "Kalamontee Platform",
+    "description": "Kalamontee Platform\nThis is a wide, flat strip of concrete which continues westward. A large transport of some sort lies to the south, its open door beckoning you to enter. A faded sign on the wall reads \"Shutul Platform\n-- Kalamontee Staashun\".\nFloyd follows you."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 204,
+    "title": "Shuttle Car Alfie",
+    "description": "Shuttle Car Alfie\nThis is the cabin of a large transport, with seating for around 20 people plus space for freight. There are open doors at the eastern and western ends of the cabin, and a doorway leads out to a wide\nplatform to the north."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 202,
+    "title": "Alfie Control East",
+    "description": "Alfie Control East\nThis is a small control cabin. A control panel contains a slot, a lever, and a display. The lever can be set at a central position, or it could be pushed up to a position labelled \"+\", or pulled down\nto a position labelled \"-\". It is currently at the center setting. The display, a digital readout, currently reads 0. Through the cabin window you can see parallel rails running along the floor of a\nlong tunnel, vanishing in the distance.\nFloyd bounces into the cabin. \"Hey, wait for Floyd!\" he yells, smiling broadly."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 200,
+    "title": "Alfie Control West",
+    "description": "Alfie Control West\nThis is a small control cabin. A control panel contains a slot, a lever, and a display. The lever can be set at a central position, or it could be pushed up to a position labelled \"+\", or pulled down\nto a position labelled \"-\". It is currently at the center setting. The display, a digital readout, currently reads 0. Through the cabin window you can see a featureless concrete wall.\nFloyd bounces into the cabin. \"Hey, wait for Floyd!\" he yells, smiling broadly."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 86,
+    "title": "Lawanda Platform",
+    "description": "Lawanda Platform\nThis is a wide, flat strip of concrete. Open shuttle cars lie to the north and south. A wide escalator, not currently operating, beckons upward at the east end of the platform. A faded sign reads\n\"Shutul Platform -- Lawanda Staashun\".\nFloyd follows you."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 199,
+    "title": "Shuttle Car Betty",
+    "description": "Shuttle Car Betty\nThis is the cabin of a large transport, with seating for around 20 people plus space for freight. There are open doors at the eastern and western ends of the cabin, and a doorway leads out to a wide\nplatform to the south.\nFloyd follows you."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 85,
+    "title": "Escalator",
+    "description": "Escalator\nYou are in the middle of a long mechanical stairway. It is not running, and seems to be in disrepair."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 84,
+    "title": "Fork",
+    "description": "Fork\nThis is a hallway which forks to the northeast and southeast. To the west is the top of a long escalator.\nYou notice that you feel unusually weak, and you suspect that you have a fever."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 74,
+    "title": "Systems Corridor West",
+    "description": "Systems Corridor West\nThe corridor bends here, leading east and southwest. A doorway opens to the northwest, and a narrow stairway leads down to the north.\nFloyd bounds into the room. \"Floyd here now!\" he cries."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 78,
+    "title": "Repair Room",
+    "description": "Repair Room\nYou are in a dimly-lit room, filled with strange machines and wide storage cabinets, all locked. To the south, a narrow stairway leads upward. On the north wall of the room is a very small doorway.\nLying face down at the bottom of the stairs is a motionless robot. It appears to be damaged beyond repair."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 73,
+    "title": "Systems Corridor",
+    "description": "Systems Corridor\nThis section of hallway has a doorway to the north labelled \"Planateree Deefens\". The corridor continues east and west.\nFloyd bounds into the room. \"Floyd here now!\" he cries."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 70,
+    "title": "Planetary Defense",
+    "description": "Planetary Defense\nThis room is filled with a dazzling array of lights and controls. One light, blinking quickly, catches your eye. It reads \"Surkit Boord Faalyur. WORNEENG: xis boord kuntroolz xe diskriminaashun\nsurkits.\" There is a small access panel on one wall which is closed.\nFloyd bounds into the room. \"Floyd here now!\" he cries."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 72,
+    "title": "Systems Corridor East",
+    "description": "Systems Corridor East\nThe hallway ends here with a large doorway leading east, and smaller doorways to the north and south. The northern doorway is labelled \"Planateree Kors Kontrool.\" The hallway itself leads west.\nFloyd bounds into the room. \"Floyd here now!\" he cries."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 63,
+    "title": "Course Control",
+    "description": "Course Control\nThis is a long room whose walls are covered with complicated controls and colored lights. Two of these lights are blinking. The first one reads \"Bedistur Faalyur!\" The other light reads \"Kritikul\ndiivurjins frum pland kors.\" In one corner is a large metal cube whose lid is closed."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 60,
+    "title": "Library Lobby",
+    "description": "Library Lobby\nThis is a carpeted room, thick with dust, with exits to the north and south. To the west, up a few steps, is a wide doorway. A small booth lies to the east.\nYou catch a glimpse of a small object nestled among the dust.\nSitting on a wide table is a machine of sorts, consisting of a video screen and a keyboard. It is currently turned off.\nFloyd follows you."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 71,
+    "title": "Physical Plant",
+    "description": "Physical Plant\nThis is an enormous room full of environmental control equipment presumably intended to heat and ventilate the Lawanda Complex. Oddly, although the Lawanda Complex is slightly smaller than its\ncounterpart, this plant is much larger than the one in the Kalamontee Complex. The only exit is westward.\nFloyd bounds into the room. \"Floyd here now!\" he cries."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 83,
+    "title": "Infirmary",
+    "description": "Infirmary\nYou have entered a clean, well-lighted place. There are a number of beds, some complicated looking equipment, and many shelves that are mostly bare.\nLying on one of the beds is a small red spool.\nOn a low shelf is a translucent bottle with a small white label.\nAt the bottom of the bottle is a small quantity of medicine."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 54,
+    "title": "Project Corridor West",
+    "description": "Project Corridor West\nThis is a curving hallway leading east and northwest. There is an opening to the west."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 52,
+    "title": "Project Corridor",
+    "description": "Project Corridor\nYou are at the center of a long east-west hallway. A doorway, labelled \"PrajKon Awfis\", opens to the south.\nFloyd bounds into the room. \"Floyd here now!\" he cries."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 51,
+    "title": "ProjCon Office",
+    "description": "ProjCon Office\nThis office looks like a headquarters of some kind. Exits lead north and east. The west wall displays a logo. The south wall is completely covered by a garish mural which clashes with the other decor\nof the room.\nFloyd rushes into the room and barrels into you. \"Oops, sorry,\" he says. \"Floyd not looking at where he was going to.\""
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 47,
+    "title": "Project Corridor East",
+    "description": "Project Corridor East\nThe hallway ends here but continues back toward the west. Doorways lead north, south and east."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 46,
+    "title": "Computer Room",
+    "description": "Computer Room\nThis is the main computer room for the Project. The only sign of activity is a glowing red light. The exits are north, west, and northeast. To the south is a small booth.\nThere is a pile of computer output here."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 41,
+    "title": "Main Lab",
+    "description": "Main Lab\nThis is the heart of the Project's vast laboratory complex. There are exits to the west and southwest, and heavy metal doors to the northeast and southeast. A small doorway leads south.\nFloyd follows you."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 38,
+    "title": "Lab Storage",
+    "description": "Lab Storage\nThis is a tiny room for the storage of laboratory supplies. The sole exit is to the north.\nHanging on a rack is a pale blue lab uniform. Sewn onto its pocket is a non-descript logo.\nThe odds and ends on the shelves include a small round object, which closer inspection reveals to be a fresh laser battery.\nFloyd follows you."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 53,
+    "title": "SanFac F",
+    "description": "SanFac F\nThis is another dusty sanitary facility. Unlike the ones near the dorms, this one is smaller and has no bathing fixtures."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 44,
+    "title": "Miniaturization Booth",
+    "description": "Miniaturization Booth\nThis is a small room barely large enough for one person. Mounted on the wall is a small slot, and next to it a keyboard with numeric keys. The exit is to the north.\nFloyd follows you."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 58,
+    "title": "Booth 3",
+    "description": "Booth 3\nThis is a tiny room with a large \"3\" painted on the wall. A panel contains a slot about ten centimeters wide, a brown button labelled \"1\" and a beige button labelled \"2\".\nFloyd follows you."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 57,
+    "title": "Library",
+    "description": "Library\nThis is a large carpeted room with a desk and many small tables. The sole exit is down a few steps to the east.\nOn the desk is a machine with a screen and a small circular opening. It seems to be turned off."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 198,
+    "title": "Betty Control East",
+    "description": "Betty Control East\nThis is a small control cabin. A control panel contains a slot, a lever, and a display. The lever can be set at a central position, or it could be pushed up to a position labelled \"+\", or pulled down\nto a position labelled \"-\". It is currently at the center setting. The display, a digital readout, currently reads 0. Through the cabin window you can see a featureless concrete wall.\nFloyd bounces into the cabin. \"Hey, wait for Floyd!\" he yells, smiling broadly."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 197,
+    "title": "Betty Control West",
+    "description": "Betty Control West\nThis is a small control cabin. A control panel contains a slot, a lever, and a display. The lever can be set at a central position, or it could be pushed up to a position labelled \"+\", or pulled down\nto a position labelled \"-\". It is currently at the center setting. The display, a digital readout, currently reads 0. Through the cabin window you can see parallel rails running along the floor of a\nlong tunnel, vanishing in the distance.\nFloyd bounces into the cabin. \"Hey, wait for Floyd!\" he yells, smiling broadly."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 34,
+    "title": "Bio Lock West",
+    "description": "Bio Lock West\nThis is the first half of a sterilization chamber to prevent contamination of the delicate biological experiments in the Bio Lab which lies beyond. The door to the west leads to the main lab, and the\nbio lock continues eastward.\nFloyd glides after you. \"Is this...is this a squash court?\" he asks."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 42,
+    "title": "Bio Lock East",
+    "description": "Bio Lock East\nThe is the second half of the sterilization chamber leading from the main lab to the Bio Lab. The door to the east, leading to the Bio Lab, has a window. The bio lock continues to the west.\nThe door at the western end of the bio-lock closes silently.\nFloyd glides after you. \"Is this...is this a squash court?\" he asks."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 128,
+    "title": "Reactor Elevator",
+    "description": "Reactor Elevator\nThis is an elevator with a door to the west, currently open. A control panel contains an Up button, a Down button, and a small slot.\nA growl from your stomach warns that you're getting pretty hungry and thirsty."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 32,
+    "title": "Radiation Lock West",
+    "description": "Radiation Lock West\nThis is the western half of a decontamination chamber to prevent dangerous radioactive materials from leaving the Radiation Lab which lies to the east. The door leads west to the main lab.\nFloyd glides after you. \"Is this...is this a squash court?\" he asks."
+  },
+  {
+    "gameId": "29.840118",
+    "roomId": 31,
+    "title": "Radiation Lock East",
+    "description": "Radiation Lock East\nThis is the eastern half of the decontamination chamber. The door to the east leads to the Radiation Lab, and the chamber continues westward. A sign on the wall reads \"WORNEENG! Raadeeaashun suuts\nmust bee worn beeyond xis point\".\nFloyd glides after you. \"Is this...is this a squash court?\" he asks."
+  }
+]
