@@ -958,7 +958,8 @@ func looksLikeWalkthroughCommand(command string) bool {
 		strings.HasPrefix(command, "walk through ") ||
 		strings.HasPrefix(command, "robot, ") ||
 		strings.HasPrefix(command, "demon, ") ||
-		strings.HasPrefix(command, "dungeon master, ") {
+		strings.HasPrefix(command, "dungeon master, ") ||
+		strings.HasPrefix(command, "johnny, ") {
 		return true
 	}
 	if strings.Contains(command, ",") {
@@ -970,17 +971,20 @@ func looksLikeWalkthroughCommand(command string) bool {
 	if command == "in" || command == "out" {
 		return true
 	}
+	if command == "yes" || command == "no" {
+		return true
+	}
 	verb := command
 	if i := strings.IndexAny(verb, " \t"); i >= 0 {
 		verb = verb[:i]
 	}
 	switch verb {
-	case "again", "answer", "apply", "attack", "burn", "chant", "climb", "close", "cross",
-		"dig", "dive", "drink", "drop", "eat", "echo", "enter", "examine", "feed", "fill", "get", "give",
-		"grab", "hold", "inflate", "inventory", "kill", "kiss", "knock", "launch", "leave", "light", "look",
-		"lower", "move", "open", "point", "pour", "pray", "push", "put", "raise",
-		"read", "remove", "ring", "rub", "say", "search", "shake", "sit", "slide", "spray", "stand", "take", "tell", "throw",
-		"tie", "touch", "turn", "unlock", "untie", "ulysses", "wait", "wake", "wave", "wind", "z":
+	case "again", "answer", "apply", "attack", "attach", "board", "burn", "buy", "chant", "climb", "close", "connect", "cross",
+		"cut", "dig", "dive", "drill", "drink", "drop", "eat", "echo", "enter", "examine", "feed", "fill", "get", "give",
+		"grab", "hide", "hold", "inflate", "insert", "inventory", "kill", "kiss", "knock", "launch", "leave", "lie", "light", "lock", "look",
+		"lower", "move", "open", "order", "pay", "point", "pour", "pray", "push", "put", "raise",
+		"read", "remove", "rent", "ring", "rub", "say", "search", "shake", "show", "sit", "slide", "spray", "stand", "swim", "take", "tell", "throw",
+		"tie", "touch", "tug", "turn", "unlock", "untie", "ulysses", "wait", "wake", "wave", "wear", "wedge", "wind", "withdraw", "z":
 		return true
 	}
 	return false

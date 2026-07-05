@@ -11,7 +11,13 @@ function settingRow(labelText, forId) {
   return row;
 }
 
-function buildSettings() {
+const LOCKED_PROMPT = "Set Image Gen to Disabled, or enter an API key and press Validate.";
+
+/* Live image-gen providers (anything but "none"/Disabled) now require an
+   explicit validated key before the caller's idle action (drop target, RUN
+   button) is allowed to appear — onLocked/onReady drive that from outside,
+   since the idle element itself belongs to the caller, not this module. */
+function buildSettings({ onLocked, onReady }) {
   const wrap = document.createElement("div");
   wrap.className = "drop-settings";
 
@@ -28,14 +34,25 @@ function buildSettings() {
   modelRow.appendChild(model);
 
   const keyRow = settingRow("API KEY", "ifwg-ai-key");
+  const keyWrap = document.createElement("div");
+  keyWrap.className = "setting-key-wrap";
   const key = document.createElement("input");
   key.id            = "ifwg-ai-key";
   key.className     = "setting-input";
   key.type          = "password";
   key.autocomplete  = "off";
   key.spellcheck    = false;
-  key.placeholder   = "sk-…";
-  keyRow.appendChild(key);
+  const validateBtn = document.createElement("button");
+  validateBtn.type        = "button";
+  validateBtn.className   = "setting-validate-btn";
+  validateBtn.textContent = "VALIDATE";
+  keyWrap.appendChild(key);
+  keyWrap.appendChild(validateBtn);
+  keyRow.appendChild(keyWrap);
+
+  const statusRow = document.createElement("div");
+  statusRow.className = "setting-status";
+  statusRow.hidden = true;
 
   const pregenRow   = settingRow("PRE-GEN", "ifwg-pregen");
   const pregenLabel = document.createElement("label");
@@ -56,6 +73,7 @@ function buildSettings() {
   wrap.appendChild(providerRow);
   wrap.appendChild(modelRow);
   wrap.appendChild(keyRow);
+  wrap.appendChild(statusRow);
   wrap.appendChild(pregenRow);
 
   Object.entries(PROVIDERS).forEach(([value, { label: text }]) => {
@@ -65,23 +83,29 @@ function buildSettings() {
     provider.appendChild(opt);
   });
 
-  function populateModels(providerValue, selectedModel) {
-    const { models = [], keyPlaceholder = "…" } = PROVIDERS[providerValue] || {};
-    model.innerHTML = models.map(m =>
-      `<option value="${m.value}"${m.value === selectedModel ? " selected" : ""}>${m.label}</option>`
-    ).join("");
-    modelRow.hidden = models.length === 0;
-    keyRow.hidden   = models.length === 0;
-    key.placeholder = keyPlaceholder;
+  function setStatus(text) {
+    statusRow.hidden      = !text;
+    statusRow.textContent = text || "";
   }
 
-  const settings = ImageGen.getSettings();
-  provider.value = settings.getProvider();
-  if (!provider.value) provider.selectedIndex = 0;
-  key.value      = settings.getApiKey();
-  pregen.checked = settings.getPregenEnabled();
-  populateModels(provider.value, settings.getModel());
+  function updateVisibility(providerValue, modelCount) {
+    const needsKey  = providerValue !== "none";
+    key.placeholder = PROVIDERS[providerValue]?.keyPlaceholder || "…";
+    keyRow.hidden   = !needsKey;
+    modelRow.hidden = !needsKey || modelCount === 0;
+    if (!needsKey) setStatus("");
+  }
 
+  function populateModelOptions(models, selectedValue) {
+    model.innerHTML = models.map(m =>
+      `<option value="${m.value}"${m.value === selectedValue ? " selected" : ""}>${m.label}</option>`
+    ).join("");
+  }
+
+  /* Full save, including whatever the model <select> currently holds. Only
+     safe to call once the model list has actually been populated for this
+     provider — see applyProviderAndKey() below for the alternative used
+     while that's still pending. */
   function apply() {
     const s = ImageGen.getSettings();
     s.setProvider(provider.value);
@@ -90,24 +114,99 @@ function buildSettings() {
     s.setPregenEnabled(pregen.checked);
     ImageGen.setSettings(s);
   }
+
+  /* Save provider/key/pregen only, leaving the stored model field alone.
+     Used before/during validation, when the model <select> is still empty
+     (not yet populated) — calling the full apply() at that point would
+     clobber the real saved model with "" before checkAndValidate() gets a
+     chance to restore it. */
+  function applyProviderAndKey() {
+    const s = ImageGen.getSettings();
+    s.setProvider(provider.value);
+    s.setApiKey(key.value.trim());
+    s.setPregenEnabled(pregen.checked);
+    ImageGen.setSettings(s);
+  }
+
+  /* Re-checks validity for whatever's currently in the form — called on
+     mount (covers "already have a saved key" return visits), on provider
+     switch, and on explicit Validate clicks. */
+  async function checkAndValidate() {
+    const providerValue = provider.value;
+    const keyValue       = key.value.trim();
+    const previousModel  = ImageGen.getSettings().getModel();
+
+    updateVisibility(providerValue, 0);
+
+    if (providerValue === "none") {
+      applyProviderAndKey();
+      onReady();
+      return;
+    }
+
+    if (!keyValue) {
+      applyProviderAndKey();
+      onLocked(LOCKED_PROMPT);
+      return;
+    }
+
+    applyProviderAndKey();
+    validateBtn.disabled = true;
+    setStatus("Validating…");
+    onLocked("Validating…");
+
+    const result = await ImageGen.validate();
+
+    validateBtn.disabled = false;
+
+    if (!result.ok) {
+      setStatus("");
+      onLocked(result.error || LOCKED_PROMPT);
+      return;
+    }
+
+    setStatus("");
+    const models   = result.models || [];
+    const selected = models.some(m => m.value === previousModel) ? previousModel : (models[0]?.value || "");
+
+    updateVisibility(providerValue, models.length);
+    populateModelOptions(models, selected);
+    model.value = selected;
+    apply();
+    onReady();
+  }
+
+  const settings = ImageGen.getSettings();
+  provider.value = settings.getProvider();
+  if (!provider.value) provider.selectedIndex = 0;
+  key.value      = settings.getApiKey();
+  pregen.checked = settings.getPregenEnabled();
+
   provider.addEventListener("change", () => {
     const s = ImageGen.getSettings();
     s.setProvider(provider.value);
     key.value = s.getApiKey();
-    populateModels(provider.value, "");
-    apply();
+    ImageGen.setSettings(s);
+    checkAndValidate();
   });
-  model.addEventListener("change",  apply);
-  key.addEventListener("change",    apply);
-  key.addEventListener("blur",      apply);
-  pregen.addEventListener("change", apply);
+  model.addEventListener("change",       apply);
+  key.addEventListener("blur",           apply);
+  pregen.addEventListener("change",      apply);
+  validateBtn.addEventListener("click",  checkAndValidate);
+
+  /* Kick off an initial check — this is what makes a returning visit with
+     an already-saved key "just work" without the user pressing Validate
+     again, per the same shape as the launcher's existing retry flow. */
+  checkAndValidate();
 
   return wrap;
 }
 
 /* Shared launcher chrome: an idle action slot (caller-supplied — a drop
    target, or a title+RUN block) next to the image-gen settings, plus a
-   swappable error/retry state used when API key validation fails. */
+   swappable error/retry state used when API key validation fails, and a
+   locked state that hides the idle action until image-gen is either
+   Disabled or backed by a validated key. */
 export function renderLaunchPanel(container, { idle, onRetry }) {
   const panel = document.createElement("div");
   panel.className = "launch-panel";
@@ -139,22 +238,51 @@ export function renderLaunchPanel(container, { idle, onRetry }) {
   errorBlock.appendChild(errMsg);
   errorBlock.appendChild(retryBtn);
 
+  const lockedBlock = document.createElement("div");
+  lockedBlock.className = "launch-locked";
+  lockedBlock.hidden = true;
+
+  const lockedMsg = document.createElement("div");
+  lockedMsg.className = "launch-locked-msg";
+  lockedBlock.appendChild(lockedMsg);
+
   action.appendChild(idle);
   action.appendChild(errorBlock);
+  action.appendChild(lockedBlock);
 
   panel.appendChild(action);
-  panel.appendChild(buildSettings());
+
+  let ready = false;
+
+  panel.appendChild(buildSettings({
+    onLocked(msg) {
+      ready = false;
+      idle.hidden        = true;
+      errorBlock.hidden  = true;
+      lockedMsg.textContent = msg;
+      lockedBlock.hidden = false;
+    },
+    onReady() {
+      ready = true;
+      idle.hidden        = false;
+      errorBlock.hidden  = true;
+      lockedBlock.hidden = true;
+    }
+  }));
+
   container.appendChild(panel);
 
   function showError(msg) {
-    idle.hidden       = true;
-    errorBlock.hidden = false;
-    errMsg.textContent = msg || "API key validation failed.";
+    idle.hidden        = true;
+    lockedBlock.hidden  = true;
+    errorBlock.hidden   = false;
+    errMsg.textContent  = msg || "API key validation failed.";
   }
   function showIdle() {
     idle.hidden        = false;
     errorBlock.hidden  = true;
+    lockedBlock.hidden = true;
   }
 
-  return { showError, showIdle };
+  return { showError, showIdle, isReady: () => ready };
 }

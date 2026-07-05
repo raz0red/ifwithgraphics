@@ -1,0 +1,143 @@
+{
+  "zork1": {
+    "title": "Zork I: The Great Underground Empire",
+    "description": "Setting: a classic fantasy world of ruined castles, forests, and underground caverns — the Great Underground Empire."
+  },
+  "zork2": {
+    "title": "Zork II: The Wizard of Frobozz",
+    "description": "Setting: the same fantasy underground empire as Zork I, ruled by the Wizard of Frobozz — dungeons, castles, and whimsical magical rooms."
+  },
+  "zork3": {
+    "title": "Zork III: The Dungeon Master",
+    "description": "Setting: the same fantasy underground empire, in its final, more solemn and eerie depths near the Dungeon Master's domain."
+  },
+  "planetfall": {
+    "title": "Planetfall",
+    "description": "Setting: science fiction — a derelict starship and an abandoned, corroded underground colony complex on a distant planet. Metal corridors, control panels, industrial machinery. NOT a fantasy or medieval setting — no grass, trees, or pastoral scenery unless explicitly described in the scene text."
+  },
+  "deadline": {
+    "title": "Deadline",
+    "description": "Setting: contemporary murder mystery — a wealthy family's private mansion and estate grounds, investigated over a single 12-hour day."
+  },
+  "starcross": {
+    "title": "Starcross",
+    "description": "Setting: science fiction — deep space in the year 2186, aboard a huge derelict alien cylindrical spacecraft drifting among the stars."
+  },
+  "suspended": {
+    "title": "Suspended",
+    "description": "Setting: science fiction — a cryonic suspension chamber in an underground planetary control complex, experienced only through six differently-sensing robots."
+  },
+  "enchanter": {
+    "title": "Enchanter",
+    "description": "Setting: fantasy — a magical kingdom of guildhalls and a sorcerer's ruined castle, focused on spellcasting rather than combat."
+  },
+  "infidel": {
+    "title": "Infidel",
+    "description": "Setting: 1980s archaeological adventure — a lost, undiscovered Egyptian pyramid buried beneath the Sahara desert."
+  },
+  "sorcerer": {
+    "title": "Sorcerer",
+    "description": "Setting: fantasy — the same magical kingdom as Enchanter, centered on a guild of wizards and a hazy dream-realm of astral travel."
+  },
+  "witness": {
+    "title": "The Witness",
+    "description": "Setting: 1938 Los Angeles film-noir murder mystery — a wealthy industrialist's home, told in hardboiled detective style."
+  },
+  "cutthroats": {
+    "title": "Cutthroats",
+    "description": "Setting: contemporary — a decayed New England fishing town and the cold waters around it, centered on shipwreck salvage diving.",
+    "canonicalGameId": "23.840809"
+  },
+  "seastalker": {
+    "title": "Seastalker",
+    "description": "Setting: near-future undersea adventure — an experimental research submarine and an undersea research station threatened by a monster, written for younger players."
+  },
+  "spellbreaker": {
+    "title": "Spellbreaker",
+    "description": "Setting: fantasy — the same magical kingdom of the Enchanter trilogy, with reality itself unraveling as magic fails across the land."
+  },
+  "hitchhikersguide": {
+    "title": "The Hitchhiker's Guide to the Galaxy",
+    "description": "Setting: absurdist science fiction comedy — Earth's demolition, alien bureaucracy spaceships, and a chaotic tour of the galaxy."
+  },
+  "mindforevervoyaging": {
+    "title": "A Mind Forever Voyaging",
+    "description": "Setting: near-future dystopian science fiction — a simulated American town observed across decades from inside a sentient computer."
+  },
+  "wishbringer": {
+    "title": "Wishbringer",
+    "description": "Setting: fantasy — a quaint fishing village that transforms into a sinister, magic-corrupted town, involving a wish-granting stone."
+  },
+  "leathergoddesses": {
+    "title": "Leather Goddesses of Phobos",
+    "description": "Setting: 1930s pulp science-fiction parody — small-town America, Mars, and the moon Phobos, styled after campy pulp serials."
+  },
+  "trinity": {
+    "title": "Trinity",
+    "description": "Setting: surreal blend of a London park on the edge of nuclear detonation and a dreamlike fantasy realm tied to history's atomic test sites."
+  },
+  "ballyhoo": {
+    "title": "Ballyhoo",
+    "description": "Setting: contemporary traveling circus — big top tents, sideshow attractions, animal cages, and backstage circus grounds."
+  },
+  "suspect": {
+    "title": "Suspect",
+    "description": "Setting: contemporary murder mystery — a wealthy Maryland family's mansion during a Halloween costume party."
+  },
+  "lurkinghorror": {
+    "title": "The Lurking Horror",
+    "description": "Setting: Lovecraftian horror — a large American university campus, its steam tunnels and computer labs, during a snowstorm."
+  },
+  "nordandbert": {
+    "title": "Nord and Bert Couldn't Make Head or Tail of It",
+    "description": "Setting: whimsical wordplay fantasy — the town of Punster, where idioms, puns, and clichés become literal, physical realities."
+  },
+  "moonmist": {
+    "title": "Moonmist",
+    "description": "Setting: contemporary gothic mystery — a foggy English castle on the Cornwall coast, haunted by a legendary ghost."
+  },
+  "stationfall": {
+    "title": "Stationfall",
+    "description": "Setting: science fiction — a seemingly deserted space station, sequel to Planetfall, with the same robot companion Floyd."
+  },
+  "hollywoodhijinx": {
+    "title": "Hollywood Hijinx",
+    "description": "Setting: contemporary — a lavish Malibu, California oceanfront mansion filled with campy B-movie props and memorabilia."
+  },
+  "bureaucracy": {
+    "title": "Bureaucracy",
+    "description": "Setting: contemporary satire — an ordinary suburban town, bank, and travel bureaucracy, skewering everyday red tape."
+  },
+  "beyondzork": {
+    "title": "Beyond Zork: The Coconut of Quendor",
+    "description": "Setting: fantasy — the wider Southlands of the Zork universe, blending classic underground-empire exploration with RPG character stats and combat."
+  },
+  "borderzone": {
+    "title": "Border Zone",
+    "description": "Setting: Cold War espionage thriller — a fictional Eastern Bloc border town, told across three vignettes from different characters' viewpoints."
+  },
+  "sherlock": {
+    "title": "Sherlock: The Riddle of the Crown Jewels",
+    "description": "Setting: Victorian London, 1887 — fog-shrouded streets, Baker Street, and famous London landmarks, in the world of Sherlock Holmes."
+  },
+  "plunderedhearts": {
+    "title": "Plundered Hearts",
+    "description": "Setting: 17th-century Caribbean swashbuckling romance — pirate ships, a tropical island, and a colonial governor's mansion."
+  },
+  "journey": {
+    "title": "Journey",
+    "description": "Setting: high fantasy — a Tolkien-esque land of villages, wilderness, and a wizard's tower, told through a traveling party of companions."
+  },
+  "arthur": {
+    "title": "Arthur: The Quest for Excalibur",
+    "description": "Setting: legendary early medieval Britain — the countryside and castles of pre-Camelot Arthurian legend."
+  },
+  "zorkzero": {
+    "title": "Zork Zero: The Revenge of Megaboz",
+    "description": "Setting: fantasy — the Great Underground Empire in its opulent heyday, centering on Flatheadia Castle and the reign of the Flathead dynasty."
+  },
+  "shogun": {
+    "title": "Shogun",
+    "description": "Setting: feudal Japan, 1600 — samurai courts, ships, and villages, dramatizing James Clavell's novel of an English pilot stranded in Japan."
+  }
+}

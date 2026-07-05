@@ -14,6 +14,21 @@ export function render(container) {
   player.className = "player";
   player.hidden    = true;
 
+  /* Version notice — shown when the dropped file isn't the specific release
+     a game's precise room-ID-keyed images were generated from. Dismissible,
+     never blocks play. */
+  const versionNotice     = document.createElement("div");
+  versionNotice.className = "version-notice";
+  versionNotice.hidden    = true;
+  const versionNoticeText = document.createElement("span");
+  const versionNoticeClose = document.createElement("button");
+  versionNoticeClose.type        = "button";
+  versionNoticeClose.className   = "version-notice-close";
+  versionNoticeClose.textContent = "×";
+  versionNoticeClose.addEventListener("click", () => { versionNotice.hidden = true; });
+  versionNotice.appendChild(versionNoticeText);
+  versionNotice.appendChild(versionNoticeClose);
+
   /* Status bar */
   const statusBar   = document.createElement("div");
   statusBar.className = "status-bar";
@@ -100,6 +115,7 @@ export function render(container) {
   cmdRow.appendChild(cmdCursor);
   cmdRow.appendChild(cmdInput);
 
+  player.appendChild(versionNotice);
   player.appendChild(statusBar);
   player.appendChild(sceneWrap);
   player.appendChild(sceneText);
@@ -111,6 +127,8 @@ export function render(container) {
 
   return {
     player,
+    versionNotice,
+    versionNoticeText,
     statusRoom,
     statusScore,
     sceneWrap,

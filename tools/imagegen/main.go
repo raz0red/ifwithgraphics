@@ -36,8 +36,49 @@ var (
 	trailingPromptRe = regexp.MustCompile(`(?m)\n[^\n]*\?\s*$`)
 )
 
+// gameInfo gives each game a title and a short genre/setting anchor, keyed
+// by a stable name slug (e.g. "planetfall"), not by gameId — a game can
+// have many known gameId releases (PC/Mac/Amiga/bug-fix revisions), so the
+// gameId → name resolution lives separately in aliases.json. The reference
+// images used for style-matching are Zork scenes (forest, house, grass,
+// sky) — without the description anchor, that pastoral content bleeds into
+// games with a completely different setting (e.g. Planetfall's sci-fi
+// corridors ending up with grassy windows not in the room text at all).
+// Both files are loaded from web/src/context/ (shared with the JS player's
+// imagegen/index.js — edit those files, not this one, to add/change a game).
+type gameInfo struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+}
+
+var (
+	games   map[string]gameInfo
+	aliases map[string]string
+)
+
+func loadJSON(path string, v interface{}) error {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+	if err := json.Unmarshal(data, v); err != nil {
+		return fmt.Errorf("parse %s: %w", filepath.Base(path), err)
+	}
+	return nil
+}
+
+// slugify turns a room title into a filesystem/URL-safe slug. Must produce
+// identical output to slugify() in web/src/js/imagegen/index.js — both
+// sides write/read the same filenames.
+var slugifyRe = regexp.MustCompile(`[^a-z0-9]+`)
+
+func slugify(title string) string {
+	s := slugifyRe.ReplaceAllString(strings.ToLower(title), "-")
+	return strings.Trim(s, "-")
+}
+
 // buildPrompt is a direct port of buildPrompt() from player/js/imagegen/index.js.
-func buildPrompt(title, description string) string {
+func buildPrompt(gameID, title, description string) string {
 	roomName := strings.TrimSpace(statusSuffixRe.ReplaceAllString(title, ""))
 	roomName = whitespaceRe.ReplaceAllString(roomName, " ")
 
@@ -62,7 +103,14 @@ func buildPrompt(title, description string) string {
 		name = title
 	}
 
+	gameName := aliases[gameID]
+	context := games[gameName].Description
+	if context != "" {
+		context += " "
+	}
+
 	return "Apple II-style dithered pixel art scene matching the aesthetic of the reference images. " +
+		context +
 		fmt.Sprintf("Scene: '%s' — %s ", name, desc) +
 		"Contained within a pixelated dithered border. " +
 		"Strict limited palette and artifacting of the classic reference style, with clear textured dithering. " +
@@ -196,11 +244,17 @@ func cropBlackBars(img image.Image) image.Image {
 func main() {
 	apiKey := flag.String("key", os.Getenv("OPENAI_API_KEY"), "OpenAI API key (or set OPENAI_API_KEY)")
 	refsDir := flag.String("refs", "./player/prompt", "directory containing prompt1.png and prompt2.png")
+	contextDir := flag.String("context", "./player/context", "directory containing games.json and aliases.json")
 	outDir := flag.String("out", "./images", "output directory")
 	model := flag.String("model", "gpt-image-2-2026-04-21", "OpenAI image model")
 	workers := flag.Int("concurrency", 3, "parallel API requests")
 	limit := flag.Int("limit", 0, "stop after N images (0 = no limit)")
+	keyBy := flag.String("keyby", "title", `output filename scheme: "title" (default, slugified title, shared across releases) or "id" (raw roomId, precise but only valid for the exact release rooms.json was built from)`)
 	flag.Parse()
+
+	if *keyBy != "title" && *keyBy != "id" {
+		log.Fatalf("-keyby must be \"title\" or \"id\", got %q", *keyBy)
+	}
 
 	jsonPath := flag.Arg(0)
 	if jsonPath == "" {
@@ -230,15 +284,36 @@ func main() {
 	}
 	refs := [][]byte{ref1, ref2}
 
+	if err := loadJSON(filepath.Join(*contextDir, "games.json"), &games); err != nil {
+		log.Fatalf("read games.json: %v", err)
+	}
+	if err := loadJSON(filepath.Join(*contextDir, "aliases.json"), &aliases); err != nil {
+		log.Fatalf("read aliases.json: %v", err)
+	}
+
 	if len(rooms) == 0 {
 		log.Fatal("no rooms in JSON")
 	}
 	gameID := rooms[0].GameID
-	log.Printf("gameId: %s", gameID)
+	gameName := aliases[gameID]
+	if gameName == "" {
+		log.Fatalf("gameId %s not found in aliases.json — add it there first", gameID)
+	}
+	log.Printf("gameId: %s (%s)", gameID, gameName)
 
-	imageDir := filepath.Join(*outDir, gameID)
+	imageDir := filepath.Join(*outDir, gameName)
+	if *keyBy == "id" {
+		imageDir = filepath.Join(imageDir, "id")
+	}
 	if err := os.MkdirAll(imageDir, 0755); err != nil {
 		log.Fatalf("create output dir: %v", err)
+	}
+
+	outFilename := func(room RoomEntry) string {
+		if *keyBy == "id" {
+			return fmt.Sprintf("%d.webp", room.RoomID)
+		}
+		return slugify(room.Title) + ".webp"
 	}
 
 	type job struct{ room RoomEntry }
@@ -246,7 +321,7 @@ func main() {
 
 	queued, skipped, tooShort := 0, 0, 0
 	for _, room := range rooms {
-		outPath := filepath.Join(imageDir, fmt.Sprintf("%d.webp", room.RoomID))
+		outPath := filepath.Join(imageDir, outFilename(room))
 		if _, err := os.Stat(outPath); err == nil {
 			skipped++
 			continue
@@ -272,8 +347,8 @@ func main() {
 					return
 				}
 				room := j.room
-				outPath := filepath.Join(imageDir, fmt.Sprintf("%d.webp", room.RoomID))
-				prompt := buildPrompt(room.Title, room.Description)
+				outPath := filepath.Join(imageDir, outFilename(room))
+				prompt := buildPrompt(room.GameID, room.Title, room.Description)
 
 				log.Printf("generating [%d] %s", room.RoomID, room.Title)
 

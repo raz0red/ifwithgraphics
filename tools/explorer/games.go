@@ -10,6 +10,7 @@ const (
 	zork2GameID      = "63.860811"
 	zork3GameID      = "25.860811"
 	planetfallGameID = "29.840118"
+	cutthroatsGameID = "23.840809"
 )
 
 // Game encapsulates every piece of per-game special-casing the explorer
@@ -83,6 +84,7 @@ var gameRegistry = map[string]func() Game{
 	zork2GameID:      func() Game { return &zork2Game{} },
 	zork3GameID:      func() Game { return &zork3Game{} },
 	planetfallGameID: func() Game { return &planetfallGame{} },
+	cutthroatsGameID: func() Game { return &cutthroatsGame{} },
 }
 
 // gameFor looks up the Game implementation for a gameID, falling back to

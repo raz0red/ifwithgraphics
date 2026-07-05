@@ -225,7 +225,12 @@ void ifwg_dumb_get_room_name (char *buf, int size)
     }
     buf[len] = '\0';
 
+    /* Time-based games (e.g. Deadline, Cutthroats) show "Time:" instead of
+       "Score:"/"Moves:" — without checking for it too, the ticking clock
+       stays glued to the room name, so the same physical room gets a new
+       "title" (and a fresh, wasted image generation) every in-game minute. */
     score = strstr (buf, "Score:");
+    if (!score) score = strstr (buf, "Time:");
     if (score) {
         while (score > buf && *(score - 1) == ' ') score--;
         *score = '\0';

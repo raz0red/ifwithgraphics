@@ -31,11 +31,21 @@ function generate(apiKey, prompt, model) {
   return generateWithRefs(apiKey, model || "gpt-image-2-2026-04-21", prompt);
 }
 
+/* Validate the key and return image-capable models, newest first. OpenAI's
+   /v1/models response includes a real "created" unix timestamp per model —
+   use that instead of guessing recency from the id string. */
 async function validate(apiKey) {
   const r = await fetch("https://api.openai.com/v1/models", {
     headers: { "Authorization": `Bearer ${apiKey}` }
   });
-  if (!r.ok) { const e = await r.json(); throw new Error(e.error?.message ?? r.status); }
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.error?.message ?? r.status);
+  const models = (data.data || [])
+    .filter(m => m.id.includes("image"))
+    .sort((a, b) => b.created - a.created)
+    .map(m => ({ value: m.id, label: m.id }));
+  console.info("[IFWG] OpenAI image models available:", models.map(m => m.value));
+  return models;
 }
 
 export const OpenAIImageGen = { generate, validate };

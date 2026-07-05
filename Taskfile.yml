@@ -53,12 +53,13 @@ tasks:
       - task: build:js
       - "{{.ALPINE_RUN}} sh -c '\
           rm -rf /repo/dist && \
-          mkdir -p /repo/dist/wasm /repo/dist/prompt && \
+          mkdir -p /repo/dist/wasm /repo/dist/prompt /repo/dist/context && \
           cp /repo/web/index.html /repo/web/src/player.css /repo/dist/ && \
           cp -r /repo/web/src/js /repo/dist/js && \
           cp /repo/web/src/wasm/ifwg.js /repo/web/src/wasm/ifwg.wasm /repo/dist/wasm/ && \
           cp /repo/web/src/dist/ifwg-player.js /repo/dist/ && \
-          cp /repo/web/src/prompt/* /repo/dist/prompt/ \
+          cp /repo/web/src/prompt/* /repo/dist/prompt/ && \
+          cp /repo/web/src/context/* /repo/dist/context/ \
         '"
 
   explore:
@@ -106,7 +107,7 @@ tasks:
       -w /repo/tools/imagegen
       -e OPENAI_API_KEY
       {{.GO_IMAGE}}
-      sh -c 'apt-get update -qq && apt-get install -y -q libwebp-dev && go run . -refs /repo/web/src/prompt -out /repo/{{.out}} -concurrency {{.concurrency}} -limit {{.limit}} -model {{.model}} /repo/{{.rooms}}'
+      sh -c 'apt-get update -qq && apt-get install -y -q libwebp-dev && go run . -refs /repo/web/src/prompt -context /repo/web/src/context -out /repo/{{.out}} -concurrency {{.concurrency}} -limit {{.limit}} -model {{.model}} /repo/{{.rooms}}'
 
   lint:
     desc: Run ESLint on player JS

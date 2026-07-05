@@ -19,6 +19,7 @@
  */
 
 #include "frotz.h"
+#include <string.h>
 
 extern void set_header_extension(int, zword);
 
@@ -1744,6 +1745,38 @@ static void pad_status_line(int column)
 } /* pad_status_line */
 
 
+/* Planetfall and Stationfall track in-universe time ("millichrons") in the
+ * same global slot other V1-V3 games use for the move counter, but neither
+ * sets the header's CONFIG_TIME flag — so by spec they'd show a mislabeled
+ * "Moves:" counter that grows implausibly large. Windows Frotz special-cases
+ * these two titles by exact release/serial rather than any header flag; this
+ * table is ported directly from Windows-Frotz's Generic/fastmem.c (same
+ * release/serial set as web/src/context/aliases.json). */
+static bool is_millichron_game(void)
+{
+	static const struct { zword release; const char *serial; } known[] = {
+		{  10, "880531" }, /* Planetfall */
+		{  20, "830708" }, /* Planetfall */
+		{  26, "831014" }, /* Planetfall */
+		{  29, "840118" }, /* Planetfall */
+		{  37, "851003" }, /* Planetfall */
+		{  39, "880501" }, /* Planetfall */
+		{   1, "861017" }, /* Stationfall */
+		{  63, "870218" }, /* Stationfall */
+		{  87, "870326" }, /* Stationfall */
+		{ 107, "870430" }, /* Stationfall */
+	};
+	size_t i;
+
+	for (i = 0; i < sizeof(known) / sizeof(known[0]); i++) {
+		if (z_header.release == known[i].release &&
+		    memcmp(z_header.serial, known[i].serial, 6) == 0)
+			return TRUE;
+	}
+	return FALSE;
+} /* is_millichron_game */
+
+
 /*
  * z_show_status, display the status line for V1 to V3 games.
  *
@@ -1812,12 +1845,14 @@ void z_show_status(void)
 		print_char(' ');
 		print_char((global1 >= 12) ? 'p' : 'a');
 		print_char('m');
-	} else {		/* print score and moves */
+	} else {		/* print score and moves (or millichrons) */
+		bool millichrons = is_millichron_game();
+
 		pad_status_line(brief ? 15 : 30);
 		print_string(brief ? "S: " : "Score: ");
 		print_num(global1);
 		pad_status_line(brief ? 8 : 14);
-		print_string(brief ? "M: " : "Moves: ");
+		print_string(millichrons ? (brief ? "T: " : "Time: ") : (brief ? "M: " : "Moves: "));
 		print_num(global2);
 	}
 

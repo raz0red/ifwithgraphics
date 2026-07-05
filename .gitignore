@@ -29,6 +29,7 @@ bfs-saves/
 # Scratch/working files
 tmp/
 tmp2/
+tmp3/
 
 # Claude memory / session files
 .claude/
