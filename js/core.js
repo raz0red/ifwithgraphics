@@ -76,7 +76,14 @@ export const IFWGPlayer = {
       el.statusScore.textContent = statusRight || "";
       el.cmdPrompt.textContent   = cursorPrompt ? cursorPrompt : ">";
 
-      const roomKey = id > 0 ? String(id) : null;
+      /* id comes from the WASM bridge's best-effort room lookup — spec-
+         guaranteed for V1-V3 (Global Variable 0), but for V4+ it's a scan
+         for an object whose short name matches the status-bar title, which
+         can legitimately fail (id=0) for some rooms/games. Falling back to
+         null here — as this used to — meant the whole image pipeline
+         silently never ran for that room. Fall back to the title itself so
+         a room lookup still happens even when the id lookup comes up empty. */
+      const roomKey = id > 0 ? String(id) : (title ? `title:${roomName(title)}` : null);
 
       const wordCount = description.trim().split(/\s+/).length;
 
@@ -189,16 +196,20 @@ export const IFWGPlayer = {
       const bytes  = new Uint8Array(buf);
       const gameId = readGameId(bytes);
       Game.setId(gameId);
-      console.info("[IFWG] loaded gameId:%o filename:%o", gameId, filename);
+      Game.setVersion(bytes[0]);
+      console.info("[IFWG] loaded gameId:%o filename:%o version:%o", gameId, filename, bytes[0]);
 
       /* Some games have a canonicalGameId — the one specific release a
          precise, room-ID-keyed image set was generated from. Loading any
          other release still works fine (falls back to the title-keyed
          path), just less precisely for rooms that reuse one title for
-         multiple distinct places — worth telling the player, not blocking. */
+         multiple distinct places — worth telling the player, not blocking.
+         Only relevant when pregen is actually in play — canonicalGameId
+         never affects anything when every image comes from live generation. */
       const name = ALIASES[gameId];
       const canonicalGameId = name ? GAMES[name]?.canonicalGameId : null;
-      if (canonicalGameId && canonicalGameId !== gameId) {
+      const pregenEnabled = ImageGen.getSettings().getPregenEnabled();
+      if (pregenEnabled && canonicalGameId && canonicalGameId !== gameId) {
         el.versionNoticeText.textContent =
           `For the best image accuracy in ${GAMES[name].title}, use release/serial ${canonicalGameId} ` +
           `(this file is ${gameId}).`;

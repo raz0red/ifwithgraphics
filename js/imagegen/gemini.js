@@ -64,7 +64,14 @@ async function validate(apiKey) {
   const data = await r.json();
   if (!r.ok) throw new Error(data.error?.message ?? r.status);
   const models = (data.models || [])
-    .filter(m => m.name.includes("image"))
+    /* Imagen models (imagen-*) also match "image" but are a different
+       Google product line: a separate :predict endpoint (not the
+       interactions endpoint generate() calls below), text-to-image only
+       (no support for the reference style images this pipeline depends
+       on), and being deprecated in favor of the Gemini image models
+       anyway — exclude them rather than list a model we can't actually
+       call. */
+    .filter(m => m.name.includes("image") && !m.name.includes("imagen"))
     .sort((a, b) => (parseFloat(b.version) || 0) - (parseFloat(a.version) || 0))
     .map(m => {
       const value = m.name.replace(/^models\//, "");
