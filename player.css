@@ -112,6 +112,31 @@ html, body {
 .setting-select:focus,
 .setting-input:focus { border-color: #888; color: #fff; }
 
+.setting-key-wrap { flex: 1; display: flex; gap: 0.5rem; }
+.setting-key-wrap .setting-input { flex: 1; }
+
+.setting-validate-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.4rem;
+  letter-spacing: 0.08em;
+  padding: 0 0.8rem;
+  background: #111;
+  border: 1px solid #666;
+  color: #ccc;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.setting-validate-btn:hover:not(:disabled) { border-color: #fff; color: #fff; }
+.setting-validate-btn:disabled { opacity: 0.5; cursor: default; }
+
+.setting-status {
+  font-family: 'VT323', monospace;
+  font-size: 1.1rem;
+  color: #888;
+  text-align: right;
+  margin-top: -0.3rem;
+}
+
 .setting-toggle        { display: none; }
 .setting-toggle-wrap   { display: flex; align-items: center; cursor: pointer; }
 .setting-toggle-track  {
@@ -195,6 +220,23 @@ html, body {
   max-width: 28rem;
 }
 
+.launch-locked {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  border: 2px solid #444;
+  padding: 3rem 5rem;
+}
+
+.launch-locked-msg {
+  font-family: 'VT323', monospace;
+  font-size: 1.4rem;
+  color: #888;
+  text-align: center;
+  max-width: 26rem;
+}
+
 .launch-retry {
   font-family: 'Press Start 2P', monospace;
   font-size: 0.5rem;
@@ -213,7 +255,42 @@ html, body {
   height: var(--player-h);
   display: flex;
   flex-direction: column;
+  position: relative;
 }
+
+/* ── Version notice ───────────────────────────── */
+/* Overlaid rather than laid out in flow, so it never disturbs the fixed
+   status-bar/scene/text/input height split above. */
+.version-notice {
+  position: absolute;
+  top: var(--status-h);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  background: #3a2f00;
+  color: #ffd54a;
+  border-bottom: var(--border) solid #665400;
+  font-family: 'VT323', monospace;
+  font-size: clamp(9px, 1rem, 22px);
+  letter-spacing: 0.02em;
+  padding: 0.4rem 0.8rem;
+}
+
+.version-notice-close {
+  background: none;
+  border: none;
+  color: #ffd54a;
+  font-size: 1.4em;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0.3rem;
+  flex-shrink: 0;
+}
+.version-notice-close:hover { color: #fff; }
 
 /* ── Status bar ───────────────────────────────── */
 .status-bar {

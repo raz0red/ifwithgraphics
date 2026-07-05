@@ -1,11 +1,7 @@
-import { Game } from "./game.js";
-
 const DB_NAME = "ifwg";
 const DB_VER  = 1;
 const STORE   = "data";
 let _db = null;
-
-const _prefix = key => `${Game.getId() || "unknown"}/${key}`;
 
 function open() {
   if (_db) return Promise.resolve(_db);
@@ -20,7 +16,7 @@ function open() {
 async function get(key) {
   const db = await open();
   return new Promise((resolve, reject) => {
-    const req = db.transaction(STORE, "readonly").objectStore(STORE).get(_prefix(key));
+    const req = db.transaction(STORE, "readonly").objectStore(STORE).get(key);
     req.onsuccess = () => resolve(req.result || null);
     req.onerror   = e => reject(e.target.error);
   });
@@ -29,7 +25,7 @@ async function get(key) {
 async function put(key, value) {
   const db = await open();
   return new Promise((resolve, reject) => {
-    const req = db.transaction(STORE, "readwrite").objectStore(STORE).put(value, _prefix(key));
+    const req = db.transaction(STORE, "readwrite").objectStore(STORE).put(value, key);
     req.onsuccess = () => resolve();
     req.onerror   = e => reject(e.target.error);
   });

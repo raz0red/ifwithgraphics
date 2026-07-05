@@ -55,9 +55,28 @@ async function generate(apiKey, prompt, model) {
   throw new Error("No image data in response");
 }
 
+/* Validate the key and return image-capable models, newest first. Gemini's
+   models.list has no creation-date field (unlike OpenAI); the closest thing
+   to real recency metadata is its own "version" field (e.g. "2.5", "3.1"),
+   so sort on that instead of guessing from the name string. */
 async function validate(apiKey) {
   const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(apiKey)}`);
-  if (!r.ok) { const e = await r.json(); throw new Error(e.error?.message ?? r.status); }
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.error?.message ?? r.status);
+  const models = (data.models || [])
+    .filter(m => m.name.includes("image"))
+    .sort((a, b) => (parseFloat(b.version) || 0) - (parseFloat(a.version) || 0))
+    .map(m => {
+      const value = m.name.replace(/^models\//, "");
+      /* Google sometimes exposes multiple model ids (e.g. a rolling "latest"
+         alias alongside a specific pinned version) under the identical
+         marketing displayName — show the real id alongside it so entries
+         that look like duplicates are still distinguishable in the list. */
+      const label = m.displayName ? `${m.displayName} (${value})` : value;
+      return { value, label };
+    });
+  console.info("[IFWG] Gemini image models available:", models.map(m => m.value));
+  return models;
 }
 
 export const GeminiImageGen = { generate, validate };

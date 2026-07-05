@@ -3,7 +3,7 @@ import { createEngine }  from "./engine.js";
 import { createTextUI }  from "./ui/text.js";
 import { createImageUI } from "./ui/image.js";
 import { createInputUI } from "./ui/input.js";
-import { ImageGen } from "./imagegen/index.js";
+import { ImageGen, GAMES, ALIASES } from "./imagegen/index.js";
 import { IFWGConfig, StandaloneConfig } from "./config.js";
 import { Game }          from "./game.js";
 import { renderLaunchPanel } from "./launchPanel.js";
@@ -189,6 +189,23 @@ export const IFWGPlayer = {
       const bytes  = new Uint8Array(buf);
       const gameId = readGameId(bytes);
       Game.setId(gameId);
+      console.info("[IFWG] loaded gameId:%o filename:%o", gameId, filename);
+
+      /* Some games have a canonicalGameId — the one specific release a
+         precise, room-ID-keyed image set was generated from. Loading any
+         other release still works fine (falls back to the title-keyed
+         path), just less precisely for rooms that reuse one title for
+         multiple distinct places — worth telling the player, not blocking. */
+      const name = ALIASES[gameId];
+      const canonicalGameId = name ? GAMES[name]?.canonicalGameId : null;
+      if (canonicalGameId && canonicalGameId !== gameId) {
+        el.versionNoticeText.textContent =
+          `For the best image accuracy in ${GAMES[name].title}, use release/serial ${canonicalGameId} ` +
+          `(this file is ${gameId}).`;
+        el.versionNotice.hidden = false;
+      } else {
+        el.versionNotice.hidden = true;
+      }
 
       state.storyPath = `/input/${filename}`;
 

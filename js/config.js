@@ -1,4 +1,5 @@
-import { DB } from "./db.js";
+import { DB }   from "./db.js";
+import { Game } from "./game.js";
 
 /* Resolved relative to this module's own location, not the hosting page —
    works the same regardless of how deep the page is nested. */
@@ -12,21 +13,30 @@ export class IFWGConfig {
   onValidationFailed(_error)       {}
 }
 
+/* Save-game bytes are tied to the exact compiled release (Z-machine memory
+   layout, embedded object numbers, etc.), so they're scoped by the raw
+   gameId — unlike images, a save isn't expected to be portable across
+   different releases of the "same" game. */
+function saveKey(filename) {
+  const name = filename.replace(/.*\//, "");
+  return `${Game.getId() || "unknown"}/saves/${name}`;
+}
+
 export class StandaloneConfig extends IFWGConfig {
   onSave(filename, bytes) {
-    const name = filename.replace(/.*\//, "");
-    console.info("[IFWG] onSave — key:saves/%s bytes:%o", name, bytes?.length);
-    DB.put(`saves/${name}`, bytes).then(() => {
-      console.info("[IFWG] onSave — IndexedDB put OK key:saves/%s", name);
+    const key = saveKey(filename);
+    console.info("[IFWG] onSave — key:%s bytes:%o", key, bytes?.length);
+    DB.put(key, bytes).then(() => {
+      console.info("[IFWG] onSave — IndexedDB put OK key:%s", key);
     }).catch(e => {
       console.warn("[IFWG] onSave — IndexedDB put FAILED", e);
     });
   }
 
   onRestore(filename, cb) {
-    const name = filename.replace(/.*\//, "");
-    console.info("[IFWG] onRestore — looking up key:saves/%s", name);
-    DB.get(`saves/${name}`).then(bytes => {
+    const key = saveKey(filename);
+    console.info("[IFWG] onRestore — looking up key:%s", key);
+    DB.get(key).then(bytes => {
       console.info("[IFWG] onRestore — found:%o bytes:%o", !!bytes, bytes?.length);
       cb(bytes || null);
     }).catch(e => {
