@@ -106,12 +106,12 @@ func buildPrompt(gameID, title, description string) string {
 	gameName := aliases[gameID]
 	context := games[gameName].Description
 	if context != "" {
-		context += " "
+		context = fmt.Sprintf("Background story context, for overall genre/mood/setting only — do not depict this directly unless the scene described below explicitly calls for it: %s ", context)
 	}
 
 	return "Apple II-style dithered pixel art scene matching the aesthetic of the reference images. " +
 		context +
-		fmt.Sprintf("Scene: '%s' — %s ", name, desc) +
+		fmt.Sprintf("Scene to depict: '%s' — %s ", name, desc) +
 		"Contained within a pixelated dithered border. " +
 		"Strict limited palette and artifacting of the classic reference style, with clear textured dithering. " +
 		"Letterboxed: solid pure black bars of at least 250px at the very top and very bottom of the 1024x1024 canvas, " +

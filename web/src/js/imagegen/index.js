@@ -50,40 +50,33 @@ function slugify(title) {
     .replace(/^-+|-+$/g, "");
 }
 
+/* V1-V3 games are spec-guaranteed to keep the current room in Global
+   Variable 0 (the interpreter's own built-in status line depends on it),
+   so the "roomId" the engine reports is a real, stable identifier. V4+ has
+   no such guarantee — the WASM bridge falls back to scanning the object
+   table for a short name matching the status-bar title (see
+   ifwg_find_object_by_name), which is only ever a best-effort stand-in and
+   degenerates to "first object with this name" for any game that reuses a
+   room title. Not reliable enough to key anything by, so roomId-based
+   keying (both the canonical-release pregen path and the local live-gen
+   cache) is restricted to V1-V3; V4+ always uses the room title instead. */
+function isRoomIdReliable() {
+  const version = Game.getVersion();
+  return version != null && version <= 3;
+}
+
 /* Most games are keyed purely by title — shared across every historical
    release, but ambiguous whenever a game reuses one title for several
    distinct rooms (e.g. Cutthroats' "Wharf Road", one title covering 5
    different street segments). A game can opt into a more precise scheme by
    setting games.json's canonicalGameId to the exact release a room-ID-keyed
-   image set (web/images/<name>/id/<roomId>.webp) was generated from:
-     - Loaded file IS that exact release: room IDs are unambiguous, so use
-       the live roomId directly — every distinct room gets its own image.
-     - Loaded file is some OTHER release of the same game: room IDs aren't
-       trustworthy across releases, so fall back to a title -> roomId index
-       (web/src/context/canonical/<name>.json, built once from the
-       canonical release's own bfs.json) and reuse whichever of the
-       canonical release's images best represents that title. Still not
-       perfectly precise for titles with multiple rooms, but a curated
-       correct-ish image beats an arbitrary first-generated one.
-   Games with no canonicalGameId set behave exactly as before — this is
-   fully additive. */
-const _canonicalIndexCache = {};
-
-function loadCanonicalIndex(name) {
-  if (_canonicalIndexCache[name]) return _canonicalIndexCache[name];
-  const url = new URL(`../../context/canonical/${name}.json`, import.meta.url).href;
-  const promise = fetch(url).then(r => (r.ok ? r.json() : {})).catch(() => ({}));
-  _canonicalIndexCache[name] = promise;
-  return promise;
-}
-
-/* Resolves to the room-ID-keyed image slug to use for this room, or null
-   if this game has no canonicalGameId (meaning: use the title path instead). */
-function resolveCanonicalRoomId(name, title, roomId) {
-  const canonicalGameId = GAMES[name]?.canonicalGameId;
-  if (!canonicalGameId) return Promise.resolve(null);
-  if (Game.getId() === canonicalGameId) return Promise.resolve(roomId);
-  return loadCanonicalIndex(name).then(index => index[title] ?? null);
+   image set (web/images/<name>/id/<roomId>.webp) was generated from — but
+   only the *exact* matching release gets that precision (and only for
+   V1-V3, per isRoomIdReliable above); any other release of the same game,
+   or any V4+ game regardless of canonicalGameId, just falls back to the
+   plain title path. */
+function isCanonicalRelease(name) {
+  return isRoomIdReliable() && GAMES[name]?.canonicalGameId === Game.getId();
 }
 
 export class ImageGenSettings {
@@ -163,8 +156,8 @@ function buildPrompt(title, description) {
   const context = resolveGame(Game.getId())?.description;
   return (
     "Apple II-style dithered pixel art scene matching the aesthetic of the reference images. " +
-    (context ? context + " " : "") +
-    `Scene: '${roomName || title}' — ${desc} ` +
+    (context ? `Background story context, for overall genre/mood/setting only — do not depict this directly unless the scene described below explicitly calls for it: ${context} ` : "") +
+    `Scene to depict: '${roomName || title}' — ${desc} ` +
     "Contained within a pixelated dithered border. " +
     "Strict limited palette and artifacting of the classic reference style, with clear textured dithering. " +
     "Letterboxed: solid pure black bars of at least 250px at the very top and very bottom of the 1024x1024 canvas, " +
@@ -250,53 +243,58 @@ function fetchPregenerated(name, pathSegment) {
     .catch(() => null);
 }
 
+/* Pregen (the shared, static image bundle) and the local IndexedDB cache
+   are two separate concerns with two separate key schemes, not one shared
+   key: pregen is a cheap, shared, static-asset lookup — precise-by-ID for
+   the canonical release, title-based otherwise — and is never written to
+   the local cache; the browser's own HTTP layer handles repeat-fetch
+   efficiency for it. IndexedDB is reserved for the one genuinely expensive
+   operation, a live paid-API generation, and is always keyed by the raw
+   gameId+roomId — always precise for whatever exact file is loaded, no
+   name/title resolution needed at all. */
 function generate(roomId, title, description, onCacheMiss) {
   const name          = ALIASES[Game.getId()];
   const effectiveTitle = name ? resolveTitle(name, title, description) : title;
+  const settings       = getSettings();
 
-  const canonicalPromise = name ? resolveCanonicalRoomId(name, effectiveTitle, roomId) : Promise.resolve(null);
-
-  return canonicalPromise.then(canonicalRoomId => {
-    const pathSegment = name ? (canonicalRoomId != null ? `id/${canonicalRoomId}` : slugify(effectiveTitle)) : null;
-    /* Recognized games are keyed by name+title (or name+roomId for a
-       canonicalGameId game) — release-independent, so a cached/pregen
-       image is shared across every historical release of the same game.
-       Unrecognized dropped-in games have no such name, so they're scoped
-       by the raw gameId instead, just to keep two different unknown games
-       with overlapping numeric room IDs from colliding. */
-    const cacheKey = name ? `images/${name}/${pathSegment}` : `images/${Game.getId() || "unknown"}/${roomId}`;
-
-    return DB.get(cacheKey).then(cached => {
-      if (cached) {
-        if (cached.startsWith("data:image/webp")) {
-          console.info("[IFWG] image cache hit — roomId:%o webp:%okb", roomId, _kb(cached));
-          return cached;
-        }
-        console.info("[IFWG] image cache hit (old format) — roomId:%o %okb → migrating to webp", roomId, _kb(cached));
-        return cropAndCompress(cached).then(webp => {
-          console.info("[IFWG] image migrated — roomId:%o webp:%okb", roomId, _kb(webp));
-          DB.put(cacheKey, webp);
-          return webp;
-        });
+  if (settings.getPregenEnabled() && name) {
+    const pathSegment = isCanonicalRelease(name) ? `id/${roomId}` : slugify(effectiveTitle);
+    if (onCacheMiss) onCacheMiss();
+    return fetchPregenerated(name, pathSegment).then(dataUrl => {
+      if (dataUrl) {
+        console.info("[IFWG] pre-generated image — roomId:%o", roomId);
+        return dataUrl;
       }
-
-      const settings = getSettings();
-
-      /* Try pre-generated static image first. */
-      if (settings.getPregenEnabled() && name) {
-        if (onCacheMiss) onCacheMiss();
-        return fetchPregenerated(name, pathSegment).then(dataUrl => {
-          if (dataUrl) {
-            console.info("[IFWG] pre-generated image — roomId:%o", roomId);
-            return dataUrl;
-          }
-          /* Not in the static bundle — fall through to live generation. */
-          return generateLive(settings, effectiveTitle, description, cacheKey, onCacheMiss);
-        });
-      }
-
-      return generateLive(settings, effectiveTitle, description, cacheKey, onCacheMiss);
+      /* Not in the static bundle — fall through to the local-cache-backed
+         live generation path below. */
+      return generateFromCacheOrLive(roomId, effectiveTitle, description, onCacheMiss);
     });
+  }
+
+  return generateFromCacheOrLive(roomId, effectiveTitle, description, onCacheMiss);
+}
+
+function generateFromCacheOrLive(roomId, title, description, onCacheMiss) {
+  /* roomId is only trustworthy for V1-V3 (see isRoomIdReliable) — V4+
+     falls back to keying the local cache by title instead. */
+  const roomKey  = isRoomIdReliable() ? roomId : slugify(title);
+  const cacheKey = `images/${Game.getId() || "unknown"}/${roomKey}`;
+
+  return DB.get(cacheKey).then(cached => {
+    if (cached) {
+      if (cached.startsWith("data:image/webp")) {
+        console.info("[IFWG] image cache hit — roomId:%o webp:%okb", roomId, _kb(cached));
+        return cached;
+      }
+      console.info("[IFWG] image cache hit (old format) — roomId:%o %okb → migrating to webp", roomId, _kb(cached));
+      return cropAndCompress(cached).then(webp => {
+        console.info("[IFWG] image migrated — roomId:%o webp:%okb", roomId, _kb(webp));
+        DB.put(cacheKey, webp);
+        return webp;
+      });
+    }
+
+    return generateLive(getSettings(), title, description, cacheKey, onCacheMiss);
   });
 }
 
