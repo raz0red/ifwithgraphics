@@ -36,6 +36,17 @@ The aesthetic is deliberately retro: limited palettes, dithered pixel art, scan-
 - Two image generation providers: OpenAI and Google Gemini
 - Status bar, animated room transitions, retro disk LED while images load
 - Scales to any viewport size
+- Full-screen forms and menus — filling out Bureaucracy's licence application, or
+  building a character in Beyond Zork — render as a faithful, properly laid-out
+  screen with a real cursor, not garbled text
+- Persistent status readouts (like a character's stats in Beyond Zork) stay on
+  screen continuously instead of flickering in and out between turns
+- Small in-game "sensory" cues — a scenery/exit icon a game draws alongside the
+  room text — get their own dedicated display instead of getting spliced into
+  the story prose
+- Handles games that don't structure their status bar or room titles the
+  normal way (a persistent "Mode" indicator instead of a room name, addresses
+  built from text the player typed in) so images still track the right room
 
 **Supported games:**
 
@@ -43,7 +54,8 @@ The aesthetic is deliberately retro: limited palettes, dithered pixel art, scan-
 |---------|----------|
 | V1-V3 | Zork I/II/III, Hitchhiker's Guide, Planetfall, Wishbringer, Enchanter |
 | V4 | Trinity, A Mind Forever Voyaging, Bureaucracy |
-| V5 | Beyond Zork, Shogun |
+| V5 | Beyond Zork |
+| V6 | Not yet supported (Zork Zero, Shogun, Journey — these use a fully custom windowing system with no standard status line) |
 
 ---
 
@@ -67,6 +79,7 @@ Gemini is faster and cheaper and works well for a more painterly or cinematic lo
 - AI room explorer: Claude plays games headlessly, collects descriptions, and batch generates a full image set
 - Theme system so the visual style is swappable without touching core code
 - Embeddable export packages with a standalone launcher
+- V6 support (Zork Zero, Shogun, Journey)
 
 ---
 
