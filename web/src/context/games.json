@@ -50,7 +50,7 @@
   },
   "seastalker": {
     "title": "Seastalker",
-    "description": "Setting: near-future undersea adventure — an experimental research submarine and an undersea research station threatened by a monster, written for younger players."
+    "description": "Setting: near-future undersea adventure — an experimental research submarine and an undersea research station, with a lurking sense of danger from the deep, written for younger players."
   },
   "spellbreaker": {
     "title": "Spellbreaker",
@@ -58,7 +58,7 @@
   },
   "hitchhikersguide": {
     "title": "The Hitchhiker's Guide to the Galaxy",
-    "description": "Setting: absurdist science fiction comedy — Earth's demolition, alien bureaucracy spaceships, and a chaotic tour of the galaxy."
+    "description": "Setting: absurdist science fiction comedy — alien bureaucracy, improbable spaceships, and a chaotic tour of a very silly galaxy."
   },
   "mindforevervoyaging": {
     "title": "A Mind Forever Voyaging",
@@ -74,7 +74,7 @@
   },
   "trinity": {
     "title": "Trinity",
-    "description": "Setting: surreal blend of a London park on the edge of nuclear detonation and a dreamlike fantasy realm tied to history's atomic test sites."
+    "description": "Setting: a surreal, dreamlike blend of an English garden and shifting fantastical realms, with an undercurrent of Cold War-era unease."
   },
   "ballyhoo": {
     "title": "Ballyhoo",
@@ -94,7 +94,7 @@
   },
   "moonmist": {
     "title": "Moonmist",
-    "description": "Setting: contemporary gothic mystery — a foggy English castle on the Cornwall coast, haunted by a legendary ghost."
+    "description": "Setting: contemporary gothic mystery — a foggy, atmospheric English castle on the Cornwall coast, steeped in local legend."
   },
   "stationfall": {
     "title": "Stationfall",
@@ -106,7 +106,8 @@
   },
   "bureaucracy": {
     "title": "Bureaucracy",
-    "description": "Setting: contemporary satire — an ordinary suburban town, bank, and travel bureaucracy, skewering everyday red tape."
+    "description": "Setting: contemporary satire — an ordinary suburban town, bank, and travel bureaucracy, skewering everyday red tape.",
+    "titleKeyPattern": "^(\\d+)\\s+\\S+$"
   },
   "beyondzork": {
     "title": "Beyond Zork: The Coconut of Quendor",

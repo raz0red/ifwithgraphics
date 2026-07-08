@@ -5,7 +5,7 @@ function settingRow(labelText, forId) {
   row.className = "setting-row";
   const label = document.createElement("label");
   label.className = "setting-label";
-  label.htmlFor   = forId;
+  label.htmlFor = forId;
   label.textContent = labelText;
   row.appendChild(label);
   return row;
@@ -23,13 +23,13 @@ function buildSettings({ onLocked, onReady }) {
 
   const providerRow = settingRow("IMAGE GEN", "ifwg-ai-provider");
   const provider = document.createElement("select");
-  provider.id        = "ifwg-ai-provider";
+  provider.id = "ifwg-ai-provider";
   provider.className = "setting-select";
   providerRow.appendChild(provider);
 
   const modelRow = settingRow("MODEL", "ifwg-ai-model");
   const model = document.createElement("select");
-  model.id        = "ifwg-ai-model";
+  model.id = "ifwg-ai-model";
   model.className = "setting-select";
   modelRow.appendChild(model);
 
@@ -37,14 +37,14 @@ function buildSettings({ onLocked, onReady }) {
   const keyWrap = document.createElement("div");
   keyWrap.className = "setting-key-wrap";
   const key = document.createElement("input");
-  key.id            = "ifwg-ai-key";
-  key.className     = "setting-input";
-  key.type          = "password";
-  key.autocomplete  = "off";
-  key.spellcheck    = false;
+  key.id = "ifwg-ai-key";
+  key.className = "setting-input";
+  key.type = "password";
+  key.autocomplete = "off";
+  key.spellcheck = false;
   const validateBtn = document.createElement("button");
-  validateBtn.type        = "button";
-  validateBtn.className   = "setting-validate-btn";
+  validateBtn.type = "button";
+  validateBtn.className = "setting-validate-btn";
   validateBtn.textContent = "VALIDATE";
   keyWrap.appendChild(key);
   keyWrap.appendChild(validateBtn);
@@ -54,12 +54,12 @@ function buildSettings({ onLocked, onReady }) {
   statusRow.className = "setting-status";
   statusRow.hidden = true;
 
-  const pregenRow   = settingRow("PRE-GEN", "ifwg-pregen");
+  const pregenRow = settingRow("PRE-GEN", "ifwg-pregen");
   const pregenLabel = document.createElement("label");
   pregenLabel.className = "setting-toggle-wrap";
   const pregen = document.createElement("input");
-  pregen.id        = "ifwg-pregen";
-  pregen.type      = "checkbox";
+  pregen.id = "ifwg-pregen";
+  pregen.type = "checkbox";
   pregen.className = "setting-toggle";
   const track = document.createElement("span");
   track.className = "setting-toggle-track";
@@ -78,28 +78,31 @@ function buildSettings({ onLocked, onReady }) {
 
   Object.entries(PROVIDERS).forEach(([value, { label: text }]) => {
     const opt = document.createElement("option");
-    opt.value       = value;
+    opt.value = value;
     opt.textContent = text;
     provider.appendChild(opt);
   });
 
   function setStatus(text) {
-    statusRow.hidden      = !text;
+    statusRow.hidden = !text;
     statusRow.textContent = text || "";
   }
 
   function updateVisibility(providerValue, modelCount) {
-    const needsKey  = providerValue !== "none";
+    const needsKey = providerValue !== "none";
     key.placeholder = PROVIDERS[providerValue]?.keyPlaceholder || "…";
-    keyRow.hidden   = !needsKey;
+    keyRow.hidden = !needsKey;
     modelRow.hidden = !needsKey || modelCount === 0;
     if (!needsKey) setStatus("");
   }
 
   function populateModelOptions(models, selectedValue) {
-    model.innerHTML = models.map(m =>
-      `<option value="${m.value}"${m.value === selectedValue ? " selected" : ""}>${m.label}</option>`
-    ).join("");
+    model.innerHTML = models
+      .map(
+        (m) =>
+          `<option value="${m.value}"${m.value === selectedValue ? " selected" : ""}>${m.label}</option>`
+      )
+      .join("");
   }
 
   /* Full save, including whatever the model <select> currently holds. Only
@@ -133,8 +136,8 @@ function buildSettings({ onLocked, onReady }) {
      switch, and on explicit Validate clicks. */
   async function checkAndValidate() {
     const providerValue = provider.value;
-    const keyValue       = key.value.trim();
-    const previousModel  = ImageGen.getSettings().getModel();
+    const keyValue = key.value.trim();
+    const previousModel = ImageGen.getSettings().getModel();
 
     updateVisibility(providerValue, 0);
 
@@ -166,8 +169,10 @@ function buildSettings({ onLocked, onReady }) {
     }
 
     setStatus("");
-    const models   = result.models || [];
-    const selected = models.some(m => m.value === previousModel) ? previousModel : (models[0]?.value || "");
+    const models = result.models || [];
+    const selected = models.some((m) => m.value === previousModel)
+      ? previousModel
+      : models[0]?.value || "";
 
     updateVisibility(providerValue, models.length);
     populateModelOptions(models, selected);
@@ -179,7 +184,7 @@ function buildSettings({ onLocked, onReady }) {
   const settings = ImageGen.getSettings();
   provider.value = settings.getProvider();
   if (!provider.value) provider.selectedIndex = 0;
-  key.value      = settings.getApiKey();
+  key.value = settings.getApiKey();
   pregen.checked = settings.getPregenEnabled();
 
   provider.addEventListener("change", () => {
@@ -189,10 +194,10 @@ function buildSettings({ onLocked, onReady }) {
     ImageGen.setSettings(s);
     checkAndValidate();
   });
-  model.addEventListener("change",       apply);
-  key.addEventListener("blur",           apply);
-  pregen.addEventListener("change",      apply);
-  validateBtn.addEventListener("click",  checkAndValidate);
+  model.addEventListener("change", apply);
+  key.addEventListener("blur", apply);
+  pregen.addEventListener("change", apply);
+  validateBtn.addEventListener("click", checkAndValidate);
 
   /* Kick off an initial check — this is what makes a returning visit with
      an already-saved key "just work" without the user pressing Validate
@@ -220,15 +225,14 @@ export function renderLaunchPanel(container, { idle, onRetry }) {
 
   const errTitle = document.createElement("div");
   errTitle.className = "launch-error-title";
-  errTitle.textContent = "API KEY ERROR";
 
   const errMsg = document.createElement("div");
   errMsg.className = "launch-error-msg";
 
   const retryBtn = document.createElement("button");
-  retryBtn.type        = "button";
-  retryBtn.className   = "launch-retry";
-  retryBtn.textContent  = "RETRY";
+  retryBtn.type = "button";
+  retryBtn.className = "launch-retry";
+  retryBtn.textContent = "RETRY";
   retryBtn.addEventListener("click", () => {
     showIdle();
     onRetry();
@@ -254,33 +258,42 @@ export function renderLaunchPanel(container, { idle, onRetry }) {
 
   let ready = false;
 
-  panel.appendChild(buildSettings({
-    onLocked(msg) {
-      ready = false;
-      idle.hidden        = true;
-      errorBlock.hidden  = true;
-      lockedMsg.textContent = msg;
-      lockedBlock.hidden = false;
-    },
-    onReady() {
-      ready = true;
-      idle.hidden        = false;
-      errorBlock.hidden  = true;
-      lockedBlock.hidden = true;
-    }
-  }));
+  panel.appendChild(
+    buildSettings({
+      onLocked(msg) {
+        ready = false;
+        idle.hidden = true;
+        errorBlock.hidden = true;
+        lockedMsg.textContent = msg;
+        lockedBlock.hidden = false;
+      },
+      onReady() {
+        ready = true;
+        idle.hidden = false;
+        errorBlock.hidden = true;
+        lockedBlock.hidden = true;
+      }
+    })
+  );
 
   container.appendChild(panel);
 
-  function showError(msg) {
-    idle.hidden        = true;
-    lockedBlock.hidden  = true;
-    errorBlock.hidden   = false;
-    errMsg.textContent  = msg || "API key validation failed.";
+  /* allowRetry=false is for errors where retrying the exact same file can
+     never succeed (e.g. an unsupported story file format) — retrying only
+     makes sense for something the player can actually fix and reattempt,
+     like a bad API key. In that case, leave idle (the drop target) visible
+     alongside the message so picking a different file is still obvious. */
+  function showError(msg, title, { allowRetry = true } = {}) {
+    idle.hidden = allowRetry;
+    lockedBlock.hidden = true;
+    errorBlock.hidden = false;
+    retryBtn.hidden = !allowRetry;
+    errTitle.textContent = title || "API KEY ERROR";
+    errMsg.textContent = msg || "API key validation failed.";
   }
   function showIdle() {
-    idle.hidden        = false;
-    errorBlock.hidden  = true;
+    idle.hidden = false;
+    errorBlock.hidden = true;
     lockedBlock.hidden = true;
   }
 

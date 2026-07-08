@@ -58,6 +58,8 @@ typedef struct cell_struct {
 	short fg;
 	short bg;
 	zchar c;
+	char font;
+	char win;
 } cell_t;
 
 static cell_t *screen_data;
@@ -71,6 +73,17 @@ static cell_t *screen_data;
 static int current_style = 0;
 static char current_fg = DEFAULT_DUMB_COLOUR;
 static char current_bg = DEFAULT_DUMB_COLOUR;
+
+/* os_set_font used to be a no-op — dumb never rendered real glyphs anyway,
+ * so which font was "active" didn't seem to matter. It does: some V5+ games
+ * (Beyond Zork's stat-allocation meters) switch to GRAPHICS_FONT (3) and
+ * send character codes meant to be interpreted as bar/meter segments in a
+ * custom glyph set, not literal text. Without tracking this, those codes get
+ * printed as whatever ASCII letters they happen to collide with — e.g.
+ * "IntelligenceXWS00000000000Y12%" instead of a meter. Track it the same
+ * way current_style/current_fg/current_bg already are, so cells drawn while
+ * a non-text font is active can be blanked instead of shown as garbage. */
+static int current_font = 1;
 
 /* Which cells have changed (1 byte per cell).  */
 static char *screen_changes;
@@ -208,6 +221,8 @@ static void ifwg_desc_append (char c)
     }
 }
 
+static bool ifwg_is_icon_glyph (char c);
+
 void ifwg_dumb_get_room_name (char *buf, int size)
 {
     int col, len = 0;
@@ -220,6 +235,21 @@ void ifwg_dumb_get_room_name (char *buf, int size)
     row0 = screen_data; /* row 0 */
     for (col = 0; col < z_header.screen_cols && len < size - 1; col++) {
         char c = (char) row0[col].c;
+        /* Some V5+ games (e.g. Beyond Zork) draw a decorative separator
+         * glyph at the start of the status row using GRAPHICS_FONT or
+         * PICTURE_STYLE — its raw character code is arbitrary (not real
+         * text) and can coincidentally decode to a printable ASCII byte
+         * like ':', silently prepending garbage to every room title. Treat
+         * these cells as blank, same as the other room-text extraction
+         * paths already do. */
+        if (row0[col].font == GRAPHICS_FONT || (row0[col].style & PICTURE_STYLE))
+            c = ' ';
+        /* Beyond Zork's "sensory" icon can extend up into row 0, sharing
+         * it with the status bar in this flat single-buffer screen model
+         * (see ifwg_dumb_get_sensory_panel) — blank out its glyph
+         * characters here too, the same way the main description does. */
+        if (row0[col].win != 0 && ifwg_is_icon_glyph (c))
+            c = ' ';
         if (c < 32) break;
         buf[len++] = c;
     }
@@ -262,6 +292,10 @@ void ifwg_dumb_get_status_right (char *buf, int size)
     row0 = screen_data;
     for (col = 0; col < z_header.screen_cols && len < (int)sizeof(raw) - 1; col++) {
         char c = (char) row0[col].c;
+        if (row0[col].font == GRAPHICS_FONT || (row0[col].style & PICTURE_STYLE))
+            c = ' ';
+        if (row0[col].win != 0 && ifwg_is_icon_glyph (c))
+            c = ' ';
         if (c < 32) break;
         raw[len++] = c;
     }
@@ -318,11 +352,260 @@ void ifwg_dumb_get_cursor_prompt (char *buf, int size)
     row = screen_data + cursor_row * z_header.screen_cols;
     for (col = 0; col < cursor_col && col < z_header.screen_cols && len < size - 1; col++) {
         char c = (char) row[col].c;
-        if (c >= 32 && c <= 126)
+        bool is_glyph = (row[col].font == GRAPHICS_FONT) || (row[col].style & PICTURE_STYLE);
+        if (!is_glyph && c >= 32 && c <= 126)
             buf[len++] = c;
     }
     buf[len] = '\0';
     while (len > 0 && buf[len - 1] == ' ') buf[--len] = '\0';
+}
+
+/* Full current screen contents, every row, regardless of which rows have
+ * "changed" since the last refresh. ifwg_desc_buf (built in show_row) only
+ * includes changed rows — a bandwidth-saving compromise from the original
+ * teletype-oriented dumb interface — which loses all context for absolute-
+ * position multi-row screens (forms, menus) where only the row currently
+ * being typed into "changes" on a given keystroke. This gives the JS player
+ * a faithful, always-complete snapshot to render as a real grid instead.
+ *
+ * style_buf is filled with a same-shaped '1'/'0' mask (REVERSE_STYLE or
+ * not) so JS can highlight text without a color/style channel of its own —
+ * essential, not cosmetic: e.g. Beyond Zork's character menu moves the
+ * highlighted item via reverse video only, with no other visible change, so
+ * without this a player has zero feedback that arrow keys are doing
+ * anything at all. Written in the same pass as text_buf so the two stay
+ * exactly aligned (same trimming, same newline positions). */
+void ifwg_dumb_get_full_screen (char *text_buf, char *style_buf, int size)
+{
+    int row, col, len = 0;
+
+    if (!screen_data || size <= 0) {
+        if (size > 0) { text_buf[0] = '\0'; style_buf[0] = '\0'; }
+        return;
+    }
+
+    for (row = 0; row < z_header.screen_rows && len < size - 1; row++) {
+        cell_t *r = screen_data + row * z_header.screen_cols;
+        int last;
+
+        for (last = z_header.screen_cols - 1; last >= 0; last--) {
+            char c = (char) r[last].c;
+            if (r[last].font != GRAPHICS_FONT && !(r[last].style & PICTURE_STYLE) && c > 32 && c <= 126) break;
+        }
+        for (col = 0; col <= last && len < size - 1; col++) {
+            char c = (char) r[col].c;
+            /* GRAPHICS_FONT cells are meter/bar glyphs from a custom font we
+             * don't render — showing their raw character codes as text is
+             * worse than showing nothing (see os_font_data/os_set_font).
+             * PICTURE_STYLE cells are the '+'/'-'/'|'/':' ASCII placeholder
+             * box dumb-frotz draws in place of a real Blorb image (see
+             * dpic.c's os_draw_picture) — showing that box's border/fill
+             * characters inline reads as random punctuation spliced into
+             * the room text (e.g. Beyond Zork's illustrated rooms), since
+             * it was never meant to be read as prose. */
+            bool is_glyph = (r[col].font == GRAPHICS_FONT) || (r[col].style & PICTURE_STYLE);
+            text_buf[len]  = (!is_glyph && c >= 32 && c <= 126) ? c : ' ';
+            style_buf[len] = (r[col].style & REVERSE_STYLE) ? '1' : '0';
+            len++;
+        }
+        if (len < size - 1) { text_buf[len] = '\n'; style_buf[len] = '\n'; len++; }
+    }
+    text_buf[len]  = '\0';
+    style_buf[len] = '\0';
+}
+
+/* All of the window-1 icon/stats-line handling below (sensory panel,
+ * description glyph-stripping, stats-line extraction) was tuned
+ * specifically against Beyond Zork's exact screen layout. Applying the
+ * same narrow glyph-character heuristic to *any* game that happens to use
+ * window 1 for something else entirely — A Mind Forever Voyaging draws its
+ * in-game date (e.g. "3/16/2031") that way — silently strips unrelated
+ * punctuation ("3/16/2031" becomes "3162031") and can conjure a fake
+ * "sensory panel" out of a couple of stray slashes. Gate all of it on the
+ * one release/serial this was actually built and verified against. */
+static bool ifwg_is_beyond_zork (void)
+{
+    return z_header.release == 57 &&
+           memcmp (z_header.serial, "871221", 6) == 0;
+}
+
+/* The narrow set of line-art characters Beyond Zork's "sensory" icon is
+ * built from — deliberately NOT full alphanumerics, so this can't match
+ * actual prose that happens to share window 1 with the icon (see
+ * ifwg_dumb_get_sensory_panel). */
+static bool ifwg_is_icon_glyph (char c)
+{
+    if (!ifwg_is_beyond_zork ()) return FALSE;
+    return strchr("/\\-@*|+", c) != NULL;
+}
+
+/* Some games (Beyond Zork) draw a small "sensory" ascii-art icon (a tiny
+ * weather/scenery/map cue, e.g. a boat, a tree, a compass mark) in a
+ * separate window that shares the same physical screen rows as the main
+ * story window in this flat single-buffer screen model — it's real,
+ * functional content (Beyond Zork doesn't otherwise show which exits are
+ * available), not decoration, so it needs to be shown somewhere, just not
+ * spliced into the middle of the prose. Window alone can't isolate it:
+ * some rooms also route ordinary descriptive prose through this same
+ * window, so this narrows further to cells whose character is actually
+ * part of the icon's line-art glyph set — prose never uses these
+ * characters, so this reliably picks out just the icon's own footprint,
+ * then returns the bounding box of just those cells so the player UI can
+ * render it as its own small panel — matching how graphics-capable
+ * interpreters (Apple II, WinFrotz, ...) show it in their own dedicated
+ * screen region instead of overlapping the room text. */
+#define IFWG_MAX_CLUSTERS 64
+#define IFWG_CLUSTER_TOL_ROW 2
+#define IFWG_CLUSTER_TOL_COL 3
+#define IFWG_ICON_MAX_ROWS 10
+#define IFWG_ICON_MAX_COLS 20
+
+typedef struct {
+    int min_row, max_row, min_col, max_col, count;
+} ifwg_cluster_t;
+
+void ifwg_dumb_get_sensory_panel (char *buf, int size)
+{
+    int row, col, len = 0;
+    int min_row, max_row, min_col, max_col;
+    ifwg_cluster_t clusters[IFWG_MAX_CLUSTERS];
+    int n_clusters = 0;
+    int i, best;
+
+    if (!screen_data || size <= 0) { if (size > 0) buf[0] = '\0'; return; }
+
+    /* The icon's glyph cells are tightly clustered; any other window-1
+     * content that happens to match the glyph class (a stray hyphen in
+     * prose, ascii noise from an unrelated status effect) sits far away
+     * from the icon's own footprint. Grouping matches into proximity
+     * clusters and keeping only the largest one filters that noise out,
+     * rather than taking a bounding box over every match on screen (which
+     * balloons to cover huge, mostly-empty regions when a single stray
+     * match lands far from the real icon). */
+    for (row = 1; row < z_header.screen_rows; row++) {
+        cell_t *r = screen_data + row * z_header.screen_cols;
+        for (col = 0; col < z_header.screen_cols; col++) {
+            int match;
+            if (!(r[col].win != 0 && ifwg_is_icon_glyph ((char) r[col].c)))
+                continue;
+
+            match = -1;
+            for (i = 0; i < n_clusters; i++) {
+                if (row >= clusters[i].min_row - IFWG_CLUSTER_TOL_ROW &&
+                    row <= clusters[i].max_row + IFWG_CLUSTER_TOL_ROW &&
+                    col >= clusters[i].min_col - IFWG_CLUSTER_TOL_COL &&
+                    col <= clusters[i].max_col + IFWG_CLUSTER_TOL_COL) {
+                    if (match == -1) {
+                        match = i;
+                        if (row < clusters[i].min_row) clusters[i].min_row = row;
+                        if (row > clusters[i].max_row) clusters[i].max_row = row;
+                        if (col < clusters[i].min_col) clusters[i].min_col = col;
+                        if (col > clusters[i].max_col) clusters[i].max_col = col;
+                        clusters[i].count++;
+                    } else {
+                        if (clusters[i].min_row < clusters[match].min_row) clusters[match].min_row = clusters[i].min_row;
+                        if (clusters[i].max_row > clusters[match].max_row) clusters[match].max_row = clusters[i].max_row;
+                        if (clusters[i].min_col < clusters[match].min_col) clusters[match].min_col = clusters[i].min_col;
+                        if (clusters[i].max_col > clusters[match].max_col) clusters[match].max_col = clusters[i].max_col;
+                        clusters[match].count += clusters[i].count;
+                        clusters[i] = clusters[--n_clusters];
+                        if (match == n_clusters) match = i;
+                        i--;
+                    }
+                }
+            }
+            if (match == -1 && n_clusters < IFWG_MAX_CLUSTERS) {
+                clusters[n_clusters].min_row = clusters[n_clusters].max_row = row;
+                clusters[n_clusters].min_col = clusters[n_clusters].max_col = col;
+                clusters[n_clusters].count = 1;
+                n_clusters++;
+            }
+        }
+    }
+
+    if (n_clusters == 0) { buf[0] = '\0'; return; }
+
+    best = 0;
+    for (i = 1; i < n_clusters; i++)
+        if (clusters[i].count > clusters[best].count) best = i;
+
+    min_row = clusters[best].min_row; max_row = clusters[best].max_row;
+    min_col = clusters[best].min_col; max_col = clusters[best].max_col;
+
+    /* Sanity cap: a real icon is small. If even the largest cluster spans
+     * an implausibly large area, something other than the icon matched
+     * (e.g. a full-screen visual effect) — hide rather than show a
+     * broken, oversized box. */
+    if ((max_row - min_row + 1) > IFWG_ICON_MAX_ROWS ||
+        (max_col - min_col + 1) > IFWG_ICON_MAX_COLS) {
+        buf[0] = '\0';
+        return;
+    }
+
+    for (row = min_row; row <= max_row && len < size - 1; row++) {
+        cell_t *r = screen_data + row * z_header.screen_cols;
+        for (col = min_col; col <= max_col && len < size - 1; col++) {
+            char ch = (char) r[col].c;
+            bool in_icon = (r[col].win != 0 && ifwg_is_icon_glyph (ch));
+            buf[len++] = in_icon ? ch : ' ';
+        }
+        if (row < max_row && len < size - 1)
+            buf[len++] = '\n';
+    }
+    buf[len] = '\0';
+}
+
+/* Beyond Zork's character-attribute line (e.g. "EN:16 ST:08 DX:08 IQ:08
+ * CM:01 LK:25 AC:00") lives in its own persistent window, same as the
+ * status bar — but since it shares physical rows with the scrolling story
+ * window in this flat single-buffer model, it only ever reaches the
+ * change-tracked description stream on the turn it happens to get
+ * redrawn, then disappears from view even though nothing about it
+ * changed. Scanning the live screen buffer directly (like
+ * ifwg_dumb_get_sensory_panel does for the icon) instead of the
+ * change-tracked stream means this is always current, matching how a
+ * real persistent status window behaves. */
+void ifwg_dumb_get_stats_line (char *buf, int size)
+{
+    int row, col, len;
+
+    buf[0] = '\0';
+    if (!screen_data || size <= 0) return;
+
+    for (row = 0; row < z_header.screen_rows; row++) {
+        cell_t *r = screen_data + row * z_header.screen_cols;
+        char line[256];
+        int llen = 0;
+        for (col = 0; col < z_header.screen_cols && llen < (int) sizeof (line) - 1; col++) {
+            char ch = (char) r[col].c;
+            if (ch < 32 || ch > 126) ch = ' ';
+            /* The sensory icon can share this exact row with the attribute
+             * readout (see ifwg_dumb_get_sensory_panel) — blank out its
+             * glyph characters here too, same as the description text. */
+            if (r[col].win != 0 && ifwg_is_icon_glyph (ch)) ch = ' ';
+            line[llen++] = ch;
+        }
+        line[llen] = '\0';
+        if (strstr (line, "EN:") && strstr (line, "ST:") && strstr (line, "AC:")) {
+            char *start = line;
+            char *end;
+            while (*start == ' ') start++;
+            end = start + strlen (start);
+            while (end > start && *(end - 1) == ' ') end--;
+            *end = '\0';
+            len = (int) strlen (start);
+            if (len >= size) len = size - 1;
+            memcpy (buf, start, len);
+            buf[len] = '\0';
+            return;
+        }
+    }
+}
+
+void ifwg_dumb_get_cursor_pos (int *row, int *col)
+{
+    *row = cursor_row;
+    *col = cursor_col;
 }
 #endif /* IFWG || IFWG_MONITOR */
 
@@ -658,6 +941,8 @@ static cell_t make_cell(int style, short fg, short bg, zchar c)
 
 	cel.style = style;
 	cel.c = c;
+	cel.font = (char) current_font;
+	cel.win = (char) cwin;
 
 	if (f_setup.format != FORMAT_NORMAL) {
 		cel.bg = bg;
@@ -712,18 +997,61 @@ static void show_row(int r)
 				break;
 		}
 
+#if defined(IFWG) || defined(IFWG_MONITOR)
+		bool ifwg_prev_win1_space = false;
+		bool ifwg_is_stats_row = false;
+		{
+			/* The attribute line (e.g. "EN:16 ST:08 ... AC:00") is shown in
+			 * its own persistent, always-current spot (see
+			 * ifwg_dumb_get_stats_line) instead of the change-tracked
+			 * description stream — leaving it in here too would just
+			 * duplicate it inline whenever this row happens to reprint. */
+			char ifwg_row_text[256];
+			int ifwg_row_len = 0;
+			int ifwg_col;
+			for (ifwg_col = 0; ifwg_col <= last && ifwg_row_len < (int) sizeof (ifwg_row_text) - 1; ifwg_col++) {
+				char rc = (char) dumb_row(r)[ifwg_col].c;
+				ifwg_row_text[ifwg_row_len++] = (rc >= 32 && rc <= 126) ? rc : ' ';
+			}
+			ifwg_row_text[ifwg_row_len] = '\0';
+			ifwg_is_stats_row = strstr (ifwg_row_text, "EN:") && strstr (ifwg_row_text, "ST:") && strstr (ifwg_row_text, "AC:");
+		}
+#endif
 		for (c = 0; c <= last; c++) {
 			show_cell(dumb_row(r)[c]);
 #if defined(IFWG) || defined(IFWG_MONITOR)
-			if (r > 0) {
+			if (r > 0 && !ifwg_is_stats_row) {
 				char ch = (char) dumb_row(r)[c].c;
-				if (ch >= 32 && ch <= 126)
+				bool is_win1 = dumb_row(r)[c].win != 0;
+				/* Window 0 is the main story window by Z-machine
+				 * convention, but Beyond Zork sometimes routes ordinary
+				 * descriptive prose through the same window (1+) as its
+				 * "sensory" ascii-art icon, which overlaps these same
+				 * physical rows in this flat single-buffer screen model.
+				 * Excluding all of window 1+ here drops that prose
+				 * entirely. The icon's own glyphs are reliably
+				 * identifiable by character class (see
+				 * ifwg_is_icon_glyph / ifwg_dumb_get_sensory_panel), so
+				 * only those specific characters are excluded from the
+				 * description — everything else in window 1+ (i.e. the
+				 * prose) stays. Runs of window-1 spaces (the icon's own
+				 * blanked-out padding around its glyphs) are collapsed to
+				 * one, since they'd otherwise leave a wide gap in the
+				 * middle of a sentence that shares the row with the icon. */
+				bool is_win1_space = is_win1 && ch == ' ';
+				bool skip = (is_win1 && ifwg_is_icon_glyph (ch)) ||
+				            (is_win1_space && ifwg_prev_win1_space);
+				if (!skip &&
+				    dumb_row(r)[c].font != GRAPHICS_FONT &&
+				    !(dumb_row(r)[c].style & PICTURE_STYLE) &&
+				    ch >= 32 && ch <= 126)
 					ifwg_desc_append (ch);
+				ifwg_prev_win1_space = is_win1_space;
 			}
 #endif
 		}
 #if defined(IFWG) || defined(IFWG_MONITOR)
-		if (r > 0)
+		if (r > 0 && !ifwg_is_stats_row)
 			ifwg_desc_append ('\n');
 #endif
 	}
@@ -742,6 +1070,15 @@ static void dumb_set_cell(int row, int col, cell_t c)
 {
 	cell_t test;
 	bool result = FALSE;
+
+	/* os_set_cursor only ever clamped the row, never the column, so a
+	 * game driving the cursor to an out-of-range column would silently
+	 * write into the next row's cells or past the end of the malloc'd
+	 * screen_data/screen_changes buffers. Drop out-of-bounds writes
+	 * instead of touching memory outside the grid. */
+	if (row < 0 || row >= z_header.screen_rows ||
+	    col < 0 || col >= z_header.screen_cols)
+		return;
 
 	test = dumb_row(row)[col];
 
@@ -790,6 +1127,15 @@ static bool is_blank(cell_t c)
 static void dumb_copy_cell(int dest_row, int dest_col,
 			int src_row, int src_col)
 {
+	/* Same out-of-bounds hazard as dumb_set_cell — os_scroll_area's
+	 * top/left/bottom/right come straight from the game, and this
+	 * direct array-index path has no bounds check of its own. */
+	if (dest_row < 0 || dest_row >= z_header.screen_rows ||
+	    dest_col < 0 || dest_col >= z_header.screen_cols ||
+	    src_row  < 0 || src_row  >= z_header.screen_rows ||
+	    src_col  < 0 || src_col  >= z_header.screen_cols)
+		return;
+
 	dumb_row(dest_row)[dest_col] = dumb_row(src_row)[src_col];
 	dumb_changes_row(dest_row)[dest_col] = dumb_changes_row(src_row)[src_col];
 } /* dumb_copy_cell */
@@ -801,6 +1147,36 @@ static void dumb_copy_cell(int dest_row, int dest_col,
  */
 void os_display_char (zchar c)
 {
+	/* When output isn't buffered (see print_char/buffer.c), font and style
+	 * changes reach here as an inline ZC_NEW_FONT/ZC_NEW_STYLE byte
+	 * followed by its argument, one os_display_char call per byte — unlike
+	 * os_display_string, which gets the whole string at once and can just
+	 * advance its own index past the argument, this function only ever
+	 * sees one zchar per call, so the only way to know "this byte is an
+	 * argument, not text" is to remember it from the previous call. Without
+	 * this, the escape byte and its argument silently vanish (neither is a
+	 * printable character so os_display_char drops them either way) but
+	 * the font/style change itself never happens — so a game switching to
+	 * GRAPHICS_FONT to draw a glyph and back never actually leaves
+	 * GRAPHICS_FONT tagged on that glyph's cell, defeating the filtering
+	 * that's supposed to blank it (see ifwg_dumb_get_full_screen). */
+	static zchar pending_escape = 0;
+
+	if (pending_escape == ZC_NEW_FONT) {
+		os_set_font ((int) c);
+		pending_escape = 0;
+		return;
+	}
+	if (pending_escape == ZC_NEW_STYLE) {
+		os_set_text_style ((int) c);
+		pending_escape = 0;
+		return;
+	}
+	if (c == ZC_NEW_FONT || c == ZC_NEW_STYLE) {
+		pending_escape = c;
+		return;
+	}
+
 	if (c >= ZC_LATIN1_MIN) {
 		if (plain_ascii) {
 			char *ptr = latin1_to_ascii + 4 * (c - ZC_LATIN1_MIN);
@@ -830,7 +1206,7 @@ void os_display_string (const zchar *s)
 
 	while ((c = *s++) != 0) {
 		if (c == ZC_NEW_FONT)
-			s++;
+			os_set_font(*s++);
 		else if (c == ZC_NEW_STYLE)
 			os_set_text_style(*s++);
 		else {
@@ -881,6 +1257,20 @@ int os_font_data(int font, int *height, int *width)
 		*width = 1;
 		return 1;
 	}
+	/* GRAPHICS_FONT (used by some V5+ games, e.g. Beyond Zork's stat
+	 * meters, to draw bar/slider segments) was reported unavailable,
+	 * which meant the caller in common/screen.c never actually called
+	 * os_set_font(GRAPHICS_FONT) — so current_font never became 3, and
+	 * we had no way to tell "this text is really meter glyphs" from
+	 * real prose. Report it as available (still just 1x1 "cell" sized,
+	 * we don't render real graphics) so the font switch goes through and
+	 * gets tracked; ifwg_dumb_get_full_screen then blanks those cells
+	 * instead of showing raw glyph codes as garbled ASCII letters. */
+	if (font == GRAPHICS_FONT) {
+		*height = 1;
+		*width = 1;
+		return 1;
+	}
 	return 0;
 } /* os_font_data */
 
@@ -907,8 +1297,9 @@ void os_beep (int volume)
 } /* os_beep */
 
 
+void os_set_font (int x) { current_font = x; }
+
 /* To make the common code happy */
-void os_set_font (int UNUSED (x)) {}
 void os_init_sound(void) {}
 void os_prepare_sample (int UNUSED (a)) {}
 void os_finish_with_sample (int UNUSED (a)) {}
@@ -952,6 +1343,12 @@ void os_set_cursor(int row, int col)
 	cursor_row = row - 1; cursor_col = col - 1;
 	if (cursor_row >= z_header.screen_rows)
 		cursor_row = z_header.screen_rows - 1;
+	if (cursor_row < 0)
+		cursor_row = 0;
+	if (cursor_col >= z_header.screen_cols)
+		cursor_col = z_header.screen_cols - 1;
+	if (cursor_col < 0)
+		cursor_col = 0;
 } /* os_set_cursor */
 
 

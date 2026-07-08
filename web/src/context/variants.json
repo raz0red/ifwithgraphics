@@ -1,7 +1,5 @@
 {
   "planetfall": {
-    "Reactor Lobby": [
-      { "match": "immaculate", "title": "Reactor Lobby (Immaculate)" }
-    ]
+    "Reactor Lobby": [{ "match": "immaculate", "title": "Reactor Lobby (Immaculate)" }]
   }
 }

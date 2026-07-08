@@ -13,6 +13,8 @@ version: "3"
 #
 # Granular lint/format:
 #   task lint            ESLint on player JS
+#   task fmt             Prettier format check on player JS
+#   task fmt:write       Auto-format player JS with Prettier
 #   task tools:fmt       gofmt check on all Go under tools/
 #   task tools:lint      go vet + staticcheck on all Go under tools/
 #   task zcompare        Compare Z-machine rooms to bfs.json
@@ -33,9 +35,10 @@ tasks:
     cmd: task --list
 
   validate:
-    desc: Run all linters and format checks (JS ESLint + Go fmt/vet/staticcheck)
+    desc: Run all linters and format checks (JS ESLint + Prettier + Go fmt/vet/staticcheck)
     cmds:
       - task: lint
+      - task: fmt
       - task: tools:fmt
       - task: tools:lint
 
@@ -112,6 +115,14 @@ tasks:
   lint:
     desc: Run ESLint on player JS
     cmd: "{{.NODE_RUN}} sh -c 'npm install --silent && npm run lint'"
+
+  fmt:
+    desc: Check Prettier formatting on player JS (fail if any file needs it)
+    cmd: "{{.NODE_RUN}} sh -c 'npm install --silent && npm run fmt'"
+
+  fmt:write:
+    desc: Auto-format player JS with Prettier
+    cmd: "{{.NODE_RUN}} sh -c 'npm install --silent && npm run fmt:write'"
 
   tools:fmt:
     desc: Check Go formatting under tools/ (fail if any file needs gofmt)

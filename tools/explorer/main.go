@@ -858,7 +858,7 @@ func (e *Explorer) parseWalkthrough(r io.Reader) ([]walkthroughCommand, error) {
 				explicitTarget = ""
 				labelSection = true
 			} else if isWalkthroughChapterComment(line) {
-				sectionName = ""
+				sectionName = line
 				sectionRoom = ""
 				explicitTarget = ""
 				labelSection = false
@@ -907,7 +907,13 @@ func startsWithUppercaseASCII(s string) bool {
 
 func isWalkthroughChapterComment(line string) bool {
 	line = strings.TrimSpace(line)
-	return line != "" && line == strings.ToUpper(line)
+	if line == "" {
+		return false
+	}
+	if strings.HasPrefix(strings.ToLower(line), "step 3") {
+		return true
+	}
+	return line == strings.ToUpper(line)
 }
 
 func walkthroughRoomLabel(line string) string {
@@ -1258,6 +1264,20 @@ func walkthroughSectionRoom(line string) string {
 	switch {
 	case name == "":
 		return ""
+	case strings.HasPrefix(lowerName, "if "):
+		return ""
+	case strings.HasPrefix(lowerName, "both"):
+		return ""
+	case strings.HasPrefix(lowerName, "aboard "):
+		return ""
+	case strings.HasPrefix(lowerName, "back to "):
+		return ""
+	case strings.HasPrefix(lowerName, "board "):
+		return ""
+	case strings.HasPrefix(lowerName, "follow "):
+		return ""
+	case strings.HasPrefix(lowerName, "step "):
+		return ""
 	case strings.Contains(lowerName, "area"):
 		return ""
 	case strings.Contains(lowerName, "section"):
@@ -1529,6 +1549,7 @@ func main() {
 	loopMode := flag.Bool("loop", false, "run repeatedly; only write output when room count improves")
 	traceWalkthrough := flag.Bool("trace-walkthrough", false, "log walkthrough section/command room transitions")
 	probeShuttle := flag.Bool("probe-shuttle", false, "probe Planetfall Alfie shuttle timings and exit")
+	flag.StringVar(&cutthroatsBranch, "cutthroats-branch", "", "Cutthroats walkthrough branch to keep: sao or leviathan")
 	flag.Parse()
 
 	story := flag.Arg(0)

@@ -369,19 +369,35 @@ static char read_key_buffer[INPUT_BUFFER_SIZE];
 /* Similar.  Useful for using function key abbreviations.  */
 static char read_line_buffer[INPUT_BUFFER_SIZE];
 
-void ifwg_interp_set_line_input (const char *input)
+void ifwg_interp_set_line_input (const char *input, int is_key_response)
 {
     size_t len = strlen (input);
     if (len > INPUT_BUFFER_SIZE - 2) len = INPUT_BUFFER_SIZE - 2;
-    memcpy (read_line_buffer, input, len);
-    read_line_buffer[len]     = ZC_RETURN;
-    read_line_buffer[len + 1] = '\0';
-    /* If os_read_key is waiting (key buffer empty), prime it with the first
-       char of input so it doesn't yield again on the next interpret() call.
-       Use ZC_RETURN (\r) as the default "any key" when input is empty. */
-    if (read_key_buffer[0] == '\0') {
-        read_key_buffer[0] = (input[0] != '\0') ? (char)input[0] : ZC_RETURN;
-        read_key_buffer[1] = '\0';
+
+    /* JS always answers exactly what the last screen yield asked for —
+     * isKeyPress true means it's replying to os_read_key with one keypress,
+     * false means it's replying to os_read_line with a full line. Populate
+     * only the matching buffer.
+     *
+     * Previously this unconditionally primed BOTH buffers on every call
+     * (read_line_buffer with "<input>\r", plus read_key_buffer's first
+     * char if empty) — a leftover from vanilla dumb-frotz's real-terminal
+     * typeahead feature, where a person could queue several keys/lines
+     * ahead of time on one input. Games that read one key to check for a
+     * special character (e.g. '^' to back up a field) and then fall
+     * through to a normal line read for the rest of the field — Bureaucracy
+     * does this for every form field — would find read_line_buffer already
+     * "typed" with just that one character terminated by a return, and
+     * submit it as a complete one-character line immediately, without ever
+     * asking JS for the rest of what the player typed. That silently
+     * completed whole form fields after a single keystroke. */
+    if (is_key_response) {
+        memcpy (read_key_buffer, input, len);
+        read_key_buffer[len] = '\0';
+    } else {
+        memcpy (read_line_buffer, input, len);
+        read_line_buffer[len]     = ZC_RETURN;
+        read_line_buffer[len + 1] = '\0';
     }
 }
 

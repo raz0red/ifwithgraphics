@@ -19,13 +19,16 @@ export function createImageUI(el, state, onResize) {
         const flutterAt = burstMs * (0.35 + Math.random() * 0.4);
         ledTimer = setTimeout(() => {
           el.diskLed.classList.remove("active");
-          ledTimer = setTimeout(() => {
-            el.diskLed.classList.add("active");
-            ledTimer = setTimeout(() => {
-              el.diskLed.classList.remove("active");
-              ledTimer = setTimeout(cycle, 180 + Math.random() * 550);
-            }, burstMs - flutterAt);
-          }, 18 + Math.random() * 35);
+          ledTimer = setTimeout(
+            () => {
+              el.diskLed.classList.add("active");
+              ledTimer = setTimeout(() => {
+                el.diskLed.classList.remove("active");
+                ledTimer = setTimeout(cycle, 180 + Math.random() * 550);
+              }, burstMs - flutterAt);
+            },
+            18 + Math.random() * 35
+          );
         }, flutterAt);
       } else {
         ledTimer = setTimeout(() => {
@@ -49,24 +52,26 @@ export function createImageUI(el, state, onResize) {
   function showPlaceholder(label, roomTitle) {
     stopDiskAnimation();
     el.sceneImg.removeAttribute("src");
-    el.sceneImg.hidden                = true;
+    el.sceneImg.hidden = true;
     el.scenePlaceholder.style.display = "flex";
 
     const showTitle = !label && roomTitle;
     el.scenePlaceholder.classList.toggle("no-image", !!showTitle);
     el.placeholderLabel.textContent = label || "";
-    el.roomTitleLabel.textContent   = showTitle ? roomTitle : "";
+    el.roomTitleLabel.textContent = showTitle ? roomTitle : "";
 
     if (label === "LOADING IMAGE") startDiskAnimation();
   }
 
   function revealWithBlinds() {
-    const STRIPS  = 10;
+    const STRIPS = 10;
     const overlay = document.createElement("div");
-    overlay.style.cssText = "position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;pointer-events:none;";
+    overlay.style.cssText =
+      "position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;pointer-events:none;";
     for (let i = 0; i < STRIPS; i++) {
       const s = document.createElement("div");
-      s.style.cssText = "flex:1;background:#000;transform-origin:center;transition:transform 1.2s ease-in-out;";
+      s.style.cssText =
+        "flex:1;background:#000;transform-origin:center;transition:transform 1.2s ease-in-out;";
       overlay.appendChild(s);
     }
     el.sceneWrap.appendChild(overlay);
@@ -89,7 +94,10 @@ export function createImageUI(el, state, onResize) {
       });
     };
     el.sceneImg.onerror = () => {
-      const title = el.statusRoom.textContent.replace(/\s+(Time|Score|Moves|Turns):.*/gi, "").replace(/\s+/g, " ").trim();
+      const title = el.statusRoom.textContent
+        .replace(/\s+(Time|Score|Moves|Turns):.*/gi, "")
+        .replace(/\s+/g, " ")
+        .trim();
       showPlaceholder("", title);
     };
     el.sceneImg.src = url;
@@ -103,6 +111,6 @@ export function createImageUI(el, state, onResize) {
     showImage,
     showPlaceholder,
     startDiskAnimation,
-    stopDiskAnimation,
+    stopDiskAnimation
   };
 }

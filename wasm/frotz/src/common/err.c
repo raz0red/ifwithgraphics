@@ -106,6 +106,18 @@ void _runtime_error(int errnum, bool repeat)
 	if (errnum <= 0 || errnum > ERR_NUM_ERRORS)
 		return;
 
+#ifdef IFWG
+	/* IFWG never loads Z-machine picture/sound resources — the interpreter
+	 * is text-only by design (rooms get their own separately AI-generated
+	 * images instead of a V6 game's original inline art). Every V6 game
+	 * (Zork Zero, Shogun, Journey) calls @draw_picture/@play_sound
+	 * constantly, so this isn't a bug to report — it would otherwise print
+	 * "picture resources are missing" straight into the visible game text
+	 * for every such game. */
+	if (errnum == ERR_SOUND_MISSING || errnum == ERR_PICTURE_MISSING)
+		return;
+#endif
+
 	wasfirst = (error_count[errnum - 1] == 0);
 	error_count[errnum - 1]++;
 

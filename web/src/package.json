@@ -4,11 +4,14 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "lint":  "eslint .",
+    "lint": "eslint .",
+    "fmt": "prettier --check .",
+    "fmt:write": "prettier --write .",
     "build": "esbuild js/index.js --bundle --format=esm --minify --outfile=dist/ifwg-player.js"
   },
   "devDependencies": {
     "esbuild": "^0.25.0",
-    "eslint":  "^7.32.0"
+    "eslint": "^7.32.0",
+    "prettier": "^3.3.0"
   }
 }

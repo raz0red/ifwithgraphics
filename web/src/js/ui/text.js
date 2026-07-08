@@ -5,72 +5,88 @@ export function createTextUI(el, state, showCursor) {
      page lands cleanly on a line boundary with no partial lines visible. */
   function calibrateTextHeight() {
     el.sceneText.style.height = "";
-    const cs    = getComputedStyle(el.sceneText);
-    const pt    = parseFloat(cs.paddingTop) || 0;
+    const cs = getComputedStyle(el.sceneText);
+    const pt = parseFloat(cs.paddingTop) || 0;
     const lineH = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.4;
-    const n     = Math.max(1, Math.floor((el.sceneText.clientHeight - pt) / lineH));
+    const n = Math.max(1, Math.floor((el.sceneText.clientHeight - pt) / lineH));
     el.sceneText.style.height = `${Math.round(pt + n * lineH)}px`;
   }
 
-  /* Three display states:
-     1. More content below         → "PRESS SPACE TO CONTINUE"
-     2. awaitingKeyPress at bottom → "PRESS ANY KEY TO CONTINUE"
-     3. contentCompleted           → prompt (sticky after reaching bottom) */
+  /* Four display states:
+     1. awaitingKeyPress           → real inline prompt, or "PRESS ANY KEY TO CONTINUE"
+     2. More content below         → "PRESS SPACE TO CONTINUE"
+     3. contentCompleted           → prompt (sticky after reaching bottom)
+     awaitingKeyPress is checked unconditionally, independent of scroll
+     position: these screens (menus, forms) redraw on every keystroke and the
+     "current field" lives only in the small prompt bar, not in the scrollable
+     body — gating this on scroll position ("are we at the bottom of the body
+     text") makes input capture depend on where the body happens to be
+     scrolled, which has nothing to do with whether the game wants a key. */
   function updateUI() {
     if (state.sliding || state.scrollAnimating) return;
-    const atBottom = el.sceneText.scrollHeight <= el.sceneText.scrollTop + el.sceneText.clientHeight + 2;
+
+    if (state.awaitingKeyPress) {
+      /* cmdPrompt already holds the game's own inline prompt (e.g. "Your
+         sex (M/F):") when one exists — hiding it and showing only a generic
+         "press any key" banner meant the player had no idea a keystroke was
+         about to be validated as real field data, not just a pause. Show
+         the real prompt whenever there is one; fall back to the generic
+         banner only when the game gave us nothing more specific than ">". */
+      const hasRealPrompt = el.cmdPrompt.textContent && el.cmdPrompt.textContent !== ">";
+      el.continueHint.textContent = "PRESS ANY KEY TO CONTINUE";
+      el.continueHint.hidden = hasRealPrompt;
+      el.cmdPrompt.hidden = !hasRealPrompt;
+      el.cmdDisplay.hidden = true;
+      showCursor(false);
+      el.cmdInput.disabled = true;
+      return;
+    }
+
+    const atBottom =
+      el.sceneText.scrollHeight <= el.sceneText.scrollTop + el.sceneText.clientHeight + 2;
 
     if (atBottom) {
-      if (state.awaitingKeyPress) {
-        el.continueHint.textContent = "PRESS ANY KEY TO CONTINUE";
-        el.continueHint.hidden = false;
-        el.cmdPrompt.hidden  = true;
-        el.cmdDisplay.hidden = true;
-        showCursor(false);
-        el.cmdInput.disabled = true;
-        return;
-      }
-      state.contentCompleted    = true;
-      el.continueHint.hidden    = true;
-      el.cmdPrompt.hidden       = false;
-      el.cmdDisplay.hidden      = false;
+      state.contentCompleted = true;
+      el.continueHint.hidden = true;
+      el.cmdPrompt.hidden = false;
+      el.cmdDisplay.hidden = false;
       showCursor(true);
-      el.cmdInput.disabled      = false;
+      el.cmdInput.disabled = false;
       el.cmdInput.focus();
       return;
     }
 
     if (state.contentCompleted) {
       el.continueHint.hidden = true;
-      el.cmdPrompt.hidden    = false;
-      el.cmdDisplay.hidden   = false;
+      el.cmdPrompt.hidden = false;
+      el.cmdDisplay.hidden = false;
       showCursor(true);
-      el.cmdInput.disabled   = false;
+      el.cmdInput.disabled = false;
       el.cmdInput.focus();
       return;
     }
 
     el.continueHint.textContent = "PRESS SPACE TO CONTINUE";
-    el.continueHint.hidden      = false;
-    el.cmdPrompt.hidden         = true;
-    el.cmdDisplay.hidden        = true;
+    el.continueHint.hidden = false;
+    el.cmdPrompt.hidden = true;
+    el.cmdDisplay.hidden = true;
     showCursor(false);
-    el.cmdInput.disabled        = true;
+    el.cmdInput.disabled = true;
   }
 
   /* Scroll forward one page, snapped to line boundaries. */
   function scrollDownAnimated() {
     if (state.scrollAnimating || state.sliding) return;
 
-    const cs    = getComputedStyle(el.sceneText);
-    const pt    = parseFloat(cs.paddingTop) || 0;
+    const cs = getComputedStyle(el.sceneText);
+    const pt = parseFloat(cs.paddingTop) || 0;
     const lineH = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.4;
-    const H     = el.sceneText.clientHeight;
-    const n     = Math.max(1, Math.floor((H - pt) / lineH));
+    const H = el.sceneText.clientHeight;
+    const n = Math.max(1, Math.floor((H - pt) / lineH));
     const pageH = n * lineH;
 
     const currentPage = Math.round(el.sceneText.scrollTop / pageH);
-    const targetTop   = Math.min(
+    const targetTop = Math.min(
       Math.round((currentPage + 1) * pageH),
       el.sceneText.scrollHeight - H
     );
@@ -81,12 +97,12 @@ export function createTextUI(el, state, showCursor) {
       return;
     }
 
-    state.scrollAnimating  = true;
+    state.scrollAnimating = true;
     el.continueHint.hidden = true;
 
-    const startTop  = el.sceneText.scrollTop;
-    const duration  = n * 160;
-    let   startTime = null;
+    const startTop = el.sceneText.scrollTop;
+    const duration = n * 160;
+    let startTime = null;
 
     function step(ts) {
       if (!startTime) startTime = ts;
@@ -96,7 +112,7 @@ export function createTextUI(el, state, showCursor) {
         requestAnimationFrame(step);
       } else {
         el.sceneText.scrollTop = targetTop;
-        state.scrollAnimating  = false;
+        state.scrollAnimating = false;
         updateUI();
       }
     }
@@ -106,23 +122,26 @@ export function createTextUI(el, state, showCursor) {
   /* Slide new content in from below. curPane captures the currently visible
      portion (respecting scrollTop), nxtPane shows the incoming text. */
   function slideToContent(newText) {
+    /* Don't touch state.awaitingKeyPress here — onRoomEntered just set it from
+       the engine's actual isKeyPress signal for this new content. Clobbering it
+       to false meant "press any key" (@read_char) moments always got downgraded
+       to a normal line-input prompt as soon as any prior screen had rendered. */
     state.contentCompleted = false;
-    state.awaitingKeyPress = false;
-    state.sliding          = true;
+    state.sliding = true;
     showCursor(false);
     el.continueHint.hidden = true;
-    el.cmdPrompt.hidden    = true;
-    el.cmdDisplay.hidden   = true;
-    el.cmdInput.disabled   = true;
+    el.cmdPrompt.hidden = true;
+    el.cmdDisplay.hidden = true;
+    el.cmdInput.disabled = true;
 
-    const cs       = getComputedStyle(el.sceneText);
-    const H        = el.sceneText.clientHeight;
-    const lineH    = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.4;
+    const cs = getComputedStyle(el.sceneText);
+    const H = el.sceneText.clientHeight;
+    const lineH = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.4;
     const duration = Math.max(1, Math.floor(H / lineH)) * 160;
 
     const rect = el.sceneText.getBoundingClientRect();
-    const blw  = parseFloat(cs.borderLeftWidth) || 0;
-    const btw  = parseFloat(cs.borderTopWidth)  || 0;
+    const blw = parseFloat(cs.borderLeftWidth) || 0;
+    const btw = parseFloat(cs.borderTopWidth) || 0;
 
     const clip = document.createElement("div");
     clip.style.cssText = [
@@ -149,16 +168,16 @@ export function createTextUI(el, state, showCursor) {
     ].join(";");
 
     const scrollOff = el.sceneText.scrollTop;
-    const curPane   = document.createElement("div");
+    const curPane = document.createElement("div");
     curPane.style.cssText = `background:#000;height:${H}px;overflow:hidden;`;
-    const curInner  = document.createElement("div");
+    const curInner = document.createElement("div");
     curInner.style.cssText = `${textStyle};height:auto;margin-top:-${scrollOff}px;`;
-    curInner.textContent   = el.sceneTextInner.textContent;
+    curInner.textContent = el.sceneTextInner.textContent;
     curPane.appendChild(curInner);
 
     const nxtPane = document.createElement("div");
     nxtPane.style.cssText = `background:#000;height:${H}px;overflow:hidden;${textStyle}`;
-    nxtPane.textContent   = newText;
+    nxtPane.textContent = newText;
 
     const slide = document.createElement("div");
     slide.appendChild(curPane);
@@ -167,7 +186,7 @@ export function createTextUI(el, state, showCursor) {
     document.body.appendChild(clip);
 
     el.sceneTextInner.textContent = newText;
-    el.sceneText.scrollTop        = 0;
+    el.sceneText.scrollTop = 0;
 
     function finish() {
       document.body.removeChild(clip);
@@ -193,18 +212,25 @@ export function createTextUI(el, state, showCursor) {
   el.sceneText.addEventListener("scroll", updateUI);
 
   /* Drive wheel/trackpad scroll ourselves — overflow:hidden blocks native scroll. */
-  el.sceneText.addEventListener("wheel", e => {
-    e.preventDefault();
-    if (state.scrollAnimating || state.sliding) return;
-    let delta = e.deltaY;
-    if (e.deltaMode === 1) delta *= 20;
-    if (e.deltaMode === 2) delta *= el.sceneText.clientHeight;
-    el.sceneText.scrollTop = Math.max(0, Math.min(
-      el.sceneText.scrollTop + delta,
-      el.sceneText.scrollHeight - el.sceneText.clientHeight
-    ));
-    updateUI();
-  }, { passive: false });
+  el.sceneText.addEventListener(
+    "wheel",
+    (e) => {
+      e.preventDefault();
+      if (state.scrollAnimating || state.sliding) return;
+      let delta = e.deltaY;
+      if (e.deltaMode === 1) delta *= 20;
+      if (e.deltaMode === 2) delta *= el.sceneText.clientHeight;
+      el.sceneText.scrollTop = Math.max(
+        0,
+        Math.min(
+          el.sceneText.scrollTop + delta,
+          el.sceneText.scrollHeight - el.sceneText.clientHeight
+        )
+      );
+      updateUI();
+    },
+    { passive: false }
+  );
 
   return {
     calibrateTextHeight,
