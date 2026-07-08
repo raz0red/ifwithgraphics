@@ -10,7 +10,7 @@ export function createInputUI(el, state, onSend) {
   }
 
   function setValue(v) {
-    el.cmdInput.value         = v;
+    el.cmdInput.value = v;
     el.cmdDisplay.textContent = v.toUpperCase();
   }
 
@@ -26,6 +26,13 @@ export function createInputUI(el, state, onSend) {
       historyIndex = -1;
       draft = "";
       onSend();
+      /* onSend() -> engine.step() runs synchronously and can land the game
+         on a fresh @read_char prompt, flipping state.awaitingKeyPress to
+         true before this same keydown finishes bubbling to document's
+         listener — which would then replay this same Enter as the answer
+         to that brand-new prompt. Stop it here so one keystroke is one
+         action. */
+      e.stopPropagation();
       return;
     }
     if (e.key === "ArrowUp") {

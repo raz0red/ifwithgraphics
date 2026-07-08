@@ -1,4 +1,4 @@
-import { DB }   from "./db.js";
+import { DB } from "./db.js";
 import { Game } from "./game.js";
 
 /* Resolved relative to this module's own location, not the hosting page —
@@ -6,11 +6,15 @@ import { Game } from "./game.js";
 const WASM_BASE = new URL("../wasm/", import.meta.url).href;
 
 export class IFWGConfig {
-  getWasmPath()                    { return WASM_BASE; }
-  onSave(_filename, _bytes)        {}
-  onRestore(_filename, cb)         { cb(null); }
-  onGameLoaded(_gameId, _title)    {}
-  onValidationFailed(_error)       {}
+  getWasmPath() {
+    return WASM_BASE;
+  }
+  onSave(_filename, _bytes) {}
+  onRestore(_filename, cb) {
+    cb(null);
+  }
+  onGameLoaded(_gameId, _title) {}
+  onValidationFailed(_error, _title, _options) {}
 }
 
 /* Save-game bytes are tied to the exact compiled release (Z-machine memory
@@ -26,22 +30,26 @@ export class StandaloneConfig extends IFWGConfig {
   onSave(filename, bytes) {
     const key = saveKey(filename);
     console.info("[IFWG] onSave — key:%s bytes:%o", key, bytes?.length);
-    DB.put(key, bytes).then(() => {
-      console.info("[IFWG] onSave — IndexedDB put OK key:%s", key);
-    }).catch(e => {
-      console.warn("[IFWG] onSave — IndexedDB put FAILED", e);
-    });
+    DB.put(key, bytes)
+      .then(() => {
+        console.info("[IFWG] onSave — IndexedDB put OK key:%s", key);
+      })
+      .catch((e) => {
+        console.warn("[IFWG] onSave — IndexedDB put FAILED", e);
+      });
   }
 
   onRestore(filename, cb) {
     const key = saveKey(filename);
     console.info("[IFWG] onRestore — looking up key:%s", key);
-    DB.get(key).then(bytes => {
-      console.info("[IFWG] onRestore — found:%o bytes:%o", !!bytes, bytes?.length);
-      cb(bytes || null);
-    }).catch(e => {
-      console.warn("[IFWG] onRestore — IndexedDB get FAILED", e);
-      cb(null);
-    });
+    DB.get(key)
+      .then((bytes) => {
+        console.info("[IFWG] onRestore — found:%o bytes:%o", !!bytes, bytes?.length);
+        cb(bytes || null);
+      })
+      .catch((e) => {
+        console.warn("[IFWG] onRestore — IndexedDB get FAILED", e);
+        cb(null);
+      });
   }
 }

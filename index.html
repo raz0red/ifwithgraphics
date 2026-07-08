@@ -51,9 +51,9 @@
       let lastFile = null;
 
       class Config extends StandaloneConfig {
-        onValidationFailed(error) {
+        onValidationFailed(error, title, options) {
           launcher.hidden = false;
-          panel.showError(error);
+          panel.showError(error, title, options);
         }
       }
 

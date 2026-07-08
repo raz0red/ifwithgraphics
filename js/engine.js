@@ -1,7 +1,7 @@
 /* Suppress Emscripten's native browser prompt for stdin fgetc (os_read_key).
    Returning "" feeds '\n' which most games accept as a keypress. */
 const _np = window.prompt;
-window.prompt = (m, d) => m === "Input: " ? "" : _np?.call(window, m, d) ?? "";
+window.prompt = (m, d) => (m === "Input: " ? "" : (_np?.call(window, m, d) ?? ""));
 
 export function createEngine(wasmPath, onRoomEntered, onSave) {
   let moduleInstance = null;
@@ -12,7 +12,7 @@ export function createEngine(wasmPath, onRoomEntered, onSave) {
   window.enteredRoom = onRoomEntered;
 
   /* Called by EM_ASM in fastmem.c z_save after the save file is written. */
-  window.ifwgOnSave = filename => {
+  window.ifwgOnSave = (filename) => {
     try {
       console.info("[IFWG] ifwgOnSave — filename:%o", filename);
       const bytes = moduleInstance.FS.readFile(filename);
@@ -32,10 +32,12 @@ export function createEngine(wasmPath, onRoomEntered, onSave) {
 
   function init() {
     return createIfwgModule({
-      locateFile: p => wasmPath + p,
-      print:      () => {},
-      printErr:   () => {}
-    }).then(mod => { moduleInstance = mod; });
+      locateFile: (p) => wasmPath + p,
+      print: () => {},
+      printErr: () => {}
+    }).then((mod) => {
+      moduleInstance = mod;
+    });
   }
 
   function start(storyPath) {
@@ -45,21 +47,27 @@ export function createEngine(wasmPath, onRoomEntered, onSave) {
     moduleInstance._free(ptr);
   }
 
-  function step(command) {
+  function step(command, isKeyResponse) {
     if (!moduleInstance) return;
     const ptr = writeString(command);
-    moduleInstance._ifwg_interp_step(ptr);
+    moduleInstance._ifwg_interp_step(ptr, isKeyResponse ? 1 : 0);
     moduleInstance._free(ptr);
   }
 
   function writeFile(path, bytes) {
-    try { moduleInstance.FS.mkdir("/input"); } catch (_) { /* already exists */ }
+    try {
+      moduleInstance.FS.mkdir("/input");
+    } catch (_) {
+      /* already exists */
+    }
     moduleInstance.FS.writeFile(path, bytes);
   }
 
   function writeSave(path, bytes) {
     console.info("[IFWG] writeSave — path:%o bytes:%o", path, bytes?.length);
-    try { moduleInstance.FS.writeFile(path, bytes); } catch (e) {
+    try {
+      moduleInstance.FS.writeFile(path, bytes);
+    } catch (e) {
       console.warn("[IFWG] writeSave failed:", e);
     }
   }

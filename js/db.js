@@ -1,15 +1,18 @@
 const DB_NAME = "ifwg";
-const DB_VER  = 1;
-const STORE   = "data";
+const DB_VER = 1;
+const STORE = "data";
 let _db = null;
 
 function open() {
   if (_db) return Promise.resolve(_db);
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, DB_VER);
-    req.onupgradeneeded = e => e.target.result.createObjectStore(STORE);
-    req.onsuccess = e => { _db = e.target.result; resolve(_db); };
-    req.onerror   = e => reject(e.target.error);
+    req.onupgradeneeded = (e) => e.target.result.createObjectStore(STORE);
+    req.onsuccess = (e) => {
+      _db = e.target.result;
+      resolve(_db);
+    };
+    req.onerror = (e) => reject(e.target.error);
   });
 }
 
@@ -18,7 +21,7 @@ async function get(key) {
   return new Promise((resolve, reject) => {
     const req = db.transaction(STORE, "readonly").objectStore(STORE).get(key);
     req.onsuccess = () => resolve(req.result || null);
-    req.onerror   = e => reject(e.target.error);
+    req.onerror = (e) => reject(e.target.error);
   });
 }
 
@@ -27,7 +30,7 @@ async function put(key, value) {
   return new Promise((resolve, reject) => {
     const req = db.transaction(STORE, "readwrite").objectStore(STORE).put(value, key);
     req.onsuccess = () => resolve();
-    req.onerror   = e => reject(e.target.error);
+    req.onerror = (e) => reject(e.target.error);
   });
 }
 
