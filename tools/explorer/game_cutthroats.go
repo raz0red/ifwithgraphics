@@ -20,6 +20,10 @@ func (cutthroatsGame) RepairWalkthrough(commands []walkthroughCommand) []walkthr
 	if branch == "sao vera" {
 		branch = "sao"
 	}
+	coordinateBranch := branch
+	if branch == "sao-ocean" {
+		branch = "sao"
+	}
 	if branch != "sao" && branch != "leviathan" {
 		return commands
 	}
@@ -29,11 +33,32 @@ func (cutthroatsGame) RepairWalkthrough(commands []walkthroughCommand) []walkthr
 	rewroteMcGintyWindow := false
 	answeredMcGintyWait := false
 	answeredPeteWait := false
+	skippingMcGintyBreakin := false
+	injectedBoatCoordinates := false
+	insertedPostCoordinateBoatHandoff := false
+	skippingPostCoordinateBoatHandoff := false
+	leviathanAfterGearGetAll := false
+	leviathanDivesAfterGear := 0
+	saoMaryMargaretSouths := 0
 	pointLookoutSectionSEs := 0
 	for _, wt := range commands {
 		command := cutthroatsNormalizedCommand(wt.Command)
+		sectionLower := strings.ToLower(wt.SectionName)
 		if !cutthroatsKeepBranchCommand(wt, branch) {
 			continue
+		}
+		if skippingPostCoordinateBoatHandoff {
+			if strings.Contains(sectionLower, "both") {
+				continue
+			}
+			skippingPostCoordinateBoatHandoff = false
+		}
+		if skippingMcGintyBreakin {
+			if command == "go east" {
+				skippingMcGintyBreakin = false
+			} else {
+				continue
+			}
 		}
 		if command == "wait" && answeredPeteWait {
 			answeredPeteWait = false
@@ -51,14 +76,8 @@ func (cutthroatsGame) RepairWalkthrough(commands []walkthroughCommand) []walkthr
 				rewroteMcGintyWindow = false
 			}
 		}
-		if !rewroteMcGintyWindow && command == "look through window" && cutthroatsIsMcGintySection(wt.SectionName) {
-			commands := []string{"look through window"}
-			for _, command := range commands {
-				extra := wt
-				extra.Command = command
-				repaired = append(repaired, extra)
-			}
-			rewroteMcGintyWindow = true
+		if branch == "leviathan" && !rewroteMcGintyWindow && command == "look through window" && cutthroatsIsMcGintySection(wt.SectionName) {
+			skippingMcGintyBreakin = true
 			continue
 		}
 		if command == "wait for mcginty" {
@@ -90,7 +109,16 @@ func (cutthroatsGame) RepairWalkthrough(commands []walkthroughCommand) []walkthr
 		}
 		if command == "wait for johnny" {
 			if strings.Contains(strings.ToLower(wt.SectionName), "both") {
-				for _, command := range []string{"wait", "yes", "wait", "wait", "wait"} {
+				for _, command := range []string{
+					"wait for johnny", "yes",
+					"wait for johnny", "yes",
+					"wait for johnny", "yes",
+					"wait for johnny", "yes",
+					"wait for johnny", "yes",
+					"wait for johnny", "yes",
+					"wait for johnny", "yes",
+					"wait for johnny", "yes",
+				} {
 					extra := wt
 					extra.Command = command
 					repaired = append(repaired, extra)
@@ -104,6 +132,33 @@ func (cutthroatsGame) RepairWalkthrough(commands []walkthroughCommand) []walkthr
 			}
 			continue
 		}
+		if injectedBoatCoordinates && !insertedPostCoordinateBoatHandoff && strings.Contains(sectionLower, "both") {
+			for _, command := range cutthroatsPostCoordinateBoatHandoff(branch) {
+				extra := wt
+				extra.Command = command
+				repaired = append(repaired, extra)
+			}
+			insertedPostCoordinateBoatHandoff = true
+			skippingPostCoordinateBoatHandoff = true
+			continue
+		}
+		if command == "hide envelope under mattress" {
+			extra := wt
+			extra.Command = "hide envelope under bed"
+			repaired = append(repaired, extra)
+			continue
+		}
+		if cutthroatsIsCoordinateCommand(command) {
+			if !injectedBoatCoordinates {
+				for _, command := range cutthroatsCoordinateSequence(coordinateBranch) {
+					extra := wt
+					extra.Command = command
+					repaired = append(repaired, extra)
+				}
+				injectedBoatCoordinates = true
+			}
+			continue
+		}
 		if command == "se" && strings.Contains(strings.ToLower(wt.SectionName), "point lookout") {
 			pointLookoutSectionSEs++
 			if pointLookoutSectionSEs == 2 {
@@ -112,20 +167,42 @@ func (cutthroatsGame) RepairWalkthrough(commands []walkthroughCommand) []walkthr
 				repaired = append(repaired, extra)
 			}
 		}
-		if cutthroatsIsCoordinateCommand(command) {
-			continue
-		}
-		if command == "get envelope" && cutthroatsIsMcGintySection(wt.SectionName) {
-			// The envelope only remains briefly after McGinty leaves.
-		}
-		repaired = append(repaired, wt)
-		if command == "show envelope to johnny" || command == "give envelope to johnny" {
-			for _, command := range cutthroatsCoordinateCommands(branch) {
-				extra := wt
-				extra.Command = command
-				repaired = append(repaired, extra)
+		if branch == "leviathan" && strings.Contains(sectionLower, "leviathan") {
+			if command == "get all" {
+				leviathanAfterGearGetAll = true
+				leviathanDivesAfterGear = 0
+			} else if leviathanAfterGearGetAll && command == "turn on flashlight" {
+				for range 4 {
+					extra := wt
+					extra.Command = "go up"
+					repaired = append(repaired, extra)
+				}
+			} else if leviathanAfterGearGetAll && command == "dive" {
+				leviathanDivesAfterGear++
+				repaired = append(repaired, wt)
+				if leviathanDivesAfterGear == 1 {
+					extra := wt
+					extra.Command = "open canister"
+					repaired = append(repaired, extra)
+				}
+				continue
+			} else if leviathanAfterGearGetAll && command == "open canister" {
+				continue
 			}
 		}
+		if branch == "sao" && strings.Contains(sectionLower, "sao vera") && command == "go south" {
+			saoMaryMargaretSouths++
+			repaired = append(repaired, wt)
+			if saoMaryMargaretSouths == 2 {
+				for _, command := range []string{"eat stew", "drink water"} {
+					extra := wt
+					extra.Command = command
+					repaired = append(repaired, extra)
+				}
+			}
+			continue
+		}
+		repaired = append(repaired, wt)
 		if !answeredInitialDeal && command == "yes" {
 			extra := wt
 			extra.Command = "yes"
@@ -185,9 +262,35 @@ func cutthroatsIsCoordinateCommand(command string) bool {
 
 func cutthroatsCoordinateCommands(branch string) []string {
 	if branch == "leviathan" {
-		return []string{"latitude is 25", "longitude is 25"}
+		return []string{"johnny, latitude is 25", "johnny, longitude is 25"}
 	}
-	return []string{"latitude is 40", "longitude is 45"}
+	if branch == "sao-ocean" {
+		return []string{"johnny, latitude is 41", "johnny, longitude is 45"}
+	}
+	return []string{"johnny, latitude is 40", "johnny, longitude is 45"}
+}
+
+func cutthroatsCoordinateSequence(branch string) []string {
+	if branch == "sao" || branch == "sao-ocean" {
+		return cutthroatsCoordinateCommands(branch)
+	}
+
+	commands := []string{
+		"go south", "go south", "go up", "go north",
+		"wait", "wait", "wait", "wait", "wait",
+		"wait", "wait", "wait", "wait",
+	}
+	commands = append(commands, cutthroatsCoordinateCommands(branch)...)
+	commands = append(commands, "go south", "go down", "go north", "drink water", "go north")
+	return commands
+}
+
+func cutthroatsPostCoordinateBoatHandoff(_ string) []string {
+	return []string{
+		"wait", "wait", "wait", "wait",
+		"lie down", "wait", "stand",
+		"get all", "go north", "go north",
+	}
 }
 
 func (cutthroatsGame) AdjustCommand(command string, _ *frotz.Room) string {
@@ -200,14 +303,6 @@ func (cutthroatsGame) AdjustCommand(command string, _ *frotz.Room) string {
 		return "stand up"
 	case "withdraw 500":
 		return "withdraw $500"
-	case "johnny, latitude is 40":
-		return "latitude is 40"
-	case "johnny, longitude is 45":
-		return "longitude is 45"
-	case "johnny, latitude is 25":
-		return "latitude is 25"
-	case "johnny, longitude is 25":
-		return "longitude is 25"
 	default:
 		return command
 	}
@@ -222,6 +317,12 @@ func (cutthroatsGame) ContextualActions(room *frotz.Room) []string {
 	var actions []string
 	if strings.Contains(text, "on the bed") || strings.Contains(text, "you are lying") {
 		actions = append(actions, "stand up", "get up")
+	}
+	if strings.EqualFold(room.Title, "Aft Deck") && strings.Contains(text, "compressor") {
+		actions = append(actions, "dive")
+	}
+	if strings.EqualFold(room.Title, "Underwater") {
+		actions = append(actions, "open canister", "dive")
 	}
 	return actions
 }

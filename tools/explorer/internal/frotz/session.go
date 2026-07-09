@@ -28,7 +28,12 @@ type Session struct {
 }
 
 func NewSession(dfrotz, story string, rawLog io.Writer) (*Session, error) {
-	cmd := exec.Command(dfrotz, "-w", "200", "-h", "100", story)
+	args := []string{"-w", "200", "-h", "100"}
+	if seed := strings.TrimSpace(os.Getenv("IFWG_FROTZ_SEED")); seed != "" {
+		args = append(args, "-s", seed)
+	}
+	args = append(args, story)
+	cmd := exec.Command(dfrotz, args...)
 	cmd.Stderr = os.Stderr
 
 	stdin, err := cmd.StdinPipe()

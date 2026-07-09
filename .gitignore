@@ -22,6 +22,9 @@ frotz-ws/frotz/bin/
 tools/explorer/bin/
 tools/explorer/frotz/bin/
 tools/imagegen/imagegen
+wasm/ztools/source/infodump
+wasm/ztools/source/infodump_linux
+wasm/ztools/source/txd
 
 # Explorer intermediate artifacts
 bfs-saves/

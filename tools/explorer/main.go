@@ -1549,7 +1549,7 @@ func main() {
 	loopMode := flag.Bool("loop", false, "run repeatedly; only write output when room count improves")
 	traceWalkthrough := flag.Bool("trace-walkthrough", false, "log walkthrough section/command room transitions")
 	probeShuttle := flag.Bool("probe-shuttle", false, "probe Planetfall Alfie shuttle timings and exit")
-	flag.StringVar(&cutthroatsBranch, "cutthroats-branch", "", "Cutthroats walkthrough branch to keep: sao or leviathan")
+	flag.StringVar(&cutthroatsBranch, "cutthroats-branch", "", "Cutthroats walkthrough branch to keep: sao, sao-ocean, or leviathan")
 	flag.Parse()
 
 	story := flag.Arg(0)

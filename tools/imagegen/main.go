@@ -47,14 +47,69 @@ var (
 // Both files are loaded from web/src/context/ (shared with the JS player's
 // imagegen/index.js — edit those files, not this one, to add/change a game).
 type gameInfo struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
+	Title           string `json:"title"`
+	Description     string `json:"description"`
+	TitleKeyPattern string `json:"titleKeyPattern"`
+}
+
+// variantRule mirrors variants.json's per-title override rules (see
+// resolveTitle below and resolveTitle() in player/js/imagegen/index.js).
+type variantRule struct {
+	Match string `json:"match"`
+	Title string `json:"title"`
 }
 
 var (
-	games   map[string]gameInfo
-	aliases map[string]string
+	games    map[string]gameInfo
+	aliases  map[string]string
+	variants map[string]map[string][]variantRule
 )
+
+// resolveTitle is a direct port of resolveTitle() in
+// player/js/imagegen/index.js. Some rooms show meaningfully different
+// scenery depending on dynamic game state (e.g. a character's described
+// appearance changes later in the story) even though the room title never
+// changes; variants.json is an additive, manually-curated table of
+// {match, title} rules — most rooms have no entry and this is a no-op.
+func resolveTitle(gameName, title, description string) string {
+	rules := variants[gameName][title]
+	if rules == nil {
+		return title
+	}
+	lower := strings.ToLower(description)
+	for _, rule := range rules {
+		if strings.Contains(lower, strings.ToLower(rule.Match)) {
+			return rule.Title
+		}
+	}
+	return title
+}
+
+// normalizeDynamicTitle is a direct port of normalizeDynamicTitle() in
+// player/js/imagegen/index.js. Some games build the room title out of
+// static game state plus text the player themselves typed earlier
+// (Bureaucracy's outdoor locations echo the street name from the player's
+// licence-application form — "234 Sf" for a player who typed "Sf"). That
+// makes the title different per player/playthrough for what's structurally
+// the same game-assigned location, so it can never hit a shared image —
+// games.json's optional titleKeyPattern is a per-game regex with one
+// capture group around the stable part.
+func normalizeDynamicTitle(gameName, title string) string {
+	pattern := games[gameName].TitleKeyPattern
+	if pattern == "" {
+		return title
+	}
+	re, err := regexp.Compile(pattern)
+	if err != nil {
+		log.Printf("WARNING: bad titleKeyPattern for %s: %v", gameName, err)
+		return title
+	}
+	m := re.FindStringSubmatch(title)
+	if len(m) < 2 {
+		return title
+	}
+	return m[1]
+}
 
 func loadJSON(path string, v interface{}) error {
 	data, err := os.ReadFile(path)
@@ -78,20 +133,25 @@ func slugify(title string) string {
 }
 
 // buildPrompt is a direct port of buildPrompt() from player/js/imagegen/index.js.
+//
+// Different games place the room-name line in different spots relative to
+// the actual descriptive prose — before it, after it, or with more text on
+// both sides straddling it (e.g. a custom fantasy game where the title
+// showed up after the prose, or in the middle of it with more text
+// following). Stripping "from the title line onward" — the tool's earlier
+// approach — silently discards whichever side ends up holding the real
+// description. Instead, strip out just the bare room-name line itself,
+// wherever it falls, and keep everything else.
 func buildPrompt(gameID, title, description string) string {
 	roomName := strings.TrimSpace(statusSuffixRe.ReplaceAllString(title, ""))
 	roomName = whitespaceRe.ReplaceAllString(roomName, " ")
 
-	start := 0
+	desc := description
 	if roomName != "" {
 		escaped := regexp.QuoteMeta(roomName)
-		re := regexp.MustCompile(`(?i)(?:^|\n)\s*` + escaped + `\b`)
-		if loc := re.FindStringIndex(description); loc != nil && loc[0] > 0 {
-			start = loc[0]
-		}
+		titleLineRe := regexp.MustCompile(`(?i)(?:^|\n)\s*` + escaped + `\s*(?:\n|$)`)
+		desc = titleLineRe.ReplaceAllString(desc, "\n")
 	}
-
-	desc := description[start:]
 	desc = trailingPromptRe.ReplaceAllString(desc, "")
 	desc = strings.TrimSpace(whitespaceRe.ReplaceAllString(desc, " "))
 	if len(desc) > 400 {
@@ -249,12 +309,7 @@ func main() {
 	model := flag.String("model", "gpt-image-2-2026-04-21", "OpenAI image model")
 	workers := flag.Int("concurrency", 3, "parallel API requests")
 	limit := flag.Int("limit", 0, "stop after N images (0 = no limit)")
-	keyBy := flag.String("keyby", "title", `output filename scheme: "title" (default, slugified title, shared across releases) or "id" (raw roomId, precise but only valid for the exact release rooms.json was built from)`)
 	flag.Parse()
-
-	if *keyBy != "title" && *keyBy != "id" {
-		log.Fatalf("-keyby must be \"title\" or \"id\", got %q", *keyBy)
-	}
 
 	jsonPath := flag.Arg(0)
 	if jsonPath == "" {
@@ -290,6 +345,9 @@ func main() {
 	if err := loadJSON(filepath.Join(*contextDir, "aliases.json"), &aliases); err != nil {
 		log.Fatalf("read aliases.json: %v", err)
 	}
+	if err := loadJSON(filepath.Join(*contextDir, "variants.json"), &variants); err != nil {
+		log.Fatalf("read variants.json: %v", err)
+	}
 
 	if len(rooms) == 0 {
 		log.Fatal("no rooms in JSON")
@@ -301,19 +359,45 @@ func main() {
 	}
 	log.Printf("gameId: %s (%s)", gameID, gameName)
 
+	// Every room gets exactly one API call, keyed by its unique roomId — that's
+	// the only key precise enough to tell apart physically distinct rooms that
+	// happen to share a title (e.g. Cutthroats' "Wharf Road" covers 5 different
+	// street segments). The title-keyed path (used by the player for any
+	// release other than the exact one rooms.json was built from) is never a
+	// separate generation: it's just a local copy of whichever room with that
+	// title got processed first, and is left alone once it exists — so two
+	// rooms sharing a title never cost two API calls.
 	imageDir := filepath.Join(*outDir, gameName)
-	if *keyBy == "id" {
-		imageDir = filepath.Join(imageDir, "id")
-	}
-	if err := os.MkdirAll(imageDir, 0755); err != nil {
+	idDir := filepath.Join(imageDir, "id")
+	if err := os.MkdirAll(idDir, 0755); err != nil {
 		log.Fatalf("create output dir: %v", err)
 	}
 
-	outFilename := func(room RoomEntry) string {
-		if *keyBy == "id" {
-			return fmt.Sprintf("%d.webp", room.RoomID)
+	idPath := func(room RoomEntry) string {
+		return filepath.Join(idDir, fmt.Sprintf("%d.webp", room.RoomID))
+	}
+	// effectiveTitle mirrors generate()'s resolvedTitle/effectiveTitle chain
+	// in player/js/imagegen/index.js — same two per-game overrides, applied
+	// in the same order, used for both the title-keyed filename and the
+	// prompt's scene name (see buildPrompt below).
+	effectiveTitle := func(room RoomEntry) string {
+		return normalizeDynamicTitle(gameName, resolveTitle(gameName, room.Title, room.Description))
+	}
+	namePath := func(room RoomEntry) string {
+		return filepath.Join(imageDir, slugify(effectiveTitle(room))+".webp")
+	}
+	copyIfMissing := func(src, dst string) {
+		if _, err := os.Stat(dst); err == nil {
+			return
 		}
-		return slugify(room.Title) + ".webp"
+		data, err := os.ReadFile(src)
+		if err != nil {
+			log.Printf("ERROR copy %s -> %s: read: %v", src, dst, err)
+			return
+		}
+		if err := os.WriteFile(dst, data, 0644); err != nil {
+			log.Printf("ERROR copy %s -> %s: write: %v", src, dst, err)
+		}
 	}
 
 	type job struct{ room RoomEntry }
@@ -321,9 +405,9 @@ func main() {
 
 	queued, skipped, tooShort := 0, 0, 0
 	for _, room := range rooms {
-		outPath := filepath.Join(imageDir, outFilename(room))
-		if _, err := os.Stat(outPath); err == nil {
+		if _, err := os.Stat(idPath(room)); err == nil {
 			skipped++
+			copyIfMissing(idPath(room), namePath(room))
 			continue
 		}
 		if room.Description == "" {
@@ -347,8 +431,7 @@ func main() {
 					return
 				}
 				room := j.room
-				outPath := filepath.Join(imageDir, outFilename(room))
-				prompt := buildPrompt(room.GameID, room.Title, room.Description)
+				prompt := buildPrompt(room.GameID, effectiveTitle(room), room.Description)
 
 				log.Printf("generating [%d] %s", room.RoomID, room.Title)
 
@@ -358,7 +441,7 @@ func main() {
 					continue
 				}
 
-				f, err := os.Create(outPath)
+				f, err := os.Create(idPath(room))
 				if err != nil {
 					log.Printf("ERROR [%d] create: %v", room.RoomID, err)
 					continue
@@ -369,6 +452,7 @@ func main() {
 					continue
 				}
 				f.Close()
+				copyIfMissing(idPath(room), namePath(room))
 				done.Add(1)
 				log.Printf("done [%d] %s", room.RoomID, room.Title)
 			}

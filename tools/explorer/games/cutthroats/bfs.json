@@ -1,0 +1,410 @@
+[
+  {
+    "gameId": "23.840809",
+    "roomId": 183,
+    "title": "Your Room",
+    "description": "Nights on Hardscrabble Island are lonely and cold when the lighthouse barely pierces the gloom. You sit on your bed, thinking of better times and far-off places. A knock on your door stirs you, and\nHevlin, a shipmate you haven't seen for years, staggers in.\n\n\"I'm in trouble,\" he says. \"I had a few too many at The Shanty. I was looking for Red, but he wasn't around, and I started talking about ... here,\" he says, handing you a slim volume that you\nrecognize as a shipwreck book written years ago by the Historical Society.\n\nYou smile. Every diver on the island has looked for those wrecks, without even an old boot to show for it. You open the door, hoping the drunken fool will leave. \"I know what you're thinkin',\" Hevlin\nscowls, \"but look!\" He points to the familiar map, and you see new locations marked for two of the wrecks.\n\n\"Keep it for me,\" he says. \"Just for tonight. It'll be safe here with you. Don't let -- \" He stops and broods for a moment. \"I've got to go find Red!\" And with that, Hevlin leaves.\n\nYou put the book in your dresser and think about following Hevlin. Then you hear a scuffle outside. You look through your window and see two men struggling. One falls to the ground in a heap. The\nother man bends down beside him, then turns as if startled and runs away. Another man then approaches the wounded figure. He kneels beside him for a long moment, then takes off after the other man.\n\nIt isn't long before the police arrive to tell you that Hevlin's been murdered. You don't mention the book, and hours later, as you lie awake in your bed, you wonder if the book could really be what\nit seems.\n\nCUTTHROATS\nCopyright (c) 1984 by Infocom, Inc. All rights reserved.\nCUTTHROATS is a trademark of Infocom, Inc.\nRelease 23 / Serial number 840809\n\nYour Room, on the bed\nYou're in your room in the Red Boar Inn. It's sparsely furnished, but comfortable enough. To the north is the door, and there's a closet without a door to the west.\nOn the floor is a note that must have been slipped under the door while you slept.\nIn a corner of the room is a lopsided wooden dresser."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 147,
+    "title": "Upstairs Hallway",
+    "description": "Upstairs Hallway\nYou are at the top of the stairs in the Red Boar. Your room is to the south, and other rooms line the hall. The lighting in the hallway is dim and drab like the wallpaper and carpeting."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 190,
+    "title": "Red Boar Inn",
+    "description": "Red Boar Inn\nThis is the lobby of the Red Boar Inn, a place with the charm of a two-dollar flophouse. The Wharf Road is outside, to the north, and a stairway leads up to the rooms to the south.\nA desk clerk sits behind the counter."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 165,
+    "title": "Wharf Road",
+    "description": "Wharf Road\nThis is the end of the Wharf Road, an east/west, two-lane road that's the island's main street. Off to the east, small businesses line the south side of the street. A winding road starts to the\nsouthwest, heading toward the lighthouse. The Red Boar Inn is to the south."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 163,
+    "title": "Wharf Road",
+    "description": "Wharf Road\nYou are on the Wharf Road, with the McGinty Salvage office to the south. The ocean lies to the north, its brine smell strong and refreshing."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 162,
+    "title": "Wharf Road",
+    "description": "Wharf Road\nYou are on the Wharf Road where the wharf starts up to the north. The former site of Outfitters International's warehouse fronts the south side of the road.\nYou begin to feel hungry."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 161,
+    "title": "Wharf Road",
+    "description": "Wharf Road\nThe east/west Wharf Road continues, with Outfitters International, a store which supplies ocean-going vessels, to the south.\nTo the east the Weasel comes into view from the southeast."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 160,
+    "title": "Wharf Road",
+    "description": "Wharf Road\nYou're on the east end of Wharf Road. The Ocean Road starts here and parallels the island's east edge, heading to the southeast. The Shanty is to the south.\nThe Weasel heads off to the west."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 112,
+    "title": "The Shanty",
+    "description": "The Shanty\nThis is The Shanty, a tavern which serves the locals. A wooden bar travels the length of the place, and behind it is a mirror so dirty, it offers no reflection. Round tables occupy the floor. The\nsmell of cooking food permeates the place.\nA bartender behind the bar polishes glasses with a worn towel.\nA parrot with an eyepatch hobbles up and down the bar.\nA man wearing an eyepatch, black turtleneck, and jeans is standing about. He is known as Pete the Rat.\nJohnny Red is here. Red hair sprouts from his head and from beneath his flannel shirt.\n\"Sit down and we'll talk,\" Johnny Red says."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 166,
+    "title": "Winding Road",
+    "description": "Winding Road\nA winding road starts up here to the southwest. You can see the top of the lighthouse off to the northwest. The Wharf Road lies to the northeast."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 167,
+    "title": "Winding Road",
+    "description": "Winding Road\nThe road branches to the northeast and northwest with the lighthouse off to the northwest. To the south is an impenetrable swamp."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 169,
+    "title": "Winding Road",
+    "description": "Winding Road\nThe road ends at the lighthouse to the north, and heads back to the southeast. You can see and hear the ocean pound the shoreline."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 159,
+    "title": "Ocean Road",
+    "description": "Ocean Road\nYou are at the north end of the Ocean Road, a narrow north/south road on the east edge of the island. The Wharf Road starts to the northwest, and a back alley starts off to the southwest."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 158,
+    "title": "Ocean Road",
+    "description": "Ocean Road\nYou are halfway along the Ocean Road, with the start of an alley off to the northwest. An empty field lies to your west, and the dangerous ocean shore lies off to your east."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 157,
+    "title": "Ocean Road",
+    "description": "Ocean Road\nThis is the south end of the Ocean Road. To the southeast is a small path leading up to about 100 feet above sea level. The Ocean Road heads north, and the Shore Road starts to the southwest."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 154,
+    "title": "Shore Road",
+    "description": "Shore Road\nThis is the east end of the Shore Road, an east/west road with a ferry landing at its west end. The Mariners' Trust, the island's only bank, is off to the north. The Ocean Road starts up to the\nnortheast.\nThe ferry pulls away, heading for the mainland."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 101,
+    "title": "Mariners' Trust",
+    "description": "Mariners' Trust\nYou are in Mariners' Trust, the Island's bank. In it are a table and a teller's window. You can see the safe beyond, and it looks pretty empty.\nA teller sits behind the window."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 99,
+    "title": "Point Lookout",
+    "description": "Point Lookout\nYou are at Point Lookout, a small, high cliff that affords a spectacular view of the sea. The cliff bottom is dangerous, so the only safe path is the northwest footpath back to the Ocean Road.\nTo the northwest Johnny Red comes into view from the north."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 131,
+    "title": "Outfitters Int'l",
+    "description": "Outfitters Int'l\nThis is Outfitters International, a store that specializes in marine supplies. There is a long, high counter separating the supplies and the front area. To the north is the Wharf Road.\nA salesman stands behind the counter.\nJohnny Red is here, glaring at McGinty.\nMcGinty, a small, nervous man, is standing nearby. His lips clamp around a cigar too large for his face.\nThere is a price list here."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 156,
+    "title": "Shore Road",
+    "description": "Shore Road\nYou are at the west end of the east/west Shore Road, with the ferry landing to the west. To the north is an impenetrable field, while the south is bordered by the ocean. You can see the mainland in\nthe distance.\nMcGinty heads off to the west."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 98,
+    "title": "Ferry Landing",
+    "description": "Ferry Landing\nThe ferry to the mainland arrives here every two hours during the day. People are milling about. The Shore Road starts off to the east.\nMcGinty is here, smoking his cigar."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 148,
+    "title": "Back Alley",
+    "description": "Back Alley\nYou're at the east end of an east/west alley. The back door of The Shanty is to the north, and an overgrown field is to the south. Narrow paths to the northeast and southeast lead to the Ocean Road."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 149,
+    "title": "Back Alley",
+    "description": "Back Alley\nYou are in an alley behind Outfitters International. An abandoned field lies to the south."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 150,
+    "title": "Back Alley",
+    "description": "Back Alley\nYou are in an east/west alley. To the north is a vacant lot, and an overgrown field lies to the south."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 152,
+    "title": "Back Alley",
+    "description": "Back Alley\nYou are in a narrow alley. To the north is the back door of McGinty Salvage, as well as a small window. An overgrown field lies to the south."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 135,
+    "title": "McGinty Salvage",
+    "description": "McGinty Salvage\nYou are in the McGinty Salvage office, a concern whose main business is salvaging wrecks. The place is a mess, and the floor is littered with chewed-on cigar stubs. To the north lies the Wharf Road.\nYou can't help feeling uncomfortable here.\nAn envelope with some writing on it sits on the desk."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 132,
+    "title": "Vacant Lot",
+    "description": "Vacant Lot\nYou are standing on the former site of the Outfitters International warehouse, which burned down a few months back. To the north is the Wharf Road and an alley is to the south."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 97,
+    "title": "Wharf",
+    "description": "Wharf\nYou're on Hardscrabble Island's weatherbeaten wharf, north of the Wharf Road. A trawler called the Night Wind is berthed here to the west. The Mary Margaret is moored to the east."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 92,
+    "title": "Port Deck",
+    "description": "Port Deck\nYou are on the port side of the Mary Margaret, a sturdy vessel designed for deep-sea salvaging. To starboard is a small wheelhouse, while to port is the gangway leading to the dock. The gentle rocking\nof the boat in port reminds you of time spent on the open sea."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 95,
+    "title": "Fore Deck",
+    "description": "Fore Deck\nYou are at the fore end of the Mary Margaret. You can see the ocean over the rail that runs around the deck. A ladder leads below deck, and the wheelhouse is aft of you. A chair is bolted to the deck."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 80,
+    "title": "Crew's Quarters",
+    "description": "Crew's Quarters\nYou are below deck in the crew's quarters. Narrow, uncomfortable bunks line the bulkheads, and you note the similarity between this area and a sardine can. Sleeping here is necessary but uninviting. A\nladder leads up and out to the fore deck."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 86,
+    "title": "Storage Locker",
+    "description": "Storage Locker\nYou are in a relatively empty locker. There are spare parts for the engine and other equipment scattered about.\nThere is a shark repellent canister here.\nThere is a flashlight here.\nThere is a dry cell here.\nThere is a small machine here.\nThere is a deep-sea diving suit here."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 77,
+    "title": "Galley",
+    "description": "Galley\nYou are in the Mary Margaret's galley. A stove and a small table are the fixtures here. A pot of stew is simmering on the stove. Water is available. A ladder leads up through the deck to the\nwheelhouse for feeding the captain in rough weather."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 75,
+    "title": "Lounge",
+    "description": "Lounge\nYou are in a small, cramped cabin decorated with a table and a few chairs. To the aft is the captain's cabin, while the galley lies forward. A ladder leading down goes into the engine room."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 91,
+    "title": "Aft Deck",
+    "description": "Aft Deck\nThe smell of diesel fuel is strong but reassuring here on the aft deck. A ladder leads below deck, while forward you can see the entrance to the command center of the boat, the wheelhouse. A huge air\ncompressor is bolted to the deck by the aft rail.\nThe Weasel tosses a line over the side and says, \"Tie the line to the treasure when you've got it, then pull on it and we'll pull the treasure up.\""
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 56,
+    "title": "Underwater",
+    "description": "Underwater\nYou are in the sea, completely surrounded by water."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 53,
+    "title": "Top Deck",
+    "description": "Top Deck\nYou are at the bow of an old, rotting wreck where a ladder leads down through a large square hole in the deck. When the ship sank, the top of one of the masts broke off and fell into the hole. What's\nleft of the deck continues aft."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 49,
+    "title": "Middle Deck",
+    "description": "Middle Deck\nThis cabin was apparently used for storage, although what's left can only be described as debris. There is an exit abaft, a doorway outlined with barnacle-encrusted timbers. There is a hole above your\nhead through which a broken-off mast descends. A rope is wrapped around the mast."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 46,
+    "title": "Middle Deck",
+    "description": "Middle Deck\nThis area is full of barnacle-encrusted iron bars, probably pikes used by the sailors for fending off boarding parties. There is a plaque on one wall. Exits are fore and aft."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 41,
+    "title": "Middle Deck",
+    "description": "Middle Deck\nThis was a galley or a pantry, though only the shape and size of the cabin suggest that. There are exits fore and aft.\nAmidst a stack of rotted wood is a cask that is still in one piece."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 39,
+    "title": "Middle Deck",
+    "description": "Middle Deck\nThis cabin was used for housing the crew. In addition to lining the bulkheads, bunks are strewn about the cabin, blocking a doorway aft. There is an unblocked forward exit."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 37,
+    "title": "Middle Deck",
+    "description": "Middle Deck\nYou are in a bunk-lined cabin. The forward bulkhead has an open doorway in it, and a ladder leads down through the deck. The rotting interior of the hull lies aft."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 15,
+    "title": "Below Decks",
+    "description": "Below Decks\nThis cabin has suffered the ravages of the sea. Above your head at one end of the cabin a ladder leads up. The bottom two rungs of the ladder are broken, but the rest of it seems to be pretty sturdy.\nA doorway, outlined by rotting timbers, leads forward."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 17,
+    "title": "Below Decks",
+    "description": "Below Decks\nThis is another cabin used to house the ship's crew. There are exits forward and aft.\nThere is a giant squid sleeping here."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 22,
+    "title": "Below Decks",
+    "description": "Below Decks\nYou're in one of the large holds of the ship, impressive in size. There are rooms fore and aft, and a hole in the port bulkhead.\nThere is an oak chest here."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 18,
+    "title": "Ocean Floor",
+    "description": "Ocean Floor\nYou are on the murky ocean floor, outside the rotted hull of a shipwreck. You can return to the wreck through the hole in the hull to starboard.\nThe orange line from the ship is swaying to and fro.\nYou bring the oak chest along with you.\nThe line swings away to the north.\nThe small machine is clicking extremely fast."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 27,
+    "title": "Below Decks",
+    "description": "Below Decks\nThis room, which may have been a lounge, can be exited fore or aft.\nSome who went down with the ship were in here, where they are nothing more than skeletons.\nThe small machine is clicking slowly."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 32,
+    "title": "Below Decks",
+    "description": "Below Decks\nYou can go aft from this cabin, a small and claustrophobic area little more than a widened passageway, or through a jagged hole in the port bulkhead.\nThere is a maple chest here.\nThe small machine is clicking slowly."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 51,
+    "title": "Top Deck",
+    "description": "Top Deck\nYou are now aft of midships on the topmost deck. The deck continues fore and aft."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 50,
+    "title": "Top Deck",
+    "description": "Top Deck\nYou are on the narrowing aft deck of the ship, which continues forward. A hole at the base of one mast leads down."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 29,
+    "title": "Ocean Floor",
+    "description": "Ocean Floor\nYou are on the murky ocean floor, outside the rotted hull of a shipwreck. You can return to the wreck through the hole in the hull to starboard.\nThe small machine is clicking slowly."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 153,
+    "title": "Back Alley",
+    "description": "Back Alley\nYou're at the west end of an east/west alley. The back entrance to the Red Boar Inn is to the north, and an overgrown field is to the south."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 93,
+    "title": "Starboard Deck",
+    "description": "Starboard Deck\nThe starboard side of the Mary Margaret has the wheelhouse to port. The deck is well-worn after many years of use, but still solid. The ocean is off to the other side of the rail."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 87,
+    "title": "Wheelhouse",
+    "description": "Wheelhouse\nYou are in the wheelhouse with a passageway leading out onto the deck abaft. You can see the large air compressor sitting there, taking up most of the aft deck. Through the glass windows you see the\nNight Wind docked at the wharf, and the island stretching aft. Forward, you see the choppy waters of the bay."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 73,
+    "title": "Captain's Cabin",
+    "description": "Captain's Cabin\nYou are in the captain's cabin. There is a large and comfortable-looking bunk here. The forward doorway leads to the crew's lounge.\nJohnny Red is here."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 71,
+    "title": "Engine Room",
+    "description": "Engine Room\nYou are in a tiny cabin with barely enough room to breathe. By your feet lie the huge diesel engines of the Mary Margaret."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 69,
+    "title": "Starboard Deck",
+    "description": "Starboard Deck\nYou are on the starboard side of the Night Wind, a sturdy vessel designed for trawling. To port is a small wheelhouse, while to starboard is the gangway leading to the dock. The gentle rocking of the\nboat in port reminds you of time spent on the open sea."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 70,
+    "title": "Fore Deck",
+    "description": "Fore Deck\nYou are at the fore end of the Night Wind. You can see the ocean over the rail that runs around the deck. A ladder leads below deck, and the wheelhouse is aft of you. A chair is bolted to the deck."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 67,
+    "title": "Aft Deck",
+    "description": "Aft Deck\nThe smell of diesel fuel is strong but reassuring here on the aft deck. A ladder leads below deck, while forward you can see the entrance to the command center of the boat, the wheelhouse."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 66,
+    "title": "Wheelhouse",
+    "description": "Wheelhouse\nYou are in the wheelhouse of the Night Wind. The passageway leading out onto the deck lies abaft. Through the glass windows you see the Mary Margaret docked at the wharf, and the island stretching\naft. Forward, you see the choppy waters of the bay."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 68,
+    "title": "Port Deck",
+    "description": "Port Deck\nYou are on the port side of the Night Wind. The wheelhouse is to starboard. The teak deck is very well-kept. The ocean lies off to port."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 59,
+    "title": "Lounge",
+    "description": "Lounge\nYou are in the crew's lounge, a cramped cabin with little more than a table and a few chairs. To aft is the captain's cabin, while the galley lies forward. A ladder leads into the engine room."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 60,
+    "title": "Galley",
+    "description": "Galley\nYou are in the Night Wind's galley. A stove and a small table are the fixtures here. A ladder leads up through the deck to the wheelhouse for feeding the captain in rough weather."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 61,
+    "title": "Crew's Quarters",
+    "description": "Crew's Quarters\nYou are below deck in the crew's quarters. Narrow, uncomfortable bunks line the bulkheads, and you note the similarity between this area and a sardine can. Sleeping here is necessary but uninviting. A\nladder leads up and out to the fore deck."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 65,
+    "title": "Storage Locker",
+    "description": "Storage Locker\nYou are in a fairly empty storage locker. It must have been cleaned out after its last trawling expedition. There are spare parts for the engine and other equipment scattered about.\nThere is a portable drill here."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 58,
+    "title": "Captain's Cabin",
+    "description": "Captain's Cabin\nYou are in the captain's cabin. A large and comfortable-looking bunk is one of the many comforts in the cabin. The forward doorway leads to the crew's lounge."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 57,
+    "title": "Engine Room",
+    "description": "Engine Room\nYou are in a tiny, smelly space where it is difficult to breathe. By your feet lie the diesel engines of the Night Wind."
+  },
+  {
+    "gameId": "23.840809",
+    "roomId": 54,
+    "title": "Ocean Floor",
+    "description": "Ocean Floor\nYou are on the ocean floor. Sediment and seaweed wave slowly with the current."
+  }
+]
