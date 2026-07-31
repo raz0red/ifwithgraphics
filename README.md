@@ -24,7 +24,7 @@
 
 Classic interactive fiction is rich, strange, and deeply atmospheric. This project explores what happens when those worlds are illustrated without losing the feel of the original parser experience.
 
-The aesthetic is deliberately retro: limited palettes, dithered pixel art, scan-line overlays, and a layout that feels closer to an Apple IIe than a modern game. The text adventure experience stays at the center. The artwork frames it.
+The aesthetic is deliberately retro: limited palettes, dithered pixel art, scan-line overlays, and a layout that feels closer to an Apple II than a modern game. The text adventure experience stays at the center. The artwork frames it.
 
 ---
 
