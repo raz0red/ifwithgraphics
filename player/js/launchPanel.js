@@ -17,7 +17,7 @@ const LOCKED_PROMPT = "Set Image Gen to Disabled, or enter an API key and press 
    explicit validated key before the caller's idle action (drop target, RUN
    button) is allowed to appear — onLocked/onReady drive that from outside,
    since the idle element itself belongs to the caller, not this module. */
-function buildSettings({ onLocked, onReady }) {
+function buildSettings({ onLocked, onReady, pregenDefault }) {
   const wrap = document.createElement("div");
   wrap.className = "drop-settings";
 
@@ -187,22 +187,56 @@ function buildSettings({ onLocked, onReady }) {
   key.value = settings.getApiKey();
   pregen.checked = settings.getPregenEnabled();
 
+  /* On a pregen page the caller has pinned image gen to Disabled via an
+     in-memory session override (never persisted). The instant the player
+     changes any setting here, drop that override so their real, saved
+     provider/key take over — otherwise the override would keep forcing
+     Disabled at generation time no matter what the form shows. Harmless
+     no-op on non-pregen pages, where no override is set. */
+  const releaseOverride = () => {
+    if (pregenDefault) ImageGen.clearSessionOverride();
+  };
+
   provider.addEventListener("change", () => {
+    releaseOverride();
     const s = ImageGen.getSettings();
     s.setProvider(provider.value);
     key.value = s.getApiKey();
     ImageGen.setSettings(s);
     checkAndValidate();
   });
-  model.addEventListener("change", apply);
-  key.addEventListener("blur", apply);
-  pregen.addEventListener("change", apply);
-  validateBtn.addEventListener("click", checkAndValidate);
+  model.addEventListener("change", () => {
+    releaseOverride();
+    apply();
+  });
+  key.addEventListener("blur", () => {
+    releaseOverride();
+    apply();
+  });
+  pregen.addEventListener("change", () => {
+    releaseOverride();
+    apply();
+  });
+  validateBtn.addEventListener("click", () => {
+    releaseOverride();
+    checkAndValidate();
+  });
 
-  /* Kick off an initial check — this is what makes a returning visit with
-     an already-saved key "just work" without the user pressing Validate
-     again, per the same shape as the launcher's existing retry flow. */
-  checkAndValidate();
+  if (pregenDefault) {
+    /* Pregen games always start Disabled regardless of saved prefs, and
+       must not persist that default (it would clobber the user's real
+       cross-page provider choice). Show the Disabled state and report ready
+       without running the stored-key validation path. */
+    provider.value = "none";
+    pregen.checked = true;
+    updateVisibility("none", 0);
+    onReady();
+  } else {
+    /* Kick off an initial check — this is what makes a returning visit with
+       an already-saved key "just work" without the user pressing Validate
+       again, per the same shape as the launcher's existing retry flow. */
+    checkAndValidate();
+  }
 
   return wrap;
 }
@@ -212,7 +246,7 @@ function buildSettings({ onLocked, onReady }) {
    swappable error/retry state used when API key validation fails, and a
    locked state that hides the idle action until image-gen is either
    Disabled or backed by a validated key. */
-export function renderLaunchPanel(container, { idle, onRetry }) {
+export function renderLaunchPanel(container, { idle, onRetry, pregenDefault = false }) {
   const panel = document.createElement("div");
   panel.className = "launch-panel";
 
@@ -260,6 +294,7 @@ export function renderLaunchPanel(container, { idle, onRetry }) {
 
   panel.appendChild(
     buildSettings({
+      pregenDefault,
       onLocked(msg) {
         ready = false;
         idle.hidden = true;

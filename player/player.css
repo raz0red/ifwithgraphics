@@ -145,6 +145,18 @@ body {
   outline: none;
 }
 
+/* Custom dropdown chevron so it sits a comfortable distance from the right
+   edge (the native arrow hugs the border). */
+.setting-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23cccccc' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 0.85rem;
+  padding-right: 2.4rem;
+}
+
 .setting-select:focus,
 .setting-input:focus {
   border-color: #888;
@@ -325,6 +337,111 @@ body {
   color: #ccc;
   cursor: pointer;
   margin-top: 0.4rem;
+}
+
+/* Back-to-site link, pinned to the top-left of the launch overlay. */
+.launch-back {
+  position: absolute;
+  top: 1.6rem;
+  left: 1.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.12em;
+  color: #777;
+  text-decoration: none;
+  transition: color 0.1s;
+}
+.launch-back:hover {
+  color: #fff;
+}
+.launch-back svg {
+  display: block;
+}
+
+/* SAVE/RESTORE hint pinned to the bottom of the launch overlay. */
+.launch-hint {
+  position: absolute;
+  bottom: 1.6rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 0 1.2rem;
+  font-family: "VT323", monospace;
+  font-size: 1.05rem;
+  letter-spacing: 0.03em;
+  color: #666;
+}
+.launch-hint b {
+  color: #34d399;
+  font-weight: normal;
+}
+
+/* ── Provide-your-own launch idle (drop target + recognized releases) ── */
+.launch-provide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+}
+
+.launch-idlist {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.launch-idlist-title {
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.45rem;
+  letter-spacing: 0.14em;
+  color: #666;
+}
+
+.launch-idlist-rows {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
+  max-width: 30rem;
+}
+
+.launch-idlist-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #2a2a2a;
+  background: #0c0c0c;
+}
+
+.launch-idlist-item.is-recommended {
+  border-color: #2f6b3a;
+  background: #0d1a0f;
+}
+
+.launch-idlist-serial {
+  font-family: "VT323", monospace;
+  font-size: 1.3rem;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: #9a9a9a;
+}
+
+.launch-idlist-item.is-recommended .launch-idlist-serial {
+  color: #7ee787;
+}
+
+.launch-idlist-badge {
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.4rem;
+  letter-spacing: 0.1em;
+  padding: 0.3rem 0.45rem;
+  background: #34d399;
+  color: #05130d;
 }
 
 /* ── Player — 1.14:1 landscape container ──────── */

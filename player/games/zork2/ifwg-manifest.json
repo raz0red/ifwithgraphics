@@ -1,7 +1,8 @@
 {
   "game": {
     "title": "Zork II: The Wizard of Frobozz",
+    "name": "zork2",
     "path": "zork2.z3",
-    "autoStart": true
+    "pregenerated": true
   }
 }

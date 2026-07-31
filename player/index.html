@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IF With Graphics (IFWG)</title>
+    <link rel="stylesheet" href="./player.css" data-ifwg-css="1">
+  </head>
+  <body>
+    <!-- Launcher UI — owned by this page, not the player module -->
+    <div id="launcher" class="drop-overlay">
+      <!-- Back to the site (this page sits at <root>/player/, so ../ is the site root). -->
+      <a class="launch-back" href="../"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg> BACK</a>
+      <div class="launch-hint">When playing, type <b>SAVE</b> to save your progress, and <b>RESTORE</b> to pick up where you left off.</div>
+    </div>
+
+    <!-- Game viewport -->
+    <div id="app"></div>
+
+    <script src="./wasm/ifwg.js"></script>
+
+<script type="module">
+      /* Dev — individual modules (no build step required) */
+      import { IFWGPlayer }        from "./js/core.js";
+      import { StandaloneConfig }  from "./js/config.js";
+      import { renderLaunchPanel } from "./js/launchPanel.js";
+
+      /* Prod — minified bundle (run: npm run build)
+      import { IFWGPlayer, StandaloneConfig, renderLaunchPanel } from "./dist/ifwg-player.js";
+      */
+
+      const launcher = document.getElementById("launcher");
+
+      const dropTarget = document.createElement("label");
+      dropTarget.className = "drop-target";
+      dropTarget.htmlFor   = "ifwg-story-file";
+
+      const dropTitle = document.createElement("span");
+      dropTitle.className   = "drop-title";
+      dropTitle.textContent = "DROP STORY FILE";
+
+      const dropSub = document.createElement("span");
+      dropSub.className   = "drop-sub";
+      dropSub.textContent = "or click to choose";
+
+      const storyFile = document.createElement("input");
+      storyFile.id          = "ifwg-story-file";
+      storyFile.type        = "file";
+      storyFile.accept      = ".z1,.z2,.z3,.z4,.z5,.z6,.z7,.z8,.dat,.zcode";
+
+      dropTarget.appendChild(dropTitle);
+      dropTarget.appendChild(dropSub);
+      dropTarget.appendChild(storyFile);
+
+      let lastFile = null;
+
+      class Config extends StandaloneConfig {
+        onValidationFailed(error, title, options) {
+          launcher.hidden = false;
+          panel.showError(error, title, options);
+        }
+      }
+
+      const config = new Config();
+      const player = IFWGPlayer.create(document.getElementById("app"), config);
+
+      const panel = renderLaunchPanel(launcher, {
+        idle: dropTarget,
+        onRetry: () => loadFile(lastFile)
+      });
+
+      function loadFile(file) {
+        if (!panel.isReady()) return;
+        lastFile = file;
+        launcher.hidden = true;
+        player.loadGame(file);
+      }
+
+      storyFile.addEventListener("change", () => {
+        if (storyFile.files?.[0]) loadFile(storyFile.files[0]);
+      });
+
+      launcher.addEventListener("dragover", e => {
+        e.preventDefault();
+        if (panel.isReady()) launcher.classList.add("is-dragging");
+      });
+      launcher.addEventListener("dragleave", () => {
+        launcher.classList.remove("is-dragging");
+      });
+      launcher.addEventListener("drop", e => {
+        e.preventDefault();
+        launcher.classList.remove("is-dragging");
+        if (e.dataTransfer.files?.[0]) loadFile(e.dataTransfer.files[0]);
+      });
+    </script>
+  </body>
+</html>
