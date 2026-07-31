@@ -7,12 +7,12 @@ wasm/frotz/src/common/hash.h
 
 # Deployed WASM artifacts
 builder/wasm/
-web/src/wasm/
+player/src/wasm/
 player/wasm/
 
 # Source npm
-web/src/node_modules/
-web/src/dist/
+player/src/node_modules/
+player/src/dist/
 player/node_modules/
 
 # Build output
@@ -33,6 +33,8 @@ bfs-saves/
 tmp/
 tmp2/
 tmp3/
+bfs.json
+bz.z5
 
 # Claude memory / session files
 .claude/

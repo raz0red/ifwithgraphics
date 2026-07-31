@@ -366,6 +366,22 @@ export const IFWGPlayer = {
          Only relevant when pregen is actually in play — canonicalGameId
          never affects anything when every image comes from live generation. */
       const name = ALIASES[gameId];
+
+      /* On a game-specific (provide-your-own) page, reject a file that isn't a
+         recognized release of that game — either a different known game, or a
+         release/serial we don't have catalogued. The recognized releases are
+         listed on the launch screen for reference. */
+      const expected = config.getExpectedGame();
+      if (expected && name !== expected) {
+        const expTitle = GAMES[expected]?.title || expected;
+        const detected = name ? GAMES[name]?.title || name : null;
+        const msg = detected
+          ? `This looks like ${detected}, not ${expTitle}. Please provide a ${expTitle} story file.`
+          : `Release ${gameId} isn't a recognized version of ${expTitle}. See the recognized releases and try a different file.`;
+        config.onValidationFailed(msg, "UNRECOGNIZED VERSION", { allowRetry: false });
+        return;
+      }
+
       const canonicalGameId = name ? GAMES[name]?.canonicalGameId : null;
       const pregenEnabled = ImageGen.getSettings().getPregenEnabled();
       if (pregenEnabled && canonicalGameId && canonicalGameId !== gameId) {
@@ -427,10 +443,16 @@ export const IFWGPlayer = {
   },
 
   /* Manifest-driven boot for a self-contained game page: fetch
-     ./ifwg-manifest.json (relative to the hosting page), then either
-     auto-start the game or show a title + RUN screen with the shared
-     image-gen settings panel. A missing/invalid manifest is a
-     misconfiguration, not a fallback — pages using boot() always ship one. */
+     ./ifwg-manifest.json (relative to the hosting page), then show the
+     launch screen with the shared image-gen settings panel. A missing/
+     invalid manifest is a misconfiguration, not a fallback — pages using
+     boot() always ship one.
+
+     Two page shapes, keyed by whether the story file ships with the page:
+       • bundled (game.path)      — title + PLAY button; the file is ours.
+       • provide-your-own (no path, game.name) — a drop target plus the list
+         of recognized release/serials for that title, since we can't ship
+         the file ourselves. */
   boot(container) {
     fetch("./ifwg-manifest.json")
       .then((r) => {
@@ -439,7 +461,9 @@ export const IFWGPlayer = {
       })
       .then((manifest) => {
         const game = manifest?.game;
-        if (!game?.path) throw new Error("manifest missing game.path");
+        if (!game || (!game.path && !game.name)) {
+          throw new Error("manifest needs game.path (bundled) or game.name (provide-your-own)");
+        }
         bootGame(container, game);
       })
       .catch((err) => {
@@ -452,14 +476,31 @@ export const IFWGPlayer = {
   }
 };
 
+/* Every release/serial known to map to this game, plus the one release the
+   pregen image set was actually built from (canonicalGameId), if any. Used
+   to tell a provide-your-own player which files are recognized and which is
+   the recommended match for the most accurate pregen art. */
+function recognizedReleases(name) {
+  const ids = Object.keys(ALIASES)
+    .filter((id) => ALIASES[id] === name)
+    .sort();
+  return { ids, recommended: GAMES[name]?.canonicalGameId || null };
+}
+
 function bootGame(container, game) {
   if (game.title) document.title = game.title;
 
-  if (game.autoStart) {
+  /* Pregen games always start with image gen Disabled (pregen supplies the
+     art), regardless of any provider/key the user saved on a live-gen page.
+     An in-memory session override — never persisted — pins that default;
+     the settings panel drops it the moment the player opts into live gen. */
+  if (game.pregenerated) {
     ImageGen.setSessionOverride({ provider: "none", pregenEnabled: true });
   }
 
+  const bundled = !!game.path;
   let panel = null;
+  let lastFile = null;
 
   class BootConfig extends StandaloneConfig {
     onValidationFailed(error, title, options) {
@@ -467,15 +508,17 @@ function bootGame(container, game) {
       panel.overlay.hidden = false;
       panel.showError(error, title, options);
     }
+    /* Only provide-your-own pages validate the dropped file against the game
+       they front — a bundled page ships its own known-good story file. */
+    getExpectedGame() {
+      return bundled ? null : game.name || null;
+    }
   }
 
   const player = IFWGPlayer.create(container, new BootConfig());
 
-  function mountPanel() {
-    const overlay = document.createElement("div");
-    overlay.className = "drop-overlay";
-    container.appendChild(overlay);
-
+  /* Bundled: a title + PLAY block — the file is ours, so one click plays. */
+  function buildBundledIdle() {
     const idle = document.createElement("div");
     idle.className = "launch-title-block";
 
@@ -483,27 +526,150 @@ function bootGame(container, game) {
     title.className = "launch-game-title";
     title.textContent = game.title || "";
 
-    const runBtn = document.createElement("button");
-    runBtn.type = "button";
-    runBtn.className = "launch-run-btn";
-    runBtn.textContent = "RUN";
-    runBtn.addEventListener("click", run);
+    const playBtn = document.createElement("button");
+    playBtn.type = "button";
+    playBtn.className = "launch-run-btn";
+    playBtn.textContent = "PLAY";
+    playBtn.addEventListener("click", () => run(game.path, game.path.split("/").pop()));
 
     idle.appendChild(title);
-    idle.appendChild(runBtn);
-
-    const { showError } = renderLaunchPanel(overlay, { idle, onRetry: run });
-    return { overlay, showError };
+    idle.appendChild(playBtn);
+    return idle;
   }
 
-  function run() {
+  /* Provide-your-own: a drop target plus the list of recognized releases for
+     this title (we can't ship the file). The file input / drag-drop wiring
+     lives on the overlay (see mountPanel), since dragging happens there. */
+  function buildProvideIdle() {
+    const idle = document.createElement("div");
+    idle.className = "launch-provide";
+
+    const title = document.createElement("div");
+    title.className = "launch-game-title";
+    title.textContent = game.title || "";
+    idle.appendChild(title);
+
+    const dropTarget = document.createElement("label");
+    dropTarget.className = "drop-target";
+    dropTarget.htmlFor = "ifwg-story-file";
+
+    const dropTitle = document.createElement("span");
+    dropTitle.className = "drop-title";
+    dropTitle.textContent = "DROP STORY FILE";
+
+    const dropSub = document.createElement("span");
+    dropSub.className = "drop-sub";
+    dropSub.textContent = "or click to choose";
+
+    const input = document.createElement("input");
+    input.id = "ifwg-story-file";
+    input.type = "file";
+    input.accept = ".z1,.z2,.z3,.z4,.z5,.z6,.z7,.z8,.dat,.zcode";
+    input.addEventListener("change", () => {
+      if (input.files?.[0]) run(input.files[0]);
+    });
+
+    dropTarget.appendChild(dropTitle);
+    dropTarget.appendChild(dropSub);
+    dropTarget.appendChild(input);
+    idle.appendChild(dropTarget);
+
+    const { ids, recommended } = recognizedReleases(game.name);
+    if (ids.length) {
+      const list = document.createElement("div");
+      list.className = "launch-idlist";
+
+      const heading = document.createElement("div");
+      heading.className = "launch-idlist-title";
+      heading.textContent = "RECOGNIZED RELEASES";
+      list.appendChild(heading);
+
+      const rows = document.createElement("div");
+      rows.className = "launch-idlist-rows";
+      for (const id of ids) {
+        const row = document.createElement("div");
+        row.className = "launch-idlist-item";
+
+        const serial = document.createElement("span");
+        serial.className = "launch-idlist-serial";
+        serial.textContent = id;
+        row.appendChild(serial);
+
+        if (id === recommended) {
+          row.classList.add("is-recommended");
+          const badge = document.createElement("span");
+          badge.className = "launch-idlist-badge";
+          badge.textContent = "RECOMMENDED";
+          row.appendChild(badge);
+        }
+        rows.appendChild(row);
+      }
+      list.appendChild(rows);
+      idle.appendChild(list);
+    }
+
+    return idle;
+  }
+
+  function mountPanel() {
+    const overlay = document.createElement("div");
+    overlay.className = "drop-overlay";
+    container.appendChild(overlay);
+
+    /* Back to the site's game directory. Game pages live at
+       <root>/player/games/<id>/, so three levels up is the deploy root;
+       #library tells the site to open the directory view directly. */
+    const back = document.createElement("a");
+    back.className = "launch-back";
+    back.href = "../../../#library";
+    back.innerHTML =
+      '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg> BACK';
+    overlay.appendChild(back);
+
+    /* Saves live in the browser (IndexedDB), keyed to the story file — remind
+       the player how to use them. */
+    const hint = document.createElement("div");
+    hint.className = "launch-hint";
+    hint.innerHTML =
+      "When playing, type <b>SAVE</b> to save your progress, and <b>RESTORE</b> to pick up where you left off.";
+    overlay.appendChild(hint);
+
+    const idle = bundled ? buildBundledIdle() : buildProvideIdle();
+
+    const p = renderLaunchPanel(overlay, {
+      idle,
+      onRetry: () => (bundled ? run(game.path, game.path.split("/").pop()) : run(lastFile)),
+      pregenDefault: !!game.pregenerated
+    });
+
+    /* Drag-and-drop only applies to the provide-your-own shape. Gate on
+       isReady() so files are ignored until image-gen is satisfied (Disabled
+       or a validated key) — same rule the click/change path uses via run(). */
+    if (!bundled) {
+      overlay.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        if (p.isReady()) overlay.classList.add("is-dragging");
+      });
+      overlay.addEventListener("dragleave", () => overlay.classList.remove("is-dragging"));
+      overlay.addEventListener("drop", (e) => {
+        e.preventDefault();
+        overlay.classList.remove("is-dragging");
+        if (e.dataTransfer.files?.[0]) run(e.dataTransfer.files[0]);
+      });
+    }
+
+    return { overlay, showError: p.showError, isReady: p.isReady };
+  }
+
+  /* Bundled passes a path string; provide-your-own passes a File. Both defer
+     to the panel's readiness gate so a live-gen game can't start before its
+     key is validated. */
+  function run(source, filename) {
+    if (source instanceof File) lastFile = source;
+    if (panel && !panel.isReady()) return;
     if (panel) panel.overlay.hidden = true;
-    player.loadGame(game.path, game.path.split("/").pop());
+    player.loadGame(source, filename);
   }
 
-  if (game.autoStart) {
-    run();
-  } else {
-    panel = mountPanel();
-  }
+  panel = mountPanel();
 }

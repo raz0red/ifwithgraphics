@@ -30,9 +30,12 @@ The aesthetic is deliberately retro: limited palettes, dithered pixel art, scan-
 
 ## Features
 
-- Drag and drop any Z-machine story file (`.z1` through `.z5`) and play
+- A curated library of games with pre-generated artwork (Zork I–III, Planetfall,
+  Cutthroats) that play instantly in the browser with no API key
+- Drag and drop any Z-machine story file (`.z3`, `.z5`, `.z8`, and other formats) and play
 - AI image generated for each room, cached locally in the browser
-- Save and restore work transparently via normal game commands
+- Save and restore work transparently via normal game commands (`SAVE` / `RESTORE`,
+  stored in the browser)
 - Two image generation providers: OpenAI and Google Gemini
 - Status bar, animated room transitions, retro disk LED while images load
 - Scales to any viewport size
@@ -75,8 +78,7 @@ Gemini is faster and cheaper and works well for a more painterly or cinematic lo
 ## Roadmap
 
 - Slash commands (`/restart`, `/regen`, `/export`, `/help`) intercepted before they reach the interpreter
-- Pre-generated image library for major Infocom titles so no API key is needed
-- AI room explorer: Claude plays games headlessly, collects descriptions, and batch generates a full image set
+- Expanding the pre-generated game library and the browsable game catalog
 - Theme system so the visual style is swappable without touching core code
 - Embeddable export packages with a standalone launcher
 - V6 support (Zork Zero, Shogun, Journey)

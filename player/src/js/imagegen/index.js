@@ -4,7 +4,7 @@ import { OpenAIImageGen } from "./openai.js";
 import { GeminiImageGen } from "./gemini.js";
 import PROVIDERS from "./providers.json" with { type: "json" };
 // Shared with tools/imagegen (the batch pregen tool) — keep both readers in
-// sync by editing web/src/context/games.json / aliases.json, not by
+// sync by editing player/src/context/games.json / aliases.json, not by
 // hardcoding here.
 import GAMES from "../../context/games.json" with { type: "json" };
 import ALIASES from "../../context/aliases.json" with { type: "json" };
@@ -87,7 +87,7 @@ function isRoomIdReliable() {
    distinct rooms (e.g. Cutthroats' "Wharf Road", one title covering 5
    different street segments). A game can opt into a more precise scheme by
    setting games.json's canonicalGameId to the exact release a room-ID-keyed
-   image set (web/images/<name>/id/<roomId>.webp) was generated from — but
+   image set (player/images/<name>/id/<roomId>.webp) was generated from — but
    only the *exact* matching release gets that precision (and only for
    V1-V3, per isRoomIdReliable above); any other release of the same game,
    or any V4+ game regardless of canonicalGameId, just falls back to the
@@ -134,7 +134,7 @@ export class ImageGenSettings {
 
 const SETTINGS_KEY = "ifwg_settings";
 
-const PUBLIC_IMAGES_BASE = "https://raz0red.github.io/ifwithgraphics/images/"; // update when a real domain ships
+const PUBLIC_IMAGES_BASE = "https://raz0red.github.io/ifwithgraphics/player/images/"; // update when a real domain ships
 const LOCAL_HOSTS = ["localhost", "127.0.0.1"];
 
 function defaultImagesBase() {
@@ -147,12 +147,21 @@ function defaultImagesBase() {
 let _imagesBase = defaultImagesBase();
 
 /* In-memory-only override for provider/pregen — never written to
-   localStorage. Used by autoStart pages to force live gen off without
-   touching the user's real cross-page settings. */
+   localStorage. Lets a page force provider/pregen for the current session
+   (e.g. pinning a pregen game to pregen-only) without touching the user's
+   real cross-page settings. */
 let _sessionOverride = null;
 
 function setSessionOverride(overrides) {
   _sessionOverride = overrides;
+}
+
+/* Drop the in-memory override so the user's real, persisted settings take
+   over again — called the moment a pregen page's player explicitly changes
+   an image-gen setting (see launchPanel), so the pregen-default "Disabled"
+   never traps them on live gen. */
+function clearSessionOverride() {
+  _sessionOverride = null;
 }
 
 function getSettings() {
@@ -437,6 +446,7 @@ export const ImageGen = {
   getSettings,
   setSettings,
   setSessionOverride,
+  clearSessionOverride,
   setImagesBase(url) {
     _imagesBase = url;
   }

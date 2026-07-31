@@ -15,6 +15,12 @@ export class IFWGConfig {
   }
   onGameLoaded(_gameId, _title) {}
   onValidationFailed(_error, _title, _options) {}
+  /* Canonical game name a provided file must match (via aliases.json), or
+     null to accept any story file (the standalone drop app). Game-specific
+     pages override this so an unrecognized/wrong file is rejected. */
+  getExpectedGame() {
+    return null;
+  }
 }
 
 /* Save-game bytes are tied to the exact compiled release (Z-machine memory

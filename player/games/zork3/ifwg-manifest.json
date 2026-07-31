@@ -1,7 +1,8 @@
 {
   "game": {
     "title": "Zork III: The Dungeon Master",
+    "name": "zork3",
     "path": "zork3.z3",
-    "autoStart": true
+    "pregenerated": true
   }
 }

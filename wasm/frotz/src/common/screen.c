@@ -1751,7 +1751,7 @@ static void pad_status_line(int column)
  * "Moves:" counter that grows implausibly large. Windows Frotz special-cases
  * these two titles by exact release/serial rather than any header flag; this
  * table is ported directly from Windows-Frotz's Generic/fastmem.c (same
- * release/serial set as web/src/context/aliases.json). */
+ * release/serial set as player/src/context/aliases.json). */
 static bool is_millichron_game(void)
 {
 	static const struct { zword release; const char *serial; } known[] = {

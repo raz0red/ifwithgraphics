@@ -44,7 +44,7 @@ var (
 // sky) — without the description anchor, that pastoral content bleeds into
 // games with a completely different setting (e.g. Planetfall's sci-fi
 // corridors ending up with grassy windows not in the room text at all).
-// Both files are loaded from web/src/context/ (shared with the JS player's
+// Both files are loaded from player/src/context/ (shared with the JS player's
 // imagegen/index.js — edit those files, not this one, to add/change a game).
 type gameInfo struct {
 	Title           string `json:"title"`
@@ -123,7 +123,7 @@ func loadJSON(path string, v interface{}) error {
 }
 
 // slugify turns a room title into a filesystem/URL-safe slug. Must produce
-// identical output to slugify() in web/src/js/imagegen/index.js — both
+// identical output to slugify() in player/src/js/imagegen/index.js — both
 // sides write/read the same filenames.
 var slugifyRe = regexp.MustCompile(`[^a-z0-9]+`)
 

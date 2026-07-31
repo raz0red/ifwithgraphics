@@ -7,8 +7,10 @@ version: "3"
 #   task validate        Run all linters and format checks (JS + Go)
 #   task build           Validate, build WASM, and bundle minified player JS
 #   task build:explorer  Build native dfrotz and explorer binary
-#   task dist            Build and assemble deployable package in dist/
-#   task serve           Serve locally at http://localhost:5173
+#   task site            Rebuild the marketing site's static HTML (site/index.html)
+#   task dist            Assemble the combined deploy (site at /, player at /player/) in dist/
+#   task serve           Serve the player only at http://localhost:5173 (engine/game-page dev)
+#   task preview         Build + serve the full combined deploy at http://localhost:5174
 #   task clean           Remove build artifacts
 #
 # Granular lint/format:
@@ -26,7 +28,8 @@ vars:
   GO_IMAGE:     golang:1.24-bookworm
   ALPINE_RUN:   docker run --rm -v "{{.ROOT_DIR}}:/repo" alpine
   EMSDK_RUN:    docker run --rm -v "{{.ROOT_DIR}}:/repo" -w /repo/wasm {{.EMSDK_IMAGE}}
-  NODE_RUN:     docker run --rm -v "{{.ROOT_DIR}}/web/src:/src" -w /src {{.NODE_IMAGE}}
+  NODE_RUN:     docker run --rm -v "{{.ROOT_DIR}}/player/src:/src" -w /src {{.NODE_IMAGE}}
+  SITE_RUN:     docker run --rm -v "{{.ROOT_DIR}}/site:/site" -w /site {{.NODE_IMAGE}}
   GO_RUN:       docker run --rm -v "{{.ROOT_DIR}}:/repo" -w /repo/tools/explorer {{.GO_IMAGE}}
 
 tasks:
@@ -49,20 +52,29 @@ tasks:
       - task: build:wasm
       - task: build:js
 
+  site:
+    desc: "Rebuild the marketing site's static HTML (site/index.html) from data/games.json + sections"
+    cmd: "{{.SITE_RUN}} node build.js"
+
   dist:
-    desc: Build and assemble deployable player package in dist/
+    desc: "Assemble the combined deploy in dist/ — marketing site at /, player app at /player/"
     cmds:
       - task: build:wasm
       - task: build:js
+      - task: site
       - "{{.ALPINE_RUN}} sh -c '\
           rm -rf /repo/dist && \
-          mkdir -p /repo/dist/wasm /repo/dist/prompt /repo/dist/context && \
-          cp /repo/web/index.html /repo/web/src/player.css /repo/dist/ && \
-          cp -r /repo/web/src/js /repo/dist/js && \
-          cp /repo/web/src/wasm/ifwg.js /repo/web/src/wasm/ifwg.wasm /repo/dist/wasm/ && \
-          cp /repo/web/src/dist/ifwg-player.js /repo/dist/ && \
-          cp /repo/web/src/prompt/* /repo/dist/prompt/ && \
-          cp /repo/web/src/context/* /repo/dist/context/ \
+          mkdir -p /repo/dist/player/wasm /repo/dist/player/prompt /repo/dist/player/context && \
+          cp /repo/site/index.html /repo/dist/ && \
+          cp -r /repo/site/css /repo/site/js /repo/site/assets /repo/dist/ && \
+          cp /repo/player/index.html /repo/player/src/player.css /repo/dist/player/ && \
+          cp -r /repo/player/src/js /repo/dist/player/js && \
+          cp /repo/player/src/wasm/ifwg.js /repo/player/src/wasm/ifwg.wasm /repo/dist/player/wasm/ && \
+          cp /repo/player/src/dist/ifwg-player.js /repo/dist/player/ && \
+          cp /repo/player/src/prompt/* /repo/dist/player/prompt/ && \
+          cp /repo/player/src/context/* /repo/dist/player/context/ && \
+          cp -r /repo/player/games /repo/dist/player/games && \
+          cp -r /repo/player/images /repo/dist/player/images \
         '"
 
   explore:
@@ -86,7 +98,7 @@ tasks:
       - "{{.GO_RUN}} sh -c 'go mod tidy && mkdir -p bin && go build -o bin/explorer .'"
 
   zcompare:
-    desc: "Compare Z-machine rooms to bfs.json — task zcompare story=web/games/zork3/zork3.z3 [bfs=tools/explorer/games/zork3/bfs.json]"
+    desc: "Compare Z-machine rooms to bfs.json — task zcompare story=player/games/zork3/zork3.z3 [bfs=tools/explorer/games/zork3/bfs.json]"
     vars:
       bfs: '{{.bfs | default "tools/explorer/games/zork3/bfs.json"}}'
     cmd: >
@@ -97,10 +109,10 @@ tasks:
       sh -c 'make -B -C /repo/wasm/ztools/source infodump txd && go run /repo/tools/zcompare/main.go --infodump /repo/wasm/ztools/source/infodump --txd /repo/wasm/ztools/source/txd /repo/{{.story}} /repo/{{.bfs}}'
 
   imagegen:
-    desc: "Batch-generate room images — task imagegen [rooms=tools/explorer/games/zork1/bfs.json] [out=web/images] [concurrency=3] [limit=0] [model=gpt-image-2-2026-04-21]"
+    desc: "Batch-generate room images — task imagegen [rooms=tools/explorer/games/zork1/bfs.json] [out=player/images] [concurrency=3] [limit=0] [model=gpt-image-2-2026-04-21]"
     vars:
       rooms:       '{{.rooms | default "tools/explorer/games/zork1/bfs.json"}}'
-      out:         '{{.out | default "web/images"}}'
+      out:         '{{.out | default "player/images"}}'
       concurrency: '{{.concurrency | default "3"}}'
       limit:       '{{.limit | default "0"}}'
       model:       '{{.model | default "gpt-image-2-2026-04-21"}}'
@@ -110,7 +122,7 @@ tasks:
       -w /repo/tools/imagegen
       -e OPENAI_API_KEY
       {{.GO_IMAGE}}
-      sh -c 'apt-get update -qq && apt-get install -y -q libwebp-dev && go run . -refs /repo/web/src/prompt -context /repo/web/src/context -out /repo/{{.out}} -concurrency {{.concurrency}} -limit {{.limit}} -model {{.model}} /repo/{{.rooms}}'
+      sh -c 'apt-get update -qq && apt-get install -y -q libwebp-dev && go run . -refs /repo/player/src/prompt -context /repo/player/src/context -out /repo/{{.out}} -concurrency {{.concurrency}} -limit {{.limit}} -model {{.model}} /repo/{{.rooms}}'
 
   lint:
     desc: Run ESLint on player JS
@@ -161,13 +173,21 @@ tasks:
     cmd: "{{.NODE_RUN}} sh -c 'npm install --silent && npm run build'"
 
   serve:
-    desc: "Serve at http://localhost:{port} (default 5173) — override with: task serve port=8787"
+    desc: "Serve the player only at http://localhost:{port} (default 5173) — engine/game-page dev. Override: task serve port=8787"
     vars:
       port: '{{.port | default "5173"}}'
-    cmd: docker run --rm -p {{.port}}:80 -v "{{.ROOT_DIR}}/web:/usr/share/nginx/html:ro" -v "{{.ROOT_DIR}}/tools/nginx.conf:/etc/nginx/conf.d/default.conf:ro" {{.NGINX_IMAGE}}
+    cmd: docker run --rm -p {{.port}}:80 -v "{{.ROOT_DIR}}/player:/usr/share/nginx/html:ro" -v "{{.ROOT_DIR}}/tools/nginx.conf:/etc/nginx/conf.d/default.conf:ro" {{.NGINX_IMAGE}}
+
+  preview:
+    desc: "Build the combined deploy and serve it at http://localhost:{port} (default 5174) — the integrated site + player"
+    vars:
+      port: '{{.port | default "5174"}}'
+    cmds:
+      - task: dist
+      - docker run --rm -p {{.port}}:80 -v "{{.ROOT_DIR}}/dist:/usr/share/nginx/html:ro" {{.NGINX_IMAGE}}
 
   clean:
     desc: Remove build artifacts
     cmds:
       - "{{.EMSDK_RUN}} make clean"
-      - "{{.ALPINE_RUN}} rm -rf /repo/dist /repo/web/src/dist /repo/wasm/ztools/source/infodump /repo/wasm/ztools/source/txd /repo/wasm/ztools/source/*.o"
+      - "{{.ALPINE_RUN}} rm -rf /repo/dist /repo/player/src/dist /repo/wasm/ztools/source/infodump /repo/wasm/ztools/source/txd /repo/wasm/ztools/source/*.o"

@@ -48,18 +48,6 @@ jobs:
           name: ifwg-player
           path: deploy/
 
-      - name: Include pre-generated images
-        run: |
-          if [ -d web/images ]; then
-            cp -r web/images deploy/images
-          fi
-
-      - name: Include games
-        run: |
-          if [ -d web/games ]; then
-            cp -r web/games deploy/games
-          fi
-
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:

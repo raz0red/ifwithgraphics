@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IFWG - Interactive Fiction with Graphics</title>
+    <meta
+      name="description"
+      content="IFWG (Interactive Fiction with Graphics) takes classic text-adventure story files, pre-renders or generates lush retro pixel art as you play, and packages them into standalone graphical adventures you can play in the browser or export to webRcade."
+    />
+    <link rel="canonical" href="https://ifwithgraphics.com/" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="IFWG - Interactive Fiction with Graphics" />
+    <meta
+      property="og:description"
+      content="Turn classic interactive fiction into standalone graphical adventures with pre-generated or on-the-fly AI pixel art. Open source, plays in the browser, exports to webRcade."
+    />
+    <meta property="og:url" content="https://ifwithgraphics.com/" />
+    <meta property="og:image" content="https://ifwithgraphics.com/assets/images/house.jpg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="IFWG - Interactive Fiction with Graphics" />
+    <meta
+      name="twitter:description"
+      content="Turn classic interactive fiction into standalone graphical adventures with pre-generated or on-the-fly AI pixel art."
+    />
+
+    <meta name="theme-color" content="#09090b" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+  <body class="min-h-screen relative bg-zinc-950 text-zinc-300 font-mono selection:bg-emerald-500 selection:text-black">
+    <div id="app">
+
+  <div class="fixed inset-0 z-0 pointer-events-none bg-zinc-950" aria-hidden="true">
+    <div class="absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_top,transparent_0%,rgba(9,9,11,1)_85%)]"></div>
+    <div class="animate-grid-pan absolute inset-0 z-0 opacity-[0.08] bg-[linear-gradient(to_right,rgba(34,197,94,1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(34,197,94,1)_1px,transparent_1px)] bg-[size:3.5rem_3.5rem]"></div>
+  </div>
+  <div class="fixed inset-0 z-[1] pointer-events-none overflow-hidden" aria-hidden="true">
+    <span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:50.96%;opacity:0.12;--dur:18.8s;--delay:-29.0s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:62.75%;opacity:0.13;--dur:23.5s;--delay:-26.8s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:35.00%;opacity:0.06;--dur:21.5s;--delay:-21.1s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:82.98%;opacity:0.34;--dur:14.6s;--delay:-3.3s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:57.09%;opacity:0.16;--dur:21.6s;--delay:-18.6s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:85.01%;opacity:0.27;--dur:19.2s;--delay:-20.0s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:86.66%;opacity:0.11;--dur:17.2s;--delay:-17.2s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:56.43%;opacity:0.06;--dur:16.4s;--delay:-23.8s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:6.50%;opacity:0.37;--dur:17.1s;--delay:-20.3s"></span><span class="pixel absolute w-1.5 h-1.5 bg-emerald-500" style="left:3.95%;opacity:0.40;--dur:17.1s;--delay:-9.2s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:0.53%;opacity:0.11;--dur:22.5s;--delay:-9.7s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:32.68%;opacity:0.14;--dur:16.6s;--delay:-23.5s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:44.06%;opacity:0.38;--dur:17.6s;--delay:-2.2s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:17.68%;opacity:0.45;--dur:16.5s;--delay:-13.4s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:10.18%;opacity:0.33;--dur:17.4s;--delay:-3.0s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:5.80%;opacity:0.43;--dur:20.0s;--delay:-17.9s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:28.47%;opacity:0.31;--dur:13.7s;--delay:-10.6s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:74.87%;opacity:0.41;--dur:20.8s;--delay:-22.3s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:95.81%;opacity:0.31;--dur:23.7s;--delay:-12.9s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:34.07%;opacity:0.08;--dur:17.5s;--delay:-14.5s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:91.41%;opacity:0.31;--dur:16.0s;--delay:-25.5s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:16.46%;opacity:0.16;--dur:19.2s;--delay:-27.7s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:60.24%;opacity:0.35;--dur:22.6s;--delay:-14.0s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:37.13%;opacity:0.15;--dur:23.9s;--delay:-22.0s"></span><span class="pixel absolute w-1.5 h-1.5 bg-emerald-500" style="left:35.02%;opacity:0.43;--dur:26.2s;--delay:-10.8s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:17.02%;opacity:0.24;--dur:25.7s;--delay:-18.6s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:70.47%;opacity:0.11;--dur:12.9s;--delay:-30.0s"></span><span class="pixel absolute w-1.5 h-1.5 bg-emerald-500" style="left:61.83%;opacity:0.22;--dur:25.3s;--delay:-6.5s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:60.70%;opacity:0.19;--dur:20.8s;--delay:-20.3s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:73.79%;opacity:0.07;--dur:22.6s;--delay:-0.8s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:58.55%;opacity:0.16;--dur:16.9s;--delay:-16.7s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:27.78%;opacity:0.39;--dur:19.5s;--delay:-5.3s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:55.33%;opacity:0.26;--dur:20.9s;--delay:-26.7s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:10.41%;opacity:0.26;--dur:14.0s;--delay:-21.5s"></span><span class="pixel absolute w-0.5 h-0.5 bg-emerald-500" style="left:32.19%;opacity:0.06;--dur:19.3s;--delay:-6.3s"></span>
+  </div>
+<div class="relative z-10 min-h-screen flex flex-col justify-between">
+  <div class="flex-grow">
+    
+  <nav id="navbar" class="border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur-md px-6 sm:px-10 py-4 sm:py-6 sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-3 cursor-pointer group fade-in-up" data-logo title="Interactive Fiction with Graphics">
+        <div class="p-2 bg-emerald-500/15 border border-emerald-500/30 rounded group-hover:bg-emerald-500/25 transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform"><path d="m4 17 6-6-6-6" /><path d="M12 19h8" /></svg>
+        </div>
+        <div class="text-left">
+          <span class="font-black text-2xl tracking-tighter text-white">IF<span class="text-emerald-500">W</span>G</span>
+          <span class="text-[10px] text-zinc-500 block uppercase font-sans tracking-widest font-semibold leading-none">Interactive Fiction with Graphics</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-1 sm:gap-2 fade-in-up">
+        <button data-nav="home" class="px-4 py-2 text-sm font-bold uppercase tracking-wider rounded transition-all flex items-center gap-1.5 border border-transparent text-zinc-400 hover:text-white hover:bg-zinc-900">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" /><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" /><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg> Home
+        </button>
+        <button data-nav="library" class="px-4 py-2 text-sm font-bold uppercase tracking-wider rounded transition-all flex items-center gap-1.5 border border-transparent text-zinc-400 hover:text-white hover:bg-zinc-900">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M12 7v14" /><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /></svg> Game Library
+        </button>
+        <a href="player/" class="px-4 py-2 text-sm font-bold uppercase tracking-wider rounded transition-all flex items-center gap-1.5 text-zinc-400 hover:text-white hover:bg-zinc-900 border border-transparent">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="6" x2="10" y1="11" y2="11" /><line x1="8" x2="8" y1="9" y2="13" /><line x1="15" x2="15.01" y1="12" y2="12" /><line x1="18" x2="18.01" y1="10" y2="10" /><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z" /></svg> Launch Player
+        </a>
+      </div>
+    </div>
+  </nav>
+    <div class="max-w-6xl mx-auto px-6 sm:px-10 py-8 sm:py-12">
+      <div data-view="home" class="space-y-24">
+        
+  <div class="grid lg:grid-cols-12 gap-12 items-center pt-4">
+    <div class="lg:col-span-5 space-y-6 text-left flex flex-col justify-center">
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter uppercase leading-none font-sans select-none">
+        <span class="text-emerald-500">IF</span> <span class="text-white">WITH</span> <span class="text-emerald-500">GRAPHICS</span>
+      </h1>
+      <p class="text-zinc-400 text-sm leading-relaxed font-sans">
+        <strong class="font-bold text-emerald-500">IFWG</strong> brings classic Interactive Fiction to life with retro pixel art, pre-rendered or generated on the fly as you play, right in your browser.
+      </p>
+      <div class="flex flex-wrap items-center gap-4 pt-2">
+        <button data-nav="library" class="flex-1 min-w-[10rem] max-w-[15rem] px-6 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold uppercase text-xs tracking-wider rounded flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all transform active:scale-95 select-none cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M12 7v14" /><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /></svg> Game Library
+        </button>
+        <a href="player/" class="flex-1 min-w-[10rem] max-w-[15rem] px-6 py-3.5 bg-zinc-900/60 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-white font-extrabold uppercase text-xs tracking-wider rounded flex items-center justify-center gap-2 transition-all transform active:scale-95 select-none">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 fill-white"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></svg> Launch Player
+        </a>
+      </div>
+    </div>
+
+    <div class="lg:col-span-7 flex flex-col items-center justify-center">
+      <div class="w-full max-w-[440px]">
+        <div id="hero-cardstack" class="if-cardstack select-none">
+          
+    <a href="player/games/zork1/" aria-label="Play Zork I" class="if-card border-[4px] border-emerald-500 bg-black rounded shadow-[0_0_35px_rgba(16,185,129,0.3)] flex flex-col overflow-hidden cursor-pointer" data-pos="0">
+      <div class="bg-white text-black font-mono font-bold uppercase py-2 px-4 flex justify-between items-center gap-2 text-xs sm:text-sm border-b-[3px] border-emerald-500">
+        <span class="shrink-0 text-black">Zork I</span><span class="truncate pl-2 text-right text-emerald-600">West of House</span>
+      </div>
+      <div class="m-3.5 border-2 border-emerald-500 rounded overflow-hidden aspect-[4/3] bg-zinc-950 flex items-center justify-center">
+        <img src="assets/images/games/zork1.webp" alt="West of House" loading="lazy" class="w-full h-full object-cover scale-[1.12]" style="image-rendering:pixelated" />
+      </div>
+      <div class="px-5 pb-5 flex-grow flex flex-col justify-between text-left font-mono">
+        <p class="text-xs sm:text-sm text-emerald-400 font-bold leading-relaxed tracking-wide line-clamp-4">You are standing in an open field west of a white house, with a boarded front door. There is a small mailbox here.</p>
+        <div class="flex items-center gap-1.5 text-yellow-400 font-bold mt-2">
+          <span>&gt;</span>
+          <span class="w-2.5 h-4 bg-yellow-400 animate-cursor-blink inline-block"></span>
+        </div>
+      </div>
+    </a>
+    <a href="player/games/zork2/" aria-label="Play Zork II" class="if-card border-[4px] border-emerald-500 bg-black rounded shadow-[0_0_35px_rgba(16,185,129,0.3)] flex flex-col overflow-hidden cursor-pointer" data-pos="1">
+      <div class="bg-white text-black font-mono font-bold uppercase py-2 px-4 flex justify-between items-center gap-2 text-xs sm:text-sm border-b-[3px] border-emerald-500">
+        <span class="shrink-0 text-black">Zork II</span><span class="truncate pl-2 text-right text-emerald-600">Dragon's Lair</span>
+      </div>
+      <div class="m-3.5 border-2 border-emerald-500 rounded overflow-hidden aspect-[4/3] bg-zinc-950 flex items-center justify-center">
+        <img src="assets/images/games/zork2.webp" alt="Dragon's Lair" loading="lazy" class="w-full h-full object-cover scale-[1.12]" style="image-rendering:pixelated" />
+      </div>
+      <div class="px-5 pb-5 flex-grow flex flex-col justify-between text-left font-mono">
+        <p class="text-xs sm:text-sm text-emerald-400 font-bold leading-relaxed tracking-wide line-clamp-4">You are in the dragon's lair, where the rock walls are scarred by flame. A blackened doorway leads to the south. A rotten old wooden chest is in one corner among the debris.</p>
+        <div class="flex items-center gap-1.5 text-yellow-400 font-bold mt-2">
+          <span>&gt;</span>
+          <span class="w-2.5 h-4 bg-yellow-400 animate-cursor-blink inline-block"></span>
+        </div>
+      </div>
+    </a>
+    <a href="player/games/zork3/" aria-label="Play Zork III" class="if-card border-[4px] border-emerald-500 bg-black rounded shadow-[0_0_35px_rgba(16,185,129,0.3)] flex flex-col overflow-hidden cursor-pointer" data-pos="2">
+      <div class="bg-white text-black font-mono font-bold uppercase py-2 px-4 flex justify-between items-center gap-2 text-xs sm:text-sm border-b-[3px] border-emerald-500">
+        <span class="shrink-0 text-black">Zork III</span><span class="truncate pl-2 text-right text-emerald-600">Flathead Ocean</span>
+      </div>
+      <div class="m-3.5 border-2 border-emerald-500 rounded overflow-hidden aspect-[4/3] bg-zinc-950 flex items-center justify-center">
+        <img src="assets/images/games/zork3.webp" alt="Flathead Ocean" loading="lazy" class="w-full h-full object-cover scale-[1.12]" style="image-rendering:pixelated" />
+      </div>
+      <div class="px-5 pb-5 flex-grow flex flex-col justify-between text-left font-mono">
+        <p class="text-xs sm:text-sm text-emerald-400 font-bold leading-relaxed tracking-wide line-clamp-4">You are at the shore of an amazing underground sea, the topic of many a legend among adventurers. There is a heavy surf and a breeze is blowing onshore.</p>
+        <div class="flex items-center gap-1.5 text-yellow-400 font-bold mt-2">
+          <span>&gt;</span>
+          <span class="w-2.5 h-4 bg-yellow-400 animate-cursor-blink inline-block"></span>
+        </div>
+      </div>
+    </a>
+    <a href="player/games/planetfall/" aria-label="Play Planetfall" class="if-card border-[4px] border-emerald-500 bg-black rounded shadow-[0_0_35px_rgba(16,185,129,0.3)] flex flex-col overflow-hidden cursor-pointer">
+      <div class="bg-white text-black font-mono font-bold uppercase py-2 px-4 flex justify-between items-center gap-2 text-xs sm:text-sm border-b-[3px] border-emerald-500">
+        <span class="shrink-0 text-black">Planetfall</span><span class="truncate pl-2 text-right text-emerald-600">Observation Deck</span>
+      </div>
+      <div class="m-3.5 border-2 border-emerald-500 rounded overflow-hidden aspect-[4/3] bg-zinc-950 flex items-center justify-center">
+        <img src="assets/images/games/planetfall.webp" alt="Observation Deck" loading="lazy" class="w-full h-full object-cover scale-[1.12]" style="image-rendering:pixelated" />
+      </div>
+      <div class="px-5 pb-5 flex-grow flex flex-col justify-between text-left font-mono">
+        <p class="text-xs sm:text-sm text-emerald-400 font-bold leading-relaxed tracking-wide line-clamp-4">This is a balcony girdling the tower. The view is breathtaking; the tower must be half a kilometer tall. From here it is clear that you are on an island.</p>
+        <div class="flex items-center gap-1.5 text-yellow-400 font-bold mt-2">
+          <span>&gt;</span>
+          <span class="w-2.5 h-4 bg-yellow-400 animate-cursor-blink inline-block"></span>
+        </div>
+      </div>
+    </a>
+    <a href="player/games/cutthroats/" aria-label="Play Cutthroats" class="if-card border-[4px] border-emerald-500 bg-black rounded shadow-[0_0_35px_rgba(16,185,129,0.3)] flex flex-col overflow-hidden cursor-pointer">
+      <div class="bg-white text-black font-mono font-bold uppercase py-2 px-4 flex justify-between items-center gap-2 text-xs sm:text-sm border-b-[3px] border-emerald-500">
+        <span class="shrink-0 text-black">Cutthroats</span><span class="truncate pl-2 text-right text-emerald-600">Ocean Floor</span>
+      </div>
+      <div class="m-3.5 border-2 border-emerald-500 rounded overflow-hidden aspect-[4/3] bg-zinc-950 flex items-center justify-center">
+        <img src="assets/images/games/cutthroats.webp" alt="Ocean Floor" loading="lazy" class="w-full h-full object-cover scale-[1.12]" style="image-rendering:pixelated" />
+      </div>
+      <div class="px-5 pb-5 flex-grow flex flex-col justify-between text-left font-mono">
+        <p class="text-xs sm:text-sm text-emerald-400 font-bold leading-relaxed tracking-wide line-clamp-4">You are on the murky ocean floor, outside the rotted hull of a shipwreck. You can return to the wreck through the hole in the hull to starboard.</p>
+        <div class="flex items-center gap-1.5 text-yellow-400 font-bold mt-2">
+          <span>&gt;</span>
+          <span class="w-2.5 h-4 bg-yellow-400 animate-cursor-blink inline-block"></span>
+        </div>
+      </div>
+    </a>
+        </div>
+      </div>
+    </div>
+  </div>
+        
+  <div class="border border-zinc-900 bg-zinc-950/20 rounded-2xl p-8 sm:p-12 space-y-12 text-center relative overflow-hidden reveal">
+    <div class="space-y-3">
+      <h2 class="text-3xl font-black text-white uppercase tracking-wider font-sans">How <span class="text-emerald-500">IFWG</span> Works</h2>
+      <p class="text-zinc-400 text-sm max-w-2xl mx-auto font-sans leading-relaxed">
+        Where classic text-adventure interpreters meet modern image generation.
+      </p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8 text-left pt-4">
+      
+        <div class="space-y-4">
+          <div class="flex items-center justify-center w-9 h-9 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-black text-sm select-none">1</div>
+          <h3 class="text-lg font-bold text-white uppercase tracking-wide font-mono">Select or Upload</h3>
+          <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed font-sans">Browse supported classics in our <button data-nav="library" class="text-emerald-400 font-bold hover:underline cursor-pointer">Game Library</button>, or use the Launch Player to load and play your own interactive fiction story files.</p>
+        </div>
+        <div class="space-y-4">
+          <div class="flex items-center justify-center w-9 h-9 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-black text-sm select-none">2</div>
+          <h3 class="text-lg font-bold text-white uppercase tracking-wide font-mono">On-The-Fly AI Art</h3>
+          <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed font-sans">Bring your own OpenAI or Google Gemini API key to generate scene art in real time as you play. Games with pre-generated art render immediately, no key required.</p>
+        </div>
+        <div class="space-y-4">
+          <div class="flex items-center justify-center w-9 h-9 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-black text-sm select-none">3</div>
+          <h3 class="text-lg font-bold text-white uppercase tracking-wide font-mono">Export Standalone</h3>
+          <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed font-sans">Export a complete game package with all its generated graphics, then host it yourself or play it locally. No server required.</p>
+        </div>
+    </div>
+  </div>
+        
+  <div class="space-y-10">
+    <div class="text-center reveal">
+      <h2 class="text-3xl font-black text-white uppercase tracking-widest font-sans">Features</h2>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+      
+        <div class="p-6 border-2 border-emerald-500/40 bg-zinc-950/25 rounded-xl space-y-4 hover:border-emerald-400 hover:bg-zinc-950/40 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all shadow-[0_0_15px_rgba(16,185,129,0.05)] reveal">
+          <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" /><path d="M20 2v4" /><path d="M22 4h-4" /><circle cx="4" cy="20" r="2" /></svg>
+            </div>
+            
+          </div>
+          <h4 class="font-bold text-white text-sm uppercase tracking-wider font-mono">On-the-Fly Scene Art</h4>
+          <p class="text-xs text-zinc-400 leading-relaxed font-sans">Reads each room's description as you play and generates matching retro pixel art in real time.</p>
+        </div>
+        <div class="p-6 border-2 border-emerald-500/40 bg-zinc-950/25 rounded-xl space-y-4 hover:border-emerald-400 hover:bg-zinc-950/40 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all shadow-[0_0_15px_rgba(16,185,129,0.05)] reveal">
+          <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M12 15V3" /><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /></svg>
+            </div>
+            <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/25">Coming Soon</span>
+          </div>
+          <h4 class="font-bold text-white text-sm uppercase tracking-wider font-mono">Standalone Export</h4>
+          <p class="text-xs text-zinc-400 leading-relaxed font-sans">Bundle a story and all its generated artwork into a single self-contained package you can play anywhere.</p>
+        </div>
+        <div class="p-6 border-2 border-emerald-500/40 bg-zinc-950/25 rounded-xl space-y-4 hover:border-emerald-400 hover:bg-zinc-950/40 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all shadow-[0_0_15px_rgba(16,185,129,0.05)] reveal">
+          <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><line x1="6" x2="10" y1="11" y2="11" /><line x1="8" x2="8" y1="9" y2="13" /><line x1="15" x2="15.01" y1="12" y2="12" /><line x1="18" x2="18.01" y1="10" y2="10" /><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z" /></svg>
+            </div>
+            <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/25">Coming Soon</span>
+          </div>
+          <h4 class="font-bold text-white text-sm uppercase tracking-wider font-mono">webRcade Support</h4>
+          <p class="text-xs text-zinc-400 leading-relaxed font-sans">Export your games as webRcade feeds and play them in the webRcade player from anywhere.</p>
+        </div>
+        <div class="p-6 border-2 border-emerald-500/40 bg-zinc-950/25 rounded-xl space-y-4 hover:border-emerald-400 hover:bg-zinc-950/40 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all shadow-[0_0_15px_rgba(16,185,129,0.05)] reveal">
+          <div class="flex items-start justify-between">
+            <div class="w-10 h-10 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="m16 18 6-6-6-6" /><path d="m8 6-6 6 6 6" /></svg>
+            </div>
+            
+          </div>
+          <h4 class="font-bold text-white text-sm uppercase tracking-wider font-mono">Fully Open Source</h4>
+          <p class="text-xs text-zinc-400 leading-relaxed font-sans">Everything is open source: audit it, modify it, or host your own copy.</p>
+        </div>
+    </div>
+
+    <div class="border border-zinc-900 bg-zinc-950/40 rounded-xl p-6 sm:p-8 flex flex-col md:flex-row justify-between items-center gap-6 text-left max-w-5xl mx-auto mt-12 hover:border-zinc-800 transition-all reveal">
+      <div class="flex gap-4 items-center">
+        <div class="w-12 h-12 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M12 7v14" /><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /></svg>
+        </div>
+        <div class="space-y-1">
+          <h3 class="text-lg font-bold text-white uppercase tracking-wider font-mono">Ready to Play?</h3>
+          <p class="text-xs text-zinc-400 max-w-xl font-sans leading-relaxed">
+            Browse supported classic titles, or launch the player to run your own story files.
+          </p>
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center gap-3 shrink-0">
+        <button data-nav="library" class="px-5 py-3 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold uppercase text-xs tracking-wider rounded flex items-center gap-1.5 shadow-md shadow-emerald-500/5 hover:shadow-emerald-500/15 transition-all transform active:scale-95 select-none cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M12 7v14" /><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /></svg> Game Library
+        </button>
+        <a href="player/" class="px-5 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-white font-extrabold uppercase text-xs tracking-wider rounded flex items-center gap-1.5 shadow-lg transition-all transform active:scale-95 select-none">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 fill-white"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></svg> Launch Player
+        </a>
+      </div>
+    </div>
+  </div>
+      </div>
+      <div data-view="library" class="space-y-12 hidden">
+        
+  <div class="space-y-12">
+    <div class="text-left space-y-4 border-b border-zinc-900 pb-6">
+      <h2 class="text-3xl sm:text-4xl font-black text-white uppercase tracking-tight">Game Library</h2>
+      <p class="text-sm text-zinc-400 max-w-2xl leading-relaxed font-sans">Classic text adventures, brought to life with retro graphics. Pick a title to play in your browser.</p>
+
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-3 pt-4 border-t border-zinc-900/60 text-xs text-zinc-300 font-mono">
+        <label class="flex items-center gap-2 cursor-pointer select-none group">
+          <input type="checkbox" data-filter="files" class="w-4 h-4 rounded border-zinc-800 bg-zinc-900 accent-emerald-500" />
+          <span class="group-hover:text-emerald-400 transition-colors font-bold">Includes Story File</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer select-none group">
+          <input type="checkbox" data-filter="pregenerated" class="w-4 h-4 rounded border-zinc-800 bg-zinc-900 accent-emerald-500" />
+          <span class="group-hover:text-emerald-400 transition-colors font-bold">Pre-generated Graphics</span>
+        </label>
+      </div>
+    </div>
+
+    <div data-library-grid class="grid md:grid-cols-2 gap-6">
+      
+  <div id="game-card-zork1" data-game-card data-pregenerated="true" data-includes-file="true"
+       class="border border-zinc-800 bg-zinc-950/20 rounded-lg p-6 flex flex-col justify-between transition-all relative overflow-hidden group hover:border-emerald-500/30 hover:shadow-[0_0_20px_-8px_rgba(16,185,129,0.15)]">
+    <a href="player/games/zork1/" class="relative h-44 -mx-6 -mt-6 mb-4 overflow-hidden border-b border-zinc-900 flex items-center justify-center bg-zinc-950 cursor-pointer" aria-label="Play Zork I: The Great Underground Empire">
+      <img src="assets/images/games/zork1.webp" alt="Zork I: The Great Underground Empire" loading="lazy" class="w-full h-full object-cover scale-[1.12] opacity-85 group-hover:opacity-100 transition-opacity" style="image-rendering:pixelated" />
+    </a>
+    <div class="absolute top-0 bottom-0 left-0 w-1 bg-emerald-500"></div>
+
+    <div class="space-y-4 text-left pl-2">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-wider border bg-emerald-500/15 text-emerald-400 border-emerald-500/20">Pre-generated Graphics</span>
+        <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-wider border bg-emerald-500/15 text-emerald-400 border-emerald-500/20">Includes Story File</span>
+      </div>
+
+      <div class="space-y-1">
+        <h3 class="text-xl font-bold text-white tracking-wide uppercase"><a href="player/games/zork1/" class="hover:text-emerald-400 transition-colors">Zork I: The Great Underground Empire</a></h3>
+        <div class="flex items-center justify-between gap-2 flex-wrap pt-0.5">
+          <p class="text-xs text-zinc-500 font-bold">By Infocom (1980)</p>
+          <a href="https://ifdb.org/viewgame?id=0dbnusxunq7fw5ro" target="_blank" rel="noreferrer" class="text-[10px] text-emerald-400/80 hover:text-emerald-300 font-mono flex items-center gap-1 transition-colors hover:underline">IFDB Profile <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-2.5 h-2.5"><path d="M15 3h6v6" /><path d="M10 14 21 3" /><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /></svg></a>
+        </div>
+      </div>
+
+      <p class="text-xs text-zinc-400 leading-relaxed font-sans line-clamp-3">The ultimate text adventure classic. Explore the ruins of an ancient underground empire, solve clever puzzles, and collect treasures while avoiding the thief and the grue.</p>
+    </div>
+
+    <div class="mt-6 pt-4 border-t border-zinc-900/60 flex items-center justify-between pl-2">
+      <span class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold flex items-center gap-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 text-emerald-400"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" /><path d="M20 2v4" /><path d="M22 4h-4" /><circle cx="4" cy="20" r="2" /></svg><span>Pre-generated</span>
+      </span>
+      <a href="player/games/zork1/" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold uppercase text-xs tracking-wider rounded flex items-center gap-1.5 shadow-md shadow-emerald-500/5 hover:shadow-emerald-500/15 transform active:scale-95 transition-all select-none">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 fill-black"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></svg> Play Game
+      </a>
+    </div>
+  </div>
+  <div id="game-card-zork2" data-game-card data-pregenerated="true" data-includes-file="true"
+       class="border border-zinc-800 bg-zinc-950/20 rounded-lg p-6 flex flex-col justify-between transition-all relative overflow-hidden group hover:border-emerald-500/30 hover:shadow-[0_0_20px_-8px_rgba(16,185,129,0.15)]">
+    <a href="player/games/zork2/" class="relative h-44 -mx-6 -mt-6 mb-4 overflow-hidden border-b border-zinc-900 flex items-center justify-center bg-zinc-950 cursor-pointer" aria-label="Play Zork II: The Wizard of Frobozz">
+      <img src="assets/images/games/zork2.webp" alt="Zork II: The Wizard of Frobozz" loading="lazy" class="w-full h-full object-cover scale-[1.12] opacity-85 group-hover:opacity-100 transition-opacity" style="image-rendering:pixelated" />
+    </a>
+    <div class="absolute top-0 bottom-0 left-0 w-1 bg-emerald-500"></div>
+
+    <div class="space-y-4 text-left pl-2">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-wider border bg-emerald-500/15 text-emerald-400 border-emerald-500/20">Pre-generated Graphics</span>
+        <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-wider border bg-emerald-500/15 text-emerald-400 border-emerald-500/20">Includes Story File</span>
+      </div>
+
+      <div class="space-y-1">
+        <h3 class="text-xl font-bold text-white tracking-wide uppercase"><a href="player/games/zork2/" class="hover:text-emerald-400 transition-colors">Zork II: The Wizard of Frobozz</a></h3>
+        <div class="flex items-center justify-between gap-2 flex-wrap pt-0.5">
+          <p class="text-xs text-zinc-500 font-bold">By Infocom (1981)</p>
+          <a href="https://ifdb.org/viewgame?id=yzzm4puxyjakk8c4" target="_blank" rel="noreferrer" class="text-[10px] text-emerald-400/80 hover:text-emerald-300 font-mono flex items-center gap-1 transition-colors hover:underline">IFDB Profile <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-2.5 h-2.5"><path d="M15 3h6v6" /><path d="M10 14 21 3" /><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /></svg></a>
+        </div>
+      </div>
+
+      <p class="text-xs text-zinc-400 leading-relaxed font-sans line-clamp-3">Journey further into the caverns of Zork. A long-retired, slightly senile wizard appears periodically to cast chaotic spells on you as you solve his mechanical riddles.</p>
+    </div>
+
+    <div class="mt-6 pt-4 border-t border-zinc-900/60 flex items-center justify-between pl-2">
+      <span class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold flex items-center gap-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 text-emerald-400"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" /><path d="M20 2v4" /><path d="M22 4h-4" /><circle cx="4" cy="20" r="2" /></svg><span>Pre-generated</span>
+      </span>
+      <a href="player/games/zork2/" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold uppercase text-xs tracking-wider rounded flex items-center gap-1.5 shadow-md shadow-emerald-500/5 hover:shadow-emerald-500/15 transform active:scale-95 transition-all select-none">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 fill-black"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></svg> Play Game
+      </a>
+    </div>
+  </div>
+  <div id="game-card-zork3" data-game-card data-pregenerated="true" data-includes-file="true"
+       class="border border-zinc-800 bg-zinc-950/20 rounded-lg p-6 flex flex-col justify-between transition-all relative overflow-hidden group hover:border-emerald-500/30 hover:shadow-[0_0_20px_-8px_rgba(16,185,129,0.15)]">
+    <a href="player/games/zork3/" class="relative h-44 -mx-6 -mt-6 mb-4 overflow-hidden border-b border-zinc-900 flex items-center justify-center bg-zinc-950 cursor-pointer" aria-label="Play Zork III: The Dungeon Master">
+      <img src="assets/images/games/zork3.webp" alt="Zork III: The Dungeon Master" loading="lazy" class="w-full h-full object-cover scale-[1.12] opacity-85 group-hover:opacity-100 transition-opacity" style="image-rendering:pixelated" />
+    </a>
+    <div class="absolute top-0 bottom-0 left-0 w-1 bg-emerald-500"></div>
+
+    <div class="space-y-4 text-left pl-2">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-wider border bg-emerald-500/15 text-emerald-400 border-emerald-500/20">Pre-generated Graphics</span>
+        <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-wider border bg-emerald-500/15 text-emerald-400 border-emerald-500/20">Includes Story File</span>
+      </div>
+
+      <div class="space-y-1">
+        <h3 class="text-xl font-bold text-white tracking-wide uppercase"><a href="player/games/zork3/" class="hover:text-emerald-400 transition-colors">Zork III: The Dungeon Master</a></h3>
+        <div class="flex items-center justify-between gap-2 flex-wrap pt-0.5">
+          <p class="text-xs text-zinc-500 font-bold">By Infocom (1982)</p>
+          <a href="https://ifdb.org/viewgame?id=vrsot1zgy1wfcdru" target="_blank" rel="noreferrer" class="text-[10px] text-emerald-400/80 hover:text-emerald-300 font-mono flex items-center gap-1 transition-colors hover:underline">IFDB Profile <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-2.5 h-2.5"><path d="M15 3h6v6" /><path d="M10 14 21 3" /><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /></svg></a>
+        </div>
+      </div>
+
+      <p class="text-xs text-zinc-400 leading-relaxed font-sans line-clamp-3">The final chapter of the original trilogy. Less focused on points and more on atmosphere and trial-and-error tests of courage, leading to an encounter with the Dungeon Master himself.</p>
+    </div>
+
+    <div class="mt-6 pt-4 border-t border-zinc-900/60 flex items-center justify-between pl-2">
+      <span class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold flex items-center gap-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 text-emerald-400"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" /><path d="M20 2v4" /><path d="M22 4h-4" /><circle cx="4" cy="20" r="2" /></svg><span>Pre-generated</span>
+      </span>
+      <a href="player/games/zork3/" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold uppercase text-xs tracking-wider rounded flex items-center gap-1.5 shadow-md shadow-emerald-500/5 hover:shadow-emerald-500/15 transform active:scale-95 transition-all select-none">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 fill-black"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></svg> Play Game
+      </a>
+    </div>
+  </div>
+  <div id="game-card-planetfall" data-game-card data-pregenerated="true" data-includes-file="false"
+       class="border border-zinc-800 bg-zinc-950/20 rounded-lg p-6 flex flex-col justify-between transition-all relative overflow-hidden group hover:border-emerald-500/30 hover:shadow-[0_0_20px_-8px_rgba(16,185,129,0.15)]">
+    <a href="player/games/planetfall/" class="relative h-44 -mx-6 -mt-6 mb-4 overflow-hidden border-b border-zinc-900 flex items-center justify-center bg-zinc-950 cursor-pointer" aria-label="Play Planetfall">
+      <img src="assets/images/games/planetfall.webp" alt="Planetfall" loading="lazy" class="w-full h-full object-cover scale-[1.12] opacity-85 group-hover:opacity-100 transition-opacity" style="image-rendering:pixelated" />
+    </a>
+    <div class="absolute top-0 bottom-0 left-0 w-1 bg-emerald-500"></div>
+
+    <div class="space-y-4 text-left pl-2">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-wider border bg-emerald-500/15 text-emerald-400 border-emerald-500/20">Pre-generated Graphics</span>
+        <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-wider border bg-zinc-900 text-zinc-500 border-zinc-800">Provide Story File</span>
+      </div>
+
+      <div class="space-y-1">
+        <h3 class="text-xl font-bold text-white tracking-wide uppercase"><a href="player/games/planetfall/" class="hover:text-emerald-400 transition-colors">Planetfall</a></h3>
+        <div class="flex items-center justify-between gap-2 flex-wrap pt-0.5">
+          <p class="text-xs text-zinc-500 font-bold">By Infocom (1983)</p>
+          <a href="https://ifdb.org/viewgame?id=xe6kb3cuqwie2q38" target="_blank" rel="noreferrer" class="text-[10px] text-emerald-400/80 hover:text-emerald-300 font-mono flex items-center gap-1 transition-colors hover:underline">IFDB Profile <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-2.5 h-2.5"><path d="M15 3h6v6" /><path d="M10 14 21 3" /><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /></svg></a>
+        </div>
+      </div>
+
+      <p class="text-xs text-zinc-400 leading-relaxed font-sans line-clamp-3">A lowly Stellar Patrol ensign crash-lands on a deserted, plague-ridden planet. With your lovable robot companion Floyd at your side, race to save the crumbling facility before it's too late.</p>
+    </div>
+
+    <div class="mt-6 pt-4 border-t border-zinc-900/60 flex items-center justify-between pl-2">
+      <span class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold flex items-center gap-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 text-emerald-400"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" /><path d="M20 2v4" /><path d="M22 4h-4" /><circle cx="4" cy="20" r="2" /></svg><span>Pre-generated</span>
+      </span>
+      <a href="player/games/planetfall/" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold uppercase text-xs tracking-wider rounded flex items-center gap-1.5 shadow-md shadow-emerald-500/5 hover:shadow-emerald-500/15 transform active:scale-95 transition-all select-none">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 fill-black"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></svg> Play Game
+      </a>
+    </div>
+  </div>
+  <div id="game-card-cutthroats" data-game-card data-pregenerated="true" data-includes-file="false"
+       class="border border-zinc-800 bg-zinc-950/20 rounded-lg p-6 flex flex-col justify-between transition-all relative overflow-hidden group hover:border-emerald-500/30 hover:shadow-[0_0_20px_-8px_rgba(16,185,129,0.15)]">
+    <a href="player/games/cutthroats/" class="relative h-44 -mx-6 -mt-6 mb-4 overflow-hidden border-b border-zinc-900 flex items-center justify-center bg-zinc-950 cursor-pointer" aria-label="Play Cutthroats">
+      <img src="assets/images/games/cutthroats.webp" alt="Cutthroats" loading="lazy" class="w-full h-full object-cover scale-[1.12] opacity-85 group-hover:opacity-100 transition-opacity" style="image-rendering:pixelated" />
+    </a>
+    <div class="absolute top-0 bottom-0 left-0 w-1 bg-emerald-500"></div>
+
+    <div class="space-y-4 text-left pl-2">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-wider border bg-emerald-500/15 text-emerald-400 border-emerald-500/20">Pre-generated Graphics</span>
+        <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-wider border bg-zinc-900 text-zinc-500 border-zinc-800">Provide Story File</span>
+      </div>
+
+      <div class="space-y-1">
+        <h3 class="text-xl font-bold text-white tracking-wide uppercase"><a href="player/games/cutthroats/" class="hover:text-emerald-400 transition-colors">Cutthroats</a></h3>
+        <div class="flex items-center justify-between gap-2 flex-wrap pt-0.5">
+          <p class="text-xs text-zinc-500 font-bold">By Infocom (1984)</p>
+          <a href="https://ifdb.org/viewgame?id=4ao65o1u0xuvj8jf" target="_blank" rel="noreferrer" class="text-[10px] text-emerald-400/80 hover:text-emerald-300 font-mono flex items-center gap-1 transition-colors hover:underline">IFDB Profile <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-2.5 h-2.5"><path d="M15 3h6v6" /><path d="M10 14 21 3" /><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /></svg></a>
+        </div>
+      </div>
+
+      <p class="text-xs text-zinc-400 leading-relaxed font-sans line-clamp-3">You're the best diver on a rundown fishing island when a dying man's map pulls you into a race to salvage treasure from historic shipwrecks, dodging double-crossing partners and rival crews in the cold Atlantic.</p>
+    </div>
+
+    <div class="mt-6 pt-4 border-t border-zinc-900/60 flex items-center justify-between pl-2">
+      <span class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold flex items-center gap-1.5">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 text-emerald-400"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" /><path d="M20 2v4" /><path d="M22 4h-4" /><circle cx="4" cy="20" r="2" /></svg><span>Pre-generated</span>
+      </span>
+      <a href="player/games/cutthroats/" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold uppercase text-xs tracking-wider rounded flex items-center gap-1.5 shadow-md shadow-emerald-500/5 hover:shadow-emerald-500/15 transform active:scale-95 transition-all select-none">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 fill-black"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></svg> Play Game
+      </a>
+    </div>
+  </div>
+    </div>
+
+    <div data-library-empty class="hidden border border-dashed border-zinc-800 bg-zinc-950/20 rounded-xl p-12 text-center max-w-xl mx-auto space-y-3">
+      <p class="text-zinc-400 text-sm font-sans">No games match the selected filter criteria.</p>
+      <button data-reset-filters class="text-xs text-emerald-400 hover:text-emerald-300 font-mono underline">Reset Filters</button>
+    </div>
+  </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer id="site-footer" class="relative z-10 border-t border-zinc-900 bg-zinc-950/80 backdrop-blur-md px-6 sm:px-10 py-6 sm:py-8 mt-12 text-center text-xs select-none">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-zinc-500">
+      <div>
+        <span class="font-black text-white">IF<span class="text-emerald-500">W</span>G</span> &bull; Interactive Fiction With Graphics &copy; 2026
+      </div>
+      <div class="flex gap-4">
+        <button data-nav="home" class="hover:text-white cursor-pointer">Home</button>
+        <span>&bull;</span>
+        <button data-nav="library" class="hover:text-white cursor-pointer">Game Library</button>
+        <span>&bull;</span>
+        <a href="player/" class="hover:text-white flex items-center gap-0.5">
+          Launch Player
+        </a>
+      </div>
+    </div>
+  </footer>
+</div></div>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>

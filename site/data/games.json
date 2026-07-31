@@ -1,0 +1,82 @@
+[
+  {
+    "id": "zork1",
+    "title": "Zork I: The Great Underground Empire",
+    "author": "Infocom",
+    "year": "1980",
+    "description": "The ultimate text adventure classic. Explore the ruins of an ancient underground empire, solve clever puzzles, and collect treasures while avoiding the thief and the grue.",
+    "scene": {
+      "room": "West of House",
+      "text": "You are standing in an open field west of a white house, with a boarded front door. There is a small mailbox here."
+    },
+    "pregenerated": true,
+    "includesFile": true,
+    "ifdbUrl": "https://ifdb.org/viewgame?id=0dbnusxunq7fw5ro",
+    "pagePath": "player/games/zork1/",
+    "image": "assets/images/games/zork1.webp"
+  },
+  {
+    "id": "zork2",
+    "title": "Zork II: The Wizard of Frobozz",
+    "author": "Infocom",
+    "year": "1981",
+    "description": "Journey further into the caverns of Zork. A long-retired, slightly senile wizard appears periodically to cast chaotic spells on you as you solve his mechanical riddles.",
+    "scene": {
+      "room": "Dragon's Lair",
+      "text": "You are in the dragon's lair, where the rock walls are scarred by flame. A blackened doorway leads to the south. A rotten old wooden chest is in one corner among the debris."
+    },
+    "pregenerated": true,
+    "includesFile": true,
+    "ifdbUrl": "https://ifdb.org/viewgame?id=yzzm4puxyjakk8c4",
+    "pagePath": "player/games/zork2/",
+    "image": "assets/images/games/zork2.webp"
+  },
+  {
+    "id": "zork3",
+    "title": "Zork III: The Dungeon Master",
+    "author": "Infocom",
+    "year": "1982",
+    "description": "The final chapter of the original trilogy. Less focused on points and more on atmosphere and trial-and-error tests of courage, leading to an encounter with the Dungeon Master himself.",
+    "scene": {
+      "room": "Flathead Ocean",
+      "text": "You are at the shore of an amazing underground sea, the topic of many a legend among adventurers. There is a heavy surf and a breeze is blowing onshore."
+    },
+    "pregenerated": true,
+    "includesFile": true,
+    "ifdbUrl": "https://ifdb.org/viewgame?id=vrsot1zgy1wfcdru",
+    "pagePath": "player/games/zork3/",
+    "image": "assets/images/games/zork3.webp"
+  },
+  {
+    "id": "planetfall",
+    "title": "Planetfall",
+    "author": "Infocom",
+    "year": "1983",
+    "description": "A lowly Stellar Patrol ensign crash-lands on a deserted, plague-ridden planet. With your lovable robot companion Floyd at your side, race to save the crumbling facility before it's too late.",
+    "scene": {
+      "room": "Observation Deck",
+      "text": "This is a balcony girdling the tower. The view is breathtaking; the tower must be half a kilometer tall. From here it is clear that you are on an island."
+    },
+    "pregenerated": true,
+    "includesFile": false,
+    "ifdbUrl": "https://ifdb.org/viewgame?id=xe6kb3cuqwie2q38",
+    "pagePath": "player/games/planetfall/",
+    "image": "assets/images/games/planetfall.webp"
+  },
+  {
+    "id": "cutthroats",
+    "title": "Cutthroats",
+    "author": "Infocom",
+    "year": "1984",
+    "description": "You're the best diver on a rundown fishing island when a dying man's map pulls you into a race to salvage treasure from historic shipwrecks, dodging double-crossing partners and rival crews in the cold Atlantic.",
+    "scene": {
+      "room": "Ocean Floor",
+      "text": "You are on the murky ocean floor, outside the rotted hull of a shipwreck. You can return to the wreck through the hole in the hull to starboard."
+    },
+    "pregenerated": true,
+    "includesFile": false,
+    "ifdbUrl": "https://ifdb.org/viewgame?id=4ao65o1u0xuvj8jf",
+    "pagePath": "player/games/cutthroats/",
+    "image": "assets/images/games/cutthroats.webp"
+  }
+]
