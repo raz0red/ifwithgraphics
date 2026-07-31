@@ -517,23 +517,31 @@ function bootGame(container, game) {
 
   const player = IFWGPlayer.create(container, new BootConfig());
 
-  /* Bundled: a title + PLAY block — the file is ours, so one click plays. */
+  /* Bundled: game-title header + a PLAY target box — same layout as the
+     provide-your-own idle (title header, then a bordered box), so the title
+     gets identical treatment on both. The file is ours, so one click plays. */
   function buildBundledIdle() {
     const idle = document.createElement("div");
-    idle.className = "launch-title-block";
+    idle.className = "launch-provide";
 
     const title = document.createElement("div");
     title.className = "launch-game-title";
     title.textContent = game.title || "";
-
-    const playBtn = document.createElement("button");
-    playBtn.type = "button";
-    playBtn.className = "launch-run-btn";
-    playBtn.textContent = "PLAY";
-    playBtn.addEventListener("click", () => run(game.path, game.path.split("/").pop()));
-
     idle.appendChild(title);
-    idle.appendChild(playBtn);
+
+    const playTarget = document.createElement("div");
+    playTarget.className = "drop-target";
+    const playTitle = document.createElement("span");
+    playTitle.className = "drop-title";
+    playTitle.textContent = "PLAY";
+    const playSub = document.createElement("span");
+    playSub.className = "drop-sub";
+    playSub.textContent = "click to start";
+    playTarget.appendChild(playTitle);
+    playTarget.appendChild(playSub);
+    playTarget.addEventListener("click", () => run(game.path, game.path.split("/").pop()));
+    idle.appendChild(playTarget);
+
     return idle;
   }
 
@@ -581,7 +589,7 @@ function bootGame(container, game) {
 
       const heading = document.createElement("div");
       heading.className = "launch-idlist-title";
-      heading.textContent = "RECOGNIZED RELEASES";
+      heading.textContent = "SUPPORTED GAME FILES";
       list.appendChild(heading);
 
       const rows = document.createElement("div");
