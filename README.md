@@ -1,6 +1,6 @@
-# IF With Graphics (IFWG)
+# Interactive Fiction With Graphics (IFWG)
 
-**IF With Graphics** brings AI-generated artwork to classic text adventure games. Load any Z-machine story file, play it as a text adventure, and watch Apple II-style pixel art appear for each room you visit. Images are generated on the fly and cached locally so they never repeat.
+**IFWG** brings AI-generated artwork to classic text adventure games. Load any Z-machine story file, play it as a text adventure, and watch Apple II-style pixel art appear for each room you visit. Images are generated on the fly and cached locally so they never repeat.
 
 > Image generation requires an API key. Games with pre-rendered artwork play without one.
 
