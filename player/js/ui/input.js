@@ -63,6 +63,9 @@ export function createInputUI(el, state, onSend) {
   });
 
   el.player.addEventListener("click", function () {
+    // On touch, core.js reveals the on-screen command input at the top of the
+    // screen instead of focusing this hidden field (which you can't see).
+    if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) return;
     if (!el.cmdInput.disabled) el.cmdInput.focus();
   });
 

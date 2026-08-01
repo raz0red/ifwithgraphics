@@ -145,6 +145,12 @@ export function render(container) {
   cmdInput.type = "text";
   cmdInput.autocomplete = "off";
   cmdInput.spellcheck = false;
+  // Mobile keyboards "help" by autocapitalizing/autocorrecting, which mangles
+  // parser input (ne -> He, x lamp -> X lamp, etc.). Turn all of it off, and
+  // label the return key "Go" instead of a newline.
+  cmdInput.setAttribute("autocorrect", "off");
+  cmdInput.setAttribute("autocapitalize", "none");
+  cmdInput.setAttribute("enterkeyhint", "go");
   cmdInput.disabled = true;
 
   cmdRow.appendChild(continueHint);
@@ -162,6 +168,30 @@ export function render(container) {
   player.appendChild(cmdRow);
 
   container.appendChild(player);
+
+  /* Mobile command input — revealed only when the player taps the screen while
+     the game is awaiting a command (see core.js). Pinned to the top of the
+     viewport so it clears the on-screen keyboard; the in-player command row
+     would otherwise sit under the keyboard where you can't see what you type.
+     Hidden entirely on desktop (the tap-to-show logic is touch-gated). */
+  const mobileCmd = document.createElement("div");
+  mobileCmd.className = "mobile-cmd";
+  const mobileCmdPrompt = document.createElement("span");
+  mobileCmdPrompt.className = "mobile-cmd-prompt";
+  mobileCmdPrompt.textContent = ">";
+  const mobileCmdInput = document.createElement("input");
+  mobileCmdInput.className = "mobile-cmd-input";
+  mobileCmdInput.type = "text";
+  mobileCmdInput.autocomplete = "off";
+  mobileCmdInput.spellcheck = false;
+  mobileCmdInput.setAttribute("autocorrect", "off");
+  mobileCmdInput.setAttribute("autocapitalize", "none");
+  mobileCmdInput.setAttribute("enterkeyhint", "go");
+  mobileCmdInput.setAttribute("aria-label", "Command");
+  mobileCmdInput.placeholder = "type a command…";
+  mobileCmd.appendChild(mobileCmdPrompt);
+  mobileCmd.appendChild(mobileCmdInput);
+  container.appendChild(mobileCmd);
 
   const diskLed = bezel.querySelector("#ifwg-disk-led");
 
@@ -189,6 +219,8 @@ export function render(container) {
     cmdPrompt,
     cmdDisplay,
     cmdCursor,
-    cmdInput
+    cmdInput,
+    mobileCmd,
+    mobileCmdInput
   };
 }
