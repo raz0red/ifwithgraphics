@@ -325,6 +325,7 @@ body {
   color: #888;
   text-align: center;
   max-width: 26rem;
+  overflow-wrap: break-word;
 }
 
 .launch-retry {
@@ -348,7 +349,7 @@ body {
   align-items: center;
   gap: 0.5rem;
   font-family: "Press Start 2P", monospace;
-  font-size: 0.5rem;
+  font-size: 0.7rem;
   letter-spacing: 0.12em;
   color: #777;
   text-decoration: none;
@@ -370,7 +371,7 @@ body {
   text-align: center;
   padding: 0 1.2rem;
   font-family: "VT323", monospace;
-  font-size: 1.05rem;
+  font-size: 1.3rem;
   letter-spacing: 0.03em;
   color: #666;
 }
@@ -499,7 +500,7 @@ body {
   background: #c0c0c0;
   color: #000;
   font-family: "Press Start 2P", monospace;
-  font-size: clamp(6px, 0.85rem, 20px);
+  font-size: clamp(9px, 0.85rem, 20px);
   letter-spacing: 0.06em;
   padding: 0 0.8rem;
   text-transform: uppercase;
@@ -684,7 +685,7 @@ body {
   border-top: none;
   padding: 0.35rem 0.8rem;
   font-family: "VT323", monospace;
-  font-size: clamp(10px, 1.7rem, 32px);
+  font-size: clamp(15px, 1.7rem, 32px);
   letter-spacing: 0.04em;
   line-height: 1.4;
   white-space: pre-line;
@@ -707,7 +708,7 @@ body {
 .grid-inner {
   margin: 0;
   font-family: "VT323", monospace;
-  font-size: clamp(10px, 1.7rem, 32px);
+  font-size: clamp(15px, 1.7rem, 32px);
   /* letter-spacing must be exactly 0 — cursor position math places the
      cursor at N * 1ch, which doesn't include any letter-spacing. .grid-view
      inherits 0.04em from the shared .scene-text class, so this can't just
@@ -745,7 +746,7 @@ body {
   padding: 0 0.8rem;
   gap: 0.5rem;
   font-family: "VT323", monospace;
-  font-size: clamp(10px, 1.7rem, 32px);
+  font-size: clamp(15px, 1.7rem, 32px);
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -842,5 +843,91 @@ body {
 @keyframes blink {
   50% {
     opacity: 0;
+  }
+}
+
+/* Launch/config screen on touch devices: this overlay isn't the scaled player,
+   so its rem-based type collapses to a few px on a phone. Bump to legible px.
+   Desktop (hover-capable) never matches, so it stays untouched. */
+@media (hover: none) and (pointer: coarse) {
+  .drop-overlay {
+    padding: 12px 14px;
+    justify-content: safe center;
+    overflow-y: auto;
+  }
+  /* Constrain the launch containers to the viewport so nothing overflows off
+     the right edge — long titles, long model names, or the API-key + validate
+     row. Flex children get min-width:0 so they can shrink and truncate. */
+  .launch-provide,
+  .drop-settings {
+    width: calc(100vw - 28px);
+    max-width: calc(100vw - 28px);
+    box-sizing: border-box;
+  }
+  .setting-row {
+    width: 100%;
+  }
+  .setting-select,
+  .setting-input,
+  .setting-key-wrap {
+    min-width: 0;
+  }
+  .drop-target {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .launch-game-title {
+    font-size: 11px;
+    line-height: 1.5;
+    text-align: center;
+    width: 100%;
+    overflow-wrap: anywhere;
+  }
+  .setting-label {
+    width: 95px;
+    white-space: nowrap;
+    font-size: 9px;
+  }
+  .drop-title {
+    font-size: 12px;
+  }
+  .drop-sub {
+    font-size: 17px;
+  }
+  .launch-back {
+    font-size: 11px;
+  }
+  .launch-hint {
+    font-size: 15px;
+  }
+  .setting-select,
+  .setting-input {
+    font-size: 17px;
+  }
+  .setting-validate-btn {
+    font-size: 9px;
+  }
+  .setting-status {
+    font-size: 15px;
+  }
+  .launch-idlist-title {
+    font-size: 9px;
+  }
+  .launch-idlist-serial {
+    font-size: 17px;
+  }
+  .launch-idlist-badge {
+    font-size: 8px;
+  }
+  .launch-error-title {
+    font-size: 10px;
+  }
+  .launch-error-msg,
+  .launch-locked-msg {
+    font-size: 15px;
+  }
+  .launch-retry {
+    font-size: 9px;
   }
 }
