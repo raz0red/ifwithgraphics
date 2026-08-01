@@ -134,14 +134,15 @@ export class ImageGenSettings {
 
 const SETTINGS_KEY = "ifwg_settings";
 
-const PUBLIC_IMAGES_BASE = "https://raz0red.github.io/ifwithgraphics/player/images/"; // update when a real domain ships
-const LOCAL_HOSTS = ["localhost", "127.0.0.1"];
-
 function defaultImagesBase() {
-  const host = typeof location !== "undefined" ? location.hostname : "";
-  return LOCAL_HOSTS.includes(host)
-    ? new URL("../../images/", import.meta.url).href // local dev — see new images before pushing
-    : PUBLIC_IMAGES_BASE; // production or exported elsewhere — point back at us
+  // Pregen images ship alongside the player at <root>/player/images/, so a
+  // module-relative base is correct wherever the player is hosted — localhost,
+  // project pages (raz0red.github.io/ifwithgraphics/), or the custom domain
+  // (ifwithgraphics.com) — and always stays same-origin, avoiding the
+  // cross-origin redirect/CORS failure a hardcoded host would hit once a
+  // custom domain is in play. An exported package hosted elsewhere can point
+  // back at a canonical host via ImageGen.setImagesBase().
+  return new URL("../../images/", import.meta.url).href;
 }
 
 let _imagesBase = defaultImagesBase();
