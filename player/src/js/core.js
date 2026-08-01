@@ -329,6 +329,60 @@ export const IFWGPlayer = {
       }
     });
 
+    /* ── Tap: touch equivalents of the keyboard shortcuts ─────────────────
+       So the game plays on mobile without a physical keyboard: tapping the
+       player advances a "press a key" prompt, or pages the "press space to
+       continue" pager. In normal input mode this does nothing here and the
+       focus handler in input.js raises the on-screen keyboard instead. */
+    const isTouch = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+
+    /* The on-screen keyboard hides the in-player command row, so on touch we
+       reveal a dedicated input at the top of the screen instead (see
+       render.js / .mobile-cmd). It routes through the real command flow by
+       feeding cmdInput and re-dispatching Enter, so history/echo/guards all
+       still apply. */
+    function showMobileCmd() {
+      el.mobileCmdInput.value = "";
+      el.mobileCmd.classList.add("shown");
+      el.mobileCmdInput.focus();
+    }
+    function hideMobileCmd() {
+      el.mobileCmd.classList.remove("shown");
+      el.mobileCmdInput.blur();
+    }
+    el.mobileCmdInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const value = el.mobileCmdInput.value;
+        hideMobileCmd();
+        if (state.started && !el.cmdInput.disabled) {
+          el.cmdInput.value = value;
+          el.cmdInput.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter" }));
+        }
+      } else if (e.key === "Escape") {
+        hideMobileCmd();
+      }
+    });
+
+    el.player.addEventListener("click", () => {
+      if (state.awaitingKeyPress) {
+        state.awaitingKeyPress = false;
+        engine.step("\r", true);
+        return;
+      }
+      if (!el.continueHint.hidden) {
+        textUI.scrollDownAnimated();
+        return;
+      }
+      /* Command mode: on touch, toggle the on-screen command input; on desktop
+         the focus handler in input.js keeps the physical keyboard in the
+         hidden field. */
+      if (isTouch) {
+        if (el.mobileCmd.classList.contains("shown")) hideMobileCmd();
+        else if (!el.cmdInput.disabled) showMobileCmd();
+      }
+    });
+
     /* ── Boot ────────────────────────────────────────────────────────── */
     document.fonts.ready.then(textUI.calibrateTextHeight);
 

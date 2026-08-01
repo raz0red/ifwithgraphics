@@ -791,6 +791,49 @@ body {
   pointer-events: none;
 }
 
+/* Mobile command input — pinned to the top of the viewport, revealed on tap
+   while the game awaits a command (core.js toggles .shown). Sized in px, not
+   rem, since it lives outside the retro-scaled player. */
+.mobile-cmd {
+  display: none;
+}
+.mobile-cmd.shown {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 150;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: #000;
+  border-bottom: 2px solid #c0c0c0;
+}
+.mobile-cmd-prompt {
+  color: #fff;
+  font-family: "VT323", monospace;
+  font-size: 22px;
+  line-height: 1;
+}
+.mobile-cmd-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-family: "VT323", monospace;
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.mobile-cmd-input::placeholder {
+  color: #555;
+  text-transform: none;
+  font-size: 18px;
+}
+
 .continue-hint {
   color: #aaa;
   animation: blink 1s step-end infinite;
