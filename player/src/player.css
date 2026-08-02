@@ -696,6 +696,11 @@ body {
   white-space: pre-line;
   position: relative;
   overflow: hidden;
+  /* JS drives scrollTop directly on touchmove (see text.js), the same way it
+     already does for wheel — overflow:hidden blocks native scrolling either
+     way. touch-action: none hands the whole gesture to JS immediately
+     instead of racing a native pan attempt first. */
+  touch-action: none;
 }
 
 /* ── Grid view (real @read_char screen: forms, menus) ─────────────── */
@@ -838,6 +843,29 @@ body {
   color: #555;
   text-transform: none;
   font-size: 18px;
+}
+.mobile-cmd-history-btn {
+  flex-shrink: 0;
+  /* Matched to the prompt/input's own natural row height — anything taller
+     grows the whole bar to fit it, since the row's align-items: center
+     sizes to its tallest child. Verified: 51px bar height either way. */
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #111;
+  /* A crisp inline SVG chevron (same treatment as the launch screen's BACK
+     arrow and the settings dropdown's chevron) instead of a text glyph —
+     no font-fallback mismatches to worry about. A soft border keeps this
+     from reading as a harsh UI block against the rest of the bar. */
+  border: 1px solid #333;
+  color: #888;
+  cursor: pointer;
+}
+.mobile-cmd-history-btn:active {
+  border-color: #666;
+  color: #fff;
 }
 
 .continue-hint {

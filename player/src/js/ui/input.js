@@ -69,5 +69,8 @@ export function createInputUI(el, state, onSend) {
     if (!el.cmdInput.disabled) el.cmdInput.focus();
   });
 
-  return { showCursor: showCursor };
+  /* Exposed so the mobile command bar (core.js) can replay recent commands
+     via tap-to-cycle — there's no ArrowUp/ArrowDown on a touch keyboard, so
+     it needs a different way to reach the same history this tracks. */
+  return { showCursor: showCursor, getHistory: () => history };
 }

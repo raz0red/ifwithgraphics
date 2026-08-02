@@ -4,6 +4,7 @@ import { createTextUI } from "./ui/text.js";
 import { createImageUI } from "./ui/image.js";
 import { createInputUI } from "./ui/input.js";
 import { createGridUI } from "./ui/grid.js";
+// import { dbg } from "./ui/debug.js"; // temporary mobile touch-debug overlay, see js/ui/debug.js
 import { ImageGen, GAMES, ALIASES } from "./imagegen/index.js";
 import { TITLE_FALLBACKS } from "../context/titleFallbacks.js";
 import { IFWGConfig, StandaloneConfig } from "./config.js";
@@ -122,7 +123,7 @@ export const IFWGPlayer = {
 
     /* ── UI modules ─────────────────────────────────────────────────── */
     const inputUI = createInputUI(el, state, sendCommand);
-    const textUI = createTextUI(el, state, inputUI.showCursor);
+    const textUI = createTextUI(el, state, inputUI.showCursor, hideMobileCmd);
     const imageUI = createImageUI(el, state, textUI.calibrateTextHeight);
     const gridUI = createGridUI(el);
 
@@ -341,46 +342,189 @@ export const IFWGPlayer = {
        render.js / .mobile-cmd). It routes through the real command flow by
        feeding cmdInput and re-dispatching Enter, so history/echo/guards all
        still apply. */
+    /* html/body has touch-action: pan-x pan-y globally (allows some native
+       panning while blocking pinch-zoom — see the mobile zoom fix). With
+       the real on-screen keyboard up, that native pan can drag the whole
+       page — including this fixed-position bar and the game display —
+       around inside the keyboard-shrunk visual viewport. Nothing at the
+       body level is actually meant to scroll: story text scrolling already
+       goes through its own JS-driven handler on .scene-text (touch-action:
+       none there regardless), so disabling body-level panning while typing
+       only removes an unintended capability, not a used one. */
+    function setMobileCmdShown(shown) {
+      el.mobileCmd.classList.toggle("shown", shown);
+      document.body.style.touchAction = shown ? "none" : "";
+      if (!shown) el.mobileCmdInput.blur();
+    }
+    /* -1 == fresh, unsubmitted typing; otherwise an index into the rotation
+       below (tap-to-cycle recent commands — there's no ArrowUp/ArrowDown on
+       a touch keyboard). Reset whenever the bar is (re)opened so a stale
+       rotation position from a previous visit doesn't carry over. */
+    let mobileHistoryIndex = -1;
+    /* Set right before the history button takes focus, so the input's blur
+       handler below can tell "the bar should stay open, this blur is just
+       the button taking over" apart from every other reason focus could be
+       lost. Deliberately not e.relatedTarget-based — Safari's support for
+       populating that on a touch-driven blur is inconsistent, and silently
+       failing that check is indistinguishable from the bug this exists to
+       fix in the first place. A plain flag has no such cross-browser gap. */
+    let historyBtnTakingFocus = false;
+
     function showMobileCmd() {
       el.mobileCmdInput.value = "";
-      el.mobileCmd.classList.add("shown");
+      mobileHistoryIndex = -1;
+      /* Nothing to rotate through yet on a fresh session — showing a button
+         that taps to a no-op is more confusing than just not showing it. */
+      el.mobileCmdHistoryBtn.hidden = inputUI.getHistory().length === 0;
+      setMobileCmdShown(true);
       el.mobileCmdInput.focus();
     }
     function hideMobileCmd() {
-      el.mobileCmd.classList.remove("shown");
-      el.mobileCmdInput.blur();
+      setMobileCmdShown(false);
     }
+    /* The "shown" class only tracked our own explicit hideMobileCmd() calls
+       (Enter/Escape), not the input actually losing focus — so if iOS
+       dismisses its keyboard some other way (its own dismiss control,
+       tapping away, etc.), the real keyboard closes but this class stays
+       stuck true, permanently blocking any future tap from reopening it.
+       Track the real focus state directly instead of assuming it. */
+    el.mobileCmdInput.addEventListener("blur", () => {
+      /* Tapping the history button below moves focus to it, which blurs
+         this input — without this check, that closed the entire bar as an
+         unintended side effect right as the button's own click handler was
+         about to run, silently undoing the rotation the same tap had just
+         set up. */
+      if (historyBtnTakingFocus) {
+        historyBtnTakingFocus = false;
+        return;
+      }
+      setMobileCmdShown(false);
+      // dbg("mobileCmdInput blur -> shown=false");
+    });
+    /* A dedicated button (see render.js) rotates through the last 10
+       submitted commands, most recent first, wrapping back around. Tapping
+       the input itself, or the plain "> " prompt beside it, both proved
+       unreliable — either one triggers iOS/Android's native
+       caret-placement and select/paste callout on the adjacent editable
+       field. This button has its own clear space, so there's no ambiguity
+       about what was tapped and nothing native to fight. mousedown (fires
+       on real mouse clicks and is synthesized for touch alike, ahead of any
+       focus change) is where the flag above gets set, not touchstart —
+       preventDefault on any part of a touch sequence risks WebKit silently
+       suppressing the click that follows (see the earlier scene-text
+       scroll-vs-tap work), so this only listens, never prevents. */
+    el.mobileCmdHistoryBtn.addEventListener("mousedown", () => {
+      historyBtnTakingFocus = true;
+    });
+    el.mobileCmdHistoryBtn.addEventListener("click", () => {
+      const recent = inputUI.getHistory().slice(-10);
+      if (recent.length === 0) return;
+      mobileHistoryIndex = (mobileHistoryIndex + 1) % recent.length;
+      el.mobileCmdInput.value = recent[recent.length - 1 - mobileHistoryIndex];
+      /* Tapping this button moved focus (and the keyboard) away from the
+         input — bring both back so it's still ready to type over/submit
+         the rotated-in command without an extra tap. */
+      el.mobileCmdInput.focus();
+    });
+    /* Editing a rotated-in command (fixing a typo before resubmitting it,
+       say) should just edit it normally, same as any other text — only
+       exit history-browsing mode so the next button tap starts a fresh
+       rotation from the most recent command again, rather than continuing
+       from wherever this one was left off. */
+    el.mobileCmdInput.addEventListener("input", () => {
+      mobileHistoryIndex = -1;
+    });
+    /* Typing happens in the mobile bar, not the real cmdInput/cmdDisplay in
+       the game console itself — so unlike desktop, where cmdDisplay already
+       echoes every keystroke live, the actual "> " prompt line and its
+       cursor never show anything on touch. Replay the finished command into
+       it as a quick simulated-typing reveal, hold it a beat, then clear it
+       ourselves before handing off to the real submit flow — so that echo
+       (and the otherwise-unused blinking cursor) still happens on mobile,
+       just compressed and self-contained, entirely before sendCommand()
+       (which blanks the display immediately, same as it always has) ever
+       runs. Leaving that clear to happen later, once the response arrived,
+       was tried first — but slideToContent()/updateUI() only ever toggle
+       cmdDisplay.hidden, never its stale textContent, so the old command
+       reappeared as soon as the new room settled back to "ready to type". */
+    function revealTypedCommand(text, onDone) {
+      el.cmdPrompt.hidden = false;
+      el.cmdDisplay.hidden = false;
+      inputUI.showCursor(true);
+      const upper = text.toUpperCase();
+      let i = 0;
+      (function step() {
+        el.cmdDisplay.textContent = upper.slice(0, i);
+        i += 1;
+        if (i <= upper.length) {
+          setTimeout(step, 18);
+        } else {
+          setTimeout(() => {
+            el.cmdDisplay.textContent = "";
+            el.cmdPrompt.hidden = true;
+            el.cmdDisplay.hidden = true;
+            inputUI.showCursor(false);
+            onDone();
+          }, 250);
+        }
+      })();
+    }
+
     el.mobileCmdInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
         const value = el.mobileCmdInput.value;
         hideMobileCmd();
         if (state.started && !el.cmdInput.disabled) {
-          el.cmdInput.value = value;
-          el.cmdInput.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter" }));
+          revealTypedCommand(value, () => {
+            el.cmdInput.value = value;
+            el.cmdInput.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter" }));
+          });
         }
       } else if (e.key === "Escape") {
         hideMobileCmd();
       }
     });
 
-    el.player.addEventListener("click", () => {
+    /* Bound to document, not el.player, so a tap anywhere on the page —
+       including the black letterboxed margins around the fixed-aspect-ratio
+       player box — advances/continues the same as tapping the game itself.
+       state.started stands in for the old implicit guard: el.player is
+       [hidden] (and so un-clickable) until a game actually loads, but
+       document always is, so the same check has to be explicit here. */
+    document.addEventListener("click", () => {
+      // dbg(`click started=${state.started}`);
+      if (!state.started) return;
       if (state.awaitingKeyPress) {
         state.awaitingKeyPress = false;
         engine.step("\r", true);
+        // dbg("click -> awaitingKeyPress step");
         return;
       }
       if (!el.continueHint.hidden) {
         textUI.scrollDownAnimated();
+        // dbg("click -> scrollDownAnimated");
         return;
       }
-      /* Command mode: on touch, toggle the on-screen command input; on desktop
-         the focus handler in input.js keeps the physical keyboard in the
-         hidden field. */
-      if (isTouch) {
-        if (el.mobileCmd.classList.contains("shown")) hideMobileCmd();
-        else if (!el.cmdInput.disabled) showMobileCmd();
+      /* Command mode: on touch, any tap reveals the on-screen command input;
+         on desktop the focus handler in input.js keeps the physical
+         keyboard in the hidden field. There's deliberately no tap-to-hide
+         here — hiding only ever happens for an explicit reason (submitting
+         a command, or starting a scroll-drag in text.js). A tap-to-toggle
+         made hide and show compete for the same gesture: a stray tap while
+         the bar was already open would close it, and the tap after that was
+         needed just to reopen it — effectively costing an extra, seemingly
+         dead tap every time. Showing again when already shown would wipe
+         out whatever's been typed so far, so this is a no-op once open. */
+      if (isTouch && !el.cmdInput.disabled && !el.mobileCmd.classList.contains("shown")) {
+        showMobileCmd();
+        // dbg("click -> showMobileCmd");
       }
+      // else {
+      //   dbg(
+      //     `click -> no-op isTouch=${isTouch} cmdDisabled=${el.cmdInput.disabled} shown=${el.mobileCmd.classList.contains("shown")}`
+      //   );
+      // }
     });
 
     /* ── Boot ────────────────────────────────────────────────────────── */
