@@ -57,6 +57,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Rapid taps to advance text/continue otherwise read as a double-tap-zoom
+     gesture on mobile Safari/Chrome, throwing off the fixed layout.
+     "manipulation" alone still permits pinch-zoom by spec — pan-x pan-y
+     omits it from the allowed gesture list entirely. */
+  touch-action: pan-x pan-y;
 }
 
 /* ── Drop overlay ─────────────────────────────── */
