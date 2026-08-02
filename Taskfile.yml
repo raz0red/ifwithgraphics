@@ -65,9 +65,9 @@ tasks:
       - "{{.ALPINE_RUN}} sh -c '\
           rm -rf /repo/dist && \
           mkdir -p /repo/dist/player/wasm /repo/dist/player/prompt /repo/dist/player/context && \
-          cp /repo/site/index.html /repo/dist/ && \
+          cp /repo/site/index.html /repo/site/manifest.json /repo/dist/ && \
           cp -r /repo/site/css /repo/site/js /repo/site/assets /repo/dist/ && \
-          cp /repo/player/index.html /repo/player/src/player.css /repo/dist/player/ && \
+          cp /repo/player/index.html /repo/player/icon.png /repo/player/manifest.json /repo/player/src/player.css /repo/dist/player/ && \
           cp -r /repo/player/src/js /repo/dist/player/js && \
           cp /repo/player/src/wasm/ifwg.js /repo/player/src/wasm/ifwg.wasm /repo/dist/player/wasm/ && \
           cp /repo/player/src/dist/ifwg-player.js /repo/dist/player/ && \
