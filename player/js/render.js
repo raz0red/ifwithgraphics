@@ -189,8 +189,21 @@ export function render(container) {
   mobileCmdInput.setAttribute("enterkeyhint", "go");
   mobileCmdInput.setAttribute("aria-label", "Command");
   mobileCmdInput.placeholder = "type a command…";
+  /* A dedicated button, not the input or prompt themselves — tapping an
+     already-focused text field (or anything overlapping its hit area)
+     triggers iOS/Android's native caret-placement and select/paste callout,
+     which proved unavoidable when the tap target was the input or the
+     prompt span beside it. This sits with its own clear space so there's no
+     ambiguity about what was tapped. */
+  const mobileCmdHistoryBtn = document.createElement("button");
+  mobileCmdHistoryBtn.type = "button";
+  mobileCmdHistoryBtn.className = "mobile-cmd-history-btn";
+  mobileCmdHistoryBtn.setAttribute("aria-label", "Previous command");
+  mobileCmdHistoryBtn.innerHTML =
+    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></svg>';
   mobileCmd.appendChild(mobileCmdPrompt);
   mobileCmd.appendChild(mobileCmdInput);
+  mobileCmd.appendChild(mobileCmdHistoryBtn);
   container.appendChild(mobileCmd);
 
   const diskLed = bezel.querySelector("#ifwg-disk-led");
@@ -221,6 +234,8 @@ export function render(container) {
     cmdCursor,
     cmdInput,
     mobileCmd,
-    mobileCmdInput
+    mobileCmdPrompt,
+    mobileCmdInput,
+    mobileCmdHistoryBtn
   };
 }

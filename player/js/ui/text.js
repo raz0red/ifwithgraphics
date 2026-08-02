@@ -1,5 +1,17 @@
-export function createTextUI(el, state, showCursor) {
+// import { dbg } from "./debug.js"; // temporary mobile touch-debug overlay, see js/ui/debug.js
+
+export function createTextUI(el, state, showCursor, hideMobileCmd) {
   /* el: sceneText, sceneTextInner, continueHint, cmdPrompt, cmdDisplay, cmdInput */
+
+  /* On touch, core.js's mobile-cmd bar is the only sanctioned way to raise
+     the on-screen keyboard (a deliberate tap). Focusing the real cmdInput
+     here used to be harmless on touch — it only ever ran from async engine
+     callbacks, which mobile browsers don't treat as a user gesture, so the
+     keyboard never actually appeared. Touch-drag scrolling below calls this
+     synchronously from a real touchmove, which mobile browsers DO honor —
+     so without this guard, scrolling to the bottom of the text pops the
+     keyboard mid-drag. */
+  const isTouch = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 
   /* Shrink sceneText height to an exact multiple of lineH so every scroll
      page lands cleanly on a line boundary with no partial lines visible. */
@@ -52,7 +64,7 @@ export function createTextUI(el, state, showCursor) {
       el.cmdDisplay.hidden = false;
       showCursor(true);
       el.cmdInput.disabled = false;
-      el.cmdInput.focus();
+      if (!isTouch) el.cmdInput.focus();
       return;
     }
 
@@ -62,7 +74,7 @@ export function createTextUI(el, state, showCursor) {
       el.cmdDisplay.hidden = false;
       showCursor(true);
       el.cmdInput.disabled = false;
-      el.cmdInput.focus();
+      if (!isTouch) el.cmdInput.focus();
       return;
     }
 
@@ -228,6 +240,77 @@ export function createTextUI(el, state, showCursor) {
         )
       );
       updateUI();
+    },
+    { passive: false }
+  );
+
+  /* Touch drag scroll — same reason as wheel above. A movement threshold
+     lets a plain tap (no meaningful drag) fall through untouched to
+     core.js's document-level tap-to-continue / tap-to-reveal-input handler;
+     a recognized drag's touchend below calls preventDefault(), which
+     suppresses the browser's synthesized click for that gesture so it never
+     reaches that handler in the first place. */
+  let touchStartY = 0;
+  let touchStartTop = 0;
+  let touchDragging = false;
+
+  el.sceneText.addEventListener(
+    "touchstart",
+    (e) => {
+      if (state.scrollAnimating || state.sliding) return;
+      touchStartY = e.touches[0].clientY;
+      touchStartTop = el.sceneText.scrollTop;
+      touchDragging = false;
+      // dbg(`touchstart scrollTop=${touchStartTop}`);
+    },
+    { passive: true }
+  );
+
+  el.sceneText.addEventListener(
+    "touchmove",
+    (e) => {
+      if (state.scrollAnimating || state.sliding) return;
+      const delta = touchStartY - e.touches[0].clientY;
+      /* Generous slop: natural finger jitter during a plain tap easily
+         exceeds a few px, and misreading a tap as a drag suppresses its
+         click below (see touchend) instead of acting on it. */
+      if (!touchDragging && Math.abs(delta) < 16) return;
+      if (!touchDragging) {
+        // dbg(`touchmove -> DRAGGING delta=${delta.toFixed(0)}`);
+        /* A drag means "reading", not "typing" — dismiss the on-screen
+           keyboard bar if it was left open, both so it isn't stuck open
+           through the scroll and so the real keyboard closes (and the
+           body-level touch-action it disables — see hideMobileCmd in
+           core.js — is restored) before the drag actually starts moving
+           content. */
+        if (el.mobileCmd.classList.contains("shown")) hideMobileCmd();
+      }
+      touchDragging = true;
+      e.preventDefault();
+      el.sceneText.scrollTop = Math.max(
+        0,
+        Math.min(touchStartTop + delta, el.sceneText.scrollHeight - el.sceneText.clientHeight)
+      );
+      updateUI();
+    },
+    { passive: false }
+  );
+
+  el.sceneText.addEventListener(
+    "touchend",
+    (e) => {
+      if (touchDragging) {
+        /* Calling preventDefault() here — not just on touchmove — is what
+           actually suppresses the browser's synthesized click for this touch
+           sequence at the source. An earlier attempt tracked a "just
+           scrolled" flag with a timeout instead, but the browser's own
+           delayed click for a drag showed up anywhere from 0.5s-4s later —
+           no fixed window could reliably cover that without also risking
+           eating a genuinely separate next tap. */
+        e.preventDefault();
+      }
+      // dbg(`touchend dragging=${touchDragging}`);
+      touchDragging = false;
     },
     { passive: false }
   );
