@@ -1,0 +1,10 @@
+{
+  "name": "IF With Graphics (IFWG)",
+  "short_name": "IFWG",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "icons": [{ "src": "icon.png", "sizes": "512x512", "type": "image/png" }],
+  "theme_color": "#000000",
+  "background_color": "#000000"
+}
