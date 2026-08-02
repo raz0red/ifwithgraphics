@@ -309,6 +309,34 @@ export const IFWGPlayer = {
       engine.step(cmd, false);
     }
 
+    /* iOS standalone (Add to Home Screen) mode has a known bug where a
+       100dvh/100dvw-based calc() chain (--player-w/--player-h in
+       player.css) can stick with its pre-rotation value after rotating
+       instead of recomputing — normal browser tabs aren't affected, only
+       the standalone/fullscreen display mode. Rather than try to coax
+       WebKit into recomputing dvh/dvw itself (tried: forcing a style
+       recalc; tried: webrcade's scroll-by-1px nav-bar hack — neither
+       actually fixed this specific symptom, and a height-only fix left
+       landscape broken since a stale, too-narrow dvw from before rotating
+       still won there), sidestep the question of whether/when it
+       recomputes either entirely by computing --vh100/--vw100 ourselves
+       from window.innerHeight/innerWidth, plain DOM properties with no such
+       quirk, and feeding those into the calc() chain instead (see
+       player.css). iOS is also known to report inner dimensions before
+       finishing its own rotation reflow if read immediately on the event —
+       the extra delayed re-run catches the corrected values once that's
+       settled. */
+    function updateViewportVars() {
+      document.documentElement.style.setProperty("--vh100", `${window.innerHeight}px`);
+      document.documentElement.style.setProperty("--vw100", `${window.innerWidth}px`);
+    }
+    updateViewportVars();
+    window.addEventListener("resize", updateViewportVars);
+    window.addEventListener("orientationchange", () => {
+      updateViewportVars();
+      setTimeout(updateViewportVars, 300);
+    });
+
     /* ── Keydown: SPACE to scroll, any key in any-key mode ───────────── */
     document.addEventListener("keydown", (e) => {
       /* awaitingKeyPress is captured unconditionally — not gated on scroll

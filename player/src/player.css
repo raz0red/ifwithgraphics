@@ -6,7 +6,17 @@ html {
 
 :root {
   --border: 2px;
-  --player-w: min(100dvw, calc(100dvh * 1.14));
+  /* --vh100/--vw100 are set by JS (core.js) from window.innerHeight/Width
+     on load/resize/orientationchange — iOS standalone (Add to Home Screen)
+     mode has a known bug where a dvh/dvw-based calc() chain like this one
+     can stick with its pre-rotation value instead of recomputing after
+     rotating. In landscape specifically, a stale (too-narrow, portrait-era)
+     100dvw would wrongly win the min() below over the correct height-based
+     constraint. Computing both ourselves from plain, always-current DOM
+     properties sidesteps the question of whether/when WebKit recomputes
+     dvh/dvw entirely. Falls back to the dv units directly until that JS
+     runs once on load. */
+  --player-w: min(var(--vw100, 100dvw), calc(var(--vh100, 100dvh) * 1.14));
   --player-h: calc(var(--player-w) / 1.14);
   --status-h: calc(var(--player-h) * 0.075);
   --stats-h: 0px;
@@ -845,6 +855,7 @@ body {
   font-size: 18px;
 }
 .mobile-cmd-history-btn {
+  position: relative;
   flex-shrink: 0;
   /* Matched to the prompt/input's own natural row height — anything taller
      grows the whole bar to fit it, since the row's align-items: center
@@ -862,6 +873,20 @@ body {
   border: 1px solid #333;
   color: #888;
   cursor: pointer;
+}
+/* Widens the actual tappable area well past the visible 25x25px box
+   without changing how it looks or touching layout — position: absolute
+   takes this out of flow entirely, so it can't grow the bar the way a real
+   padding/size increase just got fixed for doing. A tap anywhere in this
+   invisible region still lands on the button itself (event.target is the
+   host element, not the pseudo-element), same as any other overflow. */
+.mobile-cmd-history-btn::before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  right: -12px;
+  bottom: -12px;
 }
 .mobile-cmd-history-btn:active {
   border-color: #666;
@@ -890,11 +915,15 @@ body {
   }
   /* Constrain the launch containers to the viewport so nothing overflows off
      the right edge — long titles, long model names, or the API-key + validate
-     row. Flex children get min-width:0 so they can shrink and truncate. */
+     row. Flex children get min-width:0 so they can shrink and truncate.
+     Capped at 420px: this was tuned for narrow portrait widths, where
+     100vw-28px is naturally small — in landscape on the same touch device,
+     100vw is the wide dimension, and stretching this to nearly the full
+     width looked broken rather than just permissive. */
   .launch-provide,
   .drop-settings {
-    width: calc(100vw - 28px);
-    max-width: calc(100vw - 28px);
+    width: min(calc(100vw - 28px), 420px);
+    max-width: min(calc(100vw - 28px), 420px);
     box-sizing: border-box;
   }
   .setting-row {
