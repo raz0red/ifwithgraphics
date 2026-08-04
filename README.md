@@ -1,19 +1,25 @@
 # Interactive Fiction With Graphics (IFWG)
 
-**IFWG** brings AI-generated artwork to classic text adventure games. Load any Z-machine story file, play it as a text adventure, and watch Apple II-style pixel art appear for each room you visit. Images are generated on the fly and cached locally so they never repeat.
+**IFWG** brings AI-generated artwork to classic text adventure games. Play a curated library of games with pre-rendered art instantly in the browser, or load your own Z-machine story file and watch Apple II-style pixel art appear for each room you visit, generated on the fly and cached locally so it never repeats.
 
-> Image generation requires an API key. Games with pre-rendered artwork play without one.
+## [**▶ Play now at ifwithgraphics.com**](https://ifwithgraphics.com)
+
+> Games in the library have pre-rendered artwork and play instantly, no API key needed. Bringing your own story file to generate art on the fly requires an OpenAI or Google Gemini API key.
 
 ---
 
 <p align="center">
-  <img src="assets/screenshot.png" width="90%">
+  <a href="https://ifwithgraphics.com">
+    <img src="assets/screenshot.png" width="90%">
+  </a>
   <br>
   <i>West of House - Zork I</i>
 </p>
 
 <p align="center">
-  <img src="assets/screenshot2.png" width="90%">
+  <a href="https://ifwithgraphics.com">
+    <img src="assets/screenshot2.png" width="90%">
+  </a>
   <br>
   <i>The Troll Room - Zork I</i>
 </p>
@@ -38,7 +44,10 @@ The aesthetic is deliberately retro: limited palettes, dithered pixel art, scan-
   stored in the browser)
 - Two image generation providers: OpenAI and Google Gemini
 - Status bar, animated room transitions, retro disk LED while images load
-- Scales to any viewport size
+- Scales to any viewport size, with full mobile support — touch-scrollable
+  story text, an on-screen command bar with tap-to-cycle through recent
+  commands, and "Add to Home Screen" support with proper icons (each game's
+  own art, or IFWG's mark) for a standalone, full-screen play experience
 - Full-screen forms and menus — filling out Bureaucracy's licence application, or
   building a character in Beyond Zork — render as a faithful, properly laid-out
   screen with a real cursor, not garbled text
@@ -66,21 +75,16 @@ The aesthetic is deliberately retro: limited palettes, dithered pixel art, scan-
 
 Images are generated using an Apple II dithered pixel art prompt paired with reference images to lock in the aesthetic. Results are cropped, compressed to WebP, and cached in IndexedDB. Once an image exists for a room it is never regenerated unless you clear the cache.
 
-**Which provider looks best?**
-
-OpenAI (`gpt-image-2-2026-04-21`) produces the most convincing retro pixel art. The April 2026 release in particular does excellent style transfer from the reference images and is the recommended choice for the classic Apple II theme.
-
-Gemini is faster and cheaper and works well for a more painterly or cinematic look, but does not match the pixel art fidelity of the OpenAI model for this use case.
+Pick OpenAI or Google Gemini and enter an API key; the available models for that provider load directly into the settings. OpenAI's image models tend to produce the most convincing retro pixel art for this aesthetic; Gemini is generally faster and cheaper and leans more painterly/cinematic.
 
 ---
-
 
 ## Roadmap
 
 - Slash commands (`/restart`, `/regen`, `/export`, `/help`) intercepted before they reach the interpreter
-- Expanding the pre-generated game library and the browsable game catalog
+- Expanding the pre-generated game library
 - Theme system so the visual style is swappable without touching core code
-- Embeddable export packages with a standalone launcher
+- Embeddable export packages with a standalone launcher, and webRcade export
 - V6 support (Zork Zero, Shogun, Journey)
 
 ---
