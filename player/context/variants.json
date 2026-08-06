@@ -1,5 +1,13 @@
 {
   "planetfall": {
     "Reactor Lobby": [{ "match": "immaculate", "title": "Reactor Lobby (Immaculate)" }]
+  },
+  "wishbringer": {
+    "Underground": [
+      { "match": "smelly underground chamber", "title": "Underground (Smelly)" },
+      { "match": "damp underground chamber", "title": "Underground (Damp)" },
+      { "match": "dark underground chamber", "title": "Underground (Dark)" },
+      { "match": "dirty underground chamber", "title": "Underground (Dirty)" }
+    ]
   }
 }
