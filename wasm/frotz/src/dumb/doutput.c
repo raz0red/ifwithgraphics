@@ -388,9 +388,23 @@ void ifwg_dumb_get_full_screen (char *text_buf, char *style_buf, int size)
         cell_t *r = screen_data + row * z_header.screen_cols;
         int last;
 
+        /* Scan back to the last cell holding real content. A reverse-video
+         * cell counts even when its character is a space: games draw
+         * highlight bars and form fields as runs of reverse-video blanks
+         * (Bureaucracy centres "SOFTWARE LICENCE APPLICATION" inside one),
+         * and treating a blank as empty regardless of style clipped every
+         * such bar to its last letter — the highlight stopped mid-bar
+         * instead of spanning it, and asymmetrically, since only the
+         * trailing padding was lost. Glyph cells never count; they are not
+         * rendered as text at all (see the emit loop below). */
         for (last = z_header.screen_cols - 1; last >= 0; last--) {
             char c = (char) r[last].c;
-            if (r[last].font != GRAPHICS_FONT && !(r[last].style & PICTURE_STYLE) && c > 32 && c <= 126) break;
+            if (r[last].font == GRAPHICS_FONT || (r[last].style & PICTURE_STYLE))
+                continue;
+            if (c > 32 && c <= 126)
+                break;
+            if ((r[last].style & REVERSE_STYLE) && c == 32)
+                break;
         }
         for (col = 0; col <= last && len < size - 1; col++) {
             char c = (char) r[col].c;
