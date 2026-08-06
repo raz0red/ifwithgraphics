@@ -2,28 +2,44 @@ export function createGridUI(el) {
   /* el: gridView, gridInner, gridCursor */
   let lastRenderArgs = null;
 
-  /* Split a line of text and its same-shaped '1'/'0' style mask into runs,
-     wrapping reverse-video runs in a span. Some screens (Beyond Zork's
-     character menu) move the highlighted item via reverse video alone, with
-     no other visible change — without rendering this, arrow-key navigation
-     looks completely dead even though it's working. */
+  /* One digit per cell, bit-encoded by ifwg_dumb_get_full_screen:
+       1 = reverse video, 2 = bold, 4 = emphasis (underline/italic)
+     '1' therefore still means plain reverse video, exactly as it did when
+     this mask was a bare '1'/'0' flag. Anything unexpected reads as 0 so a
+     malformed or short mask degrades to unstyled text rather than throwing. */
+  function styleCodeAt(styleLine, i) {
+    const code = styleLine.charCodeAt(i) - 48;
+    return code >= 0 && code <= 7 ? code : 0;
+  }
+
+  /* Split a line of text and its same-shaped style mask into runs, wrapping
+     each styled run in a span. Some screens (Beyond Zork's character menu)
+     move the highlighted item via reverse video alone, with no other visible
+     change — without rendering this, arrow-key navigation looks completely
+     dead even though it's working. */
   function renderLine(text, styleLine) {
     const frag = document.createDocumentFragment();
     let i = 0;
     while (i < text.length) {
-      const rv = styleLine[i] === "1";
+      const code = styleCodeAt(styleLine, i);
       let j = i + 1;
-      while (j < text.length && (styleLine[j] === "1") === rv) j++;
+      while (j < text.length && styleCodeAt(styleLine, j) === code) j++;
       const run = text.slice(i, j);
-      /* A reverse-video run of pure whitespace has no visible content of
-         its own — it only ever shows up as a solid block (Bureaucracy
-         marks every form field's blank with one of these), which reads as
-         a stray cursor sitting on every line. Real reverse-video content
-         (Beyond Zork's highlighted menu selection, etc.) always has actual
-         text in the run, so this only suppresses the blank markers. */
-      if (rv && run.trim() !== "") {
+      /* A styled run of pure whitespace has no visible content of its own.
+         Reverse video would show as a solid block (Bureaucracy marks every
+         form field's blank with one of these), which reads as a stray cursor
+         sitting on every line — and the game prompts for each field below
+         the form anyway, so the markers are noise. Underline on blanks is
+         the same problem in a different shape. Real styled content (Beyond
+         Zork's highlighted menu selection, etc.) always has actual text in
+         the run, so this only suppresses the empty markers. */
+      if (code !== 0 && run.trim() !== "") {
         const span = document.createElement("span");
-        span.className = "grid-rv";
+        const cls = [];
+        if (code & 1) cls.push("grid-rv");
+        if (code & 2) cls.push("grid-bold");
+        if (code & 4) cls.push("grid-em");
+        span.className = cls.join(" ");
         span.textContent = run;
         frag.appendChild(span);
       } else {

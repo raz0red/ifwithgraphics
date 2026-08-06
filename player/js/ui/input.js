@@ -72,5 +72,10 @@ export function createInputUI(el, state, onSend) {
   /* Exposed so the mobile command bar (core.js) can replay recent commands
      via tap-to-cycle — there's no ArrowUp/ArrowDown on a touch keyboard, so
      it needs a different way to reach the same history this tracks. */
-  return { showCursor: showCursor, getHistory: () => history };
+  /* setValue is exposed so callers can seed the input programmatically and
+     still get the desktop echo — cmdDisplay only mirrors cmdInput via the
+     "input" event, which assigning .value directly does not fire, so a bare
+     el.cmdInput.value = "..." would send the right command while showing an
+     empty prompt line. */
+  return { showCursor: showCursor, getHistory: () => history, setValue: setValue };
 }
