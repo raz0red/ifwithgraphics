@@ -1,0 +1,249 @@
+# ---- Hilltop (start) ----
+# look
+# south
+# wait
+# get envelope
+# north
+
+# ---- Outside Cemetery ----
+# west
+# west
+# yes
+# north
+# west
+# east
+# down
+# get bone
+# up
+# south
+# east
+# east
+# east
+
+# ---- Poodle ----
+# give bone to poodle
+
+# ---- Library and Fountain ----
+# north
+# wait
+# get note
+# north
+# look in fountain
+# get coin
+
+# ---- Tidal Pool (daylight) ----
+# east
+# east
+# north
+# south
+# west
+# west
+# north
+# north
+# north
+# north
+# east
+# up
+
+# ---- Hill to Magick Shoppe ----
+# west
+# north
+# up
+# east
+# south
+# up
+# open door
+# enter
+
+# ---- Magick Shoppe ----
+# wait
+# wait
+# give envelope to woman
+# open envelope
+# read letter to woman
+# wait
+# get can
+# wait
+# wait
+
+# ---- Cliff Edge and Fog ----
+# down
+# wait
+# wait
+# down
+# north
+# west
+# down
+# south
+# east
+# down
+
+# ---- Troll Toll Booth ----
+# break branch
+# get it
+# west
+# give can to troll
+# get can
+# squeeze it
+# drop can
+# get wishbringer
+# open gate
+# south
+# south
+
+# ---- Witchville ----
+# west
+# south
+
+# ---- Park and Pit ----
+# look in pit
+# put branch in pit
+# get branch
+# drop branch
+
+# ---- Sand and Whistle ----
+# dig in sand
+# get whistle
+# blow it
+
+# ---- River to Misty Island ----
+# west
+# wait
+# get hat
+# wait
+# blow whistle
+
+# ---- Graveyard ----
+# south
+# yes
+# east
+# down
+# north
+# east
+# push bunk
+# drop all
+# up
+# get blanket
+# down
+# get all
+# north
+# east
+# put blanket on grue
+# open refrigerator
+# get worm
+# west
+# west
+# open stump
+# up
+
+# ---- Lookout Hill ----
+# get horseshoe
+# north
+# east
+# east
+
+# ---- Animated Mailbox ----
+# south
+# open mailbox
+# wait
+# wait
+# wait
+# north
+# east
+
+# ---- Wharf and Pelican ----
+# give hat to pelican
+# wait
+# west
+# west
+# south
+# south
+
+# ---- Fountain and Token ----
+# look in fountain
+# put worm in fountain
+# get token
+# east
+
+# ---- Theatre ----
+# buy ticket
+# in
+# show ticket to gravedigger
+# north
+# examine floor
+# get glasses
+# out
+# out
+# yes
+# east
+# south
+
+# ---- Videogame ----
+# wait
+# wait
+# put token in slot
+# push joystick west
+# again
+# push it south
+# again
+# press button
+# yes
+# yes
+
+# ---- Tower Entrance ----
+# say sorkin
+# south
+# wait
+# give note to mr crisp
+# get coat
+# look in coat
+# get key
+# unlock chain with key
+# pull lever
+# get note
+# read it
+
+# ---- Escape from Torture Chamber ----
+# open hatch
+# up
+# up
+# wear glasses
+# get broom
+# examine panel
+# push second switch
+# down
+# remove glasses
+# push painting
+# turn crank
+
+# ---- Upper Tower ----
+# north
+# north
+# east
+
+# ---- Hellhound ----
+# alexis, heel
+
+# ---- Miss Voss's Cottage ----
+# open door
+# in
+# drop rusty key
+# drop broom
+# get steel key
+# out
+# north
+# unlock library door with steel key
+# enter library
+# wait
+# south
+
+# ---- Library Finale ----
+# break case with horseshoe
+# get sculpture
+# insert wishbringer in sculpture
+# yes
+# yes
+
+# ---- Magick Shoppe Finale ----
+# get cat
+# knock on door

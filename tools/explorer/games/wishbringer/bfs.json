@@ -1,0 +1,314 @@
+[
+  {
+    "gameId": "69.850920",
+    "roomId": 95,
+    "title": "Hilltop",
+    "description": "Hilltop\nYou're on a hilltop overlooking the seaside village of Festeron.\n\nTo the south stands the Festeron Post Office. It's a little brick building with a neatly-trimmed lawn. The Post Office door stands invitingly open.\n\nRoads run down the hill to the east and west. There's a signpost nearby.\n\nSomebody inside the Post Office is calling you.\n\nOkay, what do you want to do now?"
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 166,
+    "title": "Post Office",
+    "description": "Post Office\nThis is the lobby of the Festeron Post Office. The walls are lined with small, private mailboxes and wanted posters. A service counter runs along the entire length of the room.\n\nYour boss, Mr. Crisp, is behind the service counter reading other people's postcards.\n\nMr. Crisp hides the postcards away as you enter. \"Where have you been?\" he barks angrily. \"Daydreaming again, eh? I've been looking everywhere for you!\"\n\n(Your score just went up by 1 point! Your total score is 1 out of 100.)\n\nWhat next?"
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 246,
+    "title": "Outside Cemetery",
+    "description": "Outside Cemetery\nYou're standing next to an open iron gate that leads west into the Festeron Cemetery. A road runs east to the top of Post Office Hill.\n\nWhat next?"
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 222,
+    "title": "Creepy Corner",
+    "description": "Creepy Corner\nYou're in a creepy corner of the Festeron Cemetery, surrounded by silent tombstones. An iron gate opens to the east, and a narrow lane wanders north.\n\nWhat next?"
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 183,
+    "title": "Spooky Copse",
+    "description": "Spooky Copse\nA copse of willow trees makes this part of the cemetery look really spooky. Narrow lanes wander south and west.\n\nThere's an open grave nearby, freshly dug, with a tombstone erected next to it.\n\nAn old gravedigger is resting under a willow tree.\n\nThe gravedigger nods a greeting as you approach.\n\nWhat next?"
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 68,
+    "title": "Twilight Glen",
+    "description": "Twilight Glen\nThe trees here are so thick, it's almost too dark to see! You can make out an open iron gate to the north, and a narrow lane between the tombstones winds off to the east.\n\nThere must have been a burial here recently. Somebody left their umbrella leaning up against a tombstone.\n\nThe gravedigger follows behind you. \"What's your hurry?\" he complains.\n\nThrowing a shovel over his shoulder, the gravedigger ambles through the iron gate and locks it. \"Keep out of the cemetery after Dark,\" he tells you with a sly wink.\n\nYou can hear him chuckling as he disappears to the north.\n\nWhat next?"
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 57,
+    "title": "Open Grave",
+    "description": "Open Grave\nYou're at the bottom of an open grave, surrounded by six-foot walls of dirt.\n\nThere's an old bone here."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 94,
+    "title": "Outside Cottage",
+    "description": "Outside Cottage\nYou're outside the cottage of Miss Voss, the town librarian. The road turns north toward the village, and bends upward to the summit of Post Office Hill.\n\nAs you approach the cottage you are greeted by the tiniest poodle you've ever seen in your entire life. It charges across the street, yapping angrily and showing its sharp little teeth.\n\nYou can smell the poodle's hot breath as it yaps."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 44,
+    "title": "Rotary South",
+    "description": "Rotary South\nThis is the south side of the Festeron Rotary. A road branches south, towards Post Office Hill.\n\nThe Festeron Public Library, famous for its museum of local historic artifacts, stands proudly on the nearby corner.\n\nMiss Voss, the town librarian, is locking the library door as you approach. \"Just the person I was looking for!\" she exclaims, smiling brightly."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 49,
+    "title": "Park",
+    "description": "Park\nYou're standing in a circular park, surrounded by the Festeron Rotary. Walks converge from four directions on a shallow marble fountain, filled with sparkling water.\n\nA statue stands in the middle of the fountain."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 62,
+    "title": "Rotary North",
+    "description": "Rotary North\nThis is the northern side of the Festeron Rotary. A road leads north, towards the river.\n\nOn the corner stands a quaint village church. Its little white steeple is straight out of a country postcard. The church door stands invitingly open."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 80,
+    "title": "South of Bridge",
+    "description": "South of Bridge\nThis is the south side of a covered bridge that spans the Festeron River. Paths lead off to the east and west, and a road leads south to the village."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 116,
+    "title": "Bridge",
+    "description": "Bridge\nYou're on a covered bridge that spans the Festeron River. A sign hangs on an arch overhead."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 162,
+    "title": "North of Bridge",
+    "description": "North of Bridge\nThis is the north side of the Festeron Bridge. Sheer cliff walls rise abruptly to the north and west. A path wanders east along the shore of the river."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 177,
+    "title": "Cliff Bottom",
+    "description": "Cliff Bottom\nYou're at the bottom of a cliff that rises up from the north bank of the river. A steep trail winds upward.\n\nA gnarled tree trunk stands nearby, a lone branch its only adornment."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 245,
+    "title": "Steep Trail",
+    "description": "Steep Trail\nA steep, rocky trail winds west and downward."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 22,
+    "title": "Cliff Edge",
+    "description": "Cliff Edge\nYou're standing high on a rocky cliff, at the top of a steep trail leading downward. Looking southwest, you can see the shadow of Post Office Hill creeping across the village as the sun sinks into a\nbank of clouds.\n\nThe peaceful scenery is disturbed by a tiny figure emerging from the distant Post Office. It stares in your direction for a few moments, checks its wrist and shakes a threatening little fist at you.\n\nA little old-fashioned store stands nearby. Its brightly painted shutters and thatched roof remind you of something out of a fairy tale. A curiously painted sign over the front door reads, \"Ye Olde\nMagick Shoppe.\""
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 242,
+    "title": "Magick Shoppe",
+    "description": "Magick Shoppe\nYou're in the front showroom of the Magick Shoppe.\n\nEvery inch of wall space is crowded with magic tricks, puzzles and mystical paraphernalia. A glass case offers a selection of obscene jokes and naughty birthday cards.\n\nIn the corner stands an ancient grandfather clock, its dial ornamented with a staring crescent moon and other celestial symbols.\n\nThe front door of the Magick Shoppe is wide open. At the west end of the room, you can see another exit concealed by a curtain.\n\nA sudden gust of wind slams the Magick Shoppe door closed. A concealed bell tinkles merrily.\n\n\"Just a moment!\" cries a voice behind the curtain."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 101,
+    "title": "Fog",
+    "description": "Fog\nYou're lost in a thick cloud of fog."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 102,
+    "title": "River Outlet",
+    "description": "River Outlet\nThis is where the lake empties into the Witchville River. A road leads south along the edge of the lake, and bends east to follow the river bank. A narrow trail leads upward to the top of Lookout\nHill."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 20,
+    "title": "Lake Edge",
+    "description": "Lake Edge\nYou're on the sandy shore of the lake. A road heads east towards the village, and another runs north along the edge of the lake. Looking south, you can see a closed iron gate leading into the\nWitchville Cemetery.\n\nMisty Island, its outline shrouded in fog, is visible far across the water.\n\nYou can see a narrow pit near the edge of the lake. Animal tracks are visible in the sand next to the pit.\n\nYou can hear the tramp of marching boots to the east."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 132,
+    "title": "Misty Island",
+    "description": "Misty Island\nYou're standing on a fog-shrouded beach. Sheer cliff walls rise to the north and south, and the dark waters of the lake stretch eastward.\n\nTo the west stands a magnificent castle, its parapets rising high into the mist. Golden light streams invitingly through the open entrance. You can hear friendly voices and music inside."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 232,
+    "title": "Throne Room",
+    "description": "Throne Room\nYou're standing in a long, high-ceilinged chamber. Hundreds of platypuses are milling about with teacups in their paws, their faces illuminated by a roaring fireplace.\n\nAt the far end of the chamber stands a mighty throne. It's occupied by a snow-white platypus with a gold crown on its head and a jeweled scepter in its paw. On the floor near the throne is another\ncrowned platypus... the same one you rescued from the pit.\n\nThe crowd falls silent as you enter.\n\n\"Welcome, brave Adventurer,\" says the white platypus, rising from its throne to greet you. \"I am Anatinus, King of Misty Island. My court thanks you most humbly for rescuing the life of my daughter,\nPrincess Tasmania. Great would our sorrow have been if not for your cunning.\"\n\nThe crowd applauds politely, and Princess Tasmania blushes."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 69,
+    "title": "Underground",
+    "description": "Underground\nYou're in a smelly underground chamber. Cold tunnels wander away to the north and east, and there's a dark hole in the south wall."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 66,
+    "title": "Underground",
+    "description": "Underground\nYou're in a damp underground chamber. Cold tunnels wander away to the north and west.\n\nA dark, narrow hole is visible overhead."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 90,
+    "title": "Jail Cell",
+    "description": "Jail Cell\nYou're locked inside a damp, uncomfortable jail cell. Its thick steel door and stone walls offer little hope for escape.\n\nThe only furnishing is a hard bunk in the middle of the floor with a thick blanket on it.\n\nThere's a dark, narrow hole in the floor.\n\nYou can hear an agonized cry from an adjacent cell."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 220,
+    "title": "Underground",
+    "description": "Underground\nYou're in a dark underground chamber. Long tunnels wander away to the south, east and west."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 127,
+    "title": "Grue's Nest",
+    "description": "Grue's Nest\nYou have stumbled into the nesting place of a family of grues. Congratulations. Few indeed are the adventurers who have entered a grue's nest and lived as long as you have.\n\nEverything is littered with rusty swords of elvish workmanship, piles of bones and other debris. A closed refrigerator stands in one corner of the nest, and something... a small, dangerous-looking\nlittle beast... is curled up in the other corner.\n\nThe only exit is to the west. Hope you survive long enough to use it.\n\nSnoring fitfully, the little beast turns away from the light of the small stone and faces the wall."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 139,
+    "title": "Underground",
+    "description": "Underground\nYou're in a dirty underground chamber. Long, damp tunnels wander away to the south and east.\n\nThe surrounding walls are almost obscured by the roots of a mighty tree. Overhead you can see the underside of a large stump. It appears to be hinged."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 134,
+    "title": "Lookout Hill",
+    "description": "Lookout Hill\nYou're standing at the summit of a high, barren hill. Looking east, you can see Witchville Village nestled among the trees. A narrow trail winds down the north side of the hill, towards the river.\n\nCrowning the hill is the stump of what must have been a very large and majestic oak tree. An opening in the stump leads down into darkness.\n\nA horseshoe is lying in the grass near the stump."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 226,
+    "title": "Rocky Path",
+    "description": "Rocky Path\nYou're on a rocky path that runs east and west along the banks of the Witchville River. A shimmering trail leads south into a dense forest."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 51,
+    "title": "West of House",
+    "description": "West of House\nYou are standing in an open field west of a white house, with a boarded front door.\n\nThere's a little mailbox here."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 6,
+    "title": "Lighthouse",
+    "description": "Lighthouse\nThis is where the river empties into Witchville Bay. A path leads west along the riverbank.\n\nA broken-down old lighthouse, barely ten feet high, stands on the shore nearby.\n\nPerched on top of the lighthouse is a pelican, watching you through half-closed eyelids."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 197,
+    "title": "End of Story",
+    "description": "Oh, no! Something lurked out of the darkness and devoured you!\nLooks like the story's over. But don't despair! Interactive fiction lets you learn from your mistakes.\n\nYour score is 55 points out of 100, in 117 moves.\n\nDo you want to restart the story, restore a saved position, or quit?"
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 236,
+    "title": "Rotary West",
+    "description": "Rotary West\nYou're on the west side of the Witchville Rotary. A street branches west, towards the lake.\n\nThe Police Station stands on a nearby corner. It's a grim little building with a sign over the open entrance."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 144,
+    "title": "Rotary East",
+    "description": "Rotary East\nYou're on the eastern side of the Festeron Rotary. A street branches off to the east, towards the bay.\n\nOn the corner nearby stands a charming little movie theater. Showtimes and admission prices are listed on a schedule near the closed entrance, and a marquee announces the current feature."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 156,
+    "title": "Pleasure Wharf",
+    "description": "Pleasure Wharf\nYou're standing near the entrance to the Pleasure Wharf, the town's most popular tourist attraction. The Wharf extends eastward into Festeron Bay, and a tidal beach curves north along the shore.\n\nTo the south stands a ramshackle old building. Colorful lights, curious electronic sounds and a neon sign beckon you through the open entrance.\n\nA big mailbox is nearby."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 152,
+    "title": "Tidal Pool",
+    "description": "Tidal Pool\nYou're on a damp stretch of sand that extends north towards Festeron Point, and south to the Pleasure Wharf.\n\nA large conch shell is lying in the sand at your feet."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 86,
+    "title": "Video Arcade",
+    "description": "Video Arcade\nThis old building is the home of a sleazy arcade, lined with coin-op video games. The machines are all deserted and quiet, except for one in the corner that emits a feeble \"wokka-wokka\" sound.\n\nA sign on the wall says, \"All Games One Token.\""
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 84,
+    "title": "Wharf's End",
+    "description": "Wharf's End\nThe sea-worn planks of the Festeron Pleasure Wharf end abruptly a few feet to the east. You're surrounded by the blue, sparkling waters of Festeron Bay.\n\nApparently a careless fisherman has just left the wharf, for lying on the planks is a little seahorse, its gills moving in and out with its dying gasps.\n\nThe seahorse looks at you with moist, frightened eyes."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 206,
+    "title": "Police Station",
+    "description": "Police Station\nYou're in the front office of the Witchville Police Station. The room is lined with dimly-lit jail cells. Occasional wails of anguish suggest that many of the cells are occupied.\n\nSgt. MacGuffin, Witchville's finest, is glaring down at you from behind an intimidatingly high desk. You can see a wanted poster taped to the wall.\n\n\"It's past curfew,\" Sgt. MacGuffin growls as you enter. \"I hope you've got a very good reason for coming in here at this hour.\""
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 237,
+    "title": "Church",
+    "description": "Church\nYou're standing inside an abandoned old church. The aisles are littered with debris and bits of colored glass; everything is coated with a thick layer of dust.\n\nA lighted candle is visible in a nook near the exit."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 10,
+    "title": "Theater Lobby",
+    "description": "Theater Lobby\nYou're standing in the lobby of the movie theater. A short corridor leads north into darkness. Sound effects and music can be heard drifting down the corridor.\n\nThe gravedigger is standing near the corridor, a large cardboard carton at his feet."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 240,
+    "title": "Inside Theater",
+    "description": "Inside Theater\nThis is a movie theater unlike any you've ever seen! The seats are wide, deep and comfortable. The aisles are spotless. The air is clear of smoke, and the screen is dramatically large. A chill goes up\nyour spine as you realize how alien your universe has become.\n\nThere's a noisy movie playing on the screen. A dark corridor leads out to the lobby.\n\nThe picture on the screen is fuzzy and hard to watch."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 239,
+    "title": "Vestibule",
+    "description": "Vestibule\nYou're standing in a dimly-lit vestibule just inside the tower's entrance. The drawbridge is opened across the moat to the north. A short corridor leads south, into the tower.\n\n\"Turn back, brave Adventurer!\"\n\nYou stare in horror at the platypus chained to the floor. It's Princess Tasmania!"
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 141,
+    "title": "Torture Chamber",
+    "description": "Torture Chamber\nYou're chained up in the corner of a dim, stuffy chamber, deep within the bowels of the tower. The walls gleam with obscure medical instruments, and a diabolical torture machine occupies most of the\nopposite corner.\n\nPrincess Tasmania is clamped into the torture machine!\n\nA ladder rises to meet an open hatch in the middle of the ceiling.\n\nMr. Crisp is strolling around dusting off the instruments."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 238,
+    "title": "Round Chamber",
+    "description": "Round Chamber\nYou're in a round chamber at the very heart of the tower. The clammy stone walls are hung with a series of paintings, all the same size and identically framed. Years of neglect have blackened the art\nalmost beyond recognition.\n\nIn the corner is an open hatch. Peering downward, you see a ladder descending into gloom.\n\nA corridor disappears to the north, and a damp stairway winds upward into the tower."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 143,
+    "title": "Fuzziness",
+    "description": "Fuzziness\nEverything around you appears blurred and blurry."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 138,
+    "title": "Laboratory",
+    "description": "Laboratory\nThe highest room in the tower is a laboratory, complete with bubbling chemicals and foul odors. An antique telescope is mounted near an open window to the north, and a control panel occupies most of\nthe south wall.\n\nThe only exit is a damp stairway leading downward.\n\nA black cat is sound asleep in the corner.\n\nThere's a broom here."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 149,
+    "title": "Cottage",
+    "description": "Cottage\nThis is the cottage of Miss Voss, the former town librarian. The walls are lined with timeworn books and dusty, faded photographs. Looks as if nobody's lived here for a long time.\n\nThere's a dusty bookcase with a steel key on it near the open front door. Somebody has scrawled a message in the dust on the bookcase."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 187,
+    "title": "Circulation Desk",
+    "description": "Circulation Desk\nYou're standing before a large desk at the library entrance. The top of the desk is almost hidden under a clutter of books, all grey with dust.\n\nA dark corridor leads south into darkness. The library door stands invitingly open."
+  },
+  {
+    "gameId": "69.850920",
+    "roomId": 203,
+    "title": "Museum",
+    "description": "Museum\nFormerly a popular tourist attraction, the old Festeron Museum is in a sorry state. Many of the best exhibits have been carted away; the few remaining are sorely in need of renovation.\n\nThere's a glass display case in the corner. You can see a sculpture in the case."
+  }
+]

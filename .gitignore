@@ -33,8 +33,12 @@ bfs-saves/
 tmp/
 tmp2/
 tmp3/
-bfs.json
+tmp4/
+# Anchored: only the root scratch copy. Each game's recorded rooms
+# (tools/explorer/games/<name>/bfs.json) is a tracked dataset.
+/bfs.json
 bz.z5
+tools/explorer/games/wishbringer/verify/
 
 # Claude memory / session files
 .claude/

@@ -514,7 +514,7 @@ zchar os_read_line (int UNUSED (max), zchar *buf, int timeout, int UNUSED(width)
 			const char *_ifwg_desc = ifwg_dumb_get_description();
 			zword _ifwg_globals = (zword)((zmp[H_GLOBALS] << 8) | zmp[H_GLOBALS + 1]);
 			zword _ifwg_room_id = (zword)((zmp[_ifwg_globals] << 8) | zmp[_ifwg_globals + 1]);
-			fprintf(stdout, "<<<IFWG:%d:%s>>>\n%s\n<<<IFWG_READY>>>\n",
+			fprintf(stdout, "\n<<<IFWG:%d:%s>>>\n%s\n<<<IFWG_READY>>>\n",
 			        (int)_ifwg_room_id, _ifwg_title, _ifwg_desc ? _ifwg_desc : "");
 			fflush(stdout);
 			ifwg_dumb_reset_description();

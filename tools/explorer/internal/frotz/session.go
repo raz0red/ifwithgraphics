@@ -75,11 +75,11 @@ func (s *Session) NextOrFileRequest() (*Room, bool, error) {
 	for {
 		line, err := s.reader.ReadString('\n')
 		line = strings.TrimRight(line, "\r\n")
-		if strings.Contains(line, filePrefix) && strings.HasSuffix(line, markerSuffix) {
+		if idx := strings.Index(line, filePrefix); idx >= 0 && strings.HasSuffix(line, markerSuffix) {
 			return nil, true, nil
 		}
-		if strings.HasPrefix(line, markerPrefix) && strings.HasSuffix(line, markerSuffix) {
-			inner := line[len(markerPrefix) : len(line)-len(markerSuffix)]
+		if idx := strings.Index(line, markerPrefix); idx >= 0 && strings.HasSuffix(line, markerSuffix) {
+			inner := line[idx+len(markerPrefix) : len(line)-len(markerSuffix)]
 			// Try numeric ID prefix: "42:West of House"
 			if idx := strings.Index(inner, ":"); idx > 0 {
 				if n, err := strconv.Atoi(inner[:idx]); err == nil {

@@ -66,7 +66,8 @@
   },
   "wishbringer": {
     "title": "Wishbringer",
-    "description": "Setting: fantasy — a quaint fishing village that transforms into a sinister, magic-corrupted town, involving a wish-granting stone."
+    "description": "Setting: fantasy — a quaint fishing village that transforms into a sinister, magic-corrupted town, involving a wish-granting stone.",
+    "canonicalGameId": "69.850920"
   },
   "leathergoddesses": {
     "title": "Leather Goddesses of Phobos",

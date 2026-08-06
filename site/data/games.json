@@ -78,5 +78,21 @@
     "ifdbUrl": "https://ifdb.org/viewgame?id=4ao65o1u0xuvj8jf",
     "pagePath": "player/games/cutthroats/",
     "image": "assets/images/games/cutthroats.webp"
+  },
+  {
+    "id": "wishbringer",
+    "title": "Wishbringer",
+    "author": "Infocom",
+    "year": "1985",
+    "description": "An ordinary mail clerk's ordinary day ends with an extraordinary envelope — a ransom note for a kidnapped cat. Delivering it turns the seaside village of Festeron into the sinister Witchville, and leads you to Wishbringer, a stone of undreamt-of powers.",
+    "scene": {
+      "room": "Magick Shoppe",
+      "text": "You're in the front showroom of the Magick Shoppe. Every inch of wall space is crowded with magic tricks, puzzles and mystical paraphernalia."
+    },
+    "pregenerated": true,
+    "includesFile": false,
+    "ifdbUrl": "https://ifdb.org/viewgame?id=z02joykzh66wfhcl",
+    "pagePath": "player/games/wishbringer/",
+    "image": "assets/images/games/wishbringer.webp"
   }
 ]

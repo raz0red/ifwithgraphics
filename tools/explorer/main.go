@@ -125,6 +125,14 @@ func (e *Explorer) addRoom(r *frotz.Room) bool {
 	return true
 }
 
+func firstLine(s string) string {
+	s = strings.TrimSpace(s)
+	if idx := strings.IndexByte(s, '\n'); idx >= 0 {
+		s = s[:idx]
+	}
+	return s
+}
+
 func sameRoom(a, b *frotz.Room) bool {
 	if a.ID != 0 && b.ID != 0 {
 		return a.ID == b.ID
@@ -304,6 +312,33 @@ func isFearSpell(room *frotz.Room) bool {
 		strings.Contains(text, "scramble away")
 }
 
+func isYesNoPrompt(room *frotz.Room) bool {
+	if room == nil {
+		return false
+	}
+	text := strings.ToLower(room.Description)
+	return strings.Contains(text, "please type yes or no") ||
+		strings.Contains(text, "are you sure you want to go in there")
+}
+
+// answerYesNo resolves a pending confirmation prompt. The game is blocked in
+// os_read_line waiting for the answer (the room marker already consumed by the
+// caller carries the question text as its description), so send the answer
+// directly and read the resulting room.
+func (e *Explorer) answerYesNo(room *frotz.Room, answer string) (*frotz.Room, error) {
+	if err := e.sess.Send(answer); err != nil {
+		return nil, err
+	}
+	next, err := e.nextRoom()
+	if err != nil {
+		return nil, err
+	}
+	if next.ID == 0 {
+		next = room
+	}
+	return next, nil
+}
+
 func isDeathPrompt(room *frotz.Room) bool {
 	if room == nil {
 		return false
@@ -416,6 +451,10 @@ func (e *Explorer) dfs(room *frotz.Room, savePath string, depth int) error {
 		if err != nil {
 			return fmt.Errorf("DFS read after %q from %s [id=%d]: %w", dir, room.Title, room.ID, err)
 		}
+		if e.traceWalkthrough {
+			log.Printf("DFS try %q from %s [id=%d] -> %s [id=%d] (desc: %q)",
+				dir, room.Title, room.ID, next.Title, next.ID, firstLine(next.Description))
+		}
 		if isDeathPrompt(next) {
 			restored, rerr := e.restoreGameFresh(savePath)
 			if rerr != nil {
@@ -425,10 +464,21 @@ func (e *Explorer) dfs(room *frotz.Room, savePath string, depth int) error {
 			continue
 		}
 
+		if isYesNoPrompt(next) {
+			// The direction triggered a confirmation question (e.g. "Are you
+			// sure you want to go in there?"). Answer it so the pending
+			// prompt is resolved and the save/restore protocol stays intact.
+			answered, aerr := e.answerYesNo(next, "no")
+			if aerr != nil {
+				return fmt.Errorf("DFS yes/no %q from %s [id=%d]: %w", dir, room.Title, room.ID, aerr)
+			}
+			next = answered
+		}
+
 		if sameRoom(next, room) {
 			// Direction blocked. Restore to clean save state before the next attempt
 			// so any in-room state changes (combat, lamp timer, etc.) don't accumulate.
-			restored, rerr := e.restoreGame(savePath)
+			restored, rerr := e.restoreGameFresh(savePath)
 			if rerr != nil {
 				return fmt.Errorf("DFS restore after blocked %q from %s [id=%d]: %w", dir, room.Title, room.ID, rerr)
 			}
@@ -444,7 +494,7 @@ func (e *Explorer) dfs(room *frotz.Room, savePath string, depth int) error {
 
 		if next.ID == 0 {
 			// Can't save/restore rooms without an ID; skip recursion.
-			restored, rerr := e.restoreGame(savePath)
+			restored, rerr := e.restoreGameFresh(savePath)
 			if rerr != nil {
 				return fmt.Errorf("DFS restore after id=0 room from %s [id=%d]: %w", room.Title, room.ID, rerr)
 			}
@@ -460,7 +510,7 @@ func (e *Explorer) dfs(room *frotz.Room, savePath string, depth int) error {
 			savedRoom, savedPath, serr := e.saveGame(attempted)
 			if serr != nil {
 				log.Printf("DFS save error at %s: %v — skipping subtree", attempted.Title, serr)
-				restored, rerr := e.restoreGame(savePath)
+				restored, rerr := e.restoreGameFresh(savePath)
 				if rerr != nil {
 					return fmt.Errorf("DFS restore after save failure at %s [id=%d]: %w", attempted.Title, attempted.ID, rerr)
 				}
@@ -479,7 +529,7 @@ func (e *Explorer) dfs(room *frotz.Room, savePath string, depth int) error {
 		}
 
 		// Restore back to the current room.
-		restored, rerr := e.restoreGame(savePath)
+		restored, rerr := e.restoreGameFresh(savePath)
 		if rerr != nil {
 			return fmt.Errorf("DFS restore returning to %s [id=%d]: %w", room.Title, room.ID, rerr)
 		}
@@ -678,6 +728,13 @@ func (e *Explorer) runWalkthrough(path string) (*frotz.Room, string, error) {
 				next = retry
 			} else {
 				log.Printf("walkthrough retry-step failed at step %d: %v", wt.Step, rerr)
+			}
+		}
+		if recoverer, ok := e.game.(walkthroughRecoverer); ok {
+			if recovered, rerr := recoverer.RecoverStep(e, before, next, command, currentSave); rerr != nil {
+				log.Printf("walkthrough recovery failed at step %d (%s [id=%d]): %v", wt.Step, next.Title, next.ID, rerr)
+			} else if recovered != nil {
+				next = recovered
 			}
 		}
 		next, err = e.recoverDroppedObjects(next)
@@ -965,7 +1022,8 @@ func looksLikeWalkthroughCommand(command string) bool {
 		strings.HasPrefix(command, "robot, ") ||
 		strings.HasPrefix(command, "demon, ") ||
 		strings.HasPrefix(command, "dungeon master, ") ||
-		strings.HasPrefix(command, "johnny, ") {
+		strings.HasPrefix(command, "johnny, ") ||
+		strings.HasPrefix(command, "alexis, ") {
 		return true
 	}
 	if strings.Contains(command, ",") {
@@ -985,12 +1043,12 @@ func looksLikeWalkthroughCommand(command string) bool {
 		verb = verb[:i]
 	}
 	switch verb {
-	case "again", "answer", "apply", "attack", "attach", "board", "burn", "buy", "chant", "climb", "close", "connect", "cross",
-		"cut", "dig", "dive", "drill", "drink", "drop", "eat", "echo", "enter", "examine", "feed", "fill", "get", "give",
+	case "again", "alexis", "answer", "apply", "attack", "attach", "blow", "board", "break", "burn", "buy", "chant", "climb", "close", "connect", "cover", "cross",
+		"cut", "dig", "dive", "drill", "drink", "drop", "eat", "echo", "enter", "examine", "exit", "feed", "fill", "get", "give",
 		"grab", "hide", "hold", "inflate", "insert", "inventory", "kill", "kiss", "knock", "launch", "leave", "lie", "light", "lock", "look",
-		"lower", "move", "open", "order", "pay", "point", "pour", "pray", "push", "put", "raise",
-		"read", "remove", "rent", "ring", "rub", "say", "search", "shake", "show", "sit", "slide", "spray", "stand", "swim", "take", "tell", "throw",
-		"tie", "touch", "tug", "turn", "unlock", "untie", "ulysses", "wait", "wake", "wave", "wear", "wedge", "wind", "withdraw", "z":
+		"lower", "move", "open", "order", "pay", "point", "pour", "pray", "press", "pull", "push", "put", "raise",
+		"read", "remove", "rent", "ring", "rub", "say", "search", "shake", "show", "sit", "slide", "smash", "spray", "squeeze", "stand", "swim", "take", "tell", "throw",
+		"tie", "touch", "tug", "turn", "unlock", "untie", "ulysses", "wait", "wake", "wave", "wear", "wedge", "wind", "wish", "withdraw", "z":
 		return true
 	}
 	return false
@@ -1528,6 +1586,16 @@ func explore(exp *Explorer, walkthroughPath string) error {
 				log.Printf("phase 3 stale save for room %d restored %s [id=%d]; skipping", roomID, room.Title, room.ID)
 				delete(exp.saves, roomID)
 				continue
+			}
+			// Each saved position is an independent game state (its own clock
+			// time and PRNG phase). Games with state-dependent geography opt
+			// into clearing the tried-direction bookkeeping here, so directions
+			// first attempted from another save's state — e.g. north off the
+			// Pleasure Wharf at night, when the tide is in and the patrol
+			// arrests the player — get a fresh attempt from this save (daytime,
+			// tide out, patrol absent). See Game.ResetTriedPerSave.
+			if exp.game.ResetTriedPerSave() {
+				exp.tried = make(map[int]map[string]bool)
 			}
 			log.Printf("phase 3: DFS from %s [id=%d]", room.Title, room.ID)
 			if err := exp.dfs(room, savePath, 0); err != nil {
