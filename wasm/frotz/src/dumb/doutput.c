@@ -368,13 +368,20 @@ void ifwg_dumb_get_cursor_prompt (char *buf, int size)
  * being typed into "changes" on a given keystroke. This gives the JS player
  * a faithful, always-complete snapshot to render as a real grid instead.
  *
- * style_buf is filled with a same-shaped '1'/'0' mask (REVERSE_STYLE or
- * not) so JS can highlight text without a color/style channel of its own —
- * essential, not cosmetic: e.g. Beyond Zork's character menu moves the
- * highlighted item via reverse video only, with no other visible change, so
- * without this a player has zero feedback that arrow keys are doing
- * anything at all. Written in the same pass as text_buf so the two stay
- * exactly aligned (same trimming, same newline positions). */
+ * style_buf is filled with a same-shaped mask, one digit per cell, so JS can
+ * style text without a channel of its own — essential, not cosmetic: e.g.
+ * Beyond Zork's character menu moves the highlighted item via reverse video
+ * only, with no other visible change, so without this a player has zero
+ * feedback that arrow keys are doing anything at all.
+ *
+ * The digit is bit-encoded, chosen so '1' still means plain reverse-video as
+ * it did when this was a bare '1'/'0' flag:
+ *   1 = REVERSE_STYLE, 2 = BOLDFACE_STYLE, 4 = EMPHASIS_STYLE
+ * giving '0'..'7'. Still exactly one character per cell, so the mask keeps
+ * the same shape as text_buf. FIXED_WIDTH_STYLE is deliberately omitted —
+ * the grid is monospaced throughout, so it would be a no-op. Written in the
+ * same pass as text_buf so the two stay exactly aligned (same trimming, same
+ * newline positions). */
 void ifwg_dumb_get_full_screen (char *text_buf, char *style_buf, int size)
 {
     int row, col, len = 0;
@@ -418,8 +425,12 @@ void ifwg_dumb_get_full_screen (char *text_buf, char *style_buf, int size)
              * the room text (e.g. Beyond Zork's illustrated rooms), since
              * it was never meant to be read as prose. */
             bool is_glyph = (r[col].font == GRAPHICS_FONT) || (r[col].style & PICTURE_STYLE);
+            int sty = 0;
+            if (r[col].style & REVERSE_STYLE)  sty |= 1;
+            if (r[col].style & BOLDFACE_STYLE) sty |= 2;
+            if (r[col].style & EMPHASIS_STYLE) sty |= 4;
             text_buf[len]  = (!is_glyph && c >= 32 && c <= 126) ? c : ' ';
-            style_buf[len] = (r[col].style & REVERSE_STYLE) ? '1' : '0';
+            style_buf[len] = (char) ('0' + sty);
             len++;
         }
         if (len < size - 1) { text_buf[len] = '\n'; style_buf[len] = '\n'; len++; }
@@ -1175,6 +1186,7 @@ void os_display_char (zchar c)
 	 * GRAPHICS_FONT tagged on that glyph's cell, defeating the filtering
 	 * that's supposed to blank it (see ifwg_dumb_get_full_screen). */
 	static zchar pending_escape = 0;
+
 
 	if (pending_escape == ZC_NEW_FONT) {
 		os_set_font ((int) c);

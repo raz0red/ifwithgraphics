@@ -750,6 +750,18 @@ body {
 /* Reverse-video runs (e.g. the highlighted item in Beyond Zork's character
    menu) — some menus move the selection this way alone, with no other
    visible change, so this isn't optional decoration. */
+/* Bold and emphasis must not change glyph advance width. The cursor is placed
+   at N * 1ch (see .grid-inner's letter-spacing note), so a synthesized bold
+   weight that widened characters would drift the cursor away from the text it
+   is supposed to sit on. A shadow thickens strokes without touching metrics,
+   and text-decoration never affects them. Base grid text is already #fff, so
+   "brighter for bold" isn't available the way it is on a real terminal. */
+.grid-bold {
+  text-shadow: 0.5px 0 0 currentColor;
+}
+.grid-em {
+  text-decoration: underline;
+}
 .grid-rv {
   background: #c0c0c0;
   color: #000;

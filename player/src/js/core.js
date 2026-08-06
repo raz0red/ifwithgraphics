@@ -127,6 +127,41 @@ export const IFWGPlayer = {
     const imageUI = createImageUI(el, state, textUI.calibrateTextHeight);
     const gridUI = createGridUI(el);
 
+    /* Some games open by asking what kind of terminal they're talking to, and
+       the "capable" answer selects a display mode this player can't render —
+       Beyond Zork's VT220 mode draws its map, stat readout and menu arrows
+       with character graphics we blank, so answering YES degrades the game.
+       Pre-fill the answer that works, so the player only has to press Enter.
+
+       Deliberately NOT auto-submitted: feeding the answer into the input
+       stream was tried before and proved unreliable, and pre-filling leaves
+       the choice with the player — someone who wants the VT220 mode just
+       types over it. The worst failure is a field seeded when it shouldn't
+       be, which is why this lives here in the UI rather than anywhere that
+       could perturb interpreter state.
+
+       Matching is scoped to the already-identified game via games.json's
+       promptDefaults, so "VT220" can't fire on unrelated text in some other
+       game — the pattern only ever runs against the game that declares it. */
+    function applyPromptDefault(text) {
+      const name = ALIASES[Game.getId()];
+      const rules = name ? GAMES[name]?.promptDefaults : null;
+      if (!rules || !text) return;
+      /* Never clobber something the player has already typed. */
+      if (el.cmdInput.value !== "" || el.mobileCmdInput.value !== "") return;
+      const lower = text.toLowerCase();
+      for (const rule of rules) {
+        if (rule.match && lower.includes(rule.match.toLowerCase())) {
+          inputUI.setValue(rule.answer);
+          /* Touch input is typed into the mobile bar and only copied into
+             cmdInput on Enter, so it needs the same seed or the pre-fill
+             would be invisible on mobile. */
+          el.mobileCmdInput.value = rule.answer;
+          return;
+        }
+      }
+    }
+
     /* ── Room callback ───────────────────────────────────────────────── */
     function onRoomEntered({
       id,
@@ -146,6 +181,10 @@ export const IFWGPlayer = {
       el.statusRoom.textContent = title;
       el.statusScore.textContent = statusRight || "";
       el.cmdPrompt.textContent = cursorPrompt ? cursorPrompt : ">";
+
+      if (!isKeyPress) {
+        applyPromptDefault(`${description || ""}\n${cursorPrompt || ""}`);
+      }
 
       if (sensoryPanel && sensoryPanel.trim()) {
         el.sensoryPanel.textContent = sensoryPanel.replace(/\n+$/, "");

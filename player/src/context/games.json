@@ -112,7 +112,8 @@
   },
   "beyondzork": {
     "title": "Beyond Zork: The Coconut of Quendor",
-    "description": "Setting: fantasy — the wider Southlands of the Zork universe, blending classic underground-empire exploration with RPG character stats and combat."
+    "description": "Setting: fantasy — the wider Southlands of the Zork universe, blending classic underground-empire exploration with RPG character stats and combat.",
+    "promptDefaults": [{ "match": "VT220", "answer": "no" }]
   },
   "borderzone": {
     "title": "Border Zone",
