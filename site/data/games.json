@@ -64,6 +64,22 @@
     "image": "assets/images/games/planetfall.webp"
   },
   {
+    "id": "infidel",
+    "title": "Infidel",
+    "author": "Infocom",
+    "year": "1983",
+    "description": "You're a treasure hunter camped in the Egyptian desert, abandoned by your crew and digging for a pyramid nobody believes exists. Inside lies a labyrinth of hieroglyphic puzzles, sealed chambers, lethal traps, and one of interactive fiction's most talked-about endings.",
+    "scene": {
+      "room": "Room of Selkis",
+      "text": "You are standing in a small room, that of the protective goddess Selkis. There are red, blue and green patterns on the walls formed from small glazed tiles that have been carefully arranged in order of shade."
+    },
+    "pregenerated": true,
+    "includesFile": false,
+    "ifdbUrl": "https://ifdb.org/viewgame?id=anu79a4n1jedg5mm",
+    "pagePath": "player/games/infidel/",
+    "image": "assets/images/games/infidel.webp"
+  },
+  {
     "id": "cutthroats",
     "title": "Cutthroats",
     "author": "Infocom",
@@ -84,7 +100,7 @@
     "title": "Wishbringer",
     "author": "Infocom",
     "year": "1985",
-    "description": "An ordinary mail clerk's ordinary day ends with an extraordinary envelope — a ransom note for a kidnapped cat. Delivering it turns the seaside village of Festeron into the sinister Witchville, and leads you to Wishbringer, a stone of undreamt-of powers.",
+    "description": "An ordinary mail clerk's ordinary day ends with an extraordinary envelope: a ransom note for a kidnapped cat. Delivering it turns the seaside village of Festeron into the sinister Witchville, and leads you to Wishbringer, a stone of undreamt-of powers.",
     "scene": {
       "room": "Magick Shoppe",
       "text": "You're in the front showroom of the Magick Shoppe. Every inch of wall space is crowded with magic tricks, puzzles and mystical paraphernalia."

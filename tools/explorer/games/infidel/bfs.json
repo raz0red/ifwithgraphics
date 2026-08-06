@@ -1,0 +1,464 @@
+[
+  {
+    "gameId": "22.830916",
+    "roomId": 71,
+    "title": "Your Tent",
+    "description": "Your Tent\n(You are in the army cot.)\nYou are in your tent. Golden rays of the sun filter through the open tent flaps on the southern wall, but no breeze makes its way through. The dry, searing heat in the tent would be bearable if only\nthe air stirred, even a little.\nAt the foot of the cot is a large, unwieldy trunk. The trunk is closed and locked with a padlock."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 72,
+    "title": "Outside Your Tent",
+    "description": "Outside Your Tent\nYou are on an east/west path on the north side of the encampment. To the south you can see a firepit and to the north is the entrance to your tent. Everything is oddly quiet, unsettling, creating a\nfeeling of floating anxiety. The stillness seems to enhance the eerie quality of the desert, the feeling of being truly alone. There's a small hole in the sand, a remnant of your excavation attempts.\n\nYou crane your neck and see a plane, high overhead, circling the encampment."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 78,
+    "title": "Fire Pit",
+    "description": "Fire Pit\nYou are in the center of the encampment, standing before a charred pit, a hole dug in the sand surrounded by blackened rocks. The night breezes have already started the reclamation work of the desert,\ncovering most of the pit's bottom. You can see your tent to the north, the work tent to the south, and the supply tent to the west. Far off to the east, through the heat waves rising off the shifting\nsands, you can see gentle, rolling dunes. There's an enlarged hole in the sand, a remnant of your excavation attempts.\nHalf covered with sand is a bright piece of foil which catches your eye.\nSitting by a rock is what looks like a matchbook.\n\nYou crane your neck and see a plane, high overhead, circling the encampment."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 64,
+    "title": "Outside Work Tent",
+    "description": "Outside Work Tent\nYou are on an east/west path, directly to the north of the work tent. To the north you can see the firepit and, beyond that, your tent. The work tent borders an endless vista of fine, burning sand\nstretching out to the south. There's a small hole in the sand, a remnant of your excavation attempts.\n\nThe plane seems to be circling right overhead."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 62,
+    "title": "Work Tent",
+    "description": "Work Tent\nYou are in a tent which used to house the workers and their personal effects. Looking around, taking in the stripped and bare surroundings, you feel surprised that they even left the canvas walls. You\nquickly realize that they took what they needed -- taking everything would have been more trouble than it was worth. From the looks of things they cleared out quickly but quietly.\nTacked up to the inside of one of the tent flaps is a note.\nSitting in the sand, bulging a little, is a beaten-up knapsack.\n\nIt sounds as if the plane is flying off."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 68,
+    "title": "Outside Supply Tent",
+    "description": "Outside Supply Tent\nYou're on a north/south path on the west edge of the encampment. Directly to the west is the supply tent, its flaps open, still in the hot, quiet air. To the east you can see the central firepit, a\nreminder of your being alone. A row of thickets, impossible to make any progress through even with a machete, grows along the western edge of the camp directly to the north and south of the tent.\nThere's a small hole in the sand, a remnant of your excavation attempts."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 69,
+    "title": "Supply Tent",
+    "description": "Supply Tent\nYou are in a tent, very much like your own -- a tent which had originally contained the supplies for your expedition. You notice, however, that most of the items which were here just yesterday have\nvanished with your workers. The tent looks as if it's been cleaned out and, as your stomach growls, the empty tent ironically reminds you of a turkey carcass picked clean after a huge Thanksgiving\nmeal. Through the open tent flaps to the east you can see the firepit. If only one of the workers had remained behind, you would make him pay.\nStuck in the sand, handle down, is a small pick axe.\nHalf buried in the sand, in the corner of the tent, is a shovel."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 73,
+    "title": "Near the Nile",
+    "description": "Near the Nile\nYou are on an east/west path on the north side of the encampment. A path to the south starts here, and you can see the riverbank clearly to the west. A warm, light breeze reaches your face, drying\nyour sweat into a thin mask of salt. You glance to the north and are greeted by a disheartening sight: an endless stretch of searing desert. There's a small hole in the sand, a remnant of your\nexcavation attempts."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 82,
+    "title": "River Bank",
+    "description": "River Bank\nYou are on the bank of the river Nile. The shoreline is sandy and cool, and reeds wave in a light but warm breeze. Directly to the north and the south thickets make strolling along the bank\nimpossible. You're hot, and the cool rippling water to the west looks inviting, but you're not alone in that thought -- crocodiles bask on the west bank, eyeing you hungrily, just waiting for you to\nenter their watery domain. Things were never like this when Craige was around."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 70,
+    "title": "Northern Path",
+    "description": "Northern Path\nYou are on an east/west path on the northern side of the encampment. To the east you can see the sites of previous excavations your workers had begun before they deserted you. Low, gentle sand dunes\nroll out of sight to the north, but your camp's eastern border has a path, heading off to the south, which starts here. There's an enlarged hole in the sand, a remnant of your excavation attempts."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 66,
+    "title": "Middle Path",
+    "description": "Middle Path\nYou are at the eastern edge of an east/west path in the middle of the camp. To the west you can see the firepit and beyond that the supply tent. To the east you can see the desert -- a vista difficult\nto avoid seeing from just about anywhere in the camp. A north/south path intersects here, traveling along the eastern border of the camp. There's a small hole in the sand, a remnant of your excavation\nattempts."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 63,
+    "title": "Southern Path",
+    "description": "Southern Path\nYou are at the start of a path which heads north along the eastern border of the encampment. To the east you can see the horror and the beauty which brought you here, the desert sand and its hidden\ntreasure. The firepit is visible to the northwest. There's an enlarged hole in the sand, a remnant of your excavation attempts."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 55,
+    "title": "Desert",
+    "description": "Desert\nYou are in the desert, east of the encampment. From this distance the camp seems little more than a mirage, an image of another reality which has little to do with the brutal, searing reality of the\ndesert, your quickly dehydrating body, or your painfully broiling feet. There's an enlarged hole in the sand, a remnant of your excavation attempts."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 54,
+    "title": "Desert",
+    "description": "Desert\nYou are in the desert, out of sight of the encampment. You are thankful there's no wind, even though a cooling breeze would be welcomed, since the fine sand particles would sting your face and hands.\nAll around is the desert, a sweeping expanse of disheartening sand. There's a small hole in the sand, a remnant of your excavation attempts."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 206,
+    "title": "Chamber of Ra",
+    "description": "Chamber of Ra\nYou are standing in the Chamber of Ra, a tribute to the Sun God. Even though the only natural light enters through the opening above, the room is brilliantly lit as though the walls themselves\ngenerated light. The room slopes inward and the walls meet at an open point, over your head. The heat of the desert filters down through the opening and, as the air slowly circulates, the deep, long-\ndead musty odors from the depths of the pyramid assault your senses. Four staircases descend from here: a steep one to the north, a winding one to the south, a wide one to the east, and a narrow one\nto the west. In the center of the room is a large red sandstone altar mounted solidly in the floor.\nLying on the floor, partially covered with dust, is a small pink alabaster jar.\nLeaning against the altar is a bronze torch."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 141,
+    "title": "Circular Room",
+    "description": "Circular Room\nYou are in a strange, round room which sits in the center of four hallways. These hallways lead off to the northeast, southeast, southwest and northwest like the spokes of a wheel. Above your head is\na long tunnel which stretches up and out of sight.\nDescending from above is the end of a long rope.\nAs you peer down the dimly-lit hallways, you see that the doors in all four hallways are balanced halfway open.\nA large golden cluster sits on the floor.\nSitting in the middle of the floor is a large statue, about two feet shorter than you. It reminds you a little of Miss Ellingsworth."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 127,
+    "title": "Southwest Hallway",
+    "description": "Southwest Hallway\nYou are midway down the Southwest Hallway. The walls of this narrow passage are unadorned and smooth. The hallway continues to the southwest and the northeast.\nThe pushed statue rests on the floor."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 129,
+    "title": "Northeast Hallway",
+    "description": "Northeast Hallway\nYou are standing midway down the long Northeast Hallway. The high walls are undecorated, but bear the marks of the stonecarver's tool. The hallway continues to the northeast and the southwest.\nThe path before you remains open, the stone door having risen to the ceiling, counterbalanced by the door in the opposite corridor."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 139,
+    "title": "Room of Selkis",
+    "description": "Room of Selkis\nYou are standing in a small room, that of the protective goddess Selkis. There are red, blue and green patterns on the walls formed from small glazed tiles that have been carefully arranged in order\nof shade. The darkest tiles border the floor, and become lightest near the ceiling. On one wall, inscribed in a beaten gold panel, is the symbol of Selkis, under which you can see some hieroglyphic\ntext. An opening through the southwest wall leads out of this room.\nA beautiful ruby cluster, sparkling like fire, sits on the floor."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 125,
+    "title": "Southeast Hallway",
+    "description": "Southeast Hallway\nYou are midway down the Southeast Hallway. This corridor is undecorated and the walls are polished to a smooth lustre. The hallway continues to the southeast and the northwest.\nThe pushed statue rests on the floor."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 131,
+    "title": "Northwest Hallway",
+    "description": "Northwest Hallway\nYou are standing in the middle of the Northwest Hallway. The walls here are smooth and undecorated, carved out of granite. The hallway continues to the northwest and to the southeast.\nThe path before you remains open, the stone door having risen to the ceiling, counterbalanced by the door in the opposite corridor."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 145,
+    "title": "Room of Nephthys",
+    "description": "Room of Nephthys\nYou have entered the room of the protective goddess Nephthys. The walls here are cut from pink granite, elaborately decorated with bright red carnelian and pale yellow feldspar. Along the northeast\nwall are panels of beaten gold, and midway up this wall, under the winged symbol of Nephthys, you can see some hieroglyphs. To the southeast, an opening has been cut in the thick granite wall.\nA large diamond cluster, glittering in your light, sits on the floor directly under the hieroglyphs."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 137,
+    "title": "Room of Isis",
+    "description": "Room of Isis\nThis is the room of the protective goddess Isis. You stand in amazement in the center of the room as thousands of tiny lights twinkle around you. With great surprise you realize that the light from\nyour torch is being reflected by the mirror-like surfaces of innumerable quartzite chips. These are set artfully into red clay panels in the walls, and are surrounded by shiny red jasper fragments. On\nthe southwest wall, under the winged symbol of Isis, some hieroglyphic text is inscribed in a gold panel. To the northeast is an arched opening, and, looking through it, you can barely make out a\nhallway.\nLying on the ground is a brilliant, glowing emerald cluster."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 135,
+    "title": "Room of Neith",
+    "description": "Room of Neith\nYou are standing in the room of the protective goddess Neith. This room seems dark and mysterious with its decorations of inky-blue lapis lazuli and jet-black obsidian. Gold scrollwork defines an area\non one of the walls, in the center of which is the symbol of Neith. Below this you can see some hieroglyphs etched into a beaten gold panel. There is a door in the northwest wall leading out of the\nroom.\nAn opal cluster, glistening with the light of a thousand fires, lies on the floor."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 123,
+    "title": "South Landing",
+    "description": "South Landing\nYou are on a landing in the middle of a set of stairs. The staircase goes down to the south and up to the north. The walls here are undistinguished, formed by the stones of which the pyramid was\nbuilt."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 122,
+    "title": "Narrow Hallway",
+    "description": "Narrow Hallway\nYou are at the entrance of a narrow hallway which goes to the northeast. A staircase goes up to the north."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 121,
+    "title": "Narrow Hallway",
+    "description": "Narrow Hallway\nYou are at a bend in the Narrow Hallway. The hallway continues to the northwest and to the southwest. Inscribed on the wall are some hieroglyphs."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 120,
+    "title": "Barge Chamber",
+    "description": "Barge Chamber\nYou are in the southern section of a huge room which holds the royal barge. Before you, to the north, is a plank which provides entrance to the barge. There is room to move around the barge to the\neast and west, while a doorway to the southeast leads into a darkened corridor."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 117,
+    "title": "Barge Chamber",
+    "description": "Barge Chamber\nYou're in the southwest corner of the Barge Chamber. You can still see the barge entrance to the east, while there's enough room to continue to the north, around the barge."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 116,
+    "title": "Barge Chamber",
+    "description": "Barge Chamber\nYou're in the northwest corner of the Barge Chamber. You can see by your light that there's room enough to continue around the back of the barge by going to the east, while you can bypass the bow of\nthe boat by going south."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 115,
+    "title": "Barge Chamber",
+    "description": "Barge Chamber\nYou're at the start of a hallway which goes off to the north. To the south, directly behind you, is the back side of the barge. There's enough room to get around it to the east and west."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 20,
+    "title": "Steep Passageway",
+    "description": "Steep Passageway\nYou are at the top of a steep, descending passage that plunges down to the north. Although the angle is steep, it looks as if you should have firm enough footing to travel safely. From the angle, it\nappears as though the passage is actually leaving the pyramid, cutting down through the sand high overhead to an adjoining building."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 19,
+    "title": "Steep Passageway",
+    "description": "Steep Passageway\nYou are about midway down a steep, descending, north/south passageway which seems to lead out of the pyramid to the north. The walls of stone are polished and as smooth as glass, glistening in your\nlight, lighting the passage far to the north and the south."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 18,
+    "title": "Steep Passageway",
+    "description": "Steep Passageway\nYou are at the north end of a descending passageway. You can see the smoothly polished passageway rising up and out of sight to the south, heading back into the pyramid. A large doorway cut into the\nstone walls lies to the north and, through it, you can see an immense chamber."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 17,
+    "title": "Temple Chamber",
+    "description": "Temple Chamber\nYou are in a huge chamber, immense in its size and scope, especially since it is far underground. Your light seems to climb and fall from the high walls, making their top boundaries undefined as they\nmelt into inky darkness, flickering into the unknown reaches high overhead. There is a huge doorway carved out of the south wall, the arch at its top barely discernible in your light. To the north is\na similar doorway, slightly scaled down, with pillars on either side of it, their shadows playing strange tricks on the wall behind them. You can just barely make out the paintings on the walls,\npictures of the ancient Queen, her servants, and the priests in attendance."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 16,
+    "title": "Inner Chamber",
+    "description": "Inner Chamber\nYou are in the temple's inner chamber. The ceiling here is lower, low enough for your light to reach it. There are openings in the east and west walls, and a large, arched doorway to the south. The\nwalls are covered with paintings, most of which depict the Queen in different stages of preparation for her trip on the royal barge. One in particular, larger than any of the others, shows the Queen\nand all of her attendants aboard the barge, floating through the air on their way to the netherworld. There are some detailed hieroglyphs on one of the walls.\nLying before you in tortured repose are the bony remains of a former adventurer, someone who tried looting the pyramid long, long ago. As you bend over to pay your respects, something glitters,\ncatching your eye as you move your head."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 15,
+    "title": "Golden Room",
+    "description": "Golden Room\nYou are in a room whose walls are covered with gold leaf. Your light reflects off the walls with a rich, warm tone and reveals the outlines of hieroglyphics engraved in the gold itself. There is a\ndoorway cut into the south wall and, through the reflected light, you can tell it leads into a small chamber. There is another doorway leading out to the east."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 13,
+    "title": "Golden Alcove",
+    "description": "Golden Alcove\nYou are in a small alcove off the Golden Room. Sitting in the middle of this small room is a roughly-hewn slab of granite, much like a legless table.\nSitting in the middle of the granite table is a gleaming chalice made of gold."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 11,
+    "title": "Silver Room",
+    "description": "Silver Room\nYou are in the Silver Chamber, a room whose walls reflect your light brilliantly due to their silver surface. A doorway leads west and out, while another doorway leads into a smaller room to the\nsouth."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 10,
+    "title": "Silver Alcove",
+    "description": "Silver Alcove\nYou are in a small alcove off the Silver Room. Sitting in the middle of this small room is a roughly-hewn slab of granite, much like a legless table.\nSitting in the middle of the granite table is a chalice made of gleaming silver."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 114,
+    "title": "Center of Barge",
+    "description": "Center of Barge\nYou are standing on the deck of an ancient wooden barge. Before you, cut into the deck, is a hole. To the south is a plank which leads down off the barge. You can see two cabins on the deck, one to\nthe west and the other to the east.\nBefore you, running down through a hole in the deck, is a sturdy beam made of wood. Although only a few feet of it rise above the deck, it was probably used at one time as a mast."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 112,
+    "title": "Aft Cabin",
+    "description": "Aft Cabin\nYou are in the aft cabin aboard the barge. There's a door to the west which leads out to the deck, and a short ladder, permanently mounted to the deck, going down into the depths of the barge itself."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 111,
+    "title": "Below Deck",
+    "description": "Below Deck\nYou are below the deck of the barge in what looks like a huge hold. To the west you can see the hold continuing, while a ladder leads up and out from here."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 110,
+    "title": "West End of Hold",
+    "description": "West End of Hold\nYou are in the westmost portion of the hold, below the deck of the barge. On the north side of the hull is a small knothole about three feet off the deck. Overhead you can see a hole going through the\ndeck while, directly below this hole, on the deck by your feet, is a slot.\nComing down through the hole above your head and ending in the slot at your feet is the beam which served as a mast."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 113,
+    "title": "Fore Cabin",
+    "description": "Fore Cabin\nYou are in the forward cabin aboard the barge. The cabin is bare with none of the luxuries you expected to see. You close your eyes for a moment, picturing the barge you'll someday own, the yacht\nfully rigged and crewed. You open your eyes and shake your head, anxious to make your dream reality. There's a doorway to the east leading out onto the deck.\nSitting on the deck is a papyrus scroll."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 102,
+    "title": "Cube",
+    "description": "Cube\nYou are in a room whose symmetry is uncanny, at least to the unaided eye: the dimensions of the room seem to form a perfect cube. There are three square doorways cut into the walls -- one to the\nnorth, and another to the west. A wide staircase leads up through the square doorway to the east."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 100,
+    "title": "Cube",
+    "description": "Cube\nYou are in a room whose dimensions seem to measure a perfect cube. On the floor of this room is a series of symbols, inscribed in the stone. The walls bear strange pictures of a Queen, one of which\nshows her being wrapped in linen, another one showing her being lowered into what appears to be a solid gold sarcophagus. Four identical square doorways lead out of this chamber to the north, south,\neast and west."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 98,
+    "title": "Cube",
+    "description": "Cube\nYou are in a room whose symmetry is uncanny, at least to the unaided eye: the dimensions of the room seem to form a perfect cube. There are two square doorways cut into the walls -- one to the north,\nand another to the west. A panel, recessed into a wall, glows softly in your reflected light, while some hieroglyphs are visible above it."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 94,
+    "title": "Turning Passage",
+    "description": "Turning Passage\nYou are in a strange, turning passageway. The floor here descends, reminding you of a ramp Craige once told you about -- a deep entrance into the depths of an Incan tomb. The ramp turns off toward the\nnorth. Judging from what you remember of the cube rooms, the ramp most probably passes beneath the ascending east staircase. Through the open doorway to the west you can still see one of the cube\nrooms."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 168,
+    "title": "Top of Stairway",
+    "description": "Top of Stairway\nYou are at the top of a sixteen-step stairway. It leads west and down. The strange passageway into the cube rooms lies to the south. The walls here are painted in somber colors -- deep ochres, browns\nand blacks, but the scenes the paintings depict are oddly gay. Priests smile, their hands lifted up high to Amun Ra, offering flower petals in their palms, while a young girl, bedecked in black,\nstands by watching, a twisted smile on her face."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 167,
+    "title": "Bottom of Stairs",
+    "description": "Bottom of Stairs\nYou are at the bottom of the sixteen-step stairway. The stairway goes up to the east, while to the west is solid plaster. Painted on the plaster are some hieroglyphs."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 166,
+    "title": "Narrow Passageway",
+    "description": "Narrow Passageway\nYou are at the east end of what seems like a long, straight passageway. After carefully looking over the walls, stones and floor, you determine that it is safe to proceed."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 165,
+    "title": "Narrow Passageway",
+    "description": "Narrow Passageway\nYou are in the middle of a long, east/west passage. The passage is narrow and seems to be little more than a hallway hewn out of stone."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 187,
+    "title": "Narrow Passageway",
+    "description": "Narrow Passageway\nYou have reached the west end of the passage. Before you is a door surrounded by a heavy timber frame. The door is entirely blocked up with plaster. Toward the bottom of the north wall and the south\nwall, about three inches off the floor, are two small niches. There are some hieroglyphs on the plaster."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 192,
+    "title": "Antechamber",
+    "description": "Antechamber\nYou are in the middle of the Chamber of Eternal Royalty, the antechamber. The walls in this section of the antechamber are covered with beveled tiles of deep blue lapis lazuli and pink alabaster. At\nceiling height, on the west wall, are paintings depicting the marriage of the goddess Isis and the god Osiris. The Antechamber stretches out to the north and the south. There's just enough light cast\nfor you to see the outline of the bottomless pit in the passage to the east.\nThrough the doorway you can see the beam spanning the pit."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 186,
+    "title": "Antechamber",
+    "description": "Antechamber\nYou are in the southern end of the Chamber of Eternal Royalty. From here you can see the room stretching out towards the north. The south wall is painted to resemble large baskets of lotus flowers\nwith their blue petals framing an image of the Sun God, Amun Ra. The west wall has a timber doorway, inset several feet into the rocks, outlining a door."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 181,
+    "title": "Annex",
+    "description": "Annex\nYou are in the Chamber of Rebirth, the Annex. As you gaze about this small room, strange kohl-rimmed eyes gaze back at you from the painted figures which cover all of the walls. There are scenes of a\ngreat procession, with white-clad princesses offering gifts of precious oils and papyri to the mummified figure of the Queen. Bastet, the cat goddess, holds the mummy erect. Above you, painted on the\nceiling, is the image of Tueris, the hippopotamus goddess. The only way out is through the doorway to the east.\nWedged between the doorway, from side to side, is the stout beam.\nSitting in the middle of this room is a huge stone slab. Around its side runs a seam which is barely detectable. On top of the slab are four round holes, one in each corner."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 195,
+    "title": "Antechamber",
+    "description": "Antechamber\nYou are in the north end of the Chamber of Eternal Royalty. On the eastern and western walls are scenes carved in high relief depicting a royal figure, possibly meant to represent a new ruler,\nperforming the ritual of the \"opening of the mouth and eyes\", the ceremony of restoring to the mummy of the departed Queen the use of its senses. The north wall of this area is a thick, solid wall of\nstone. In the center of this wall is a timber lintel on top of a doorway."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 174,
+    "title": "Burial Chamber",
+    "description": "Burial Chamber\nYou have entered the Chamber of Departure Towards the Funeral Destinies, the Burial Chamber. There is a doorway leading into a small room off to the east. In the middle of the chamber, stretching\nalmost from wall to wall, is a huge, ancient sarcophagus. Its cover is composed of pure quartz and through the shining light you can see the golden, gleaming mummiform coffin. There is a small recess\nand a large recess on the top of the cover which you can make out as thin, outlined areas. Four statues surround the sarcophagus, one in each corner: Isis, Nephthys, Neith and Selkis. Their\noutstretched arms clamp down tightly on the quartz cover.\nWedged under the top of the doorway, perpendicular to the floor, is the wooden beam."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 173,
+    "title": "Treasury",
+    "description": "Treasury\nYou are in the Chamber of Reconstitution of the Body, the Treasury. To the west is a doorway leading back into the Burial Chamber.\nIn the room is a large, granite table. Cut out from the top of this table are three circles of polished granite. The left disc is empty, and it is one inch above the top of the table. Sitting on the\nmiddle disc is a scarab, and the middle disc is slightly below the top of the table. The right disc is empty, and it is one inch above the top of the table."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 96,
+    "title": "Cube",
+    "description": "Cube\nYou are in a room whose dimensions seem to form a perfect cube. There are two square doorways cut into the walls -- one to the south, and another to the west. This room seems to form a corner for this\nentire area."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 101,
+    "title": "Cube",
+    "description": "Cube\nYou are in a room whose walls, floor and ceiling seem to form a perfect cube. There are four square doorways cut into the walls -- to the north, the south, the east and the west. Through the west\ndoorway you can see a flight of stairs heading up."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 95,
+    "title": "Cube",
+    "description": "Cube\nYou are in a room whose shape is that of a perfect cube. There are two square doorways cut into the walls -- one to the south, and another to the east."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 97,
+    "title": "Cube",
+    "description": "Cube\nYou are in a room whose symmetry is uncanny, at least to the unaided eye: the dimensions of the room seem to form a perfect cube. There are two square doorways cut into the walls -- one to the north,\nand another to the east. The uncannily-shaped room seems to form a corner for this entire area."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 99,
+    "title": "Cube",
+    "description": "Cube\nYou are in a room in the shape of a perfect cube. There are three square doorways cut into the walls -- one to the west, one to the east, and another to the south."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 57,
+    "title": "Desert",
+    "description": "Desert\nYou are standing on the top of a sand dune, looking all around at a place on Earth where man was never meant to be. That is the only conclusion you can draw as you force yourself to breathe the hot,\narid air of the desert through your nose. Breathing through your mouth makes you instantly thirsty, a dangerous state to find yourself in while surrounded by sand. You curse Craige, then find yourself\ncursing Ellingsworth, too. There's a small hole in the sand, a remnant of your excavation attempts."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 60,
+    "title": "Desert",
+    "description": "Desert\nYou are in the desert, almost out of sight of the encampment, your only link with civilization. You are just close enough to make out a tiny dot on the western horizon which could be one of the tents.\nThe searing sand is making walking a difficult and painful experience, something alien to you. There's an enlarged hole in the sand, a remnant of your excavation attempts."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 26,
+    "title": "Desert",
+    "description": "Desert\nYou are in the desert, a vast wasteland of sand and heat."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 59,
+    "title": "Desert",
+    "description": "Desert\nYou are deep in desert, the encampment little more than a memory. You think for a moment, closing your eyes, trying to picture the coolness of the Nile, the comfort of your cot, and are overcome with\ndoubts. When you open your eyes again you are greeted with the same nightmare: All around you, all you can see for mile after mile is sand and more sand. There's a small hole in the sand, a remnant of\nyour excavation attempts."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 56,
+    "title": "Desert",
+    "description": "Desert\nYou are deep into the desert, as deep as anyone in his right mind would ever care to venture. A small but strong gust of wind reaches your face, pelting you with grains of sand so small they remind\nyou of fine sugar. Even with your lips tightly closed, the wind manages to drive a few grains into your mouth. You are thankful that none got into your eyes. There's a sizable hole in the sand, a\nremnant of your excavation attempts."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 61,
+    "title": "Desert",
+    "description": "Desert\nYou are in the broiling sands of the desert, a short distance from the camp. Off to the west you can just make out a slight discoloration in the sand, the start of an east/west path which borders the\nnorthern edge of the camp. There's a small hole in the sand, a remnant of your excavation attempts."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 58,
+    "title": "Desert",
+    "description": "Desert\nYou are in the desert, still within sight of the encampment, just a tiny oasis to the west. The tents, shimmering behind the heat waves rising from the sand, seem to be calling you back, beckoning,\noffering safety and refuge. There's a small hole in the sand, a remnant of your excavation attempts."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 53,
+    "title": "Desert",
+    "description": "Desert\nYou are far into the desert, sand and more sand stretching out endlessly around you in all directions. You think of going back, of giving up this attempt at riches, but what awaits you back in the\nStates? What is there worth going back to, with nothing to show for this quest? And how could you go back now, after the things you'd said to Craige? You glance around at the rolling dunes and force\nback the fear eating away your confidence. There's an enlarged hole in the sand, a remnant of your excavation attempts."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 65,
+    "title": "Southern Path",
+    "description": "Southern Path\nYou are at the west edge of an east/west path on the southern side of the encampment. Directly to the west is a heavy growth of thickets, making any attempt at western movement a painful and futile\ntask. Through the thickets you can hear the sound of water running gently by. There's a small hole in the sand, a remnant of your excavation attempts.\nYou scowl at the sun, cursing its searing heat."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 119,
+    "title": "Barge Chamber",
+    "description": "Barge Chamber\nYou are in the southeast corner of the Barge Chamber. There's enough room to bypass the stern of the barge and continue to the north. To the west you can see the entrance to the barge."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 118,
+    "title": "Barge Chamber",
+    "description": "Barge Chamber\nYou're standing in the northeast corner of the Barge Chamber. You can get around the stern of the barge to the south, while there's enough room to continue around the barge to the west."
+  },
+  {
+    "gameId": "22.830916",
+    "roomId": 200,
+    "title": "On the Steep Stairs",
+    "description": "On the Steep Stairs\nYou are two steps down the steep staircase when you see before you a deep dropoff going down into nothingness. To go down any further would be suicide.\nDescending from above is the end of a long rope. It travels down into the darkness."
+  }
+]

@@ -1,0 +1,279 @@
+# ---- Tent (start) ----
+# stand up
+# leave tent
+# go south
+# get matchbook
+# go south
+# go south
+
+# ---- Work Tent ----
+# read note
+# open knapsack
+# get canteen
+# get sack
+# go north
+# go north
+# go west
+# go west
+
+# ---- Axe/Shovel Area ----
+# get axe
+# get shovel
+# go east
+# go north
+# go west
+
+# ---- River Bank ----
+# open canteen
+# fill canteen with water
+# go east
+# go east
+
+# ---- Tent (return) ----
+# enter tent
+# break lock with axe
+# get lock
+# drop lock
+# open trunk
+# get food
+# get map
+# open map
+# get cube
+# drop map
+# read sticker
+# leave tent
+# go east
+# go south
+# go south
+# go east
+# go east
+
+# ---- Pyramid Top ----
+# dig in sand
+# dig in sand
+# dig in sand
+# dig in sand
+# dig in sand
+# put cube in hole
+# drop shovel
+# go down
+
+# ---- Pyramid (altar room) ----
+# drop sack
+# get rope
+# tie rope to altar
+# throw rope north
+# get torch
+# get jar
+# open jar
+# dip torch in jar
+# light match
+# light torch
+# close jar
+# put jar in sack
+# put matches in sack
+# get sack
+# go north
+
+# ---- Circular Room ----
+# drop sack
+# put cluster in sack
+# push statue
+# get head
+# roll statue southwest
+# drop head
+# go northeast
+# go northeast
+# go northeast
+# get cluster
+# go southwest
+# go southwest
+# put cluster in sack
+# go southwest
+# get head
+# roll statue northeast
+# roll statue southeast
+# drop head
+# go northwest
+# go northwest
+# go northwest
+# get cluster
+# go southeast
+# go southeast
+# put cluster in sack
+# go southeast
+# get head
+# roll statue northwest
+# roll statue northeast
+# drop head
+# go southwest
+# go southwest
+# go southwest
+# get cluster
+# go northeast
+# go northeast
+# put cluster in sack
+# go northeast
+# get head
+# roll statue southwest
+# roll statue northwest
+# drop head
+# go southeast
+# go southeast
+# go southeast
+# get cluster
+# go northwest
+# go northwest
+# put cluster in sack
+# get sack
+# climb rope
+# climb down few steps
+# go up
+
+# ---- Barge Chamber ----
+# go south
+# go south
+# go northeast
+# go northwest
+# go west
+# go north
+# go east
+# go north
+# go north
+# go north
+# go north
+# go north
+# go west
+# go south
+
+# ---- Gold Chalice Room ----
+# get gold chalice
+# drop sack
+# put opal cluster in sack
+# put emerald cluster in sack
+# put diamond cluster in sack
+# put ruby cluster in sack
+# get sack
+# go north
+# go east
+# go east
+# go south
+
+# ---- Silver Chalice Room ----
+# get silver chalice
+# go north
+# go west
+# go south
+# go south
+# go south
+# go south
+# go south
+# go west
+# go south
+# go east
+# go north
+
+# ---- Barge ----
+# examine mast
+# go east
+# go down
+# go west
+# examine slot
+# get shim
+# drop shim
+# go east
+# go up
+# go west
+# go west
+# read scroll
+# go east
+# get beam
+# go south
+# go southeast
+# go southwest
+# go north
+# go north
+
+# ---- Cube Room ----
+# go east
+# go west
+# go south
+
+# ---- Panel Room ----
+# examine panel
+# remove first brick
+# drop first brick
+# remove third brick
+# drop third brick
+# remove fifth brick
+# drop fifth brick
+# go east
+# go down
+# go down
+
+# ---- Hieroglyph Room ----
+# examine hieroglyphs
+# dig plaster with axe
+# go west
+# go west
+# go west
+
+# ---- Second Hieroglyph Room ----
+# read hieroglyphs
+# put beam in niches
+# stand on beam
+# dig plaster with axe
+# open door
+# go west
+# get beam
+# go south
+# put beam in door
+# open door
+# go west
+
+# ---- Gem Puzzle Room ----
+# drop sack
+# take diamond cluster out of sack
+# put diamond cluster in first hole
+# take ruby cluster out of sack
+# put ruby in second hole
+# take emerald cluster out of sack
+# put emerald in third hole
+# take opal cluster out of sack
+# put opal in fourth hole
+# raise slab
+# get spatula
+# get book
+# put spatula in sack
+# put book in sack
+# get sack
+# go east
+# get beam
+# go north
+# go north
+
+# ---- Timber Room ----
+# put beam under timber
+# break seal with axe
+# open door
+# go north
+# go east
+
+# ---- Treasury ----
+# drop sack
+# put golden chalice on left disc
+# fill silver chalice with water
+# put silver chalice on right disc
+# get scarab
+# get sack
+# go west
+
+# ---- Burial Chamber ----
+# drop sack
+# put book in large recess
+# put scarab in small recess
+# turn neith statue
+# turn selkis statue
+# turn isis statue
+# turn nephthys statue
+# open sarcophagus

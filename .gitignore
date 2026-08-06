@@ -30,15 +30,17 @@ wasm/ztools/source/txd
 bfs-saves/
 
 # Scratch/working files
-tmp/
-tmp2/
-tmp3/
-tmp4/
+# Globbed rather than enumerated: tmp/ through tmp4/ were listed one by one and
+# tmp5/ then showed up untracked, leaving a story file visible to `git add`.
+tmp*/
+tools/explorer/tmp_*.txt
 # Anchored: only the root scratch copy. Each game's recorded rooms
 # (tools/explorer/games/<name>/bfs.json) is a tracked dataset.
 /bfs.json
 bz.z5
-tools/explorer/games/wishbringer/verify/
+# Per-game explorer verification output, for any game rather than just the
+# first one that produced it.
+tools/explorer/games/*/verify/
 
 # Claude memory / session files
 .claude/

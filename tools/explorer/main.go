@@ -1044,10 +1044,10 @@ func looksLikeWalkthroughCommand(command string) bool {
 	}
 	switch verb {
 	case "again", "alexis", "answer", "apply", "attack", "attach", "blow", "board", "break", "burn", "buy", "chant", "climb", "close", "connect", "cover", "cross",
-		"cut", "dig", "dive", "drill", "drink", "drop", "eat", "echo", "enter", "examine", "exit", "feed", "fill", "get", "give",
+		"cut", "dig", "dip", "dive", "drill", "drink", "drop", "eat", "echo", "enter", "examine", "exit", "feed", "fill", "get", "give",
 		"grab", "hide", "hold", "inflate", "insert", "inventory", "kill", "kiss", "knock", "launch", "leave", "lie", "light", "lock", "look",
 		"lower", "move", "open", "order", "pay", "point", "pour", "pray", "press", "pull", "push", "put", "raise",
-		"read", "remove", "rent", "ring", "rub", "say", "search", "shake", "show", "sit", "slide", "smash", "spray", "squeeze", "stand", "swim", "take", "tell", "throw",
+		"read", "remove", "rent", "ring", "roll", "rub", "say", "search", "shake", "show", "sit", "slide", "smash", "spray", "squeeze", "stand", "swim", "take", "tell", "throw",
 		"tie", "touch", "tug", "turn", "unlock", "untie", "ulysses", "wait", "wake", "wave", "wear", "wedge", "wind", "wish", "withdraw", "z":
 		return true
 	}
