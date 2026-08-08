@@ -1,0 +1,113 @@
+# The Witness (release 22, serial 840924)
+#
+# Section names are the game's own room titles, which are lower case in this
+# game ("front porch", "office"), so every section is written with the explicit
+# ---- name ---- syntax rather than a bare capitalised label.
+#
+# Every "wait" raises "Do you want to keep waiting? (Answer YES or NO.)", so
+# each one is followed by an explicit "yes". Waiting is how the plot advances:
+# Linder is not shot until 9:03 pm, and the investigation runs on a clock after
+# that.
+
+# ---- driveway entrance ----
+# north
+
+# ---- driveway ----
+# north
+
+# ---- front porch ----
+# ring bell
+# east
+
+# ---- living room ----
+# wait
+# yes
+
+# Linder takes you to his office himself; sitting before he does that fails,
+# because the wooden chair is not reachable until you are led in.
+# ---- office ----
+# sit in wooden chair
+# wait
+# yes
+# wait
+# yes
+# wait
+# yes
+# wait
+# yes
+# wait
+# yes
+# wait
+# yes
+# wait
+# yes
+# wait
+# yes
+# wait
+# yes
+# wait
+# yes
+
+# Linder is shot at 9:03 pm through the window.
+# stand up
+# press button
+# examine clock
+# examine keyhole
+# examine window
+# take green wire
+# wait
+# yes
+# analyze powder
+
+# ---- hallway ----
+# west
+# north
+# north
+
+# ---- butler's room ----
+# open door
+# west
+# read mystery book
+# drop telegram
+# drop note
+# drop mystery book
+# take receipt
+
+# ---- monica's room ----
+# east
+# east
+# unlock back door
+# open back door
+
+# ---- back yard ----
+# east
+# south
+# south
+# take gun
+
+# ---- garage ----
+# west
+# west
+# north
+# east
+# unlock garage door
+# open garage door
+# unlock workshop door
+# open workshop door
+
+# ---- workshop ----
+# east
+# examine spool of wire
+# wait
+# yes
+
+# Monica returns to the office near midnight to empty the clock.
+# ---- office ----
+# handcuff monica
+# search monica
+# unlock clock
+# open clock
+# search monica
+# wait
+# yes
+# arrest monica

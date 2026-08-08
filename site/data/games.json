@@ -96,6 +96,22 @@
     "image": "assets/images/games/enchanter.webp"
   },
   {
+    "id": "witness",
+    "title": "The Witness",
+    "author": "Infocom",
+    "year": "1983",
+    "description": "Los Angeles, February 1938. A detective calls on a wealthy industrialist who fears for his life, and watches him shot dead through his own office window. You have twelve hours, a police sergeant, and a house full of people who are not telling you everything.",
+    "scene": {
+      "room": "driveway entrance",
+      "text": "Storm clouds are swimming across the sky, their bottoms glowing faintly from the city lights in the distance. A search light pans slowly under the clouds, heralding another film premiere."
+    },
+    "pregenerated": true,
+    "includesFile": false,
+    "ifdbUrl": "https://ifdb.org/viewgame?id=6963a47vqgms8wi0",
+    "pagePath": "player/games/witness/",
+    "image": "assets/images/games/witness.webp"
+  },
+  {
     "id": "cutthroats",
     "title": "Cutthroats",
     "author": "Infocom",

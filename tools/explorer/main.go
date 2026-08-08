@@ -96,9 +96,28 @@ func readGameID(story string) (string, error) {
 // before the actual room output. The title always appears as its own line at the
 // start of the real room text, so we find it and discard everything before it.
 func trimToTitle(title, description string) string {
-	for i, line := range strings.Split(description, "\n") {
+	lines := strings.Split(description, "\n")
+	for i, line := range lines {
 		if strings.TrimSpace(line) == title {
-			return strings.TrimSpace(strings.Join(strings.Split(description, "\n")[i:], "\n"))
+			return strings.TrimSpace(strings.Join(lines[i:], "\n"))
+		}
+	}
+	// Not every game announces a room by printing its name alone on a line.
+	// The Witness uses "(living room)" once it switches to short prompts, and
+	// "You are now in the living room." before that. Without matching those,
+	// nothing is trimmed at all, and a turn that crosses rooms keeps the text
+	// of every room it passed through: Phong escorting the player from the
+	// entry to the living room recorded the *hallway's* description under the
+	// living room, because the room id is read at the prompt while the
+	// description is everything printed since the previous one.
+	for _, marker := range []string{
+		"(" + title + ")",
+		"You are now in the " + title,
+		"You are now on the " + title,
+		"You are now at the " + title,
+	} {
+		if idx := strings.Index(description, marker); idx >= 0 {
+			return strings.TrimSpace(description[idx:])
 		}
 	}
 	return description
@@ -1049,12 +1068,12 @@ func looksLikeWalkthroughCommand(command string) bool {
 		verb = verb[:i]
 	}
 	switch verb {
-	case "again", "alexis", "answer", "apply", "ask", "attack", "attach", "blow", "board", "break", "burn", "buy", "chant", "cleesh", "climb", "close", "connect", "cover", "cross",
+	case "accuse", "again", "alexis", "analyze", "answer", "apply", "arrest", "ask", "attack", "attach", "blow", "board", "break", "burn", "buy", "chant", "cleesh", "climb", "close", "compare", "connect", "cover", "cross",
 		"cut", "dig", "dip", "dive", "draw", "drill", "drink", "drop", "eat", "echo", "enter", "erase", "examine", "exex", "exit", "feed", "fill", "frotz", "get", "give",
-		"gnusto", "gondar", "grab", "guncho", "hide", "hold", "inflate", "insert", "inventory", "izyuk", "kill", "kiss", "knock", "krebf", "kulcad", "launch", "learn", "leave", "lie", "light", "lock", "look",
+		"fingerprint", "follow", "gnusto", "gondar", "grab", "guncho", "handcuff", "hide", "hold", "inflate", "insert", "inventory", "izyuk", "kill", "kiss", "knock", "krebf", "kulcad", "launch", "learn", "leave", "lie", "light", "lock", "look",
 		"lower", "melbor", "move", "nitfol", "open", "order", "ozmoo", "pay", "point", "pour", "pray", "press", "pull", "push", "put", "raise",
 		"reach", "read", "remove", "rent", "rezrov", "ring", "roll", "rub", "say", "search", "shake", "show", "sit", "sleep", "slide", "smash", "spray", "squeeze", "stand", "swim", "take", "tell", "throw",
-		"tie", "touch", "tug", "turn", "unlock", "untie", "ulysses", "vaxum", "wait", "wake", "wave", "wear", "wedge", "wind", "wish", "withdraw", "z", "zifmia":
+		"tie", "touch", "tug", "turn", "unlock", "untie", "ulysses", "vaxum", "wait", "wake", "wave", "wear", "wedge", "wind", "wish", "withdraw", "yes", "z", "zifmia":
 		return true
 	}
 	return false

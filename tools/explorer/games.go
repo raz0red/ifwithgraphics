@@ -14,6 +14,7 @@ const (
 	wishbringerGameID = "69.850920"
 	infidelGameID     = "22.830916"
 	enchanterGameID   = "29.860820"
+	witnessGameID     = "22.840924"
 )
 
 // Game encapsulates every piece of per-game special-casing the explorer
@@ -106,6 +107,7 @@ var gameRegistry = map[string]func() Game{
 	wishbringerGameID: func() Game { return &wishbringerGame{} },
 	infidelGameID:     func() Game { return &infidelGame{} },
 	enchanterGameID:   func() Game { return &enchanterGame{} },
+	witnessGameID:     func() Game { return &witnessGame{} },
 }
 
 // gameFor looks up the Game implementation for a gameID, falling back to

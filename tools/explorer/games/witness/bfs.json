@@ -1,0 +1,170 @@
+[
+  {
+    "gameId": "22.840924",
+    "roomId": 224,
+    "title": "driveway entrance",
+    "description": "Somewhere near Los Angeles. A cold Friday evening in February 1938. In this climate, cold is anywhere below about fifty degrees. Storm clouds are swimming across the sky, their bottoms glowing faintly\nfrom the city lights in the distance. A search light pans slowly under the clouds, heralding another film premiere. The air seems expectant, waiting for the rain to begin, like a cat waiting for the\nineffable moment to ambush.\n\nThe taxi has just dropped you off at the entrance to the Linders' driveway. The driver didn't seem to like venturing into this maze of twisty streets any more than you did. But the house windows are\nfull of light, and radio music drifts toward you. Your favorite pistol, a snub-nosed Colt .32, is snug in its holster. You just picked up a match book off the curb. It might come in handy. Good thing\nyou looked up the police file on Mrs. Linder's death. Her suicide note and the newspaper story told you all you know about the family. The long week is finished, except for this appointment. But why\ndoes an ominous feeling grip you?\n\nThe WITNESS: An INTERLOGIC Mystery\nCopyright (c) 1983 Infocom, Inc. All rights reserved.\nWITNESS and INTERLOGIC are trademarks of Infocom, Inc.\nRevision number 22 / Serial number 840924\n\nYou are now in the driveway entrance.\nYou are standing at the foot of the driveway, the entrance to the Linder property. The entire lot is screened from the street and the neighbors by a wooden fence, except on the east side, which fronts\non dense bamboo woods. The house looks like a mixture of a California bungalow and East Asian influences. From here you can see the driveway leading north and, beyond that, the front door.\n\nWhat should you, the detective, do now?"
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 225,
+    "title": "driveway",
+    "description": "You are now on the driveway.\nThe driveway, paved with peastone, runs from the entrance at the south end in a curve to a two-car garage at the east end. North of you is the front porch, the entrance to the house.\n\nWhat next?"
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 228,
+    "title": "front porch",
+    "description": "You are now on the front porch.\nThe front porch is in an alcove, sheltered from the weather by the walls and overhanging roof. A yellowish electric light hangs near the closed front door to the east, giving you a dim view of the\ndriveway to the south and the front yard behind a gate to the north.\nThe gate is closed. A door bell glows at you, almost daring you to ring it.\n\nWhat next?"
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 130,
+    "title": "entry",
+    "description": "Someone turns off the radio. You hear footsteps inside the house. Then the door swings open.\n\"Good evening,\" says a smiling face, \"I am Phong. Please come in.\" He leads you into the house and closes the door behind you.\n\nYou are now in the entry.\nHere in the entry is a small Shinto shrine, with a hanging scroll and an arrangement of flowers, as well as a coat closet and a platform for storing shoes. You can see a hallway to the east. The front\ndoor, on the west wall, is closed.\nPhong's straight black hair and folded eyelids make him obviously Asian, but no definite nationality. His open, almost gentle face holds a quick smile and eyes that seem to miss nothing. He carries\nhis stout body lightly, but you can see great strength under his light shirt and dark trousers. You guess his age at about fifty, but who knows how many lifetimes of experience he carries?\n\nWhat next?"
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 207,
+    "title": "office",
+    "description": "Time passes...\nSuddenly, a clap of thunder rolls across the hills outside.\nWithout warning, lightning flashes outside, and a few seconds later thunder rattles the house.\n\n(Aren't you getting tired of seeing \"(... is listening.)\" and \"What next?\" and \"You are now in the ....\"? From here on, the prompt will be much shorter.)\n\nRain begins to fall outside in a sprinkle.\nLinder gulps down the rest of his drink. \"Well, Detective,\" he says, \"I'm anxious to get on with our business. Let's you and I go to my office so we can talk undisturbed.\" He takes you by the arm and\nleads you through the hallway. Just south of the entry, he opens a door to the east and leads you through it.\n(office)\nThis is obviously the office of Mr. Linder's company, Pacific Trade Associates. At the west end of the office, a massive desk of teak and mahogany faces toward the window. It has no drawers, but the\ntop is covered with piles of letters, some newspapers, a telephone, and various souvenirs from the Far East.\nBehind it is a large ornately-carved chair, like a cruiser escorting a battle ship. A simple wooden chair, polished smooth by visitors, flanks the desk on the other side. On the north wall is a\nlounge, upholstered in green velvet and a bit lumpy, with a framed wood-block picture hanging over it. On the outside wall, next to a door and window, stands a grandfather clock, ticking relentlessly.\nA file cabinet stands in the corner.\nThe door to the interior hallway is open.\nA cat is sleeping in the corner.\nLinder sits down in the carved chair.\nIt's now 8:13 p.m."
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 122,
+    "title": "hallway",
+    "description": "(hallway)\nThis is the south end of a hallway that runs the length of the house. At the far end, to the north, you can see the living room; immediately to the south is a door. Other doors on both sides lead to\nother rooms."
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 138,
+    "title": "hallway",
+    "description": "(hallway)\nThis is near the middle of the central hallway. At the north end, you can see the living room; to the east and west are bedroom doors. The door to the east is open."
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 197,
+    "title": "Monica's bedroom",
+    "description": "(Monica's bedroom)\nOn one side is a modern-style bed, with piles of well-thumbed detective stories stacked on the table beside it. Opposite the bed is a long dressing table that seems to serve also as desk and\nworkbench. In the corner sits a small table for a portable phonograph and records, and a book case with more books and pulps. Movie posters cover the walls. A handsome door with cedar veneer leads\nnorth, and a door and window face outside."
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 205,
+    "title": "back yard",
+    "description": "(back yard)\nYou are on a neatly manicured lawn, east of Monica's bedroom. The lawn extends east to the edge of the woods. From here you can go to a rock garden in the north or the entrance to Linder's office in\nthe south. There's a door into the house, and a window."
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 214,
+    "title": "office porch",
+    "description": "(office porch)\nYou are standing on a small concrete slab outside Linder's office. A sign between the door and the window reads \"PACIFIC TRADE ASSOCIATES\". To the north is a tidy lawn, extending east to the edge of\nthe woods. A path of stepping stones leads south to the back gate.\nYou notice some fresh foot prints heading east."
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 218,
+    "title": "office path",
+    "description": "(office path)\nYou are on a path made of stepping stones, which leads from the back gate at the south to Linder's office at the north. In the east you can see a thick woods. To the west is the side yard.\nThere's a muddy handgun here."
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 219,
+    "title": "side yard",
+    "description": "(side yard)\nThis is a little-used side yard, hidden from the street by the fence. The back yard lies to the east and the driveway to the west.\nYou notice a fresh row of foot prints going from the back yard to the driveway."
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 102,
+    "title": "garage",
+    "description": "(garage)\nThe garage, like a car port, has no door to keep the cars in. Doors lead north and east. The walls are decorated with spare tires and things. Oil spots on the floor show that a car is often parked\nhere. The other car is a dark blue Bentley 3.5-liter sedan."
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 203,
+    "title": "rock garden",
+    "description": "(rock garden)\nThis is a rock garden in the Japanese style, east of Linder's bedroom. A few smooth round boulders lie partly buried in a bed of gravel, which is carefully raked to be reminiscent of flowing water. A\nsequence of smaller rocks forms a zig-zag path from the bedroom door to the south edge of the garden, where the lawn begins. There's a door into the house, and a couple of windows."
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 185,
+    "title": "bathroom",
+    "description": "(bathroom)\nThis room has only a large cabinet with counter, sink and mirror. On the counter are a shaver, toothpaste, and so on. The tub and toilet must be in separate rooms. There are doors on all four walls:\nthe one to the north looks like redwood, the one to the south like cedar, and the other two like ordinary doors."
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 139,
+    "title": "hallway",
+    "description": "(hallway)\nThis is the north end of the central hallway. Just to the north, you can see warm yellow light in the living room."
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 158,
+    "title": "dining room",
+    "description": "You are now in the dining room.\nA table and benches, built out of blond wood for six people, sit in the middle of the room. On the south wall is a swinging door that leads to the kitchen, and on the east wall a double door to the\nliving room. Through a French door on the west wall you can see the front yard.\nLinder follows you into the dining room.\n\nWhat next?"
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 153,
+    "title": "kitchen",
+    "description": "You are now in the kitchen.\nThe Linder kitchen is full of electric appliances: range and hood, refrigerator, mixer, toaster, clock, and so on. Several white steel cabinets make for plenty of storage space. To the north is the\ndining room, to the east the hall.\nPhong is here, washing dishes.\nLinder follows you into the kitchen. He looks out the window and checks the lock.\nSuddenly, a clap of thunder rolls across the hills outside.\n\nWhat next?"
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 176,
+    "title": "toilet room",
+    "description": "(toilet room)\nThis is a separate room for a toilet only."
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 135,
+    "title": "butler's room",
+    "description": "(butler's room)\nThis is the bedroom of the butler, Mr. Phong, and is very simply furnished. A single bed, flanked by bare wooden end tables, sits below a closed window on the west end of the room. The floor is\nhardwood, with no rug. The only exit is a door to the east, which is open.\nAnother door, now closed, must lead to a private bathroom.\nA book is sitting on the bed-side table."
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 174,
+    "title": "Linder's bedroom",
+    "description": "(Aren't you getting tired of seeing \"(... is listening.)\" and \"What next?\" and \"You are now in the ....\"? From here on, the prompt will be much shorter.)\n(Linder's bedroom)\nThe bedroom is elegant but not tidy. A four-poster bed, chair and dresser, made of teak and mahogany, look hand-crafted. There are doors on the west and south walls, and a door and window to the east\nlook outside. Clothes and newspapers are scattered about. It seems that Linder misses the woman's touch.\nLinder follows you into Linder's bedroom. He looks out the window and checks the lock.\nSuddenly, a clap of thunder rolls across the hills outside."
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 126,
+    "title": "storage closet",
+    "description": "(storage closet)\nThis is a little-used storage closet containing odds and ends of no interest whatsoever. The exit is to the east.\nA broom is standing in the corner."
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 180,
+    "title": "tub room",
+    "description": "(tub room)\nThis is a separate room, completely lined with tile, for bathing in the Japanese style. On one side is a shower head and drain, where you could wash away surface dirt. On the other side is a deep tub,\nto be filled with steaming water up to your neck. Potted plants give the room a tropical air. A window looks over the rock garden outside, and a door leads west."
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 237,
+    "title": "front yard",
+    "description": "You are now in the front yard.\nYou are in the front yard of the Linder property. Most of the space is occupied by a kitchen garden full of vegetables and herbs. A wooden fence surrounds the yard on the west and north sides. To the\neast is the house, with a French door and two windows. To the south is a gate that leads to the front porch.\n\nWhat next?"
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 133,
+    "title": "butler's bathroom",
+    "description": "(butler's bathroom)\nThis is Mr. Phong's bathroom, with the usual plumbing and not much else. The door at the south side of the room is open."
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 96,
+    "title": "workshop",
+    "description": "(workshop)\nThis room is a well-equipped workshop. Besides the usual sort of tools, the place is full of mechanical and electrical parts and supplies: switches, relays, spools of colored wire, and so on. One wall\nholds the main electric board and a home-made junction box with more wires going in and out than you can shake a stick at. The only door is the one you came in."
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 168,
+    "title": "living room",
+    "description": "You are now in the living room.\nA huge fieldstone fireplace on the south wall holds a blazing fire, filling the living room with warmth and light. Grouped in front of the fire are a glass-topped coffee table and a rattan davenport\nand club chair, with cushions covered in a print showing bamboo plants in the style of Japanese brush-painting. A lamp with a printed shade and a telephone sit on the table.\nOn the north wall are a liquor cabinet and a console radio made of light-colored wood. A single door in the east wall is closed, and at the west end of the room is a double door.\n\n\"Excuse me, sir,\" says Phong, \"but the detective has arrived.\"\n\nMonica stops talking and looks at you sharply. She is a woman in her mid-twenties. Her grey eyes flash, emphasizing her dark waved hair and light but effective make-up. She wears a navy Rayon blouse,\ntan slacks, and tan pumps with Cuban heels. She acts as though you were a masher who just gave her a whistle.\nLinder stands at least six foot, with a powerful frame but quick actions, like a cat. His eyeglasses sit on top of his head, where thin strands of long black hair go here and there, mostly combed\nbackward. His wide-set hazel eyes size you up quickly from within their pouches in his ruddy face. He wears a silk peach-colored Mandarin shirt and chocolate trousers, impeccably tailored and\nlaundered, but sweat gleams on his high forehead, and he looks as though he hasn't slept much lately.\n\nLinder turns to you and says, \"Detective, am I glad to see you! This is my daughter, Monica, and of course you've met Phong already.\" He looks at a wrist watch with a gleaming silver bracelet. \"I see\nyou're right on time. I'll be with you as soon as I finish my drink.\"\nMr. Phong heads off to the south.\n\n(Mr. Linder is listening.)\nWhat next?"
+  },
+  {
+    "gameId": "22.840924",
+    "roomId": 132,
+    "title": "hallway",
+    "description": "(hallway)"
+  }
+]
