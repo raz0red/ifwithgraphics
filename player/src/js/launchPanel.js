@@ -39,7 +39,23 @@ function buildSettings({ onLocked, onReady, pregenDefault }) {
   const key = document.createElement("input");
   key.id = "ifwg-ai-key";
   key.className = "setting-input";
-  key.type = "password";
+  /* An API key is not a credential, but a type="password" field is all Chrome
+     needs to decide this page is a login form: it pairs the nearest text input
+     as the username and offers to save "the password" every time the player
+     types a game command. autocomplete="off" does not help — Chrome has
+     ignored it on password fields for years.
+
+     So mask the field with CSS instead of the input type, which removes the
+     signal entirely rather than trying to suppress the symptom.
+     -webkit-text-security is non-standard and unsupported in Firefox, so fall
+     back to type="password" there; a visible key is worse than a stray save
+     prompt. */
+  if (window.CSS && CSS.supports("-webkit-text-security", "disc")) {
+    key.type = "text";
+    key.classList.add("setting-input-masked");
+  } else {
+    key.type = "password";
+  }
   key.autocomplete = "off";
   key.spellcheck = false;
   const validateBtn = document.createElement("button");
