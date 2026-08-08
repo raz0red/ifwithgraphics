@@ -29,7 +29,8 @@
   },
   "enchanter": {
     "title": "Enchanter",
-    "description": "Setting: fantasy. A magical kingdom of guildhalls and a sorcerer's ruined castle, focused on spellcasting rather than combat."
+    "description": "Setting: fantasy. A magical kingdom of guildhalls and a sorcerer's ruined castle, focused on spellcasting rather than combat.",
+    "canonicalGameId": "29.860820"
   },
   "infidel": {
     "title": "Infidel",

@@ -80,6 +80,22 @@
     "image": "assets/images/games/infidel.webp"
   },
   {
+    "id": "enchanter",
+    "title": "Enchanter",
+    "author": "Infocom",
+    "year": "1983",
+    "description": "A novice enchanter with barely a spell to his name is sent against the warlock Krill, whose evil has swallowed a castle and the lands around it. Magic is the only weapon here: find scrolls, copy them into your spell book, and work out which words to speak.",
+    "scene": {
+      "room": "Gallery",
+      "text": "The east-west corridor opens into a portrait gallery. The gallery is lit by an eerie orange glow. The eyes of the figures portrayed on the canvases seem to be faintly illuminated and follow your every movement."
+    },
+    "pregenerated": true,
+    "includesFile": false,
+    "ifdbUrl": "https://ifdb.org/viewgame?id=vu4xhul3abknifcr",
+    "pagePath": "player/games/enchanter/",
+    "image": "assets/images/games/enchanter.webp"
+  },
+  {
     "id": "cutthroats",
     "title": "Cutthroats",
     "author": "Infocom",

@@ -752,6 +752,10 @@ func (e *Explorer) runWalkthrough(path string) (*frotz.Room, string, error) {
 			log.Printf("walkthrough step %d: %q | %s [id=%d] -> %s [id=%d]",
 				wt.Step, command, before.Title, before.ID, next.Title, next.ID)
 		}
+		if !probeInventoryDone && strings.EqualFold(strings.TrimSpace(command), "get map") {
+			probeInventoryDone = true
+			e.probeInventory(next)
+		}
 		e.game.Observe(next)
 
 		moved := !sameRoom(next, current)
@@ -1019,11 +1023,13 @@ func looksLikeWalkthroughCommand(command string) bool {
 	}
 	if strings.HasPrefix(command, "go ") ||
 		strings.HasPrefix(command, "walk through ") ||
+		strings.HasPrefix(command, "tell ") ||
 		strings.HasPrefix(command, "robot, ") ||
 		strings.HasPrefix(command, "demon, ") ||
 		strings.HasPrefix(command, "dungeon master, ") ||
 		strings.HasPrefix(command, "johnny, ") ||
-		strings.HasPrefix(command, "alexis, ") {
+		strings.HasPrefix(command, "alexis, ") ||
+		strings.HasPrefix(command, "turtle, ") {
 		return true
 	}
 	if strings.Contains(command, ",") {
@@ -1043,12 +1049,12 @@ func looksLikeWalkthroughCommand(command string) bool {
 		verb = verb[:i]
 	}
 	switch verb {
-	case "again", "alexis", "answer", "apply", "attack", "attach", "blow", "board", "break", "burn", "buy", "chant", "climb", "close", "connect", "cover", "cross",
-		"cut", "dig", "dip", "dive", "drill", "drink", "drop", "eat", "echo", "enter", "examine", "exit", "feed", "fill", "get", "give",
-		"grab", "hide", "hold", "inflate", "insert", "inventory", "kill", "kiss", "knock", "launch", "leave", "lie", "light", "lock", "look",
-		"lower", "move", "open", "order", "pay", "point", "pour", "pray", "press", "pull", "push", "put", "raise",
-		"read", "remove", "rent", "ring", "roll", "rub", "say", "search", "shake", "show", "sit", "slide", "smash", "spray", "squeeze", "stand", "swim", "take", "tell", "throw",
-		"tie", "touch", "tug", "turn", "unlock", "untie", "ulysses", "wait", "wake", "wave", "wear", "wedge", "wind", "wish", "withdraw", "z":
+	case "again", "alexis", "answer", "apply", "ask", "attack", "attach", "blow", "board", "break", "burn", "buy", "chant", "cleesh", "climb", "close", "connect", "cover", "cross",
+		"cut", "dig", "dip", "dive", "draw", "drill", "drink", "drop", "eat", "echo", "enter", "erase", "examine", "exex", "exit", "feed", "fill", "frotz", "get", "give",
+		"gnusto", "gondar", "grab", "guncho", "hide", "hold", "inflate", "insert", "inventory", "izyuk", "kill", "kiss", "knock", "krebf", "kulcad", "launch", "learn", "leave", "lie", "light", "lock", "look",
+		"lower", "melbor", "move", "nitfol", "open", "order", "ozmoo", "pay", "point", "pour", "pray", "press", "pull", "push", "put", "raise",
+		"reach", "read", "remove", "rent", "rezrov", "ring", "roll", "rub", "say", "search", "shake", "show", "sit", "sleep", "slide", "smash", "spray", "squeeze", "stand", "swim", "take", "tell", "throw",
+		"tie", "touch", "tug", "turn", "unlock", "untie", "ulysses", "vaxum", "wait", "wake", "wave", "wear", "wedge", "wind", "wish", "withdraw", "z", "zifmia":
 		return true
 	}
 	return false
@@ -1425,10 +1431,6 @@ func normalizeWalkthroughCommand(line string) string {
 		return "spray repellent on self"
 	case "take object":
 		return "look"
-	case "get bread", "take bread":
-		return "get waybread"
-	case "give bread to man":
-		return "give waybread to man"
 	case "shake man":
 		return "wake man"
 	case "say hello sailor":
