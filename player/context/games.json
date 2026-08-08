@@ -43,7 +43,8 @@
   },
   "witness": {
     "title": "The Witness",
-    "description": "Setting: 1938 Los Angeles film-noir murder mystery. A wealthy industrialist's home, told in hardboiled detective style."
+    "description": "Setting: 1938 Los Angeles film-noir murder mystery. A wealthy industrialist's home, told in hardboiled detective style.",
+    "canonicalGameId": "22.840924"
   },
   "cutthroats": {
     "title": "Cutthroats",
