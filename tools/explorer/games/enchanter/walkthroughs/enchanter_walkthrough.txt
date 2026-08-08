@@ -1,0 +1,309 @@
+# ---- Day 1 ----
+
+# ---- Fork ----
+# ne
+# go north
+
+# ---- Inside Shack ----
+# get jug
+# get lantern
+# open oven
+# get bread
+# go south
+# ne
+# se
+# ne
+
+# ---- Shady Brook ----
+# get water
+# sw
+# se
+# sw
+# sw
+
+# ---- Deserted Village ----
+# go south
+# gnusto rezrov
+# learn rezrov
+# ne
+# ne
+# go east
+# go east
+
+# ---- Outside Gate ----
+# rezrov gate
+# go east
+
+# ---- Inside Gate ----
+# learn frotz
+# frotz lantern
+# learn nitfol
+# learn rezrov
+# go north
+# go north
+# go up
+
+# ---- Jewel Room ----
+# rezrov egg
+# get scroll
+# learn rezrov
+# go down
+# go east
+# go east
+# go east
+# go east
+# go east
+
+# ---- North Gate ----
+# learn rezrov
+# rezrov gate
+# go north
+
+# ---- Forest ----
+# get crumpled scroll
+# read crumpled scroll
+# gnusto krebf
+# learn krebf
+# krebf shredded scroll
+# read faded scroll
+# gnusto zifmia
+# go east
+
+# ---- Swamp ----
+# learn nitfol
+# nitfol frogs
+# look under lily pad
+# get scroll
+# gnusto cleesh
+# go west
+# go south
+# go west
+# go west
+# go west
+# go west
+# go west
+# go south
+# go south
+# go south
+# go south
+# go east
+# go south
+
+# ---- Dungeon ----
+# open door
+# go north
+
+# ---- Cell ----
+# examine wall
+# move loose block
+# go east
+
+# ---- Secret Passage ----
+# get scroll
+# gnusto exex
+# go west
+# go south
+# go up
+
+# ---- South Hall ----
+# drop all
+# go east
+
+# ---- Gallery ----
+# move lighted portrait
+# get candle
+# get scroll
+# drop lantern
+# go west
+# get all
+# gnusto ozmoo
+# go west
+# go up
+
+# ---- Bedroom ----
+# drink water
+# eat bread
+# get in bed
+
+# ---- Day 2 ----
+
+# ---- Bedroom ----
+# get out of bed
+# eat bread
+# examine bedpost
+# press button
+# get scroll
+# gnusto vaxum
+# go down
+# go east
+# go east
+# go east
+# go south
+# se
+
+# ---- Beach ----
+# learn nitfol
+# nitfol turtle
+# tell turtle to follow me
+# learn exex
+# nw
+# go north
+# go east
+# go up
+
+# ---- Engine Room ----
+# exex turtle
+# turtle, go se and get scroll then nw
+# get scroll
+# go down
+# go west
+# go west
+# go west
+# go north
+# get box
+# go north
+# go east
+# learn ozmoo
+# drop all
+# go east
+
+# ---- Cell ----
+# ozmoo me
+# wait
+# go down
+# go west
+
+# ---- Courtyard ----
+# cut rope
+# open box
+# get vellum scroll
+# read vellum scroll
+# get all
+# eat bread
+# drink water
+# gnusto melbor
+# go west
+# go west
+# go north
+# go north
+# go east
+
+# ---- Hall of Mirrors One ----
+# learn zifmia
+# learn melbor
+# learn vaxum
+# melbor me
+# zifmia adventurer
+# vaxum adventurer
+# go east
+# go east
+# go east
+# go east
+# go east
+
+# ---- Guarded Door ----
+# tell adventurer to open door
+# go north
+
+# ---- Map Room ----
+# sleep
+# get pencil
+# get map
+# ask adventurer for pencil
+# ask adventurer for map
+# go south
+# go west
+# go south
+
+# ---- Library ----
+# learn melbor
+# melbor me
+# examine tracks
+# reach into hole
+# drink water
+# read frayed scroll
+# gnusto gondar
+# get dusty book
+# examine dusty book
+# read dusty book
+# drop dusty book
+# go north
+# go west
+# go west
+# go west
+# go west
+# go west
+# go south
+# go south
+# go south
+# go south
+# go east
+# go south
+# go down
+
+# ---- Translucent Room ----
+# eat bread
+# sleep
+
+# ---- Translucent Room ----
+
+# ---- Translucent Room ----
+# eat bread
+# drop spell book
+# drop jug
+# look at map
+# go south
+# go east
+# ne
+# se
+
+# ---- Translucent Room ----
+# draw line from f to p
+# sw
+# sw
+
+# ---- Translucent Room ----
+# erase line from b to r
+# erase line from m to v
+# get scroll
+# ne
+# nw
+# nw
+
+# ---- Translucent Room ----
+# draw line from j to b
+# go west
+# drop pencil
+# drop map
+# drop dagger
+# drop candle
+# drop bread
+# get jug
+# drink water
+# get spell book
+# learn melbor
+# learn gondar
+# learn vaxum
+# melbor me
+# go up
+# go up
+# go north
+# go north
+# go east
+# go east
+# go east
+# go east
+# go east
+# go east
+
+# ---- Winding Stair ----
+# read brittle scroll
+# kulcad stairs
+# read ornate scroll
+# izyuk me
+# go east
+
+# ---- Warlock's Tower ----
+# gondar dragon
+# vaxum being
+# guncho krill

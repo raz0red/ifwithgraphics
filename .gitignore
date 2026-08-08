@@ -28,6 +28,12 @@ wasm/ztools/source/txd
 
 # Explorer intermediate artifacts
 bfs-saves/
+# Per-run explorer console logs (run1.out, seed2.out, runFix1.out, ...). These
+# accumulate a dozen or more per game while a walkthrough is being tuned, and
+# unlike bfs.json they are throwaway. Note *.log below does not cover them.
+tools/explorer/games/*/*.out
+# Stray probe binaries built outside tools/explorer/bin/.
+tools/explorer/probe
 
 # Scratch/working files
 # Globbed rather than enumerated: tmp/ through tmp4/ were listed one by one and
