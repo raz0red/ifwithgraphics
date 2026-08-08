@@ -177,6 +177,13 @@ body {
   border-color: #888;
   color: #fff;
 }
+/* Masks the API key without using type="password", which would make Chrome
+   treat the page as a login form and offer to save a password every time the
+   player types a command (see launchPanel.js). Applied only when the browser
+   supports it; otherwise the input stays type="password". */
+.setting-input-masked {
+  -webkit-text-security: disc;
+}
 
 .setting-key-wrap {
   flex: 1;

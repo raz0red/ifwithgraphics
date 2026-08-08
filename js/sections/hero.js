@@ -80,10 +80,27 @@ export function initHeroCardStack(root) {
   const n = cards.length;
   if (n < 2) return;
 
+  // Shuffle which games occupy the deck, per page load. Rotating from a random
+  // starting index was not enough: that walks the cards in their fixed array
+  // order, so the game after Zork I is always Zork II no matter where the
+  // rotation begins. Shuffling an index list instead gives a genuinely
+  // different sequence each visit.
+  //
+  // The shuffle is applied through data-pos only, never by reordering the DOM,
+  // which is what the four-second rotation below already does. So there is no
+  // reflow and no post-hydration jump, and the pre-rendered markup still ships
+  // every card and link regardless of the order they end up displayed in.
+  const order = cards.map((_, i) => i);
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+
   let active = 0;
   const update = () =>
-    cards.forEach((c, i) => {
-      const pos = (i - active + n) % n;
+    order.forEach((cardIndex, slot) => {
+      const pos = (slot - active + n) % n;
+      const c = cards[cardIndex];
       if (pos <= 2) c.setAttribute('data-pos', String(pos));
       else c.removeAttribute('data-pos');
     });
