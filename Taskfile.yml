@@ -109,11 +109,11 @@ tasks:
       sh -c 'make -B -C /repo/wasm/ztools/source infodump txd && go run /repo/tools/zcompare/main.go --infodump /repo/wasm/ztools/source/infodump --txd /repo/wasm/ztools/source/txd /repo/{{.story}} /repo/{{.bfs}}'
 
   imagegen:
-    desc: "Batch-generate room images — task imagegen [rooms=tools/explorer/games/zork1/bfs.json] [out=player/images] [concurrency=3] [limit=0] [model=gpt-image-2-2026-04-21]"
+    desc: "Batch-generate room images — task imagegen [rooms=tools/explorer/games/zork1/bfs.json] [out=player/images] [concurrency=2] [limit=0] [model=gpt-image-2-2026-04-21]"
     vars:
       rooms:       '{{.rooms | default "tools/explorer/games/zork1/bfs.json"}}'
       out:         '{{.out | default "player/images"}}'
-      concurrency: '{{.concurrency | default "3"}}'
+      concurrency: '{{.concurrency | default "2"}}'
       limit:       '{{.limit | default "0"}}'
       model:       '{{.model | default "gpt-image-2-2026-04-21"}}'
     cmd: >

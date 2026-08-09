@@ -1,19 +1,23 @@
 {
   "zork1": {
     "title": "Zork I: The Great Underground Empire",
-    "description": "Setting: a classic fantasy world of ruined castles, forests, and underground caverns. The Great Underground Empire."
+    "description": "Setting: a classic fantasy world of ruined castles, forests, and underground caverns. The Great Underground Empire.",
+    "canonicalGameId": "119.880429"
   },
   "zork2": {
     "title": "Zork II: The Wizard of Frobozz",
-    "description": "Setting: the same fantasy underground empire as Zork I, ruled by the Wizard of Frobozz. Dungeons, castles, and whimsical magical rooms."
+    "description": "Setting: the same fantasy underground empire as Zork I, ruled by the Wizard of Frobozz. Dungeons, castles, and whimsical magical rooms. The volcano is a long extinct, dormant one standing hollow inside the underground empire, and every volcano scene happens within that shaft, never outside it: sheer rock walls closing in on all sides, a solid dry floor of old cooled stone far below with no lava, fire or smoke anywhere, and the only daylight a small ragged opening at the rim high overhead. Never show the volcano from the outside as a mountain in a landscape, and never show a second volcano, an ocean, open countryside or a full sky.",
+    "canonicalGameId": "63.860811"
   },
   "zork3": {
     "title": "Zork III: The Dungeon Master",
-    "description": "Setting: the same fantasy underground empire, in its final, more solemn and eerie depths near the Dungeon Master's domain."
+    "description": "Setting: the same fantasy underground empire, in its final, more solemn and eerie depths near the Dungeon Master's domain.",
+    "canonicalGameId": "25.860811"
   },
   "planetfall": {
     "title": "Planetfall",
-    "description": "Setting: science fiction. A derelict starship and an abandoned, corroded underground colony complex on a distant planet. Metal corridors, control panels, industrial machinery. NOT a fantasy or medieval setting: no grass, trees, or pastoral scenery unless explicitly described in the scene text."
+    "description": "Setting: science fiction. A derelict starship and an abandoned, corroded underground colony complex on a distant planet. Metal corridors, control panels, industrial machinery. NOT a fantasy or medieval setting: no grass, trees, or pastoral scenery unless explicitly described in the scene text.",
+    "canonicalGameId": "29.840118"
   },
   "deadline": {
     "title": "Deadline",
