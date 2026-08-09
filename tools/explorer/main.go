@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -54,6 +55,7 @@ type Explorer struct {
 	rooms            map[int]bool
 	ordered          []*RoomEntry
 	tried            map[int]map[string]bool // roomID -> action -> already tried
+	refusals         map[int][]refusalHint   // roomID -> obstacles a blocked exit named
 	saves            map[int]string          // roomID -> save file path
 	saveDir          string
 	outPath          string
@@ -502,7 +504,13 @@ func (e *Explorer) dfs(room *frotz.Room, savePath string, depth int) error {
 		}
 
 		if sameRoom(next, room) {
-			// Direction blocked. Restore to clean save state before the next attempt
+			// Direction blocked, and the reason is in next.Description: this is
+			// the only place a game names the door it just refused to let you
+			// through. Record it before restoring, so tryStatefulSequences can
+			// try opening it once every direction has been probed.
+			e.recordRefusal(room.ID, dir, next.Description)
+
+			// Restore to clean save state before the next attempt
 			// so any in-room state changes (combat, lamp timer, etc.) don't accumulate.
 			restored, rerr := e.restoreGameFresh(savePath)
 			if rerr != nil {
@@ -567,8 +575,61 @@ func (e *Explorer) dfs(room *frotz.Room, savePath string, depth int) error {
 	return nil
 }
 
+// recordRefusal notes every obstacle named in the text a blocked direction
+// produced. Directions are probed before sequences are, so by the time the
+// sequences run, a room has collected the refusals from all of its exits.
+func (e *Explorer) recordRefusal(roomID int, dir, text string) {
+	if roomID == 0 {
+		return
+	}
+	// Only movement directions are worth pairing with an obstacle. The action
+	// list also holds contextual commands, and a blocked "open door" would
+	// otherwise be recorded as the way out, producing "unlock garage door,
+	// open garage door, open door" instead of a move.
+	if !slices.Contains(allDirs, dir) {
+		return
+	}
+	for _, obstacle := range refusalObstacles(text) {
+		hint := refusalHint{Obstacle: obstacle, Dir: dir}
+		if slices.ContainsFunc(e.refusals[roomID], func(h refusalHint) bool {
+			return h.Obstacle == hint.Obstacle && h.Dir == hint.Dir
+		}) {
+			continue
+		}
+		if e.refusals == nil {
+			e.refusals = make(map[int][]refusalHint)
+		}
+		e.refusals[roomID] = append(e.refusals[roomID], hint)
+		log.Printf("DFS refusal at [id=%d]: %q blocked by %q", roomID, dir, obstacle)
+	}
+}
+
+// refusalSequencesFor builds the retry sequences for everything this room's
+// blocked exits named.
+func (e *Explorer) refusalSequencesFor(room *frotz.Room) []actionSequence {
+	if room == nil {
+		return nil
+	}
+	var seqs []actionSequence
+	hints := e.refusals[room.ID]
+	for i := range hints {
+		if hints[i].Emits >= refusalRetryBudget {
+			continue
+		}
+		hints[i].Emits++
+		// The attempt number keeps the sequence name unique, so the tried-set
+		// does not suppress a retry as a repeat of the first attempt.
+		for _, seq := range refusalSequences(hints[i].Obstacle, hints[i].Dir) {
+			seq.Name = fmt.Sprintf("%s#%d", seq.Name, hints[i].Emits)
+			seqs = append(seqs, seq)
+		}
+	}
+	return seqs
+}
+
 func (e *Explorer) tryStatefulSequences(room *frotz.Room, savePath string, depth int) error {
-	for _, seq := range e.game.StatefulSequences(room) {
+	sequences := append(e.game.StatefulSequences(room), e.refusalSequencesFor(room)...)
+	for _, seq := range sequences {
 		key := "seq:" + seq.Name
 		if e.tried[room.ID] == nil {
 			e.tried[room.ID] = make(map[string]bool)
@@ -1494,6 +1555,10 @@ func (e *Explorer) resetForRun(sess *frotz.Session) {
 	e.sess = sess
 	e.tried = make(map[int]map[string]bool)
 	e.saves = make(map[int]string)
+	// Refusals are per-run: they are only useful alongside the tried/saves
+	// state gathered in the same walk, and a stale hint would spend turns on a
+	// door this run has not confirmed is there.
+	e.refusals = make(map[int][]refusalHint)
 }
 
 // loadJSON pre-populates e.ordered and e.rooms from an existing bfs.json so
