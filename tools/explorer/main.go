@@ -98,7 +98,14 @@ func readGameID(story string) (string, error) {
 func trimToTitle(title, description string) string {
 	lines := strings.Split(description, "\n")
 	for i, line := range lines {
-		if strings.TrimSpace(line) == title {
+		line = strings.TrimSpace(line)
+		// A room line is usually the bare name, but riding a vehicle appends a
+		// suffix to it: Zork I's river rooms announce "Frigid River, in the
+		// magic boat" and Zork II's volcano rooms "Volcano Core, in the wicker
+		// basket". Matching only the bare name left everything printed since
+		// the last prompt in the description, so "Dropped." and "Time
+		// passes..." were reaching the image prompt as if they were scenery.
+		if line == title || strings.HasPrefix(line, title+",") {
 			return strings.TrimSpace(strings.Join(lines[i:], "\n"))
 		}
 	}

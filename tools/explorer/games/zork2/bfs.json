@@ -243,7 +243,7 @@
     "gameId": "63.860811",
     "roomId": 92,
     "title": "Bank Entrance",
-    "description": "Bank Entrance\nThis is the entrance hall of the Bank of Zork, the largest banking institution of the Great Underground Empire. A partial account of its history is in \"The Lives of the Twelve Flatheads,\" in the\nchapter on J. Pierpont Flathead. A more detailed history (albeit less objective) may be found in Flathead's outrageous autobiography \"I'm Rich and You Aren't - So There!\". Most of the furniture has\nbeen ravaged by passing scavengers. All that remains are two signs at the northwest and northeast corners of the room, which say:\n\n    \u003c--  VIEWING ROOMS  --\u003e\n\nThe way out (ornate but tasteful) is to the east.\nYour sword is no longer glowing."
+    "description": "Bank Entrance\nThis is the entrance hall of the Bank of Zork, the largest banking institution of the Great Underground Empire. A partial account of its history is in \"The Lives of the Twelve Flatheads,\" in the\nchapter on J. Pierpont Flathead. A more detailed history (albeit less objective) may be found in Flathead's outrageous autobiography \"I'm Rich and You Aren't - So There!\". Most of the furniture has\nbeen ravaged by passing scavengers. All that remains are two signs at the northwest and northeast corners of the room, which say:\n\n    <--  VIEWING ROOMS  -->\n\nThe way out (ornate but tasteful) is to the east.\nYour sword is no longer glowing."
   },
   {
     "gameId": "63.860811",
@@ -351,7 +351,7 @@
     "gameId": "63.860811",
     "roomId": 8,
     "title": "Top of Well",
-    "description": "There is now a puddle in the bottom of the wooden bucket.\nThe bucket rises and comes to a stop.\n\nTop of Well, in the wooden bucket\nYou are at the top of the well. Well done. There are etchings on the side of the well. There is a small crack across the floor at the entrance to a room on the east, but it can be crossed easily.\nThe wooden bucket contains:\n  A quantity of water"
+    "description": "Top of Well, in the wooden bucket\nYou are at the top of the well. Well done. There are etchings on the side of the well. There is a small crack across the floor at the entrance to a room on the east, but it can be crossed easily.\nThe wooden bucket contains:\n  A quantity of water"
   },
   {
     "gameId": "63.860811",
@@ -423,19 +423,19 @@
     "gameId": "63.860811",
     "roomId": 34,
     "title": "Volcano Core",
-    "description": "Dropped.\nThe balloon rises slowly from the ground.\n\nVolcano Core, in the basket\nYou are about one hundred feet above the bottom of the volcano. The top of the volcano is clearly visible here.\nThe cloth bag is inflated and there is a newspaper burning in the receptacle. A braided wire is dangling over the side of the basket.\nThe basket contains:\n  A blue label"
+    "description": "Volcano Core, in the basket\nYou are about one hundred feet above the bottom of the volcano. The top of the volcano is clearly visible here.\nThe cloth bag is inflated and there is a newspaper burning in the receptacle. A braided wire is dangling over the side of the basket.\nThe basket contains:\n  A blue label"
   },
   {
     "gameId": "63.860811",
     "roomId": 113,
     "title": "Volcano Near Small Ledge",
-    "description": "Time passes...\nThe balloon ascends.\n\nVolcano Near Small Ledge, in the basket\nYou are about two hundred feet above the volcano floor. Looming above is the rim of the volcano. There is a small ledge on the west side.\nThe cloth bag is inflated and there is a newspaper burning in the receptacle. A braided wire is dangling over the side of the basket.\nThe basket contains:\n  A blue label"
+    "description": "Volcano Near Small Ledge, in the basket\nYou are about two hundred feet above the volcano floor. Looming above is the rim of the volcano. There is a small ledge on the west side.\nThe cloth bag is inflated and there is a newspaper burning in the receptacle. A braided wire is dangling over the side of the basket.\nThe basket contains:\n  A blue label"
   },
   {
     "gameId": "63.860811",
     "roomId": 13,
     "title": "Narrow Ledge",
-    "description": "The balloon lands.\nNarrow Ledge, in the basket\nYou are on a narrow ledge within an old dormant volcano. This ledge is about halfway between the floor below and the rim above. There is an exit to the south.\nThe cloth bag is inflated and there is a newspaper burning in the receptacle. A braided wire is dangling over the side of the basket.\nOn the floor is a priceless gold zorkmid (a valuable collector's item).\nThere is a small hook attached to the rock here. (outside the basket)\n  The basket contains:\n    A blue label"
+    "description": "Narrow Ledge, in the basket\nYou are on a narrow ledge within an old dormant volcano. This ledge is about halfway between the floor below and the rim above. There is an exit to the south.\nThe cloth bag is inflated and there is a newspaper burning in the receptacle. A braided wire is dangling over the side of the basket.\nOn the floor is a priceless gold zorkmid (a valuable collector's item).\nThere is a small hook attached to the rock here. (outside the basket)\n  The basket contains:\n    A blue label"
   },
   {
     "gameId": "63.860811",
@@ -465,19 +465,19 @@
     "gameId": "63.860811",
     "roomId": 86,
     "title": "Volcano by Viewing Ledge",
-    "description": "Time passes...\nThe balloon ascends.\n\nVolcano by Viewing Ledge, in the basket\nYou are high above the floor of the volcano. The rim of the volcano looks very narrow and you are very near it. To the east is what appears to be a viewing ledge, too thin to land on.\nThe cloth bag is inflated and there is a newspaper burning in the receptacle. A braided wire is dangling over the side of the basket.\nThe basket contains:\n  A blue label"
+    "description": "Volcano by Viewing Ledge, in the basket\nYou are high above the floor of the volcano. The rim of the volcano looks very narrow and you are very near it. To the east is what appears to be a viewing ledge, too thin to land on.\nThe cloth bag is inflated and there is a newspaper burning in the receptacle. A braided wire is dangling over the side of the basket.\nThe basket contains:\n  A blue label"
   },
   {
     "gameId": "63.860811",
     "roomId": 177,
     "title": "Volcano Near Wide Ledge",
-    "description": "Time passes...\nThe balloon ascends.\n\nVolcano Near Wide Ledge, in the basket\nYou are near the rim of the volcano. Above you it is open to the sky. To the west, there is a place to land on a wide ledge.\nThe cloth bag is inflated and there is a newspaper burning in the receptacle. A braided wire is dangling over the side of the basket.\nThe basket contains:\n  A blue label"
+    "description": "Volcano Near Wide Ledge, in the basket\nYou are near the rim of the volcano. Above you it is open to the sky. To the west, there is a place to land on a wide ledge.\nThe cloth bag is inflated and there is a newspaper burning in the receptacle. A braided wire is dangling over the side of the basket.\nThe basket contains:\n  A blue label"
   },
   {
     "gameId": "63.860811",
     "roomId": 143,
     "title": "Wide Ledge",
-    "description": "The balloon lands.\nWide Ledge, in the basket\nYou are on a wide ledge high in the volcano. The rim of the volcano is about 200 feet above and there is a precipitous drop to the bottom. There is a small door to the south.\nThere is a small hook attached to the rock here. (outside the basket)\n  The basket contains:\n    A blue label"
+    "description": "Wide Ledge, in the basket\nYou are on a wide ledge high in the volcano. The rim of the volcano is about 200 feet above and there is a precipitous drop to the bottom. There is a small door to the south.\nThere is a small hook attached to the rock here. (outside the basket)\n  The basket contains:\n    A blue label"
   },
   {
     "gameId": "63.860811",
