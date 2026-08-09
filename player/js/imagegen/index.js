@@ -346,12 +346,34 @@ function generate(roomId, title, description, onCacheMiss) {
   const settings = getSettings();
 
   if (settings.getPregenEnabled() && name) {
-    const pathSegment = isCanonicalRelease(name) ? `id/${roomId}` : slugify(effectiveTitle);
+    const canonical = isCanonicalRelease(name);
+    const titleSegment = slugify(effectiveTitle);
     if (onCacheMiss) onCacheMiss();
-    return fetchPregenerated(name, pathSegment).then((dataUrl) => {
+    return fetchPregenerated(name, canonical ? `id/${roomId}` : titleSegment).then((dataUrl) => {
       if (dataUrl) {
         console.info("[IFWG] pre-generated image — roomId:%o", roomId);
         return dataUrl;
+      }
+      /* A canonical game resolves by room id, which is precise but only
+         covers the rooms we have an id file for. The explorer cannot walk to
+         every room, so some are only ever keyed by title, and marking a game
+         canonical used to take their art away: the id 404s and the player
+         drops to live generation, which draws nothing without an API key.
+         Falling back to the title image keeps those rooms covered. The id is
+         still tried first and still wins wherever it exists, so canonical
+         continues to mean exactly what it did. */
+      if (canonical) {
+        return fetchPregenerated(name, titleSegment).then((byTitle) => {
+          if (byTitle) {
+            console.info(
+              "[IFWG] pre-generated image by title — roomId:%o title:%o",
+              roomId,
+              titleSegment
+            );
+            return byTitle;
+          }
+          return generateFromCacheOrLive(roomId, effectiveTitle, description, onCacheMiss);
+        });
       }
       /* Not in the static bundle — fall through to the local-cache-backed
          live generation path below. */
