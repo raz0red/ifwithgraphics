@@ -48,13 +48,18 @@ export function renderHeroHTML(games = []) {
         <span class="text-emerald-500">IF</span> <span class="text-white">WITH</span> <span class="text-emerald-500">GRAPHICS</span>
       </h1>
       <p class="text-zinc-400 text-sm leading-relaxed font-sans">
-        <strong class="font-bold text-emerald-500">IFWG</strong> brings classic Interactive Fiction to life with retro pixel art, pre-rendered or generated on the fly as you play, right in your browser.
+        <strong class="font-bold text-emerald-500">Interactive Fiction with Graphics (IFWG)</strong> brings classic Interactive Fiction to life with retro pixel art, pre-rendered or generated on the fly as you play, right in your browser.
       </p>
-      <div class="flex flex-wrap items-center gap-4 pt-2">
-        <button data-nav="library" class="flex-1 min-w-[10rem] max-w-[15rem] px-6 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold uppercase text-xs tracking-wider rounded flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all transform active:scale-95 select-none cursor-pointer">
+      <!-- Stacked, the buttons fill their column but stop at 24rem. A 240px cap
+           per button left them ragged and short on a phone, while no cap at all
+           ran them to ~550px on a narrow desktop window, since "below sm" is
+           everything under 640px. Capping the group keeps them near full width
+           on a phone and stops them stretching above it. -->
+      <div class="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-4 pt-2 w-full max-w-sm mx-auto sm:mx-0 sm:max-w-none">
+        <button data-nav="library" class="w-full sm:flex-1 sm:min-w-[10rem] sm:max-w-[15rem] px-6 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold uppercase text-xs tracking-wider rounded flex items-center justify-center gap-2 whitespace-nowrap shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all transform active:scale-95 select-none cursor-pointer">
           ${icon('book-open', 'w-4 h-4')} Game Library
         </button>
-        <a href="${PLAYER_URL}" class="flex-1 min-w-[10rem] max-w-[15rem] px-6 py-3.5 bg-zinc-900/60 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-white font-extrabold uppercase text-xs tracking-wider rounded flex items-center justify-center gap-2 transition-all transform active:scale-95 select-none">
+        <a href="${PLAYER_URL}" class="w-full sm:flex-1 sm:min-w-[10rem] sm:max-w-[15rem] px-6 py-3.5 bg-zinc-900/60 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-white font-extrabold uppercase text-xs tracking-wider rounded flex items-center justify-center gap-2 whitespace-nowrap transition-all transform active:scale-95 select-none">
           ${icon('play', 'w-4 h-4 fill-white')} Launch Player
         </a>
       </div>

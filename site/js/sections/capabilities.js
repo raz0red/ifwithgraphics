@@ -42,11 +42,14 @@ export function renderCapabilitiesHTML() {
           </p>
         </div>
       </div>
-      <div class="flex flex-wrap items-center gap-3 shrink-0">
-        <button data-nav="library" class="px-5 py-3 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold uppercase text-xs tracking-wider rounded flex items-center gap-1.5 shadow-md shadow-emerald-500/5 hover:shadow-emerald-500/15 transition-all transform active:scale-95 select-none cursor-pointer">
+      <!-- Each button used to size to its own label, so stacked on a phone they
+           came out different widths and ragged against the left edge. Full
+           width below sm makes them match; they sit side by side above it. -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0 w-full md:w-auto">
+        <button data-nav="library" class="w-full sm:w-auto px-5 py-3 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold uppercase text-xs tracking-wider rounded flex items-center justify-center gap-1.5 whitespace-nowrap shadow-md shadow-emerald-500/5 hover:shadow-emerald-500/15 transition-all transform active:scale-95 select-none cursor-pointer">
           ${icon('book-open', 'w-4 h-4')} Game Library
         </button>
-        <a href="${PLAYER_URL}" class="px-5 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-white font-extrabold uppercase text-xs tracking-wider rounded flex items-center gap-1.5 shadow-lg transition-all transform active:scale-95 select-none">
+        <a href="${PLAYER_URL}" class="w-full sm:w-auto px-5 py-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-white font-extrabold uppercase text-xs tracking-wider rounded flex items-center justify-center gap-1.5 whitespace-nowrap shadow-lg transition-all transform active:scale-95 select-none">
           ${icon('play', 'w-3.5 h-3.5 fill-white')} Launch Player
         </a>
       </div>
